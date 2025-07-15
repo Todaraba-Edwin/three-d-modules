@@ -1,0 +1,4 @@
+{
+  "files": [],
+  "references": [{ "path": "apps/project-a" }, { "path": "packages/shared" }]
+}

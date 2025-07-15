@@ -1,0 +1,45 @@
+
+# macOS 특유 파일
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbs.db (Windows)
+Thumbs.db
+
+# node_modules
+node_modules/
+
+# 빌드 결과물 (일반적인 빌드 출력)
+dist/
+build/
+out/
+coverage/
+
+# 환경 설정 파일 (비밀 정보 등)
+.env
+.env.local
+.env.*.local
+
+# IDE, 에디터 설정 파일들
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 타입스크립트 빌드 결과
+*.tsbuildinfo
+
+# 번들러 임시 폴더
+.cache/
+.tmp/
+
+# pnpm 관련
+.pnpm-debug.log
+.pnpm-store/
+
+# vscode 터미널 히스토리
+.history/

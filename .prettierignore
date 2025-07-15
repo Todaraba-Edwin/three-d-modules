@@ -1,0 +1,15 @@
+# 시스템 파일
+.DS_Store
+
+# node_modules 및 빌드 아웃풋
+node_modules
+dist
+build
+.pnpmrc
+.prettierignore
+*.log
+
+# 잠재적 포맷 제외 대상
+pnpm-lock.yaml
+*.md
+*.lock

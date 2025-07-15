@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    // 모듈 시스템을 ESNext로 설정 (Vite와 호환됨, import/export 유지)
+    "module": "ESNext",
+
+    // 타입 정의 파일을 검사하지 않음 (빌드 속도 향상)
+    "skipLibCheck": true,
+
+    // 최신 모듈 해석 방식 (Node.js + ESM 기반 모듈 해석)
+    "moduleResolution": "bundler",
+
+    // .ts, .tsx 확장자를 명시적으로 import할 수 있도록 허용
+    "allowImportingTsExtensions": true,
+
+    // import/export 문법을 있는 그대로 유지 (변환 없음)
+    "verbatimModuleSyntax": true,
+
+    // 자동 모듈 감지가 아닌 모든 파일을 모듈로 간주
+    "moduleDetection": "force",
+
+    // 타입 체크만 하고 JS 출력은 하지 않음
+    "noEmit": true,
+
+    // TypeScript의 엄격한 타입 검사 옵션을 모두 활성화
+    "strict": true,
+
+    // 사용하지 않는 지역 변수에 대해 오류 발생
+    "noUnusedLocals": true,
+
+    // 사용하지 않는 함수 매개변수에 대해 오류 발생
+    "noUnusedParameters": true,
+
+    // TypeScript 5.3부터 도입: 삭제 가능한 문법(예: const enum)만 허용
+    // → 컴파일 최적화를 돕기 위한 설정
+    "erasableSyntaxOnly": true,
+
+    // switch 문에서 case 누락 방지를 위한 검사
+    "noFallthroughCasesInSwitch": true,
+
+    // 사이드 이펙트가 없는 불필요한 import를 막음
+    "noUncheckedSideEffectImports": true
+  }
+}
