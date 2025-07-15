@@ -43,3 +43,9 @@ coverage/
 
 # vscode 터미널 히스토리
 .history/
+
+# Vite 관련 캐시
+.vite/
+
+# ESLint cache
+.eslintcache
