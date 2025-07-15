@@ -1,11 +1,9 @@
 import { useEffect, useRef } from 'react';
 import * as Cesium from 'cesium';
 
-// export default function CesiumMap() {
 export const CesiumMap = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
-  console.log('테스트 ##1');
 
   useEffect(() => {
     const initCesium = async () => {
