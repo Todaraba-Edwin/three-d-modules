@@ -5,6 +5,7 @@ import * as Cesium from 'cesium';
 export const CesiumMap = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
+  console.log('테스트 ##1');
 
   useEffect(() => {
     const initCesium = async () => {

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+
     // 모듈 시스템을 ESNext로 설정 (Vite와 호환됨, import/export 유지)
     "module": "ESNext",
 
