@@ -1,8 +1,8 @@
-import { CesiumMap } from '@monorepo/shared';
+import { Cesium3DModules } from '@monorepo/shared';
 import './App.css';
 
 function App() {
-  return <CesiumMap />;
+  return <Cesium3DModules />;
 }
 
 export default App;

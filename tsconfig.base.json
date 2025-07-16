@@ -33,7 +33,7 @@
 
     // TypeScript 5.3부터 도입: 삭제 가능한 문법(예: const enum)만 허용
     // → 컴파일 최적화를 돕기 위한 설정
-    "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": false,
 
     // switch 문에서 case 누락 방지를 위한 검사
     "noFallthroughCasesInSwitch": true,
