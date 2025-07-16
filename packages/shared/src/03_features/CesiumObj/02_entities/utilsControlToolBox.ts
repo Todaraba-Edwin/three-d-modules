@@ -1,4 +1,5 @@
 import { CSEIUM_CLASS } from '../03_shared';
+import type { containerProps, ControlToolboxProps } from '../03_shared/types';
 import { utilsSetStyle } from './utilsSetStyle';
 
 export const enum ControlToolboxType {

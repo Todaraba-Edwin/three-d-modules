@@ -1,11 +1,11 @@
-type containerProps = {
+export type containerProps = {
   container: HTMLElement;
 };
 
-type utilsSetStyleProps = containerProps & {
+export type utilsSetStyleProps = containerProps & {
   styleMap: Record<string, string>;
 };
 
-type ControlToolboxProps = containerProps & {
+export type ControlToolboxProps = containerProps & {
   type: ControlToolboxType;
 };

@@ -12,7 +12,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: path.resolve(__dirname, '../../packages/shared/public/model/*'),
+          src: path.resolve(__dirname, '../../packages/shared/public/model/**/*'),
           dest: 'model',
         },
       ],
