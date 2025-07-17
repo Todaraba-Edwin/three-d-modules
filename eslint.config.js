@@ -33,6 +33,7 @@ const utilsAddConfig = ({ projectPath, matchPath }) => ({
     // etc
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // 사용하지 않는 변수 경고, _로 시작하는 인자 무시
     'prefer-const': 'warn', // 변경되지 않는 변수 const 권장
+    'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }], // 과도한 빈 줄 제거
   },
   extends: [
     js.configs.recommended, // no-unused-vars 여부포함
