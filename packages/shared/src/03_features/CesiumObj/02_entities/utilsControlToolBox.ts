@@ -3,13 +3,14 @@ import type { containerProps, ControlToolboxProps } from '../03_shared/types';
 import { utilsSetStyle } from './utilsSetStyle';
 
 export const enum ControlToolboxType {
+  // eslint-disable-next-line
   SEARCH_FULLSCREEN = 'SEARCH_FULLSCREEN',
 }
 
 export const utilsControlToolbox = ({
   type,
   container,
-}: ControlToolboxProps) => {
+}: ControlToolboxProps): void => {
   switch (type) {
     case ControlToolboxType.SEARCH_FULLSCREEN:
       utilsHandleSearchAndFullscreen({ container });

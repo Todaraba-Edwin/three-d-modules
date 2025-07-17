@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import * as Cesium from 'cesium';
 import * as Entity from '../../02_entities';
 
-export const CesiumMap = () => {
+export const CesiumMap = (): ReactNode => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
 

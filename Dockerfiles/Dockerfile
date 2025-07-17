@@ -15,6 +15,7 @@ COPY package.json pnpm-lock.yaml ./
 COPY . .
 
 # 패키지 설치
+## corepack에 따라 pnpm 설치매니저 버전 package.json 설정을 따름
 RUN pnpm install --frozen-lockfile
 
 # 앱 빌드
