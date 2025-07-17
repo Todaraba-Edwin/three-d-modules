@@ -27,7 +27,15 @@ export const Vworld = (): ReactNode => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    let terrainProvider;
+    const initCesium = async () => {
+      terrainProvider = await Cesium.createWorldTerrainAsync();
+    };
+
+    initCesium();
+
     const viewer = new Cesium.Viewer(containerRef.current, {
+      terrainProvider,
       baseLayerPicker: false,
       geocoder: false,
       animation: false,
@@ -41,6 +49,7 @@ export const Vworld = (): ReactNode => {
     viewerRef.current = viewer;
 
     utilsClearCesiumLog({ container: containerRef.current });
+    viewer.scene.globe.depthTestAgainstTerrain = true; // 3D 모델의 가시범위 설정 // 산 뒤에 가리기
 
     // 서울시청 위치
 
@@ -145,14 +154,26 @@ export const Vworld = (): ReactNode => {
     () => {
       if (!viewerRef.current) return;
 
-      viewerRef.current.camera.flyTo({
+      const viewerElement = document.querySelector(
+        '.cesium-viewer'
+      ) as HTMLElement;
+
+      if (viewerElement) {
+        viewerElement.style.opacity = '0';
+      }
+      setTimeout(() => {
+        if (viewerElement) {
+          viewerElement.style.opacity = '1';
+        }
+      }, 800);
+
+      viewerRef.current.camera.setView({
         destination,
         orientation: {
           heading: Cesium.Math.toRadians(0),
           pitch: Cesium.Math.toRadians(-30),
           roll: 0,
         },
-        duration: 2, // 2초 동안 부드럽게 이동
       });
     };
 

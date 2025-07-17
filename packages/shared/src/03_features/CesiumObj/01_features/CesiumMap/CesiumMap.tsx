@@ -36,6 +36,7 @@ export const CesiumMap = (): ReactNode => {
 
       const osmBuildings = await Cesium.createOsmBuildingsAsync();
       viewer.scene.primitives.add(osmBuildings);
+      viewer.scene.globe.depthTestAgainstTerrain = true;
 
       const destination = Cesium.Cartesian3.fromDegrees(126.9784, 37.5667, 250);
       viewer.camera.setView({
