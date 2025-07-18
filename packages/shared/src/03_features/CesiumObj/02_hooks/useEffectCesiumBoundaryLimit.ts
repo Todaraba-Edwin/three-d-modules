@@ -11,9 +11,9 @@ export const useEffectCesiumBoundaryLimit = ({ viewer }: Props): void => {
     // 한국 영역 제한
     const KOREA_RECTANGLE = Cesium.Rectangle.fromDegrees(
       124.0,
-      36.0,
+      32.0,
       131.9,
-      40.0
+      42.0
     );
 
     const restrictCameraMovement = () => {
