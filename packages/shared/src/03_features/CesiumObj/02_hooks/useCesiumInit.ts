@@ -42,6 +42,7 @@ export const useCesiumInit = ({
     containerRef,
     addImageryLayers,
     setViewer,
+    seoulCityHall,
   });
   useEffectCesiumBoundaryLimit({ viewer });
 
