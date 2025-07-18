@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import * as Cesium from 'cesium';
-import * as Entity from '../../02_entities';
+import * as Entity from '../../../02_entities';
 
 export const Cesium3DModules = ():ReactNode => {
   const containerRef = useRef<HTMLDivElement>(null);

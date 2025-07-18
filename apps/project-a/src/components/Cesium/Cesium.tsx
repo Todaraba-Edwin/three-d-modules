@@ -1,42 +1,30 @@
-import type { ReactNode } from 'react';
-import './App.css';
-
-// import { CesiumInit } from './03_features/CesiumObj/01_features/01_CesiumInit/CesiumInit';
-
-// function App(): ReactNode {
-//   return <CesiumInit />
-// }
-
-// export default App;
-
 import {
   CesiumAddIVworildmageryLayers,
   CesiumInitBody,
   useCesiumInit,
   useVworldMapInfo,
-} from './03_features';
+} from '@monorepo/shared';
+import { type ReactNode } from 'react';
+const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
-function App(): ReactNode {
+export const Cesium = (): ReactNode => {
   const { addImageryLayers, vWorldMapArrByType } = useVworldMapInfo({
     apiKey: '',
   });
   const { containerRef, viewerRef } = useCesiumInit({
     addImageryLayers,
   });
-
   return (
     <CesiumInitBody
       containerRef={containerRef}
       children={
         <CesiumAddIVworildmageryLayers
-          apiKey=''
+          apiKey={VITE_BASE_VWORLD}
           vWorldMapArrByType={vWorldMapArrByType}
           viewerRef={viewerRef}
           addImageryLayers={addImageryLayers}
         />
       }
-    />
+    ></CesiumInitBody>
   );
-}
-
-export default App;
+};

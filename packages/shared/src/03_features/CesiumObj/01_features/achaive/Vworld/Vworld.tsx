@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as Cesium from 'cesium';
-import { utilsClearCesiumLog } from '../../02_entities';
+import { utilsClearCesiumLog } from '../../../02_entities';
 const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
 type SelectType = 'Base' | 'Satellite' | 'Hybrid' | 'midnight';
@@ -10,12 +10,12 @@ export const Vworld = (): ReactNode => {
   const viewerRef = useRef<Cesium.Viewer | null>(null);
   const [selectMap, setSelectMap] = useState<SelectType>('Base');
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setShow(true), 800);
-    return () => clearTimeout(timeout);
-  }, []);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => setShow(true), 800);
+  //   return () => clearTimeout(timeout);
+  // }, []);
 
   const seoulCityHall = Cesium.Cartesian3.fromDegrees(
     126.978,
@@ -36,7 +36,7 @@ export const Vworld = (): ReactNode => {
 
     const viewer = new Cesium.Viewer(containerRef.current, {
       terrainProvider,
-      baseLayerPicker: false,
+      // baseLayerPicker: false,
       geocoder: false,
       animation: false,
       timeline: false,
@@ -154,18 +154,18 @@ export const Vworld = (): ReactNode => {
     () => {
       if (!viewerRef.current) return;
 
-      const viewerElement = document.querySelector(
-        '.cesium-viewer'
-      ) as HTMLElement;
+      // const viewerElement = document.querySelector(
+      //   '.cesium-viewer'
+      // ) as HTMLElement;
 
-      if (viewerElement) {
-        viewerElement.style.opacity = '0';
-      }
-      setTimeout(() => {
-        if (viewerElement) {
-          viewerElement.style.opacity = '1';
-        }
-      }, 800);
+      // if (viewerElement) {
+      //   viewerElement.style.opacity = '0';
+      // }
+      // setTimeout(() => {
+      //   if (viewerElement) {
+      //     viewerElement.style.opacity = '1';
+      //   }
+      // }, 800);
 
       viewerRef.current.camera.setView({
         destination,
@@ -180,7 +180,7 @@ export const Vworld = (): ReactNode => {
   return (
     <div
       ref={containerRef}
-      className={`fade-in ${show ? 'show' : ''}`}
+      // className={`fade-in ${show ? 'show' : ''}`}
       style={{ width: '100%', height: '100vh', position: 'relative' }}
     >
       <div
