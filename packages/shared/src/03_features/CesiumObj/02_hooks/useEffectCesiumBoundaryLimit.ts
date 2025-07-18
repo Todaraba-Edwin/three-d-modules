@@ -12,7 +12,7 @@ export const useEffectCesiumBoundaryLimit = ({ viewer }: Props): void => {
     const KOREA_RECTANGLE = Cesium.Rectangle.fromDegrees(
       124.0,
       28,
-      131.0,
+      132.0,
       42.0
     );
 
