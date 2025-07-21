@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 import { useRef, useState } from 'react';
-import { useEffectCesiumBoundaryLimit, useEffectCesiumViewer } from '.';
+import { useEffectCesiumBoundaryLimit, useEffectCesiumCameraController, useEffectCesiumViewer } from '.';
 
 const seoulCityHall = {
   lon: 126.9784,
@@ -45,6 +45,7 @@ export const useCesiumInit = ({
     seoulCityHall,
   });
   useEffectCesiumBoundaryLimit({ viewer });
+  useEffectCesiumCameraController({viewer})
 
   if (!containerRef.current) {
     return {

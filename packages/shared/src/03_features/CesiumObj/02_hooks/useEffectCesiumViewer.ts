@@ -72,13 +72,13 @@ export const useEffectCesiumViewer = ({
       viewer.scene.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(
           seoulCityHall.lon,
-          seoulCityHall.lat - 0.004,
+          seoulCityHall.lat, // seoulCityHall.lat - 0.004,
           500
-        ), // 중심 위치, 고도(m 단위)
+        ),
         orientation: {
-          heading: Cesium.Math.toRadians(0.0),
-          pitch: Cesium.Math.toRadians(-40.0), // 카메라 조절  -90 ~ 0 (남에서 북쪽 보기)
-          roll: 0.0,
+          heading: Cesium.Math.toRadians(0.0), // 지도의 방향설정, 0.0 남->북, -90.0 동->서, 90.0 서->동
+          pitch: Cesium.Math.toRadians(-40.0), // 지면(0)에서 위성고도(정수직,-90)
+          roll: 0.0, // 카메라의 호버링으로 좌우틸드인데, 일반앱에서는 0이 고정 값
         },
       });
 

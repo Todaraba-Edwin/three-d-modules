@@ -22,10 +22,6 @@ export const vWorldMapArrByType = {
 
 const vWorldMapInfoArr: vWorldMapInfoArrType[] = [
   {
-    type: 'Base',
-    typeName: '기본지도',
-  },
-  {
     type: 'Satellite',
     typeName: '위성지도',
   },
@@ -33,10 +29,14 @@ const vWorldMapInfoArr: vWorldMapInfoArrType[] = [
     type: 'Hybrid',
     typeName: '하이브리드',
   },
-  {
-    type: 'midnight',
-    typeName: '미드나잇모드',
-  },
+  // {
+  //   type: 'Base',
+  //   typeName: '기본지도',
+  // },
+  // {
+  //   type: 'midnight',
+  //   typeName: '미드나잇모드',
+  // },
 ];
 
 export const useVworldMapInfo = ({
