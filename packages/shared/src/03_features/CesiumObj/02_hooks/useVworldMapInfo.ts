@@ -12,7 +12,6 @@ export type utilsaddImageryLayersAddIsDefaultType = vWorldMapInfoArrType & {
 
 type vWorldMapArrByTypeRecord = Record<string, string[]>;
 
-const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 const vWorldUrl = 'https://api.vworld.kr/req/wmts/1.0.0';
 export const vWorldMapArrByType = {
   ['Base']: ['Base'],
@@ -43,11 +42,15 @@ const vWorldMapInfoArr: vWorldMapInfoArrType[] = [
 export const useVworldMapInfo = ({
   apiKey,
 }: {
-  apiKey?: string;
+  apiKey: string;
 }): {
   addImageryLayers: utilsaddImageryLayersAddIsDefaultType[];
   vWorldMapArrByType: vWorldMapArrByTypeRecord;
 } => {
+  if (!apiKey) {
+    console.error('vWorld 지도추가를 위해서는 apiKey가 필수입니다.');
+  }
+
   const utilsVworldUrl = ({
     type,
     apiKey,
@@ -56,7 +59,8 @@ export const useVworldMapInfo = ({
     apiKey?: string;
   }): string => {
     const isSatellite = type === 'Satellite';
-    return `${vWorldUrl}/${apiKey ? apiKey : VITE_BASE_VWORLD}/${type}/{z}/{y}/{x}${isSatellite ? '.jpeg' : '.png'}`;
+    if (!apiKey) return '';
+    return `${vWorldUrl}/${apiKey}/${type}/{z}/{y}/{x}${isSatellite ? '.jpeg' : '.png'}`;
   };
 
   const utilsaddImageryLayersAddIsDefault = ({

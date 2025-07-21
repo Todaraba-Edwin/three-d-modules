@@ -1,24 +1,17 @@
 import type { ReactNode } from 'react';
 import './App.css';
 
-// import { CesiumInit } from './03_features/CesiumObj/01_features/01_CesiumInit/CesiumInit';
-
-// function App(): ReactNode {
-//   return <CesiumInit />
-// }
-
-// export default App;
-
 import {
   CesiumAddIVworildmageryLayers,
   CesiumInitBody,
   useCesiumInit,
   useVworldMapInfo,
 } from './03_features';
+const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
 function App(): ReactNode {
   const { addImageryLayers, vWorldMapArrByType } = useVworldMapInfo({
-    apiKey: '',
+    apiKey: VITE_BASE_VWORLD,
   });
   const { containerRef, viewerRef } = useCesiumInit({
     addImageryLayers,
@@ -29,7 +22,6 @@ function App(): ReactNode {
       containerRef={containerRef}
       children={
         <CesiumAddIVworildmageryLayers
-          apiKey=''
           vWorldMapArrByType={vWorldMapArrByType}
           viewerRef={viewerRef}
           addImageryLayers={addImageryLayers}

@@ -7,20 +7,17 @@ import {
 } from '../..';
 
 type Props = {
-  apiKey: string;
   viewerRef: Cesium.Viewer | null;
   addImageryLayers: utilsaddImageryLayersAddIsDefaultType[];
   vWorldMapArrByType: Record<string, string[]>;
 };
 
 export const CesiumAddIVworildmageryLayers = ({
-  apiKey,
   viewerRef,
   vWorldMapArrByType,
   addImageryLayers,
 }: Props): ReactNode => {
   const { selectMap, utilsSetSelectMap } = useCesiumAddVworldLayers({
-    apiKey,
     addImageryLayers,
     viewerRef,
     vWorldMapArrByType,

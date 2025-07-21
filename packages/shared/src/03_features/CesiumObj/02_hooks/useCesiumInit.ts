@@ -46,6 +46,13 @@ export const useCesiumInit = ({
   });
   useEffectCesiumBoundaryLimit({ viewer });
 
+  if (!containerRef.current) {
+    return {
+      containerRef: containerRef,
+      viewerRef: viewer,
+    };
+  }
+
   return {
     containerRef: containerRef,
     viewerRef: viewer,

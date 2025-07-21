@@ -4,7 +4,7 @@ const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
 export const Cesium = (): ReactNode => {
   const { addImageryLayers, vWorldMapArrByType } = Shared.useVworldMapInfo({
-    apiKey: '',
+    apiKey: VITE_BASE_VWORLD,
   });
   const { containerRef, viewerRef } = Shared.useCesiumInit({
     addImageryLayers,
@@ -14,7 +14,6 @@ export const Cesium = (): ReactNode => {
       containerRef={containerRef}
       children={
         <Shared.CesiumAddIVworildmageryLayers
-          apiKey={VITE_BASE_VWORLD}
           vWorldMapArrByType={vWorldMapArrByType}
           viewerRef={viewerRef}
           addImageryLayers={addImageryLayers}

@@ -18,7 +18,6 @@ export const useCesiumAddVworldLayers = ({
   viewerRef,
   vWorldMapArrByType,
 }: {
-  apiKey: string;
   addImageryLayers: utilsaddImageryLayersAddIsDefaultType[];
   viewerRef: Cesium.Viewer | null;
   vWorldMapArrByType: Record<string, string[]>;
