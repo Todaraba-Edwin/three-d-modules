@@ -1,11 +1,10 @@
-import * as Cesium from 'cesium';
 import { useEffect } from 'react';
+import * as Cesium from 'cesium';
+import type * as Ty from '../05_shared/types';
 
-type Props = {
-  viewer: Cesium.Viewer | null;
-};
-
-export const useEffectCesiumBoundaryLimit = ({ viewer }: Props): void => {
+export const useEffectCesiumBoundaryLimit = ({
+  viewer,
+}: Ty.ViewerProps): void => {
   useEffect(() => {
     if (!viewer) return;
     // 한국 영역 제한

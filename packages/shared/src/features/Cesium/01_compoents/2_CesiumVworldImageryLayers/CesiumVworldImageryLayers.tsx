@@ -1,22 +1,12 @@
-import * as Cesium from 'cesium';
 import type { ReactNode } from 'react';
-import {
-  useCesiumAddVworldLayers,
-  type SelectType,
-  type utilsaddImageryLayersAddIsDefaultType,
-} from '../..';
+import { useCesiumAddVworldLayers } from '../../03_hooks';
+import type * as Ty from '../../05_shared/types';
 
-type Props = {
-  viewerRef: Cesium.Viewer | null;
-  addImageryLayers: utilsaddImageryLayersAddIsDefaultType[];
-  vWorldMapArrByType: Record<string, string[]>;
-};
-
-export const CesiumAddIVworildmageryLayers = ({
+export const CesiumVworldImageryLayers = ({
   viewerRef,
   vWorldMapArrByType,
   addImageryLayers,
-}: Props): ReactNode => {
+}: Ty.CesiumVworldImageryLayersProps): ReactNode => {
   const { selectMap, utilsSetSelectMap } = useCesiumAddVworldLayers({
     addImageryLayers,
     viewerRef,
@@ -37,7 +27,7 @@ export const CesiumAddIVworildmageryLayers = ({
         style={{ width: '100px' }}
         value={selectMap}
         onChange={e => {
-          const type = e.target.value as SelectType;
+          const type = e.target.value as Ty.vWorldTileMapType;
           utilsSetSelectMap({ type });
         }}
       >

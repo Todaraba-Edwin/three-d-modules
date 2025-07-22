@@ -1,28 +1,14 @@
-import * as Cesium from 'cesium';
 import { useEffect } from 'react';
-import {
-  utilsClearCesiumLog,
-  utilsRemoteDepthTestAgainstTerrain,
-  utilsRemoteZoomDistance,
-} from '../02_entities';
-import type { CustomImageryLayer, useCesiumInitProps } from '../..';
-
-type Props = {
-  seoulCityHall: {
-    lon: number;
-    lat: number;
-  };
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  addImageryLayers: useCesiumInitProps['addImageryLayers'];
-  setViewer: React.Dispatch<React.SetStateAction<Cesium.Viewer | null>>;
-};
+import * as Cesium from 'cesium';
+import * as Util from '../04_utils';
+import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumViewer = ({
-  seoulCityHall,
+  coordinate,
   containerRef,
   addImageryLayers,
   setViewer,
-}: Props): void => {
+}: Ty.useEffectCesiumViewerProps): void => {
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
@@ -57,7 +43,9 @@ export const useEffectCesiumViewer = ({
               tileProviderError.retry = false;
             });
 
-            const layer: CustomImageryLayer = new Cesium.ImageryLayer(provider);
+            const layer: Ty.CustomImageryLayer = new Cesium.ImageryLayer(
+              provider
+            );
             layer.name = type;
             viewer.imageryLayers.add(layer);
             if (!isDefault) layer.show = false;
@@ -65,14 +53,14 @@ export const useEffectCesiumViewer = ({
         }
       }, 1000);
 
-      utilsClearCesiumLog({ container });
-      utilsRemoteDepthTestAgainstTerrain({ viewer });
-      utilsRemoteZoomDistance({ viewer });
+      Util.utilsClearCesiumLog({ container });
+      Util.utilsRemoteDepthTestAgainstTerrain({ viewer });
+      Util.utilsRemoteZoomDistance({ viewer });
 
       viewer.scene.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(
-          seoulCityHall.lon,
-          seoulCityHall.lat, // seoulCityHall.lat - 0.004,
+          coordinate.lon,
+          coordinate.lat, // seoulCityHall.lat - 0.004,
           500
         ),
         orientation: {

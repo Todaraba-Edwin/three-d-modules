@@ -1,29 +1,13 @@
 import { useEffect, useState } from 'react';
-import * as Cesium from 'cesium';
-
-import type {
-  CustomImageryLayer,
-  SelectType,
-  utilsaddImageryLayersAddIsDefaultType,
-} from '../..';
-
-type useCesiumAddVworldLayersReturnType = {
-  selectMap: string;
-  // eslint-disable-next-line
-  utilsSetSelectMap: ({ type }: { type: SelectType }) => void;
-};
+import type * as Ty from '../05_shared/types';
 
 export const useCesiumAddVworldLayers = ({
   addImageryLayers,
   viewerRef,
   vWorldMapArrByType,
-}: {
-  addImageryLayers: utilsaddImageryLayersAddIsDefaultType[];
-  viewerRef: Cesium.Viewer | null;
-  vWorldMapArrByType: Record<string, string[]>;
-}): useCesiumAddVworldLayersReturnType => {
-  const [selectMap, setSelectMap] = useState<SelectType>(
-    () => addImageryLayers[0].type as SelectType
+}: Ty.useCesiumAddVworldLayersProps): Ty.useCesiumAddVworldLayersReturn => {
+  const [selectMap, setSelectMap] = useState<Ty.vWorldTileMapType>(
+    () => addImageryLayers[0].type as Ty.vWorldTileMapType
   );
 
   useEffect(() => {
@@ -31,7 +15,7 @@ export const useCesiumAddVworldLayers = ({
 
     const layers = viewerRef.imageryLayers;
 
-    const allLayers: CustomImageryLayer[] = [];
+    const allLayers: Ty.CustomImageryLayer[] = [];
     for (let i = 0; i < layers.length; i++) {
       allLayers.push(layers.get(i));
     }
@@ -43,7 +27,7 @@ export const useCesiumAddVworldLayers = ({
     });
   }, [selectMap, viewerRef, vWorldMapArrByType]);
 
-  const utilsSetSelectMap = ({ type }: { type: SelectType }) => {
+  const utilsSetSelectMap = ({ type }: { type: Ty.vWorldTileMapType }) => {
     setSelectMap(type);
     return;
   };

@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import './App.css';
 
 import {
-  CesiumAddIVworildmageryLayers,
+  CesiumVworldImageryLayers,
   CesiumInitBody,
   useCesiumInit,
   useVworldMapInfo,
-} from './03_features';
+} from './features';
 const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
 function App(): ReactNode {
@@ -21,7 +21,7 @@ function App(): ReactNode {
     <CesiumInitBody
       containerRef={containerRef}
       children={
-        <CesiumAddIVworildmageryLayers
+        <CesiumVworldImageryLayers
           vWorldMapArrByType={vWorldMapArrByType}
           viewerRef={viewerRef}
           addImageryLayers={addImageryLayers}

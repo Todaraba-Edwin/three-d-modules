@@ -11,9 +11,10 @@ export const Cesium = (): ReactNode => {
   });
   return (
     <Shared.CesiumInitBody
+      isFullHeight
       containerRef={containerRef}
       children={
-        <Shared.CesiumAddIVworildmageryLayers
+        <Shared.CesiumVworldImageryLayers
           vWorldMapArrByType={vWorldMapArrByType}
           viewerRef={viewerRef}
           addImageryLayers={addImageryLayers}
