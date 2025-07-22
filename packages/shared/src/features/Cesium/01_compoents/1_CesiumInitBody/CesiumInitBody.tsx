@@ -11,8 +11,9 @@ export const CesiumInitBody = ({
   return (
     <div
       ref={containerRef}
-      className='w-full h-full relative'
       style={{
+        position: 'relative',
+        width: '100%',
         height: isFullHeight ? '100vh' : '100%',
       }}
     >

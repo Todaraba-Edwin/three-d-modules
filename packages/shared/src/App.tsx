@@ -19,6 +19,7 @@ function App(): ReactNode {
 
   return (
     <CesiumInitBody
+      isFullHeight
       containerRef={containerRef}
       children={
         <CesiumVworldImageryLayers
