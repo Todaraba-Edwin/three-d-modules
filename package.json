@@ -9,7 +9,8 @@
     "build": "./Dockerfiles/build.sh",
     "prettier": "pnpm prettier --write .",
     "format:check": "pnpm exec prettier --check .",
-    "lint": "pnpm exec eslint . --ext .ts,.tsx"
+    "lint": "pnpm exec eslint . --ext .ts,.tsx",
+    "git:log" :"git log -n 5 --oneline"
   },
   "keywords": [],
   "author": "",
