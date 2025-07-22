@@ -5,12 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:a": "pnpm --filter @monorepo/project-a run dev",
-    "dev:shared": "pnpm --filter @monorepo/shared run dev",
-    "format": "pnpm prettier --write .",
-    "format:check": "pnpm exec prettier --check .",
+    "dev": "./scripts/dev.sh",
     "build": "./Dockerfiles/build.sh",
+    "prettier": "pnpm prettier --write .",
+    "format:check": "pnpm exec prettier --check .",
     "lint": "pnpm exec eslint . --ext .ts,.tsx"
   },
   "keywords": [],
