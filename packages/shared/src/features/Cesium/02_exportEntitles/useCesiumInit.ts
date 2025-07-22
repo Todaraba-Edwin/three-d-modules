@@ -27,13 +27,6 @@ export const useCesiumInit = ({
   Hook.useEffectCesiumBoundaryLimit({ viewer });
   Hook.useEffectCesiumCameraController({ viewer });
 
-  if (!containerRef.current) {
-    return {
-      containerRef: containerRef,
-      viewerRef: viewer,
-    };
-  }
-
   return {
     containerRef: containerRef,
     viewerRef: viewer,
