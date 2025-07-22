@@ -17,7 +17,6 @@ export const CesiumInitBody = ({
       }}
     >
       {isReady && children}
-      {children}
     </div>
   );
 };

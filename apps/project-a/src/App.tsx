@@ -3,7 +3,11 @@ import { Cesium } from './components/Cesium/Cesium';
 import './App.css';
 
 function App(): ReactNode {
-  return <Cesium />;
+  return (
+    <div className='absolute'>
+      <Cesium />
+    </div>
+  );
 }
 
 export default App;

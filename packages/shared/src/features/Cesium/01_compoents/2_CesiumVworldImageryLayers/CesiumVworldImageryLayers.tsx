@@ -16,15 +16,13 @@ export const CesiumVworldImageryLayers = ({
   return (
     <div
       style={{
-        position: 'absolute',
         top: '10px',
         left: '10px',
-        zIndex: 99,
-        backgroundColor: 'white',
       }}
+      className='absolute z-[99]'
     >
       <select
-        style={{ width: '100px' }}
+        className='p-2'
         value={selectMap}
         onChange={e => {
           const type = e.target.value as Ty.vWorldTileMapType;
