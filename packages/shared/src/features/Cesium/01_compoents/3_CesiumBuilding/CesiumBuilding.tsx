@@ -67,19 +67,26 @@ export const CesiumBuilding = (): ReactNode => {
   };
 
   return (
-    <div
-      className='relative'
-      style={{
-        backgroundImage: "url('/imgs/bg.791eddb2.png')",
-        backgroundSize: 'cerver', // 또는 '100% 100%' 도 가능
-        width: '100vw',
-        height: '100vh',
-      }}
-    >
+    <div className="relative w-full h-screen bg-[url('/imgs/bg.791eddb2.png')] bg-cover bg-no-repeat bg-center  bg-[length:auto]">
       <div className='absolute top-4 left-4 z-[99] grid grid-cols-1'>
-        <button className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2' onClick={() => flyToModel('문화시설')}>문화시설</button>
-        <button className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2' onClick={() => flyToModel('체육관')}>체육관</button>
-        <button className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2' onClick={() => flyToModel('문화시설2')}>문화시설2</button>
+        <button
+          className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+          onClick={() => flyToModel('문화시설')}
+        >
+          문화시설
+        </button>
+        <button
+          className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+          onClick={() => flyToModel('체육관')}
+        >
+          체육관
+        </button>
+        <button
+          className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+          onClick={() => flyToModel('문화시설2')}
+        >
+          문화시설2
+        </button>
       </div>
       <CesiumInitBody isFullHeight containerRef={containerRef} />
     </div>
