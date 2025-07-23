@@ -76,10 +76,10 @@ export const CesiumBuilding = (): ReactNode => {
         height: '100vh',
       }}
     >
-      <div className='absolute top-0 left-0 z-[99] grid grid-cols-1'>
-        <button onClick={() => flyToModel('문화시설')}>문화시설</button>
-        <button onClick={() => flyToModel('체육관')}>체육관</button>
-        <button onClick={() => flyToModel('문화시설2')}>문화시설2</button>
+      <div className='absolute top-4 left-4 z-[99] grid grid-cols-1'>
+        <button className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2' onClick={() => flyToModel('문화시설')}>문화시설</button>
+        <button className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2' onClick={() => flyToModel('체육관')}>체육관</button>
+        <button className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2' onClick={() => flyToModel('문화시설2')}>문화시설2</button>
       </div>
       <CesiumInitBody isFullHeight containerRef={containerRef} />
     </div>
