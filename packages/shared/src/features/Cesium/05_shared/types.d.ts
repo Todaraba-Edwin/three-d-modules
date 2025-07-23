@@ -3,6 +3,10 @@ import * as Cesium from 'cesium';
 // Common Types
 type UtilTypeRecordString = Record<string, string>;
 type UtilTypeRecordStringArr = Record<string, string[]>;
+type CoordinateType = {
+  lon: number;
+  lat: number;
+};
 
 export type vWorldTileMapType = 'Base' | 'Satellite' | 'Hybrid' | 'midnight';
 
@@ -87,6 +91,8 @@ export type useCesiumAddVworldLayersReturn = {
 
 export type ViewerProps = {
   viewer: useCesiumInitReturn['viewerRef'];
+  coordinate?: CoordinateType;
+  isBuildingMode?: boolean;
 };
 
 /**
@@ -94,10 +100,7 @@ export type ViewerProps = {
  */
 
 export type useEffectCesiumViewerProps = {
-  coordinate: {
-    lon: number;
-    lat: number;
-  };
+  coordinate: CoordinateType;
   containerRef: React.RefObject<HTMLDivElement | null>;
   addImageryLayers: useCesiumInitProps['addImageryLayers'];
   setViewer: React.Dispatch<React.SetStateAction<Cesium.Viewer | null>>;

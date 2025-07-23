@@ -6,6 +6,10 @@ export const CesiumCoordinate = {
 export const CesiumCameraControll = {
   minimumZoomDistance: 50,
   maximumZoomDistance: 80000,
+  buildingMode: {
+    minimumZoomDistance: 0,
+    maximumZoomDistance: 800,
+  },
 };
 
 export const vWorldUrl = 'https://api.vworld.kr/req/wmts/1.0.0';

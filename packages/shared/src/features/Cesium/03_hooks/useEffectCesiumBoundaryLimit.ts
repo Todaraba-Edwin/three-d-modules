@@ -4,30 +4,35 @@ import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumBoundaryLimit = ({
   viewer,
+  coordinate,
 }: Ty.ViewerProps): void => {
   useEffect(() => {
     if (!viewer) return;
-    // 한국 영역 제한
-    const KOREA_RECTANGLE = Cesium.Rectangle.fromDegrees(
-      124.0,
-      28,
-      132.0,
-      42.0
-    );
+
+    const caluCoordinate = 0.001;
+    const rectangleCoor = coordinate
+      ? Cesium.Rectangle.fromDegrees(
+          coordinate.lon - caluCoordinate - 0.5,
+          coordinate.lat - caluCoordinate * 8 - 0.5,
+          coordinate.lon + caluCoordinate + 0.5,
+          coordinate.lat + caluCoordinate + 0.5
+        )
+      : // 한국 영역 제한
+        Cesium.Rectangle.fromDegrees(124.0, 28, 132.0, 42.0);
 
     const restrictCameraMovement = () => {
       const camera = viewer.camera;
       const position = camera.positionCartographic;
-      if (!Cesium.Rectangle.contains(KOREA_RECTANGLE, position)) {
+      if (!Cesium.Rectangle.contains(rectangleCoor, position)) {
         const clampedLon = Cesium.Math.clamp(
           Cesium.Math.toDegrees(position.longitude),
-          Cesium.Math.toDegrees(KOREA_RECTANGLE.west),
-          Cesium.Math.toDegrees(KOREA_RECTANGLE.east)
+          Cesium.Math.toDegrees(rectangleCoor.west),
+          Cesium.Math.toDegrees(rectangleCoor.east)
         );
         const clampedLat = Cesium.Math.clamp(
           Cesium.Math.toDegrees(position.latitude),
-          Cesium.Math.toDegrees(KOREA_RECTANGLE.south),
-          Cesium.Math.toDegrees(KOREA_RECTANGLE.north)
+          Cesium.Math.toDegrees(rectangleCoor.south),
+          Cesium.Math.toDegrees(rectangleCoor.north)
         );
         const height = position.height;
         camera.setView({
