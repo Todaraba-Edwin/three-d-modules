@@ -19,7 +19,7 @@ case "$APP_NAME" in
     PARENT_DIR="apps"
     PORT=8081
     ;;
-  "threedtargetbuilding")
+  "buildings")
     PARENT_DIR="apps"
     PORT=8082
     ;;

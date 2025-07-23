@@ -6,7 +6,7 @@ import cesium from 'vite-plugin-cesium';
 export default defineConfig({
   plugins: [react(), cesium()],
   server: {
-    port: 3001,
+    port: 3000,
   },
   define: {
     CESIUM_BASE_URL: JSON.stringify('/cesium'),
