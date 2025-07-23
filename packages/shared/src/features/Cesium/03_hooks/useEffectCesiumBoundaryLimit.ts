@@ -55,6 +55,6 @@ export const useEffectCesiumBoundaryLimit = ({
     return () => {
       viewer.clock.onTick.removeEventListener(restrictCameraMovement);
     };
-  }, [viewer]);
+  }, [viewer, coordinate]);
   return;
 };

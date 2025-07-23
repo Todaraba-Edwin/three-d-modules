@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TailWind의 기본 box-sizig은 content-box */
+/* custom global settings */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

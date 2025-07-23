@@ -70,5 +70,9 @@ export default tseslint.config(
     projectPath: './apps/project-a/tsconfig.app.json',
     matchPath: 'apps/project-a/**/*.{ts,tsx}',
   }),
+  utilsAddConfig({
+    projectPath: './apps/threedtargetbuilding/tsconfig.app.json',
+    matchPath: 'apps/threedtargetbuilding/**/*.{ts,tsx}',
+  }),
   utilsNodeConfig()
 );

@@ -13,6 +13,8 @@
 [다섯째, Prettier 설정](#다섯째-prettier-설정)<br/>
 [여섯째, 패키지 관리](#여섯째-패키지-관리)<br/>
 [일곱째, 개발자 참고사항](#일곱째-개발자-참고사항)<br/>
+[여덟번째, 신규 프로젝트 추가 시 유의사항](#여덟번째-신규-프로젝트-추가시-유의사항)<br/>
+
 <br/>
 
 ## 첫째, 폴더 구조
@@ -133,5 +135,37 @@ pnpm add dayjs
 
 - Dockerfile은 멀티 스테이지 빌드로 구성되어, 최종 이미지는 nginx:alpine 기반의 가볍고 빠른 컨테이너
 
+## 여덟번째, 신규 프로젝트 추가시 유의사항
+
+```bash
+mkdir -m apps/new-project # ⚠️ 폴더명 : 소문자 + 하이픈
+cd apps/new-project
+pnpm create vite .
+```
+
+- tsconfig 관련설정 : 기존 프로젝트에서 복사
+- eslint 제거
+- 루트의 eslint에 해당 프로젝트 추가 
 
 
+```javascript 
+export default tseslint.config(
+  globalIgnores(['dist', 'node_modules']),
+
+  // App 전용에 해당 프로젝트 추가
+  // ================================================
+  utilsAddConfig({
+    projectPath: './apps/new-project/tsconfig.app.json',
+    matchPath: 'apps/new-project/**/*.{ts,tsx}',
+  }),
+  // ================================================ 
+
+  utilsNodeConfig()
+);
+```
+
+- 루트에서 shared 연결하기 
+
+```bash
+pnpm add @monorepo/shared --workspace --filter ./apps/new-project
+```

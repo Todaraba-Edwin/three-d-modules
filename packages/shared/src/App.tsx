@@ -2,16 +2,17 @@ import type { ReactNode } from 'react';
 import './tailwind.css';
 // const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
-import {
-  // CesiumVworldImageryLayers,
-  // CesiumInitBody,
-  // useCesiumInit,
-  // useVworldMapInfo,
-  CesiumBuilding,
-} from './features';
+// import {
+//   // CesiumVworldImageryLayers,
+//   // CesiumInitBody,
+//   // useCesiumInit,
+//   // useVworldMapInfo,
+//   CesiumBuilding,
+// } from './features';
 
 function App(): ReactNode {
-  return <CesiumBuilding />;
+  // return <CesiumBuilding />;
+  return <div>테스트</div>
 }
 
 // function App(): ReactNode {

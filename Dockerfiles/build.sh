@@ -11,13 +11,17 @@ fi
 
 # ========= 앱별 설정 =========
 case "$APP_NAME" in
-  "project-a")
-    PARENT_DIR="apps"
-    PORT=8080
-    ;;
   "shared")
     PARENT_DIR="packages"
+    PORT=8080
+    ;;
+  "project-a")
+    PARENT_DIR="apps"
     PORT=8081
+    ;;
+  "threedtargetbuilding")
+    PARENT_DIR="apps"
+    PORT=8082
     ;;
   *)
     echo "❌ Unknown app: $APP_NAME. Please update mapping in the script."
