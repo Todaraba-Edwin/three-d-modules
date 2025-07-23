@@ -23,7 +23,7 @@ export const useEffectCesiumCameraController = ({
 
     const setInputActions = [
       Cesium.ScreenSpaceEventType.RIGHT_DOWN,
-      Cesium.ScreenSpaceEventType.MIDDLE_DOWN,
+      // Cesium.ScreenSpaceEventType.MIDDLE_DOWN,
       Cesium.ScreenSpaceEventType.PINCH_START,
     ];
 
@@ -34,7 +34,7 @@ export const useEffectCesiumCameraController = ({
 
         controller.tiltEventTypes = [
           Cesium.CameraEventType.RIGHT_DRAG, // 1
-          Cesium.CameraEventType.MIDDLE_DRAG, // 2
+          // Cesium.CameraEventType.MIDDLE_DRAG, // 2
           Cesium.CameraEventType.PINCH, // 4
         ];
         controller.enableTilt = true;

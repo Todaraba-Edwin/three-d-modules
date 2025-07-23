@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "./scripts/dev.sh",
     "build": "./Dockerfiles/build.sh",
+    "docker:run": "./Dockerfiles/dockerRun.sh",
     "prettier": "pnpm prettier --write .",
     "format:check": "pnpm exec prettier --check .",
     "lint": "pnpm exec eslint . --ext .ts,.tsx",

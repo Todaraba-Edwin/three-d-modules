@@ -23,6 +23,7 @@ export const useCesiumInitNoneGlobe = ({
       lat: Const.CesiumCoordinate.lat,
     },
   });
+  Hook.useEffectCesiumCameraController({ viewer });
 
   return {
     containerRef: containerRef,

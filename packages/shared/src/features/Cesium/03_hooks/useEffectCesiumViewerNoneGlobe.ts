@@ -23,6 +23,11 @@ export const useEffectCesiumViewerNoneGlobe = ({
       navigationHelpButton: false,
       infoBox: false,
       fullscreenButton: false,
+      contextOptions: {
+        webgl: {
+          alpha: true, // <-- 여기!
+        },
+      },
     });
 
     setViewer(viewer);
@@ -30,7 +35,8 @@ export const useEffectCesiumViewerNoneGlobe = ({
     // 초기 카메라 이동
     const position = Cesium.Cartesian3.fromDegrees(
       CesiumCoordinate.lon,
-      CesiumCoordinate.lat - 0.0015,
+      CesiumCoordinate.lat -
+        Util.utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
       80 // 조금 위쪽
     );
 
@@ -46,7 +52,8 @@ export const useEffectCesiumViewerNoneGlobe = ({
     viewer.scene.globe.show = false; // 지구 제거
     viewer.scene.skyBox.show = false; // 별자리 제거
     viewer.scene.skyAtmosphere.show = false; // 대기권 제거
-    viewer.scene.backgroundColor = Cesium.Color.NAVAJOWHITE;
+    viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
+    // viewer.scene.backgroundColor = Cesium.Color.NAVAJOWHITE;
 
     (async () => {
       const position = Cesium.Cartesian3.fromDegrees(
@@ -65,7 +72,12 @@ export const useEffectCesiumViewerNoneGlobe = ({
       viewer.scene.primitives.add(model);
 
       const position2 = Cesium.Cartesian3.fromDegrees(
-        CesiumCoordinate.lon + 0.0007,
+        CesiumCoordinate.lon +
+          Util.utilsGetDegreeFromMeter({
+            type: 'lon',
+            meter: 100 - 50, // Gis 가중치 50
+            lat: CesiumCoordinate.lat,
+          }),
         CesiumCoordinate.lat,
         0 // 조금 위쪽
       );
@@ -80,7 +92,12 @@ export const useEffectCesiumViewerNoneGlobe = ({
       viewer.scene.primitives.add(model2);
 
       const position3 = Cesium.Cartesian3.fromDegrees(
-        CesiumCoordinate.lon + 0.0025,
+        CesiumCoordinate.lon +
+          Util.utilsGetDegreeFromMeter({
+            type: 'lon',
+            meter: 200,
+            lat: CesiumCoordinate.lat,
+          }),
         CesiumCoordinate.lat,
         0 // 조금 위쪽
       );
