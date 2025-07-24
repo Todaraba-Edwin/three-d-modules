@@ -1,6 +1,6 @@
 {
   "name": "monorepo",
-  "version": "1.0.0",
+  "version": "0.1.2",
   "description": "three-d-modules",
   "main": "index.js",
   "type": "module",
