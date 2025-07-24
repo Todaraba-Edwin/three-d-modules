@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
 import * as Cesium from 'cesium';
+import { useEffect } from 'react';
 import * as Util from '../04_utils';
+import { CesiumCoordinate, glbList } from '../05_shared/cesiumConst';
 import type * as Ty from '../05_shared/types';
-import { CesiumCoordinate } from '../05_shared/cesiumConst';
 
 const EPSILON = Cesium.Math.toRadians(0.1);
 export const useEffectCesiumViewerNoneGlobe = ({
@@ -11,8 +11,10 @@ export const useEffectCesiumViewerNoneGlobe = ({
 }: Ty.useEffectCesiumViewerProps): void => {
   useEffect(() => {
     if (!containerRef.current) return;
+    if (!setViewer) return;
     const container = containerRef.current;
 
+    // 1️⃣ Cesium Viewr 생성 및 상태관리 //
     const viewer = new Cesium.Viewer(container, {
       animation: false,
       timeline: false,
@@ -25,19 +27,25 @@ export const useEffectCesiumViewerNoneGlobe = ({
       fullscreenButton: false,
       contextOptions: {
         webgl: {
-          alpha: true, // <-- 여기!
+          alpha: true, // ✅ 배경투명화 활성화
         },
       },
     });
-
+    viewer.scene.globe.show = false; // 지구 제거
+    viewer.scene.skyBox.show = false; // 별자리 제거
+    viewer.scene.skyAtmosphere.show = false; // 대기권 제거
+    viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
     setViewer(viewer);
 
-    // 초기 카메라 이동
+    Util.utilsClearCesiumLog({ container }); // CesiumLog 제거
+    Util.utilsRemoteZoomDistance({ viewer, isBuildingMode: true }); // 카메라 영역제한 설정
+
+    // 2️⃣ 초기 카메라 이동 //
     const position = Cesium.Cartesian3.fromDegrees(
       CesiumCoordinate.lon,
       CesiumCoordinate.lat -
         Util.utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      80 // 조금 위쪽
+      80
     );
 
     viewer.camera.setView({
@@ -49,78 +57,11 @@ export const useEffectCesiumViewerNoneGlobe = ({
       },
     });
 
-    viewer.scene.globe.show = false; // 지구 제거
-    viewer.scene.skyBox.show = false; // 별자리 제거
-    viewer.scene.skyAtmosphere.show = false; // 대기권 제거
-    viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
-    // viewer.scene.backgroundColor = Cesium.Color.NAVAJOWHITE;
-
-    (async () => {
-      const position = Cesium.Cartesian3.fromDegrees(
-        CesiumCoordinate.lon,
-        CesiumCoordinate.lat,
-        0 // 조금 위쪽
-      );
-      const modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-
-      const model = await Cesium.Model.fromGltfAsync({
-        url: '/model/testmodules.glb', // 실제 GLB 경로로 교체
-        modelMatrix,
-        scale: 1.0, // 필요 시 조정
-      });
-
-      viewer.scene.primitives.add(model);
-
-      const position2 = Cesium.Cartesian3.fromDegrees(
-        CesiumCoordinate.lon +
-          Util.utilsGetDegreeFromMeter({
-            type: 'lon',
-            meter: 100 - 50, // Gis 가중치 50
-            lat: CesiumCoordinate.lat,
-          }),
-        CesiumCoordinate.lat,
-        0 // 조금 위쪽
-      );
-      const modelMatrix2 = Cesium.Transforms.eastNorthUpToFixedFrame(position2);
-
-      const model2 = await Cesium.Model.fromGltfAsync({
-        url: '/model/test2.glb', // 실제 GLB 경로로 교체
-        modelMatrix: modelMatrix2,
-        scale: 2.0, // 필요 시 조정
-      });
-
-      viewer.scene.primitives.add(model2);
-
-      const position3 = Cesium.Cartesian3.fromDegrees(
-        CesiumCoordinate.lon +
-          Util.utilsGetDegreeFromMeter({
-            type: 'lon',
-            meter: 200,
-            lat: CesiumCoordinate.lat,
-          }),
-        CesiumCoordinate.lat,
-        0 // 조금 위쪽
-      );
-
-      const hpr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(90), 0, 0);
-
-      const modelMatrix3 = Cesium.Transforms.headingPitchRollToFixedFrame(
-        position3,
-        hpr
-      );
-
-      const model3 = await Cesium.Model.fromGltfAsync({
-        url: '/model/testmodules.glb', // 실제 GLB 경로로 교체
-        modelMatrix: modelMatrix3,
-        scale: 1.0, // 필요 시 조정
-      });
-
-      viewer.scene.primitives.add(model3);
-    })();
-
-    Util.utilsClearCesiumLog({ container });
-    // Util.utilsRemoteDepthTestAgainstTerrain({ viewer });
-    Util.utilsRemoteZoomDistance({ viewer, isBuildingMode: true });
+    // 3️⃣ GLB 객체 추가
+    Util.utilsSetGltfAsync({
+      viewer,
+      glbList: glbList,
+    });
 
     viewer.scene.postUpdate.addEventListener(() => {
       if (Math.abs(viewer.camera.roll) > EPSILON) {
@@ -139,7 +80,6 @@ export const useEffectCesiumViewerNoneGlobe = ({
       viewer.destroy();
       setViewer(null);
     };
-    // eslint-disable-next-line
-  }, []);
+  }, [containerRef, setViewer]);
   return;
 };

@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import path from 'path';
+import { defineConfig } from 'vite';
 import cesium from 'vite-plugin-cesium';
 
 // https://vite.dev/config/
@@ -10,5 +11,11 @@ export default defineConfig({
   },
   define: {
     CESIUM_BASE_URL: JSON.stringify('/cesium'),
+  },
+  resolve: {
+    alias: {
+      // '@': path.resolve(__dirname, 'src'), // @ → /src
+      '@_shared': path.resolve(__dirname, 'src/features/_shared'),
+    },
   },
 });

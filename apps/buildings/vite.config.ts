@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { defineConfig } from 'vite';
 import cesium from 'vite-plugin-cesium';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -24,6 +24,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      '@_shared': path.resolve(
+        __dirname,
+        '../../packages/shared/src/features/_shared'
+      ),
       '@monorepo/shared': path.resolve(__dirname, '../../packages/shared/src'),
     },
   },

@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
 import * as Shared from '@monorepo/shared';
+import { type ReactNode } from 'react';
 const VITE_BASE_VWORLD = import.meta.env.VITE_BASE_VWORLD;
 
 export const Cesium = (): ReactNode => {
@@ -9,6 +9,9 @@ export const Cesium = (): ReactNode => {
   const { containerRef, viewerRef } = Shared.useCesiumInit({
     addImageryLayers,
   });
+
+  console.log('addImageryLayers', addImageryLayers);
+
   return (
     <Shared.CesiumInitBody
       isFullHeight
