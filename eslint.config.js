@@ -1,12 +1,13 @@
 import js from '@eslint/js';
-import globals from 'globals';
+import prettier from 'eslint-config-prettier';
+import eslintPluginReact from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import eslintPluginReact from 'eslint-plugin-react';
-import tseslint from 'typescript-eslint';
+import simpleImportSolt from 'eslint-plugin-simple-import-sort';
 import { globalIgnores } from 'eslint/config';
-import prettier from 'eslint-config-prettier';
+import globals from 'globals';
 import path from 'path';
+import tseslint from 'typescript-eslint';
 
 const utilsAddConfig = ({ projectPath, matchPath }) => ({
   files: [matchPath],
@@ -21,6 +22,7 @@ const utilsAddConfig = ({ projectPath, matchPath }) => ({
   },
   plugins: {
     react: eslintPluginReact,
+    'simple-import-sort': simpleImportSolt,
   },
   rules: {
     // console
@@ -34,6 +36,12 @@ const utilsAddConfig = ({ projectPath, matchPath }) => ({
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // 사용하지 않는 변수 경고, _로 시작하는 인자 무시
     'prefer-const': 'warn', // 변경되지 않는 변수 const 권장
     'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }], // 과도한 빈 줄 제거
+
+    // setting
+    'no-warning-comments': [
+      'warn',
+      { terms: ['todo'], location: 'start' }, // start: 줄 앞에 위치할 때만
+    ],
   },
   extends: [
     js.configs.recommended, // no-unused-vars 여부포함

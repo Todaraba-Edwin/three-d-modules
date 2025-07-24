@@ -14,13 +14,7 @@ export const CesiumVworldImageryLayers = ({
   });
 
   return (
-    <div
-      style={{
-        top: '10px',
-        left: '10px',
-      }}
-      className='absolute z-[99]'
-    >
+    <div className='absolute z-[99] top-[10px] left-[10px]'>
       <select
         className='p-2'
         value={selectMap}

@@ -1,5 +1,5 @@
-import { utilsSetStyle } from './utilsSetStyle';
 import type * as Ty from '../05_shared/types';
+import { utilsSetStyle } from './utilsSetStyle';
 
 const CSEIUM_CLASS = {
   CREDITS: '.cesium-widget-credits',

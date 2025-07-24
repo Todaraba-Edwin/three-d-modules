@@ -7,6 +7,20 @@ type CoordinateType = {
   lon: number;
   lat: number;
 };
+type positionsType = {
+  lon: number;
+  lat: number;
+  height?: number;
+  heading?: number;
+  scale?: number;
+};
+
+type cameraPositionType = {
+  lon: number;
+  lat: number;
+  height: number;
+  heading: number;
+};
 
 export type vWorldTileMapType = 'Base' | 'Satellite' | 'Hybrid' | 'midnight';
 
@@ -28,6 +42,7 @@ export type addImageryLayersType = vWorldMapInfoArrType & {
 export type CesiumInitBodyProps = PropsWithChildren & {
   containerRef: React.RefObject<HTMLDivElement | null>;
   isFullHeight?: boolean;
+  isNonBackground?: boolean;
 };
 
 export type CesiumVworldImageryLayersProps = {
@@ -66,13 +81,13 @@ export type usevWorldMapInfoReturn = {
   vWorldMapArrByType: UtilTypeRecordStringArr;
 };
 
-export type utilImageryLayersAddIsDefaultReturn = addImageryLayersType[];
+export type utilsImageryLayersAddIsDefaultReturn = addImageryLayersType[];
 
 /**
  * @file useCesiumAddVworldLayers.tsx
  */
 export type useCesiumAddVworldLayersProps = {
-  addImageryLayers: utilImageryLayersAddIsDefaultReturn;
+  addImageryLayers: utilsImageryLayersAddIsDefaultReturn;
   viewerRef: useCesiumInitReturn['viewerRef'];
   vWorldMapArrByType: UtilTypeRecordStringArr;
 };
@@ -107,10 +122,10 @@ export type useEffectCesiumViewerProps = {
 };
 
 /**
- * @file utilImageryLayersAddIsDefault.ts
+ * @file utilsImageryLayersAddIsDefault.ts
  */
 
-export type utilImageryLayersAddIsDefaultProps = {
+export type utilsImageryLayersAddIsDefaultProps = {
   apiKey?: string;
   arr: vWorldMapInfoArrType[];
 };
@@ -122,4 +137,31 @@ export type utilsSetStyleProps = containerProps & {
 
 export type utilsControlToolboxProps = containerProps & {
   type: ControlToolboxType;
+};
+
+/**
+ * @file utilsSetGltfAsync.ts
+ */
+
+export type GlbListType = {
+  name: stirng;
+  url: string;
+  positions: positions;
+  cameraPosition: cameraPositionType;
+};
+
+export type utilsSetGltfAsyncProps = {
+  viewer: ViewerProps['viewer'];
+  glbList: GlbListType[];
+};
+
+/**
+ * @file utilsCesiumFlyto = {
+.ts
+ */
+
+type utilsCesiumFlytoProps = {
+  viewer: ViewerProps['viewer'];
+  name: string;
+  position: positionsType;
 };

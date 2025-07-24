@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import './tailwind.css';
 import { CesiumBuilding } from './features';
+import './tailwind.css';
 
 function App(): ReactNode {
   return <CesiumBuilding />;

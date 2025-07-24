@@ -1,10 +1,10 @@
-import { utilsVworldUrl } from './utilsVworldUrl';
 import type * as Ty from '../05_shared/types';
+import { utilsVworldUrl } from './utilsVworldUrl';
 
-export const utilImageryLayersAddIsDefault = ({
+export const utilsImageryLayersAddIsDefault = ({
   arr,
   apiKey,
-}: Ty.utilImageryLayersAddIsDefaultProps): Ty.utilImageryLayersAddIsDefaultReturn => {
+}: Ty.utilsImageryLayersAddIsDefaultProps): Ty.utilsImageryLayersAddIsDefaultReturn => {
   return arr.map((list: Ty.vWorldMapInfoArrType, idx: number) => {
     const isFirst = idx === 0;
     return {

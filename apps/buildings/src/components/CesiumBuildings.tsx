@@ -1,10 +1,12 @@
+import {
+  CesiumInitBody,
+  useCesiumInitNoneGlobe,
+  utilsCesiumFlyto,
+} from '@monorepo/shared';
+import { glbList } from '@monorepo/shared/features/Cesium/05_shared/cesiumConst';
 import { type ReactNode } from 'react';
-import { useCesiumInitNoneGlobe } from '../../02_exportEntitles';
-import { utilsCesiumFlyto } from '../../02_exportEntitles/utilsCesiumFlyto';
-import { glbList } from '../../05_shared/cesiumConst';
-import { CesiumInitBody } from '../1_CesiumInitBody/CesiumInitBody';
 
-export const CesiumBuilding = (): ReactNode => {
+export const CesiumBuildings = (): ReactNode => {
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({});
 
   return (

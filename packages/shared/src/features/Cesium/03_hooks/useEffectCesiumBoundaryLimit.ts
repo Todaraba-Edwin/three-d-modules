@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import * as Cesium from 'cesium';
+import { useEffect } from 'react';
 import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumBoundaryLimit = ({
@@ -12,10 +12,10 @@ export const useEffectCesiumBoundaryLimit = ({
     const caluCoordinate = 0.001;
     const rectangleCoor = coordinate
       ? Cesium.Rectangle.fromDegrees(
-          coordinate.lon - caluCoordinate - 0.5,
-          coordinate.lat - caluCoordinate * 8 - 0.5,
-          coordinate.lon + caluCoordinate + 0.5,
-          coordinate.lat + caluCoordinate + 0.5
+          coordinate.lon - caluCoordinate - 0.0004,
+          coordinate.lat - caluCoordinate * 8 - 0.0004,
+          coordinate.lon + caluCoordinate + 0.0004,
+          coordinate.lat + caluCoordinate + 0.0004
         )
       : // 한국 영역 제한
         Cesium.Rectangle.fromDegrees(124.0, 28, 132.0, 42.0);

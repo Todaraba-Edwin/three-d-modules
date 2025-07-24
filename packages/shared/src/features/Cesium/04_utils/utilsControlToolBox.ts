@@ -1,5 +1,5 @@
-import { utilsSetStyle } from './utilsSetStyle';
 import type * as Ts from '../05_shared/types';
+import { utilsSetStyle } from './utilsSetStyle';
 
 export const enum ControlToolboxType {
   // eslint-disable-next-line

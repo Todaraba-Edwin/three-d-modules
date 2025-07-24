@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import * as Cesium from 'cesium';
+import { useEffect } from 'react';
 import * as Util from '../04_utils';
 import type * as Ty from '../05_shared/types';
 
@@ -14,9 +14,10 @@ export const useEffectCesiumViewer = ({
     const container = containerRef.current;
 
     (async () => {
+      // 1️⃣ Cesium Viewr 생성 및 상태관리 //
       const terrainProvider = await Cesium.createWorldTerrainAsync();
       const viewer = new Cesium.Viewer(container, {
-        terrainProvider, // ✅ 지형 고도 적용
+        terrainProvider,
         animation: false,
         timeline: false,
         baseLayerPicker: false,
@@ -26,32 +27,20 @@ export const useEffectCesiumViewer = ({
         navigationHelpButton: false,
         infoBox: false,
         fullscreenButton: false,
+        contextOptions: {
+          webgl: {
+            alpha: true, // ✅ 배경투명화 활성화
+          },
+        },
       });
-
+      Util.utilsImageryLayersInit({ viewer });
+      viewer.scene.skyBox.show = false; // 별자리 제거
       setViewer(viewer);
 
-      const layers = viewer.imageryLayers;
-      for (let i = layers.length - 1; i >= 1; i--) {
-        layers.remove(layers.get(i));
-      }
-
-      setTimeout(() => {
-        if (addImageryLayers?.length) {
-          addImageryLayers.forEach(({ type, url, isDefault }) => {
-            const provider = new Cesium.UrlTemplateImageryProvider({ url });
-            provider.errorEvent.addEventListener(tileProviderError => {
-              tileProviderError.retry = false;
-            });
-
-            const layer: Ty.CustomImageryLayer = new Cesium.ImageryLayer(
-              provider
-            );
-            layer.name = type;
-            viewer.imageryLayers.add(layer);
-            if (!isDefault) layer.show = false;
-          });
-        }
-      }, 1000);
+      Util.utilsSetAddImageryLayers({
+        viewer,
+        addImageryLayers,
+      });
 
       Util.utilsClearCesiumLog({ container });
       Util.utilsRemoteDepthTestAgainstTerrain({ viewer });
