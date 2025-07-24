@@ -3,14 +3,14 @@
 import { utilsImageryLayersAddIsDefault } from '../04_utils';
 import type * as Ty from '../05_shared/types';
 
-const vWorldMapArrByType = {
+export const vWorldMapArrByType = {
   ['Base']: ['Base'],
   ['Satellite']: ['Satellite'],
   ['Hybrid']: ['Satellite', 'Hybrid'],
   ['midnight']: ['midnight'],
 };
 
-const vWorldMapInfoArr: Ty.vWorldMapInfoArrType[] = [
+export const vWorldMapInfoArr: Ty.vWorldMapInfoArrType[] = [
   {
     type: 'Satellite',
     typeName: '위성지도',

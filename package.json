@@ -11,7 +11,7 @@
     "format": "pnpm prettier --write .",
     "format:check": "pnpm exec prettier --check .",
     "lint": "pnpm exec eslint . --ext .ts,.tsx",
-    "logs": "git log -n 5 --oneline"
+    "logs": "git log -n 10 --oneline"
   },
   "keywords": [],
   "author": "",
