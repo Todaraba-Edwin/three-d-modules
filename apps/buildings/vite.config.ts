@@ -15,6 +15,10 @@ export default defineConfig({
           src: path.resolve(__dirname, '../../packages/shared/public/model/*'),
           dest: 'model',
         },
+        {
+          src: path.resolve(__dirname, '../../packages/shared/public/imgs/*'),
+          dest: 'imgs',
+        },
       ],
     }),
   ],
