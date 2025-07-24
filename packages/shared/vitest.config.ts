@@ -13,6 +13,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    reporters: ['default', 'verbose'],
     include: ['src/features/vitest/**/*.test.{ts,tsx}'],
   },
 });
