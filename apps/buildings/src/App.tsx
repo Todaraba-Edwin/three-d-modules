@@ -1,3 +1,4 @@
+import '@monorepo/shared/cesium.css';
 import { type ReactNode } from 'react';
 import './App.css';
 
