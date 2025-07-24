@@ -14,7 +14,6 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // '@': path.resolve(__dirname, 'src'), // @ → /src
       '@_shared': path.resolve(__dirname, 'src/features/_shared'),
     },
   },
