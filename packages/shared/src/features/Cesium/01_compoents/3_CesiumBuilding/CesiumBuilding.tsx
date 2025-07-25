@@ -1,11 +1,17 @@
 import { type ReactNode } from 'react';
-import { useCesiumInitNoneGlobe } from '../../02_exportEntitles';
+import {
+  useCesiumInitNoneGlobe,
+  utilsGetListBoundary,
+} from '../../02_exportEntitles';
 import { utilsCesiumFlyto } from '../../02_exportEntitles/utilsCesiumFlyto';
 import { glbList } from '../../05_shared/cesiumConst';
 import { CesiumInitBody } from '../1_CesiumInitBody/CesiumInitBody';
 
 export const CesiumBuilding = (): ReactNode => {
-  const { containerRef, viewerRef } = useCesiumInitNoneGlobe({});
+  const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
+  const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
+    boundaryCoordinate,
+  });
 
   return (
     <CesiumInitBody
