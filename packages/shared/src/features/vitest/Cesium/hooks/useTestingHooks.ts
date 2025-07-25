@@ -1,7 +1,14 @@
 // src/hooks/useCounter.ts
 import { useState } from 'react';
 
-export const useTestingHooks = (initialValue = 0) => {
+export const useTestingHooks = (
+  initialValue = 0
+): {
+  count: number;
+  increment: () => void;
+  decrement: () => void;
+  reset: () => void;
+} => {
   const [count, setCount] = useState(initialValue);
 
   const increment = () => setCount(prev => prev + 1);

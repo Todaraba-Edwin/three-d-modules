@@ -9,10 +9,10 @@ export const CesiumCoordinate = {
 };
 
 export const CesiumCameraControl = {
-  minimumZoomDistance: 50,    // 지상 50 M
+  minimumZoomDistance: 50, // 지상 50 M
   maximumZoomDistance: 80000, // 지상 80 KM
   buildingMode: {
-    minimumZoomDistance: 0,   // 지상 0 M
+    minimumZoomDistance: 0, // 지상 0 M
     maximumZoomDistance: 500, // 지상 500 M
   },
 };
