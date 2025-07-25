@@ -10,8 +10,6 @@ export const Cesium = (): ReactNode => {
     addImageryLayers,
   });
 
-  console.log('addImageryLayers', addImageryLayers);
-
   return (
     <Shared.CesiumInitBody
       isFullHeight

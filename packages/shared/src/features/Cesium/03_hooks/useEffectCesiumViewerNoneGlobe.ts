@@ -81,6 +81,6 @@ export const useEffectCesiumViewerNoneGlobe = ({
       viewer.destroy();
       setViewer(null);
     };
-  }, [containerRef, setViewer]);
+  }, [containerRef, setViewer, coordinate]);
   return;
 };
