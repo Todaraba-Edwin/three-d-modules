@@ -4,6 +4,7 @@ import {
   utilsCesiumFlyto,
   utilsGetListBoundary,
 } from '@monorepo/shared';
+import { utilsSetGltfAsync } from '@monorepo/shared/features/Cesium/04_utils';
 import { glbList } from '@monorepo/shared/features/Cesium/05_shared/cesiumConst';
 import { type ReactNode } from 'react';
 
@@ -11,6 +12,12 @@ export const CesiumBuildings = (): ReactNode => {
   const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
     boundaryCoordinate,
+  });
+
+  // 3️⃣ GLB 객체 추가
+  utilsSetGltfAsync({
+    viewer: viewerRef,
+    glbList: glbList,
   });
 
   return (
