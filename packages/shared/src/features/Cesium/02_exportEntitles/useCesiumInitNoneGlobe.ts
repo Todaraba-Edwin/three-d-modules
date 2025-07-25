@@ -5,6 +5,7 @@ import type * as Ty from '../05_shared/types';
 
 export const useCesiumInitNoneGlobe = ({
   addImageryLayers,
+  initCameraHeight,
   cameraInitCoordinate,
   boundaryCoordinate,
 }: Ty.useCesiumInitNoneGlobeProps): Ty.useCesiumInitReturn => {
@@ -15,6 +16,7 @@ export const useCesiumInitNoneGlobe = ({
     containerRef,
     addImageryLayers,
     setViewer,
+    initCameraHeight,
     coordinate: cameraInitCoordinate
       ? cameraInitCoordinate
       : boundaryCoordinate.center,
