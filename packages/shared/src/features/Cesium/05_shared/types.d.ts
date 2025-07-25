@@ -188,8 +188,7 @@ export type utilsSetGltfAsyncProps = {
 };
 
 /**
- * @file utilsCesiumFlyto = {
-.ts
+ * @file utilsCesiumFlyto.ts
  */
 
 export type utilsCesiumFlytoProps = {
@@ -198,9 +197,23 @@ export type utilsCesiumFlytoProps = {
   position: positionsType;
 };
 
+/**
+ * @file utilsGetListBoundary.ts
+ */
+
 export type utilsGetListBoundaryReturn = BoundaryCoordinateType & {
   center: {
     lon: number;
     lat: number;
   };
 };
+
+/**
+ * @file utilsSetInitCameraPosition.ts
+ */
+
+type utilsSetInitCameraProps = {
+  coordinate: useEffectCesiumViewerProps['coordinate'];
+  initCameraHeight: number;
+};
+type utilsSetInitCameraReturn = Cesium.Cartesian3;

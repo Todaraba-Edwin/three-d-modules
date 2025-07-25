@@ -3,7 +3,7 @@ import {
   useCesiumInitNoneGlobe,
   utilsGetListBoundary,
 } from '../../02_exportEntitles';
-import { utilsCesiumFlyto } from '../../02_exportEntitles/utilsCesiumFlyto';
+import { InitPosition, utilsCesiumFlyto } from '../../02_exportEntitles/utilsCesiumFlyto';
 import { utilsSetGltfAsync } from '../../04_utils';
 import { glbList } from '../../05_shared/cesiumConst';
 import { CesiumInitBody } from '../1_CesiumInitBody/CesiumInitBody';
@@ -43,6 +43,18 @@ export const CesiumBuilding = (): ReactNode => {
               children={name}
             />
           ))}
+          <button
+            className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+            onClick={utilsCesiumFlyto({
+              viewer: viewerRef,
+              name: InitPosition,
+              position: {
+                ...boundaryCoordinate.center,
+                height: 200,
+              },
+            })}
+            children={'초기 위치'}
+          />
         </div>
       }
     />

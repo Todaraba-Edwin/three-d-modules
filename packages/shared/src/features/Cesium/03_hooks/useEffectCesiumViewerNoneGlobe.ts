@@ -43,16 +43,11 @@ export const useEffectCesiumViewerNoneGlobe = ({
     Util.utilsClearCesiumLog({ container }); // CesiumLog 제거
     Util.utilsRemoteZoomDistance({ viewer, isBuildingMode: true }); // 카메라 영역제한 설정
 
-    // 2️⃣ 초기 카메라 이동 //
-    const position = Cesium.Cartesian3.fromDegrees(
-      coordinate.lon,
-      coordinate.lat -
-        Util.utilsGetDegreeFromMeter({
-          type: 'lat',
-          meter: initCameraHeight * 2,
-        }),
-      initCameraHeight
-    );
+    // 2️⃣ 초기 카메라 이동
+    const position = Util.utilsSetInitCameraPosition({
+      coordinate,
+      initCameraHeight,
+    });
 
     viewer.camera.setView({
       destination: position,
