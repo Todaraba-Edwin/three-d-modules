@@ -180,6 +180,7 @@ export type GlbListType = {
   url: string;
   positions: positionsType;
   cameraPosition: cameraPositionType;
+  isError: boolean;
 };
 
 export type utilsSetGltfAsyncProps = {

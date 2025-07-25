@@ -54,10 +54,12 @@ export const glbList: GlbListType[] = [
       height: 80, // 조금 위쪽
       heading: 0,
     },
+    isError: false,
   },
   {
     name: '문화시설2',
     url: '/model/testmodules.glb',
+    isError: false,
     positions: {
       lon:
         CesiumCoordinate.lon +
@@ -87,6 +89,7 @@ export const glbList: GlbListType[] = [
   {
     name: '체육관',
     url: '/model/test2.glb',
+    isError: true,
     positions: {
       lon:
         CesiumCoordinate.lon +
