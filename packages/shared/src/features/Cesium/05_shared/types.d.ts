@@ -76,6 +76,7 @@ export type useCesiumInitProps = {
     lon: number;
     lat: number;
   };
+
   boundaryCoordinate?: BoundaryCoordinateType;
 };
 
@@ -86,6 +87,7 @@ export type useCesiumInitNoneGlobeProps = {
     url: string;
     isDefault: boolean;
   }[];
+  initCameraHeight?: number;
   cameraInitCoordinate?: BoundaryCoordinateType['center'];
   boundaryCoordinate: BoundaryCoordinateType;
 };
@@ -148,6 +150,7 @@ export type useEffectCesiumViewerProps = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   addImageryLayers: useCesiumInitProps['addImageryLayers'];
   setViewer: React.Dispatch<React.SetStateAction<Cesium.Viewer | null>>;
+  initCameraHeight?: number;
 };
 
 /**

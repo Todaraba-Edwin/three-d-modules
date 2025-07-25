@@ -1,7 +1,6 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
 import * as Util from '../04_utils';
-import { glbList } from '../05_shared/cesiumConst';
 import type * as Ty from '../05_shared/types';
 
 const EPSILON = Cesium.Math.toRadians(0.1);
@@ -9,10 +8,13 @@ export const useEffectCesiumViewerNoneGlobe = ({
   containerRef,
   setViewer,
   coordinate,
+  initCameraHeight = 80,
 }: Ty.useEffectCesiumViewerProps): void => {
   useEffect(() => {
     if (!containerRef.current) return;
     if (!setViewer) return;
+    if (!coordinate.lat || !coordinate.lon) return;
+
     const container = containerRef.current;
 
     // 1️⃣ Cesium Viewer 생성 및 상태관리 //
@@ -45,8 +47,11 @@ export const useEffectCesiumViewerNoneGlobe = ({
     const position = Cesium.Cartesian3.fromDegrees(
       coordinate.lon,
       coordinate.lat -
-        Util.utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      80
+        Util.utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: initCameraHeight * 2,
+        }),
+      initCameraHeight
     );
 
     viewer.camera.setView({
@@ -56,12 +61,6 @@ export const useEffectCesiumViewerNoneGlobe = ({
         pitch: Cesium.Math.toRadians(-25),
         roll: 0.0,
       },
-    });
-
-    // 3️⃣ GLB 객체 추가
-    Util.utilsSetGltfAsync({
-      viewer,
-      glbList: glbList,
     });
 
     viewer.scene.postUpdate.addEventListener(() => {
