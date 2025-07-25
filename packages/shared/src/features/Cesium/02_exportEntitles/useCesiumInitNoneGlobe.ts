@@ -1,12 +1,13 @@
 import * as Cesium from 'cesium';
 import { useRef, useState } from 'react';
 import * as Hook from '../03_hooks';
-import * as Const from '../05_shared/cesiumConst';
 import type * as Ty from '../05_shared/types';
 
 export const useCesiumInitNoneGlobe = ({
   addImageryLayers,
-}: Ty.useCesiumInitProps): Ty.useCesiumInitReturn => {
+  boundaryCoordinate,
+  cameraInitCoordinate,
+}: Ty.useCesiumInitNoneGlobeProps): Ty.useCesiumInitReturn => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewer, setViewer] = useState<Cesium.Viewer | null>(null);
 
@@ -14,14 +15,11 @@ export const useCesiumInitNoneGlobe = ({
     containerRef,
     addImageryLayers,
     setViewer,
-    coordinate: Const.CesiumCoordinate,
+    coordinate: cameraInitCoordinate,
   });
   Hook.useEffectCesiumBoundaryLimit({
     viewer,
-    coordinate: {
-      lon: Const.CesiumCoordinate.lon,
-      lat: Const.CesiumCoordinate.lat,
-    },
+    boundaryCoordinate,
   });
   Hook.useEffectCesiumCameraController({ viewer });
 

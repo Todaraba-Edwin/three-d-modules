@@ -1,20 +1,21 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
 import * as Util from '../04_utils';
-import { CesiumCoordinate, glbList } from '../05_shared/cesiumConst';
+import { glbList } from '../05_shared/cesiumConst';
 import type * as Ty from '../05_shared/types';
 
 const EPSILON = Cesium.Math.toRadians(0.1);
 export const useEffectCesiumViewerNoneGlobe = ({
   containerRef,
   setViewer,
+  coordinate,
 }: Ty.useEffectCesiumViewerProps): void => {
   useEffect(() => {
     if (!containerRef.current) return;
     if (!setViewer) return;
     const container = containerRef.current;
 
-    // 1️⃣ Cesium Viewr 생성 및 상태관리 //
+    // 1️⃣ Cesium Viewer 생성 및 상태관리 //
     const viewer = new Cesium.Viewer(container, {
       animation: false,
       timeline: false,
@@ -42,8 +43,8 @@ export const useEffectCesiumViewerNoneGlobe = ({
 
     // 2️⃣ 초기 카메라 이동 //
     const position = Cesium.Cartesian3.fromDegrees(
-      CesiumCoordinate.lon,
-      CesiumCoordinate.lat -
+      coordinate.lon,
+      coordinate.lat -
         Util.utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
       80
     );

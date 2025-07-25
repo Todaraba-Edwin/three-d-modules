@@ -8,12 +8,12 @@ export const CesiumCoordinate = {
   lat: 37.5667,
 };
 
-export const CesiumCameraControll = {
-  minimumZoomDistance: 50,
-  maximumZoomDistance: 80000,
+export const CesiumCameraControl = {
+  minimumZoomDistance: 50,    // 지상 50 M
+  maximumZoomDistance: 80000, // 지상 80 KM
   buildingMode: {
-    minimumZoomDistance: 0,
-    maximumZoomDistance: 800,
+    minimumZoomDistance: 0,   // 지상 0 M
+    maximumZoomDistance: 500, // 지상 500 M
   },
 };
 
@@ -95,7 +95,12 @@ export const glbList: GlbListType[] = [
           meter: 100 - 50, // Gis 가중치 50
           lat: CesiumCoordinate.lat,
         }),
-      lat: CesiumCoordinate.lat,
+      lat:
+        CesiumCoordinate.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 100,
+        }),
       scale: 2.0,
     },
     cameraPosition: {
@@ -107,8 +112,8 @@ export const glbList: GlbListType[] = [
           lat: CesiumCoordinate.lat,
         }),
       lat:
-        CesiumCoordinate.lat -
-        utilsGetDegreeFromMeter({ type: 'lat', meter: 0 }),
+        CesiumCoordinate.lat +
+        utilsGetDegreeFromMeter({ type: 'lat', meter: 100 }),
       height: 80, // 조금 위쪽
       heading: 90,
     },
