@@ -7,6 +7,12 @@ type CoordinateType = {
   lon: number;
   lat: number;
 };
+type BoundaryCoordinateType = {
+  west: number;
+  east: number;
+  south: number;
+  north: number;
+};
 type positionsType = {
   lon: number;
   lat: number;
@@ -51,7 +57,7 @@ export type CesiumVworldImageryLayersProps = {
   vWorldMapArrByType: UtilTypeRecordStringArr;
 };
 
-// Entities Typs
+// Entities Types
 /**
  * @file useCesiumInit.tsx 관련
  */
@@ -62,7 +68,27 @@ export type useCesiumInitProps = {
     url: string;
     isDefault: boolean;
   }[];
+  cameraInitCoordinate?: {
+    lon: number;
+    lat: number;
+  };
+  boundaryCoordinate?: BoundaryCoordinateType;
 };
+
+export type useCesiumInitNoneGlobeProps = {
+  addImageryLayers?: {
+    type: string;
+    typeName: string;
+    url: string;
+    isDefault: boolean;
+  }[];
+  cameraInitCoordinate: {
+    lon: number;
+    lat: number;
+  };
+  boundaryCoordinate: BoundaryCoordinateType;
+};
+
 export type useCesiumInitReturn = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   viewerRef: Cesium.Viewer | null;
@@ -107,6 +133,7 @@ export type useCesiumAddVworldLayersReturn = {
 export type ViewerProps = {
   viewer: useCesiumInitReturn['viewerRef'];
   coordinate?: CoordinateType;
+  boundaryCoordinate?: BoundaryCoordinateType;
   isBuildingMode?: boolean;
 };
 
@@ -116,6 +143,7 @@ export type ViewerProps = {
 
 export type useEffectCesiumViewerProps = {
   coordinate: CoordinateType;
+  glbList?: GlbListType[];
   containerRef: React.RefObject<HTMLDivElement | null>;
   addImageryLayers: useCesiumInitProps['addImageryLayers'];
   setViewer: React.Dispatch<React.SetStateAction<Cesium.Viewer | null>>;
@@ -144,9 +172,9 @@ export type utilsControlToolboxProps = containerProps & {
  */
 
 export type GlbListType = {
-  name: stirng;
+  name: string;
   url: string;
-  positions: positions;
+  positions: positionsType;
   cameraPosition: cameraPositionType;
 };
 
@@ -160,8 +188,15 @@ export type utilsSetGltfAsyncProps = {
 .ts
  */
 
-type utilsCesiumFlytoProps = {
+export type utilsCesiumFlytoProps = {
   viewer: ViewerProps['viewer'];
   name: string;
   position: positionsType;
+};
+
+export type utilsGetListBoundaryReturn = BoundaryCoordinateType & {
+  center: {
+    lon: number;
+    lat: number;
+  };
 };

@@ -1,21 +1,26 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
+import { utilsGetDegreeFromMeter } from '../04_utils';
 import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumBoundaryLimit = ({
   viewer,
-  coordinate,
+  boundaryCoordinate,
 }: Ty.ViewerProps): void => {
   useEffect(() => {
     if (!viewer) return;
 
-    const caluCoordinate = 0.001;
-    const rectangleCoor = coordinate
+    const calcCoordinate = utilsGetDegreeFromMeter({
+      type: 'lat',
+      meter: 1000, // 위도기준 1000m
+    });
+
+    const rectangleCoordinate = boundaryCoordinate
       ? Cesium.Rectangle.fromDegrees(
-          coordinate.lon - caluCoordinate - 0.0004,
-          coordinate.lat - caluCoordinate * 8 - 0.0004,
-          coordinate.lon + caluCoordinate + 0.0004,
-          coordinate.lat + caluCoordinate + 0.0004
+          boundaryCoordinate.west - calcCoordinate,
+          boundaryCoordinate.south - calcCoordinate * 8,
+          boundaryCoordinate.east + calcCoordinate,
+          boundaryCoordinate.north + calcCoordinate
         )
       : // 한국 영역 제한
         Cesium.Rectangle.fromDegrees(124.0, 28, 132.0, 42.0);
@@ -23,16 +28,16 @@ export const useEffectCesiumBoundaryLimit = ({
     const restrictCameraMovement = () => {
       const camera = viewer.camera;
       const position = camera.positionCartographic;
-      if (!Cesium.Rectangle.contains(rectangleCoor, position)) {
+      if (!Cesium.Rectangle.contains(rectangleCoordinate, position)) {
         const clampedLon = Cesium.Math.clamp(
           Cesium.Math.toDegrees(position.longitude),
-          Cesium.Math.toDegrees(rectangleCoor.west),
-          Cesium.Math.toDegrees(rectangleCoor.east)
+          Cesium.Math.toDegrees(rectangleCoordinate.west),
+          Cesium.Math.toDegrees(rectangleCoordinate.east)
         );
         const clampedLat = Cesium.Math.clamp(
           Cesium.Math.toDegrees(position.latitude),
-          Cesium.Math.toDegrees(rectangleCoor.south),
-          Cesium.Math.toDegrees(rectangleCoor.north)
+          Cesium.Math.toDegrees(rectangleCoordinate.south),
+          Cesium.Math.toDegrees(rectangleCoordinate.north)
         );
         const height = position.height;
         camera.setView({
@@ -55,6 +60,6 @@ export const useEffectCesiumBoundaryLimit = ({
     return () => {
       viewer.clock.onTick.removeEventListener(restrictCameraMovement);
     };
-  }, [viewer, coordinate]);
+  }, [viewer, boundaryCoordinate]);
   return;
 };

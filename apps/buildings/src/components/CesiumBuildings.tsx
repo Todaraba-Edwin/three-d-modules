@@ -2,12 +2,17 @@ import {
   CesiumInitBody,
   useCesiumInitNoneGlobe,
   utilsCesiumFlyto,
+  utilsGetListBoundary,
 } from '@monorepo/shared';
 import { glbList } from '@monorepo/shared/features/Cesium/05_shared/cesiumConst';
 import { type ReactNode } from 'react';
 
 export const CesiumBuildings = (): ReactNode => {
-  const { containerRef, viewerRef } = useCesiumInitNoneGlobe({});
+  const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
+  const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
+    cameraInitCoordinate: boundaryCoordinate.center,
+    boundaryCoordinate,
+  });
 
   return (
     <CesiumInitBody
