@@ -7,5 +7,6 @@ export * from './utilsRemoteDepthTestAgainstTerrain';
 export * from './utilsRemoteZoomDistance';
 export * from './utilsSetAddImageryLayers';
 export * from './utilsSetGltfAsync';
+export * from './utilsSetInitCameraPosition';
 export * from './utilsSetStyle';
 export * from './utilsVworldUrl';
