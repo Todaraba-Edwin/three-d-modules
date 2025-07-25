@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 describe('utilsGetDegreeFromMeter', () => {
   it('위도 기준으로 거리(111.32m)를 degree(1°)로 변환', () => {
-    const result = utilsGetDegreeFromMeter({ type: 'lat', meter: 111.320 });
+    const result = utilsGetDegreeFromMeter({ type: 'lat', meter: 111.32 });
     expect(result).toBeCloseTo(0.001, 3); // 1 degree ≈ 111.32km
   });
 
