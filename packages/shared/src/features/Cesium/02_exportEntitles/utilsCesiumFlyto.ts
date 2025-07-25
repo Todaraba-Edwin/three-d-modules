@@ -26,6 +26,23 @@ export const utilsCesiumFlyto =
 
     const key = name;
 
+    if (destination) {
+      const primitives = viewer.scene.primitives;
+      for (let i = 0; i < primitives.length; i++) {
+        const primitive = primitives.get(i);
+
+        if (primitive.name === name) {
+          if (primitive.silhouetteSize) {
+            primitive.silhouetteSize = 0;
+            primitive.silhouetteColor = Cesium.Color.TRANSPARENT;
+          } else {
+            primitive.silhouetteSize = 5;
+            primitive.silhouetteColor = Cesium.Color.RED;
+          }
+        }
+      }
+    }
+
     const fly = () =>
       viewer.camera.flyTo({
         destination,

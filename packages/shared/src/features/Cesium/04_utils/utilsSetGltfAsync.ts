@@ -10,6 +10,7 @@ export const utilsSetGltfAsync = ({
 
   glbList.forEach(
     ({
+      name,
       url,
       positions: { lon, lat, height, heading = 0, scale },
       isError,
@@ -35,6 +36,8 @@ export const utilsSetGltfAsync = ({
             silhouetteSize: 5.0,
           }),
         });
+        // eslint-disable-next-line
+        (model as any).name = name;
         viewer.scene.primitives.add(model);
       })();
     }
