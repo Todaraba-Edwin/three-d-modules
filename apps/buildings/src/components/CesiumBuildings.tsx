@@ -10,7 +10,6 @@ import { type ReactNode } from 'react';
 export const CesiumBuildings = (): ReactNode => {
   const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
-    cameraInitCoordinate: boundaryCoordinate.center,
     boundaryCoordinate,
   });
 

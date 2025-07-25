@@ -12,6 +12,10 @@ type BoundaryCoordinateType = {
   east: number;
   south: number;
   north: number;
+  center: {
+    lon: number;
+    lat: number;
+  };
 };
 type positionsType = {
   lon: number;
@@ -82,10 +86,7 @@ export type useCesiumInitNoneGlobeProps = {
     url: string;
     isDefault: boolean;
   }[];
-  cameraInitCoordinate: {
-    lon: number;
-    lat: number;
-  };
+  cameraInitCoordinate?: BoundaryCoordinateType['center'];
   boundaryCoordinate: BoundaryCoordinateType;
 };
 

@@ -18,7 +18,7 @@ export const useEffectCesiumBoundaryLimit = ({
     const rectangleCoordinate = boundaryCoordinate
       ? Cesium.Rectangle.fromDegrees(
           boundaryCoordinate.west - calcCoordinate,
-          boundaryCoordinate.south - calcCoordinate * 8,
+          boundaryCoordinate.south - calcCoordinate,
           boundaryCoordinate.east + calcCoordinate,
           boundaryCoordinate.north + calcCoordinate
         )

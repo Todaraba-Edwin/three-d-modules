@@ -5,8 +5,8 @@ import type * as Ty from '../05_shared/types';
 
 export const useCesiumInitNoneGlobe = ({
   addImageryLayers,
-  boundaryCoordinate,
   cameraInitCoordinate,
+  boundaryCoordinate,
 }: Ty.useCesiumInitNoneGlobeProps): Ty.useCesiumInitReturn => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewer, setViewer] = useState<Cesium.Viewer | null>(null);
@@ -15,7 +15,9 @@ export const useCesiumInitNoneGlobe = ({
     containerRef,
     addImageryLayers,
     setViewer,
-    coordinate: cameraInitCoordinate,
+    coordinate: cameraInitCoordinate
+      ? cameraInitCoordinate
+      : boundaryCoordinate.center,
   });
   Hook.useEffectCesiumBoundaryLimit({
     viewer,
