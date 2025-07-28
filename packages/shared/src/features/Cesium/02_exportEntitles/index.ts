@@ -1,7 +1,9 @@
 export * from './useCesiumInit';
 export * from './useCesiumInitNoneGlobe';
-
 export * from './usePathSegments';
+export * from './useSetGltfAsync';
 export * from './useVworldMapInfo';
+export * from './utilsAddHorizontalLine';
+export * from './utilsAddPerpendicularLine';
 export * from './utilsCesiumFlyto';
 export * from './utilsGetListBoundary';

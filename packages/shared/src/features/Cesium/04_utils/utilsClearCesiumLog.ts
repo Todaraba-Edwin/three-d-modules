@@ -1,12 +1,12 @@
 import type * as Ty from '../05_shared/types';
 import { utilsSetStyle } from './utilsSetStyle';
 
-const CSEIUM_CLASS = {
+const CESIUM_CLASS = {
   CREDITS: '.cesium-widget-credits',
 } as const;
 
 export const utilsClearCesiumLog = ({ container }: Ty.containerProps): void => {
-  const creditWrapper = container.querySelector(CSEIUM_CLASS.CREDITS);
+  const creditWrapper = container.querySelector(CESIUM_CLASS.CREDITS);
   if (!(creditWrapper instanceof HTMLElement)) return;
 
   utilsSetStyle({
