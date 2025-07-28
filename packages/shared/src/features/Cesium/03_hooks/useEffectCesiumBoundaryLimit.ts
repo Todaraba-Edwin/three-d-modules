@@ -57,15 +57,15 @@ export const useEffectCesiumBoundaryLimit = ({
         });
       }
     };
-
-    viewer.clock.onTick.addEventListener(restrictCameraMovement);
+    setTimeout(() => {
+      viewer.clock.onTick.addEventListener(restrictCameraMovement);
+    });
 
     return () => {
       // 컴포넌트가 언마운트 되었을 때, 넘어가기
-      //eslint-disable-next-line
-      if (!containerRef?.current) return;
-      if (!viewer?.clock) return;
-      viewer.clock.onTick.removeEventListener(restrictCameraMovement);
+      setTimeout(() => {
+        viewer.clock.onTick.removeEventListener(restrictCameraMovement);
+      });
     };
   }, [containerRef, viewer, boundaryCoordinate]);
   return;
