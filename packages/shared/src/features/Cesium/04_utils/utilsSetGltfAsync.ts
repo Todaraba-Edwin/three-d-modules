@@ -1,5 +1,6 @@
 import * as Cesium from 'cesium';
 import type * as Ty from '../05_shared/types';
+import { utilsSetModelID } from './utilsSetModelID';
 
 export const utilsSetGltfAsync = ({
   viewer,
@@ -11,6 +12,7 @@ export const utilsSetGltfAsync = ({
   glbList.forEach(
     ({
       name,
+      type,
       url,
       positions: { lon, lat, height, heading = 0, scale },
       isError,
@@ -31,13 +33,16 @@ export const utilsSetGltfAsync = ({
           url,
           modelMatrix,
           scale,
+          id: utilsSetModelID({
+            name,
+            groupName: type,
+          }),
           ...(isError && {
             silhouetteColor: Cesium.Color.ORANGERED, // 빨간 테두리
             silhouetteSize: 5.0,
           }),
         });
-        // eslint-disable-next-line
-        (model as any).name = name;
+
         viewer.scene.primitives.add(model);
       })();
     }

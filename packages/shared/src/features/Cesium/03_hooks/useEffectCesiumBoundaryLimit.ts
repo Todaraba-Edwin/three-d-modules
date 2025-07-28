@@ -4,15 +4,18 @@ import { utilsGetDegreeFromMeter } from '../04_utils';
 import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumBoundaryLimit = ({
+  containerRef,
   viewer,
   boundaryCoordinate,
 }: Ty.ViewerProps): void => {
   useEffect(() => {
     if (!viewer) return;
+    const container = containerRef?.current;
+    if (!container) return;
 
     const calcCoordinate = utilsGetDegreeFromMeter({
       type: 'lat',
-      meter: 1000, // 위도기준 1000m
+      meter: 3000, // 위도기준 1000m
     });
 
     const rectangleCoordinate = boundaryCoordinate
@@ -58,8 +61,12 @@ export const useEffectCesiumBoundaryLimit = ({
     viewer.clock.onTick.addEventListener(restrictCameraMovement);
 
     return () => {
+      // 컴포넌트가 언마운트 되었을 때, 넘어가기
+      //eslint-disable-next-line
+      if (!containerRef?.current) return;
+      if (!viewer?.clock) return;
       viewer.clock.onTick.removeEventListener(restrictCameraMovement);
     };
-  }, [viewer, boundaryCoordinate]);
+  }, [containerRef, viewer, boundaryCoordinate]);
   return;
 };

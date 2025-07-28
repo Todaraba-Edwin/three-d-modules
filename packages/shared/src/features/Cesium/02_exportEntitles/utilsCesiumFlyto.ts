@@ -1,6 +1,6 @@
 import { utilsThrottle } from '@_shared';
 import * as Cesium from 'cesium';
-import { utilsSetInitCameraPosition } from '../04_utils';
+import { utilsGetModelID, utilsSetInitCameraPosition } from '../04_utils';
 import type { utilsCesiumFlytoProps } from '../05_shared/types';
 
 // 초기 위치를 설정할 경우
@@ -9,6 +9,7 @@ export const utilsCesiumFlyto =
   ({
     viewer,
     name, // initPosition 초기위치에 대한 값
+    type,
     position: { lon, lat, height = 0, heading = 0 },
   }: utilsCesiumFlytoProps) =>
   (): void => {
@@ -31,13 +32,32 @@ export const utilsCesiumFlyto =
       for (let i = 0; i < primitives.length; i++) {
         const primitive = primitives.get(i);
 
-        if (primitive.name === name) {
-          if (primitive.silhouetteSize) {
-            primitive.silhouetteSize = 0;
-            primitive.silhouetteColor = Cesium.Color.TRANSPARENT;
+        const getId = utilsGetModelID(primitive.id);
+
+        if (isInitPosition) {
+          primitive.color = Cesium.Color.WHITE.withAlpha(1);
+          primitive.colorBlendMode = Cesium.ColorBlendMode.MIX;
+          primitive.colorBlendAmount = 0;
+        }
+
+        if (!isInitPosition) {
+          if (getId.name === name) {
+            if (primitive.silhouetteSize) {
+              primitive.silhouetteSize = 0;
+              primitive.silhouetteColor = Cesium.Color.TRANSPARENT;
+            } else {
+              primitive.silhouetteSize = 5;
+              primitive.silhouetteColor = Cesium.Color.RED;
+            }
+          }
+
+          if (getId.groupName != type) {
+            primitive.color = Cesium.Color.TRANSPARENT.withAlpha(0.3);
+            primitive.colorBlendMode = Cesium.ColorBlendMode.MIX;
           } else {
-            primitive.silhouetteSize = 5;
-            primitive.silhouetteColor = Cesium.Color.RED;
+            primitive.color = Cesium.Color.WHITE.withAlpha(1);
+            primitive.colorBlendMode = Cesium.ColorBlendMode.MIX;
+            primitive.colorBlendAmount = 0;
           }
         }
       }
