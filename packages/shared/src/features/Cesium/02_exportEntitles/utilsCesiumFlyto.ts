@@ -32,7 +32,12 @@ export const utilsCesiumFlyto =
       for (let i = 0; i < primitives.length; i++) {
         const primitive = primitives.get(i);
 
-        const getId = utilsGetModelID(primitive.id);
+        const getId = primitive.id
+          ? utilsGetModelID(primitive.id)
+          : {
+              name: '',
+              groupName: '',
+            };
 
         if (isInitPosition) {
           primitive.color = Cesium.Color.WHITE.withAlpha(1);
