@@ -1,5 +1,7 @@
+export * from './utilsAdSphere';
 export * from './utilsClearCesiumLog';
 export * from './utilsControlToolBox';
+export * from './utilsCreatePerpendicularLine';
 export * from './utilsGetDegreeFromMeter';
 export * from './utilsGetModelID';
 export * from './utilsImageryLayersAddIsDefault';

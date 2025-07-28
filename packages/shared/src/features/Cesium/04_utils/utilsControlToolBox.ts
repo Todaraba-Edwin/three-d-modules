@@ -6,7 +6,7 @@ export const enum ControlToolboxType {
   SEARCH_FULLSCREEN = 'SEARCH_FULLSCREEN',
 }
 
-export const CSEIUM_CLASS = {
+export const CESIUM_CLASS = {
   TOOLBAR: '.cesium-viewer-toolbar',
   FULL_SCREEN: '.cesium-viewer-fullscreenContainer',
 } as const;
@@ -27,7 +27,7 @@ export const utilsControlToolbox = ({
 function utilsHandleSearchAndFullscreen({
   container,
 }: Ts.containerProps): void {
-  const toolbar = container.querySelector(CSEIUM_CLASS.TOOLBAR);
+  const toolbar = container.querySelector(CESIUM_CLASS.TOOLBAR);
   if (toolbar instanceof HTMLElement) {
     utilsSetStyle({
       styleMap: { right: '40px' },
@@ -35,7 +35,7 @@ function utilsHandleSearchAndFullscreen({
     });
   }
 
-  const fullscreen = container.querySelector(CSEIUM_CLASS.FULL_SCREEN);
+  const fullscreen = container.querySelector(CESIUM_CLASS.FULL_SCREEN);
   if (fullscreen instanceof HTMLElement) {
     utilsSetStyle({
       styleMap: {
