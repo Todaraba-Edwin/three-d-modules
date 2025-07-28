@@ -4,9 +4,13 @@ import {
   utilsCesiumFlyto,
   utilsGetListBoundary,
 } from '@monorepo/shared';
-import { utilsSetGltfAsync } from '@monorepo/shared/features/Cesium/04_utils';
+import {
+  utilsSetFloor,
+  utilsSetGltfAsync,
+} from '@monorepo/shared/features/Cesium/04_utils';
 import { glbList } from '@monorepo/shared/features/Cesium/05_shared/cesiumConst';
-import { type ReactNode } from 'react';
+import * as Cesium from 'cesium';
+import { useEffect, type ReactNode } from 'react';
 
 export const Building = (): ReactNode => {
   const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
@@ -14,11 +18,21 @@ export const Building = (): ReactNode => {
     boundaryCoordinate,
   });
 
-  // 3️⃣ GLB 객체 추가
-  utilsSetGltfAsync({
-    viewer: viewerRef,
-    glbList: glbList,
-  });
+  useEffect(() => {
+    if (!viewerRef) return;
+    // 3️⃣ GLB 객체 추가
+    utilsSetGltfAsync({
+      viewer: viewerRef,
+      glbList: glbList,
+    });
+    setTimeout(() => {
+      utilsSetFloor({
+        viewer: viewerRef,
+        boundaryCoordinate,
+        color: Cesium.Color.DARKGRAY.withAlpha(0.3),
+      });
+    });
+  }, [viewerRef, boundaryCoordinate]);
 
   return (
     <CesiumInitBody

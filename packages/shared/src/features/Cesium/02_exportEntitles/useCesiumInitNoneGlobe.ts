@@ -10,7 +10,7 @@ export const useCesiumInitNoneGlobe = ({
   boundaryCoordinate,
 }: Ty.useCesiumInitNoneGlobeProps): Ty.useCesiumInitReturn => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [viewer, setViewer] = useState<Cesium.Viewer | null>(null);
+  const [viewer, setViewer] = useState<Cesium.Viewer | null>(() => null);
 
   Hook.useEffectCesiumViewerNoneGlobe({
     containerRef,
