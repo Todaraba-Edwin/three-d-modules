@@ -3,7 +3,10 @@ import {
   useCesiumInitNoneGlobe,
   utilsGetListBoundary,
 } from '../../02_exportEntitles';
-import { InitPosition, utilsCesiumFlyto } from '../../02_exportEntitles/utilsCesiumFlyto';
+import {
+  InitPosition,
+  utilsCesiumFlyto,
+} from '../../02_exportEntitles/utilsCesiumFlyto';
 import { utilsSetGltfAsync } from '../../04_utils';
 import { glbList } from '../../05_shared/cesiumConst';
 import { CesiumInitBody } from '../1_CesiumInitBody/CesiumInitBody';
@@ -31,13 +34,14 @@ export const CesiumBuilding = (): ReactNode => {
       isNonBackground
       children={
         <div className='absolute top-4 left-4 z-[99] grid grid-cols-1'>
-          {glbList.map(({ name, cameraPosition }) => (
+          {glbList.map(({ name, type, cameraPosition }) => (
             <button
               key={name}
               className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
               onClick={utilsCesiumFlyto({
                 viewer: viewerRef,
                 name,
+                type,
                 position: cameraPosition,
               })}
               children={name}
@@ -47,6 +51,7 @@ export const CesiumBuilding = (): ReactNode => {
             className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
             onClick={utilsCesiumFlyto({
               viewer: viewerRef,
+              type: '',
               name: InitPosition,
               position: {
                 ...boundaryCoordinate.center,

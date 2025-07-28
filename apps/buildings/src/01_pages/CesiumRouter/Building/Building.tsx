@@ -8,7 +8,7 @@ import { utilsSetGltfAsync } from '@monorepo/shared/features/Cesium/04_utils';
 import { glbList } from '@monorepo/shared/features/Cesium/05_shared/cesiumConst';
 import { type ReactNode } from 'react';
 
-export const CesiumBuildings = (): ReactNode => {
+export const Building = (): ReactNode => {
   const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
     boundaryCoordinate,
@@ -27,13 +27,14 @@ export const CesiumBuildings = (): ReactNode => {
       isNonBackground
       children={
         <div className='absolute top-4 left-4 z-[99] grid grid-cols-1'>
-          {glbList.map(({ name, cameraPosition }) => (
+          {glbList.map(({ name, type, cameraPosition }) => (
             <button
               key={name}
               className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
               onClick={utilsCesiumFlyto({
                 viewer: viewerRef,
                 name,
+                type,
                 position: cameraPosition,
               })}
               children={name}

@@ -13,7 +13,7 @@ export const CesiumCameraControl = {
   maximumZoomDistance: 80000, // 지상 80 KM
   buildingMode: {
     minimumZoomDistance: 0, // 지상 0 M
-    maximumZoomDistance: 500, // 지상 500 M
+    maximumZoomDistance: 1000, // 지상 1000 M
   },
 };
 
@@ -44,6 +44,7 @@ const utilsGetDegreeFromMeter = ({
 export const glbList: GlbListType[] = [
   {
     name: '문화시설',
+    type: 'type1',
     url: '/model/testmodules.glb',
     positions: { lon: CesiumCoordinate.lon, lat: CesiumCoordinate.lat },
     cameraPosition: {
@@ -58,6 +59,7 @@ export const glbList: GlbListType[] = [
   },
   {
     name: '문화시설2',
+    type: 'type1',
     url: '/model/testmodules.glb',
     isError: false,
     positions: {
@@ -88,6 +90,7 @@ export const glbList: GlbListType[] = [
   },
   {
     name: '체육관',
+    type: 'type2',
     url: '/model/test2.glb',
     isError: true,
     positions: {

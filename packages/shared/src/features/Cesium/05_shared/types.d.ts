@@ -138,6 +138,7 @@ export type ViewerProps = {
   coordinate?: CoordinateType;
   boundaryCoordinate?: BoundaryCoordinateType;
   isBuildingMode?: boolean;
+  containerRef?: React.RefObject<HTMLDivElement | null>
 };
 
 /**
@@ -177,6 +178,7 @@ export type utilsControlToolboxProps = containerProps & {
 
 export type GlbListType = {
   name: string;
+  type: string;
   url: string;
   positions: positionsType;
   cameraPosition: cameraPositionType;
@@ -195,6 +197,7 @@ export type utilsSetGltfAsyncProps = {
 export type utilsCesiumFlytoProps = {
   viewer: ViewerProps['viewer'];
   name: string;
+  type: string;
   position: positionsType;
 };
 
@@ -213,8 +216,19 @@ export type utilsGetListBoundaryReturn = BoundaryCoordinateType & {
  * @file utilsSetInitCameraPosition.ts
  */
 
-type utilsSetInitCameraProps = {
+export type utilsSetInitCameraProps = {
   coordinate: useEffectCesiumViewerProps['coordinate'];
   initCameraHeight: number;
 };
-type utilsSetInitCameraReturn = Cesium.Cartesian3;
+export type utilsSetInitCameraReturn = Cesium.Cartesian3;
+
+/**
+ * @file utilsSetModelID.ts
+ */
+
+export type utilsSetModelIDProp = {
+  name: string;
+  groupName?: string;
+};
+
+export type utilsGetModelIDReturn = utilsSetModelIDProp;

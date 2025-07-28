@@ -1,6 +1,7 @@
 export * from './utilsClearCesiumLog';
 export * from './utilsControlToolBox';
 export * from './utilsGetDegreeFromMeter';
+export * from './utilsGetModelID';
 export * from './utilsImageryLayersAddIsDefault';
 export * from './utilsImageryLayersInit';
 export * from './utilsRemoteDepthTestAgainstTerrain';
@@ -8,5 +9,6 @@ export * from './utilsRemoteZoomDistance';
 export * from './utilsSetAddImageryLayers';
 export * from './utilsSetGltfAsync';
 export * from './utilsSetInitCameraPosition';
+export * from './utilsSetModelID';
 export * from './utilsSetStyle';
 export * from './utilsVworldUrl';

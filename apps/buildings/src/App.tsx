@@ -1,11 +1,10 @@
 import '@monorepo/shared/cesium.css';
 import { type ReactNode } from 'react';
+import { RouterProviderTemplates } from './_templates/routes';
 import './App.css';
 
-import { CesiumBuildings } from './components/CesiumBuildings';
-
 function App(): ReactNode {
-  return <CesiumBuildings />;
+  return <RouterProviderTemplates />;
 }
 
 export default App;
