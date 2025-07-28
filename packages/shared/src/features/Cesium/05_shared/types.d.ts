@@ -138,7 +138,7 @@ export type ViewerProps = {
   coordinate?: CoordinateType;
   boundaryCoordinate?: BoundaryCoordinateType;
   isBuildingMode?: boolean;
-  containerRef?: React.RefObject<HTMLDivElement | null>
+  containerRef?: React.RefObject<HTMLDivElement | null>;
 };
 
 /**

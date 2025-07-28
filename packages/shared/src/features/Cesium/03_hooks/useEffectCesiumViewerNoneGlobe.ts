@@ -36,6 +36,8 @@ export const useEffectCesiumViewerNoneGlobe = ({
     });
     viewer.scene.globe.show = false; // 지구 제거
     viewer.scene.skyBox.show = false; // 별자리 제거
+    viewer.scene.sun.show = false; // 별자리 제거
+    viewer.scene.moon.show = false; // 별자리 제거
     viewer.scene.skyAtmosphere.show = false; // 대기권 제거
     viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
     setViewer(viewer);
@@ -75,6 +77,7 @@ export const useEffectCesiumViewerNoneGlobe = ({
       viewer.destroy();
       setViewer(null);
     };
+    //eslint-disable-next-line
   }, [containerRef, setViewer, coordinate.lat, coordinate.lon]);
   return;
 };
