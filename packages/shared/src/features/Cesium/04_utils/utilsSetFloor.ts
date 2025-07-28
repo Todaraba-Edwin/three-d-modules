@@ -45,5 +45,6 @@ export const utilsSetFloor = ({
   });
 
   viewer.scene.primitives.add(primitive);
+
   return;
 };
