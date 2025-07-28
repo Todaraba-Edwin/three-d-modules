@@ -22,6 +22,7 @@ export const useCesiumInitNoneGlobe = ({
       : boundaryCoordinate.center,
   });
   Hook.useEffectCesiumBoundaryLimit({
+    containerRef,
     viewer,
     boundaryCoordinate,
   });

@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@pages": ["src/01_pages"],
+      "@/*": ["src/*"],
       "@_shared": ["../../packages/shared/src/features/_shared"],
       "@monorepo/shared": ["../../packages/shared/src"],
       "@monorepo/shared/*": ["../../packages/shared/src/*"]
