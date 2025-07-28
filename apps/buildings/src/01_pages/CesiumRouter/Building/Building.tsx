@@ -1,5 +1,6 @@
 import {
   CesiumInitBody,
+  InitPosition,
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
   utilsAddHorizontalLine,
@@ -167,6 +168,19 @@ export const Building = (): ReactNode => {
               children={name}
             />
           ))}
+          <button
+            className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+            onClick={utilsCesiumFlyto({
+              viewer: viewerRef,
+              type: '',
+              name: InitPosition,
+              position: {
+                ...boundaryCoordinate.center,
+                height: 200,
+              },
+            })}
+            children={'초기 위치'}
+          />
         </div>
       }
     />
