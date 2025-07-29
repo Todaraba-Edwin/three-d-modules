@@ -40,7 +40,7 @@ echo "✅ git push 진행 중..."
 # 현재 브랜치 이름 가져오기
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 
-GIT_PUSH_OUTPUT=$(git push "$REMOTE_NAME" "$BRANCH_NAME" --tags 2>&1)
+GIT_PUSH_OUTPUT=$(git push "$REMOTE_NAME" "$BRANCH_NAME":gemini --tags 2>&1)
 
 if echo "$GIT_PUSH_OUTPUT" | grep -q "Everything up-to-date"; then
   echo "⚠️  푸시할 변경사항이 없습니다. (브랜치와 태그 모두 최신)"
@@ -48,3 +48,5 @@ else
   echo "$GIT_PUSH_OUTPUT"
   echo "✅ push 완료!"
 fi
+
+# gemini 테스트 

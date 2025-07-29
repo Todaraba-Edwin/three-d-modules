@@ -6,7 +6,7 @@
 # $4 : (선택) 개별 테스트 파일명 (e.g., throttledFlyTo.test.ts)
 
 if [ -z "$1" ]; then
-    echo "⚠️ pnpm test <packaeName> 이 누락되었습니다."
+    echo "⚠️ pnpm test <packageName> 이 누락되었습니다."
     exit 1
 fi
 
@@ -21,12 +21,12 @@ if ! pnpm m ls --json | grep -q "\"name\": \"$PROJECT_NAME\""; then
 fi
 
 if [ -z "$2" ]; then
-    echo "⚠️ pnpm test packaeName <testModule> 이 누락되었습니다."
+    echo "⚠️ pnpm test packageName <testModule> 이 누락되었습니다."
     exit 1
 fi
 
 if [ -z "$3" ]; then
-    echo "⚠️ pnpm test packaeName testModule <unitName> 이 누락되었습니다."
+    echo "⚠️ pnpm test packageName testModule <unitName> 이 누락되었습니다."
     exit 1
 fi
 
