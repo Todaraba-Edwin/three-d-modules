@@ -32,7 +32,7 @@ export const Building = (): ReactNode => {
         .then(({ data }) => {
           if (data.length === 0) return;
           // TODO: 반환되는 선로 DTO에 대한 정책 수립 필요
-          //eslint-disable-next-line 
+          //eslint-disable-next-line
           data.forEach(({ coordinates }: any) => {
             utilsAddLines({
               viewer: viewerRef,
