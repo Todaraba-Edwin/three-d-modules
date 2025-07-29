@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e          # 에러 발생 시 즉시 종료
+set -u          # 정의되지 않은 변수 사용 시 에러
+set -o pipefail # 파이프라인 내부 에러 감지
 
 REMOTE_NAME=$1
 PROJECT_NAME=$2

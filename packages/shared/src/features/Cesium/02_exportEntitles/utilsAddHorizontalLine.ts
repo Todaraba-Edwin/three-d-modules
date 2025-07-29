@@ -28,9 +28,14 @@ export const utilsAddHorizontalLine = ({
   }
   if (!viewer) return;
 
-  const positions = lineList.reduce<number[]>((acc, current) => {
-    return [...acc, current.lon, current.lat, current.height];
-  }, []);
+  // const positions = lineList.reduce<number[]>((acc, current) => {
+  //   return [...acc, current.lon, current.lat, current.height];
+  // }, []);
+  const positions = lineList.flatMap(current => [
+    current.lon,
+    current.lat,
+    current.height,
+  ]);
 
   viewer.entities.add({
     name: 'horizontalLine',
