@@ -48,5 +48,3 @@ else
   echo "$GIT_PUSH_OUTPUT"
   echo "✅ push 완료!"
 fi
-
-# gemini 테스트 
