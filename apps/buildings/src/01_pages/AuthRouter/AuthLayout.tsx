@@ -32,7 +32,7 @@ export const AuthLayout = (): ReactNode => {
         ].map(({ pageName, url }) => (
           <li
             key={pageName}
-            className={isCurrentSegment(pageName)+ ' cursor-pointer'}
+            className={isCurrentSegment(pageName) + ' cursor-pointer'}
             onClick={utilsNavigate(url)}
             children={pageName}
           />

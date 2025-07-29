@@ -32,7 +32,10 @@ export const CesiumLayout = (): ReactNode => {
         ].map(({ pageName, url }) => (
           <li
             key={pageName}
-            className={isCurrentSegment(pageName === 'home' ? '' : pageName) + ' cursor-pointer'}
+            className={
+              isCurrentSegment(pageName === 'home' ? '' : pageName) +
+              ' cursor-pointer'
+            }
             onClick={utilsNavigate(url)}
             children={pageName}
           />
