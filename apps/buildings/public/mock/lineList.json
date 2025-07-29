@@ -27,7 +27,7 @@
           "lon": 126.97953330957658,
           "lat": 37.56704915558749,
           "height": 3,
-          "distance": 32.00
+          "distance": 32.0
         },
         {
           "type": "horizontal",
@@ -35,7 +35,7 @@
           "lon": 126.97983330957658,
           "lat": 37.56704915558749,
           "height": 3,
-          "distance": 18.00
+          "distance": 18.0
         },
         {
           "type": "horizontal",
@@ -43,7 +43,7 @@
           "lon": 126.98003330957658,
           "lat": 37.56704915558749,
           "height": 0,
-          "distance": 22.00
+          "distance": 22.0
         },
         {
           "type": "vertical",
