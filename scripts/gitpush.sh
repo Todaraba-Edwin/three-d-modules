@@ -36,10 +36,9 @@ else
   echo "✅ 수정 완료!"
 fi
 
-echo "✅ git push 진행 중..."
 # 현재 브랜치 이름 가져오기
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-echo "✅ "$REMOTE_NAME" "$BRANCH_NAME" 브랜치로 push 진행 중..."
+echo "✅ push 진행 중, repo : "$REMOTE_NAME", branch : "$BRANCH_NAME"..."
 
 GIT_PUSH_OUTPUT=$(git push "$REMOTE_NAME" "$BRANCH_NAME" --tags 2>&1)
 
