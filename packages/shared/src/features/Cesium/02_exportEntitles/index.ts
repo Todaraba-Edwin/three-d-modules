@@ -4,6 +4,7 @@ export * from './usePathSegments';
 export * from './useSetGltfAsync';
 export * from './useVworldMapInfo';
 export * from './utilsAddHorizontalLine';
-export * from './utilsAddPerpendicularLine';
+export * from './utilsAddLines';
+export * from './utilsAddVerticalLine';
 export * from './utilsCesiumFlyto';
 export * from './utilsGetListBoundary';
