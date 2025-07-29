@@ -32,5 +32,5 @@ export const useSetGltfAsync = ({
         });
       }
     });
-  }, [viewer, boundaryCoordinate, glbList]);
+  }, [viewer, boundaryCoordinate, glbList, isFloor]);
 };

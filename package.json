@@ -6,9 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "./scripts/dev.sh",
+    "push": "./scripts/gitpush.sh",
     "build": "./Dockerfiles/build.sh",
     "docker:run": "./Dockerfiles/dockerRun.sh",
     "format": "pnpm prettier --write .",
+    "format:target": "pnpm prettier --write",
     "format:check": "pnpm exec prettier --check .",
     "lint": "pnpm exec eslint . --ext .ts,.tsx",
     "logs": "git log -n 10 --oneline",
