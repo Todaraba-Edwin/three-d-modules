@@ -3,8 +3,7 @@ import {
   InitPosition,
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
-  utilsAddHorizontalLine,
-  utilsAddPerpendicularLine,
+  utilsAddLines,
   utilsCesiumFlyto,
   utilsGetListBoundary,
 } from '@monorepo/shared';
@@ -27,124 +26,19 @@ export const Building = (): ReactNode => {
   useEffect(() => {
     setTimeout(() => {
       if (!viewerRef) return;
-      const { lon, lat } = boundaryCoordinate.center;
 
-      utilsAddHorizontalLine({
-        viewerRef,
-        lineList: [
-          { lon: lon - 0.0005, lat: lat - 0.0005, height: 0 },
-          { lon: lon - 0.0005, lat: lat - 0.0001, height: 0 },
-          { lon: lon + 0.0005, lat: lat - 0.0001, height: 0 },
-          { lon: lon + 0.0005, lat: lat - 0.0005, height: 0 },
-        ],
-      });
-
-      utilsAddHorizontalLine({
-        viewerRef,
-        lineList: [
-          { lon: lon - 0.0005, lat: lat - 0.0005, height: 15 },
-          { lon: lon - 0.0005, lat: lat - 0.0001, height: 15 },
-          { lon: lon + 0.0005, lat: lat - 0.0001, height: 15 },
-          { lon: lon + 0.0005, lat: lat - 0.0005, height: 15 },
-        ],
-      });
-
-      utilsAddHorizontalLine({
-        viewerRef,
-        lineList: [
-          { lon: lon - 0.0005, lat: lat - 0.0005, height: 30 },
-          { lon: lon - 0.0005, lat: lat - 0.0001, height: 30 },
-          { lon: lon, lat: lat - 0.0005, height: 30 },
-          { lon: lon + 0.0005, lat: lat - 0.0001, height: 30 },
-          { lon: lon + 0.0005, lat: lat - 0.0005, height: 30 },
-        ],
-      });
-
-      utilsAddPerpendicularLine({
-        viewerRef,
-        lineList: [
-          {
-            lon: lon - 0.0005,
-            lat: lat - 0.0005,
-            height: 0,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon - 0.0005,
-            lat: lat - 0.0001,
-            height: 0,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon + 0.0005,
-            lat: lat - 0.0001,
-            height: 0,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon + 0.0005,
-            lat: lat - 0.0005,
-            height: 0,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon - 0.0005,
-            lat: lat - 0.0005,
-            height: 15,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon - 0.0005,
-            lat: lat - 0.0001,
-            height: 15,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon + 0.0005,
-            lat: lat - 0.0001,
-            height: 15,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon + 0.0005,
-            lat: lat - 0.0005,
-            height: 15,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon,
-            lat: lat - 0.0005,
-            height: 30,
-            length: 15,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-          {
-            lon: lon,
-            lat: lat - 0.0005,
-            height: 0,
-            length: 30,
-            isTopConnect: true,
-            isBottomConnect: true,
-          },
-        ],
-      });
+      fetch('/mock/lineList.json')
+        .then(res => res.json())
+        .then(({ data }) => {
+          if (data.length === 0) return;
+          data.forEach(({ coordinates }: any) => {
+            utilsAddLines({
+              viewer: viewerRef,
+              lines: coordinates,
+            });
+          });
+        })
+        .catch(e => console.error(e));
     });
   }, [viewerRef, boundaryCoordinate]);
 

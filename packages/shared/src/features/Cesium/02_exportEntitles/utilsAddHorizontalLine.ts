@@ -1,10 +1,11 @@
 import * as Cesium from 'cesium';
+import type { ViewerProps } from '../05_shared/types';
 
 export const utilsAddHorizontalLine = ({
-  viewerRef,
+  viewer,
   lineList,
 }: {
-  viewerRef: Cesium.Viewer | null;
+  viewer: ViewerProps['viewer'];
   lineList: {
     lon: number;
     lat: number;
@@ -25,14 +26,14 @@ export const utilsAddHorizontalLine = ({
     }
     return positions;
   }
-  if (!viewerRef) return;
+  if (!viewer) return;
 
   const positions = lineList.reduce<number[]>((acc, current) => {
     return [...acc, current.lon, current.lat, current.height];
   }, []);
 
-  viewerRef.entities.add({
-    // name: 'utilsAddHorizontalLine',
+  viewer.entities.add({
+    name: 'horizontalLine',
     polylineVolume: {
       positions: Cesium.Cartesian3.fromDegreesArrayHeights(positions),
       shape: computeCircle(0.3),
