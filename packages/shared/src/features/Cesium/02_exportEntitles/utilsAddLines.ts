@@ -9,6 +9,7 @@ type HorizontalLine = {
   lat: number;
   height: number;
   distance: number;
+  isStart?: boolean;
 };
 
 type VerticalLine = {
@@ -38,12 +39,13 @@ export const utilsAddLines = ({ viewer, lines }: Props): void => {
     if (line.type === 'horizontal') {
       const curr = line as HorizontalLine;
 
-      if (currentGroup.length === 0) {
+      if (!currentGroup.length) {
         currentGroup.push(curr);
       } else {
-        const prevLine = lines.find(list => list.index === curr.index - 1);
+        const prevLine = lines[curr.index - 1];
         const isPrevHorizontalLine = prevLine?.type === 'horizontal';
-        if (isPrevHorizontalLine) {
+        const isCurrentGroupStart = currentGroup[0].isStart;
+        if (isPrevHorizontalLine || isCurrentGroupStart) {
           currentGroup.push(curr);
         } else {
           horizontal.push(currentGroup);
@@ -60,6 +62,7 @@ export const utilsAddLines = ({ viewer, lines }: Props): void => {
         currentGroup = [
           {
             type: 'horizontal',
+            isStart: true,
             index: curr.index,
             lon: curr.lon,
             lat: curr.lat,

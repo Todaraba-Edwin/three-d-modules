@@ -56,7 +56,7 @@ export const utilsCesiumFlyto =
             }
           }
 
-          if (getId.groupName != type) {
+          if (getId.groupName !== type) {
             primitive.color = Cesium.Color.TRANSPARENT.withAlpha(0.3);
             primitive.colorBlendMode = Cesium.ColorBlendMode.MIX;
           } else {
