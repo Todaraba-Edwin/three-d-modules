@@ -29,11 +29,11 @@ FORMAT_CHECK_OUTPUT=$(pnpm format:check 2>&1)
 FILES=$(echo "$FORMAT_CHECK_OUTPUT" | grep '\[warn\]' | grep -E '\.(ts|tsx|js|jsx|json|css|scss|md)$' | awk '{print $2}')
 
 if [ -z "$FILES" ]; then
-  echo "✅ 코드 스타일 문제 없음."
+  echo "✅ All matched files use Prettier code style!"
 else
-  echo "✅ 문제 있는 파일만 prettier로 수정 중..."
+  echo "✅ prettier로 수정 중..."
   echo "$FILES" | xargs pnpm format:target
-  echo "✅ 수정 완료!"
+  echo "✅ All matched files use Prettier code style!"
 fi
 
 # 현재 브랜치 이름 가져오기
