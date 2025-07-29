@@ -31,14 +31,14 @@ FILES=$(echo "$FORMAT_CHECK_OUTPUT" | grep '\[warn\]' | grep -E '\.(ts|tsx|js|js
 if [ -z "$FILES" ]; then
   echo "✅ All matched files use Prettier code style!"
 else
-  echo "☑️ prettier로 수정 중..."
+  echo "☑️  prettier로 수정 중..."
   echo "$FILES" | xargs pnpm format:target
   echo "✅ All matched files use Prettier code style!"
 fi
 
 # 현재 브랜치 이름 가져오기
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-echo "☑️ push 진행 중, repo : "$REMOTE_NAME", branch : "$BRANCH_NAME"..."
+echo "☑️  push 진행 중, repo : "$REMOTE_NAME", branch : "$BRANCH_NAME"..."
 
 GIT_PUSH_OUTPUT=$(git push "$REMOTE_NAME" "$BRANCH_NAME" --tags 2>&1)
 
