@@ -30,6 +30,10 @@ ARG APP_PATH
 # 빌드 결과 복사
 COPY --from=builder /repo/${APP_PATH}/dist /usr/share/nginx/html
 
+# Dockerfiles
+# 커스텀 nginx 설정 복사
+COPY /Dockerfiles/nginx.conf /etc/nginx/conf.d/default.conf
+
 # 포트 노출
 EXPOSE 80
 

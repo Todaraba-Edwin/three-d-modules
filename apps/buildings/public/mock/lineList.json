@@ -1,0 +1,68 @@
+{
+  "data": [
+    {
+      "connection_IN": "A시설물",
+      "connection_OUT": "B시설물",
+      "totalDistance": 189.55,
+      "coordinates": [
+        {
+          "type": "horizontal",
+          "index": 0,
+          "lon": 126.97903330957658,
+          "lat": 37.56664915558749,
+          "height": 0,
+          "distance": 0
+        },
+        {
+          "type": "horizontal",
+          "index": 1,
+          "lon": 126.97903330957658,
+          "lat": 37.56704915558749,
+          "height": 0,
+          "distance": 44.48
+        },
+        {
+          "type": "horizontal",
+          "index": 2,
+          "lon": 126.97953330957658,
+          "lat": 37.56704915558749,
+          "height": 3,
+          "distance": 44.48
+        },
+        {
+          "type": "horizontal",
+          "index": 3,
+          "lon": 126.97983330957658,
+          "lat": 37.56704915558749,
+          "height": 3,
+          "distance": 44.48
+        },
+        {
+          "type": "horizontal",
+          "index": 4,
+          "lon": 126.98003330957658,
+          "lat": 37.56704915558749,
+          "height": 0,
+          "distance": 88.14
+        },
+        {
+          "type": "vertical",
+          "index": 5,
+          "lon": 126.98003330957658,
+          "lat": 37.56704915558749,
+          "height": 0,
+          "length": 10,
+          "distance": 10.0
+        },
+        {
+          "type": "horizontal",
+          "index": 6,
+          "lon": 126.98003330957658,
+          "lat": 37.56664915558749,
+          "height": 10,
+          "distance": 44.48
+        }
+      ]
+    }
+  ]
+}

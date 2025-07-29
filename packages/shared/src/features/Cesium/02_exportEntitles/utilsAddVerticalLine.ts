@@ -1,11 +1,11 @@
-import * as Cesium from 'cesium';
 import { utilsAdSphere, utilsCreatePerpendicularLine } from '../04_utils';
+import type { ViewerProps } from '../05_shared/types';
 
-export const utilsAddPerpendicularLine = ({
-  viewerRef,
+export const utilsAddVerticalLine = ({
+  viewer,
   lineList,
 }: {
-  viewerRef: Cesium.Viewer | null;
+  viewer: ViewerProps['viewer'];
   lineList?: {
     lon: number;
     lat: number;
@@ -16,7 +16,7 @@ export const utilsAddPerpendicularLine = ({
     lineWeight?: number;
   }[];
 }): void => {
-  if (!viewerRef) return;
+  if (!viewer) return;
   if (!lineList?.length) return;
 
   lineList.forEach(
@@ -26,26 +26,21 @@ export const utilsAddPerpendicularLine = ({
       height,
       length,
       lineWeight = 0.3,
-      isTopConnect,
-      isBottomConnect,
+      // isTopConnect,
+      // isBottomConnect,
     }) => {
       utilsCreatePerpendicularLine({
-        viewerRef,
+        viewerRef: viewer,
         list: { lon, lat, height, lineWeight, length },
       });
 
-      if (isTopConnect)
+      ['isTopConnect', 'isBottomConnect'].forEach(connectType => {
         utilsAdSphere({
-          viewerRef,
-          type: 'isTopConnect',
+          viewerRef: viewer,
+          type: connectType as 'isTopConnect' | 'isBottomConnect',
           list: { lon, lat, height, lineWeight, length },
         });
-      if (isBottomConnect)
-        utilsAdSphere({
-          viewerRef,
-          type: 'isBottomConnect',
-          list: { lon, lat, height, lineWeight, length },
-        });
+      });
     }
   );
 
