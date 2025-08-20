@@ -83,6 +83,9 @@ const utilsServerConfig = ({ projectPath, matchPath }) => ({
     ...commonRules,
   },
   extends: [js.configs.recommended, tseslint.configs.recommended, prettier],
+  plugins: {
+    'simple-import-sort': simpleImportSort,
+  },
 });
 
 export default tseslint.config(
