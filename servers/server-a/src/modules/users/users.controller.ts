@@ -1,5 +1,5 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
-import { API_PREFIX, USERS } from '../common/apiPaths';
+import { API_PREFIX, USERS } from '@src_common';
 import { UserType, type User } from './user.interface';
 import { UsersService } from './users.service';
 
