@@ -15,9 +15,10 @@
     "outDir": "./dist",
     "baseUrl": "./src", // src 폴더를 기준으로 절대 경로를 설정
     "paths": {
-      "@src_common": ["common/index.ts"],
-      "@src_modules": ["modules/index.ts"],
-      "@src_modules_users": ["modules/users/index.ts"]
+      "@src_apps/*": ["*"],
+      "@src_common/*": ["common/*"],
+      "@src_modules/*": ["modules/*"],
+      "@src_modules_users/*": ["modules/users/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
