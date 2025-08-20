@@ -16,7 +16,12 @@ export const Building = (): ReactNode => {
     boundaryCoordinate,
   });
 
-  useSetGltfAsync({ viewer: viewerRef, glbList, boundaryCoordinate, isFloor: true,});
+  useSetGltfAsync({
+    viewer: viewerRef,
+    glbList,
+    boundaryCoordinate,
+    isFloor: true,
+  });
 
   useEffect(() => {
     setTimeout(() => {

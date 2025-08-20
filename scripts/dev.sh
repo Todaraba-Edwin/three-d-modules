@@ -16,5 +16,9 @@ if ! pnpm m ls --json | grep -q "\"name\": \"$PROJECT_NAME\""; then
   exit 1
 fi
 
-
-pnpm --filter @monorepo/$1 run dev
+# 서버 프로젝트는 'start:dev' 스크립트를 사용
+if [ "$1" == "server" ]; then
+  pnpm --filter @monorepo/server run start:dev
+else
+  pnpm --filter @monorepo/$1 run dev
+fi
