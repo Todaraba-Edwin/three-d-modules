@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfiles/Dockerfile.server
+      args:
+        APP_PATH: servers/server
+        APP_NAME: server
+    image: server-app-compose
+    container_name: server-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  buildings:
+    build:
+      context: .
+      dockerfile: Dockerfiles/Dockerfile
+      args:
+        APP_PATH: apps/buildings
+    image: buildings-app-compose
+    container_name: buildings-app
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    environment:
+      - VITE_API_URL=http://server:8080
+    depends_on:
+      - server
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
