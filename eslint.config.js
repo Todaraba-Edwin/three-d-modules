@@ -51,7 +51,7 @@ const utilsAddConfig = ({ projectPath, matchPath }) => ({
     js.configs.recommended, // no-unused-vars 여부포함
     tseslint.configs.recommended,
     reactHooks.configs['recommended-latest'],
-    reactRefresh.configs.vite,
+    reactRefresh.configs.vite, // 한 파일은 하나의 컴포넌트만을 export 하도록 규칙
     prettier,
   ],
 });
