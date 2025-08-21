@@ -8,6 +8,7 @@
     "dev": "./scripts/dev.sh",
     "push": "./scripts/gitpush.sh",
     "build": "./Dockerfiles/build.sh",
+    "build:server": "./Dockerfiles/build.server.sh",
     "docker:run": "./Dockerfiles/dockerRun.sh",
     "format": "pnpm prettier --write .",
     "format:target": "pnpm prettier --write",

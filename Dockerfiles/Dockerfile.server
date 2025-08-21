@@ -1,0 +1,60 @@
+# 1. 빌드 단계
+FROM node:20-alpine AS builder
+ARG APP_PATH
+ARG APP_NAME
+# ARG를 ENV로 저장하여 런타임에도 사용 가능하게 함
+ENV APP_PATH=${APP_PATH}
+ENV APP_NAME=${APP_NAME}
+
+WORKDIR /app
+
+# pnpm 설치
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# 루트 package.json, pnpm-lock.yaml, pnpm-workspace.yaml 복사
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+
+# 서버 패키지의 package.json 복사
+COPY ${APP_PATH}/package.json ./${APP_PATH}/
+
+# 의존성 설치 (workspace 전체 필요)
+RUN pnpm install --frozen-lockfile
+
+# 소스 복사
+COPY . .
+
+# NestJS 빌드
+RUN pnpm --filter @monorepo/${APP_NAME} build
+
+
+# 2. 실행 단계
+FROM node:20-alpine
+# 빌드 단계에서 설정된 ENV 변수를 그대로 사용
+ARG APP_PATH
+ARG APP_NAME
+ENV APP_PATH=${APP_PATH}
+ENV APP_NAME=${APP_NAME}
+
+
+WORKDIR /app
+
+# pnpm 설치
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# 루트 package.json, pnpm-lock.yaml, pnpm-workspace.yaml 복사
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+
+# 서버 패키지의 package.json 복사
+COPY ${APP_PATH}/package.json ./${APP_PATH}/
+
+# 실행에 필요한 의존성만 설치 (prod)
+RUN pnpm install --filter @monorepo/${APP_NAME} --prod --frozen-lockfile
+
+# 빌드된 파일만 복사
+COPY --from=builder /app/${APP_PATH}/dist ./${APP_PATH}/dist
+
+# 실행 포트
+EXPOSE 8080
+
+# 실행 명령 (ENV 변수를 사용하여 동적으로 경로 설정)
+CMD node ${APP_PATH}/dist/main.js
