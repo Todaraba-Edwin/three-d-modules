@@ -10,3 +10,11 @@ export const USERS = {
     USERTYPE: 'userType',
   },
 };
+
+export const AUTH = {
+  SEGMENTS: {
+    BASE: 'auth',
+    LOGIN: 'login',
+  },
+  PARAMS: {},
+};
