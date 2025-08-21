@@ -1,0 +1,28 @@
+CREATE DATABASE IF NOT EXISTS prizm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE prizm;
+
+CREATE TABLE IF NOT EXISTS users (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY,
+ username VARCHAR(50) NOT NULL UNIQUE,
+ password VARCHAR(255) NOT NULL,
+ user_type ENUM('ADMIN_MAIN', 'ADMIN_SUB', 'USER') NOT NULL DEFAULT 'USER',
+ email VARCHAR(100) NOT NULL UNIQUE,
+ created_at DATETIME DEFAULT NOW(),
+ updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO users (username , password, user_type, email)
+VALUES 
+(
+'admin',
+'$2b$10$uLrdcdk0Bbpj7UO9iJ8p/u2xk4MQ1jBvMbD7ZzPpFwRvbyfEif0qG',
+'ADMIN_MAIN',
+'test@test.com'
+),
+(
+'admin-sub',
+'$2b$10$uLrdcdk0Bbpj7UO9iJ8p/u2xk4MQ1jBvMbD7ZzPpFwRvbyfEif0qG',
+'ADMIN_SUB',
+'test-sub@test.com'
+);
+

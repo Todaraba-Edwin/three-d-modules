@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from '@src_apps/index';
-import { UsersModule } from '@src_modules/index';
+import { UsersModule, AuthModule } from '@src_modules/index';
 import { AppService } from 'app.service';
 
 @Module({
@@ -11,6 +11,7 @@ import { AppService } from 'app.service';
       envFilePath: '.env',
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

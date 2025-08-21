@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   server:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfiles/Dockerfile.server
       args:
         APP_PATH: servers/server
@@ -15,10 +13,12 @@ services:
       - "8080:8080"
     networks:
       - my-network
+    depends_on:
+      - mariadb
 
   buildings:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfiles/Dockerfile
       args:
         APP_PATH: apps/buildings
@@ -34,6 +34,23 @@ services:
     networks:
       - my-network
 
+  mariadb:
+    image: mariadb:latest
+    container_name: prizm-mariadb
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: prizm
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
+
+volumes:
+  mariadb-data:

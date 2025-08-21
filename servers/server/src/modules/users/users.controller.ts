@@ -3,8 +3,6 @@ import { API_PREFIX, USERS } from '@src_common/index';
 import { UserType, type User } from '@src_modules_users/index';
 import { UsersService } from './users.service';
 
-// import { UsersService, UserType, type User } from '@src_modules_users/index';
-
 const { SEGMENTS, PARAMS } = USERS;
 
 @Controller(`${API_PREFIX}/${SEGMENTS.BASE}`)
