@@ -40,6 +40,9 @@ ENV APP_NAME=${APP_NAME}
 
 WORKDIR /app
 
+# bash 설치
+RUN apk add --no-cache bash
+
 # pnpm 설치
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -55,8 +58,14 @@ RUN pnpm install --filter @monorepo/${APP_NAME} --prod --frozen-lockfile
 # 빌드된 파일만 복사
 COPY --from=builder /app/${APP_PATH}/dist ./${APP_PATH}/dist
 
+COPY Dockerfiles/wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
 # 실행 포트
 EXPOSE 8080
 
 # 실행 명령 (ENV 변수를 사용하여 동적으로 경로 설정)
-CMD node ${APP_PATH}/dist/main.js
+# CMD node ${APP_PATH}/dist/main.js
+# CMD ["sh", "/wait-for-it.sh", "mariadb:3306", "--", "node", "${APP_PATH}/dist/main.js"]
+# CMD ["/bin/bash", "/wait-for-it.sh", "mariadb:3306", "--", "node", "${APP_PATH}/dist/main.js"]
+CMD ["/bin/bash", "-c", "/wait-for-it.sh mariadb:3306 -- node ${APP_PATH}/dist/main.js"]

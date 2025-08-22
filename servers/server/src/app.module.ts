@@ -13,7 +13,7 @@ import { AppService } from 'app.service';
     }),
     TypeOrmModule.forRoot({
       type: 'mariadb',
-      host: 'localhost',
+      host: 'mariadb', //'localhost',
       port: 3306,
       username: 'root',
       password: 'prizm',
