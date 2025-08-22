@@ -1,11 +1,12 @@
 import { useEffect, type ReactNode } from 'react';
 
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
 export const Home = (): ReactNode => {
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8080';
-    fetch(apiUrl);
+    fetch(VITE_API_URL);
 
-    fetch(`${apiUrl}/api/auth/login`, {
+    fetch(`${VITE_API_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
