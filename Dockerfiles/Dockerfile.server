@@ -6,6 +6,8 @@ ARG APP_NAME
 ENV APP_PATH=${APP_PATH}
 ENV APP_NAME=${APP_NAME}
 
+RUN apk add --no-cache build-base python3
+
 WORKDIR /app
 
 # pnpm 설치

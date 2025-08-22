@@ -2,7 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 
 export const Home = (): ReactNode => {
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8080';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8081';
     fetch(apiUrl);
 
     fetch(`${apiUrl}/api/auth/login`, {
@@ -12,7 +12,7 @@ export const Home = (): ReactNode => {
       },
       body: JSON.stringify({
         username: 'admin',
-        password: '1245',
+        password: '1234',
       }),
     })
       .then(response => response.json())

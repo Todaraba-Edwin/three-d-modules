@@ -11,18 +11,3 @@ CREATE TABLE IF NOT EXISTS users (
  updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT IGNORE INTO users (username , password, user_type, email)
-VALUES 
-(
-'admin',
-'$2b$10$uLrdcdk0Bbpj7UO9iJ8p/u2xk4MQ1jBvMbD7ZzPpFwRvbyfEif0qG',
-'ADMIN_MAIN',
-'test@test.com'
-),
-(
-'admin-sub',
-'$2b$10$uLrdcdk0Bbpj7UO9iJ8p/u2xk4MQ1jBvMbD7ZzPpFwRvbyfEif0qG',
-'ADMIN_SUB',
-'test-sub@test.com'
-);
-
