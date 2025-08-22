@@ -2,9 +2,11 @@
 FROM node:20-alpine AS builder
 ARG APP_PATH
 ARG APP_NAME
+ARG DB_HOST
 # ARG를 ENV로 저장하여 런타임에도 사용 가능하게 함
 ENV APP_PATH=${APP_PATH}
 ENV APP_NAME=${APP_NAME}
+ENV DB_HOST=${DB_HOST}
 
 RUN apk add --no-cache build-base python3
 
@@ -34,9 +36,10 @@ FROM node:20-alpine
 # 빌드 단계에서 설정된 ENV 변수를 그대로 사용
 ARG APP_PATH
 ARG APP_NAME
+ARG DB_HOST
 ENV APP_PATH=${APP_PATH}
 ENV APP_NAME=${APP_NAME}
-
+ENV DB_HOST=${DB_HOST}
 
 WORKDIR /app
 

@@ -6,11 +6,12 @@ services:
       args:
         APP_PATH: servers/server
         APP_NAME: server
+        DB_HOST: mariadb
     image: server-app-compose
     container_name: server-app
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - '8080:8080'
     networks:
       - my-network
     depends_on:
@@ -26,7 +27,7 @@ services:
     container_name: buildings-app
     restart: unless-stopped
     ports:
-      - "8082:80"
+      - '8082:80'
     depends_on:
       - server
     networks:
@@ -37,7 +38,7 @@ services:
     container_name: prizm-mariadb
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - '3306:3306'
     environment:
       MARIADB_ROOT_PASSWORD: prizm
     volumes:

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@src_apps/index';
-import { UsersModule, AuthModule } from '@src_modules/index';
+import { AuthModule, UsersModule } from '@src_modules/index';
 import { AppService } from 'app.service';
 
 @Module({
@@ -13,7 +13,7 @@ import { AppService } from 'app.service';
     }),
     TypeOrmModule.forRoot({
       type: 'mariadb',
-      host: 'mariadb', //'localhost',
+      host: process.env.DB_HOST || 'localhost',
       port: 3306,
       username: 'root',
       password: 'prizm',
@@ -27,4 +27,9 @@ import { AppService } from 'app.service';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log('🔧 DB_HOST:', process.env.DB_HOST);
+    console.log('🔧 NODE_ENV:', process.env.NODE_ENV);
+  }
+}
