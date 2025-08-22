@@ -1,6 +1,7 @@
 # 1단계: 빌드
 FROM node:20-alpine AS builder
 ARG APP_PATH
+ARG VITE_API_URL
 
 WORKDIR /repo
 
@@ -21,6 +22,7 @@ RUN pnpm install --frozen-lockfile
 # 앱 빌드
 
 WORKDIR /repo/${APP_PATH}
+
 RUN pnpm build
 
 # 2단계: nginx 서버로 서빙

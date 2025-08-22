@@ -30,6 +30,6 @@ import { AppService } from 'app.service';
 export class AppModule {
   constructor() {
     console.log('🔧 DB_HOST:', process.env.DB_HOST);
-    console.log('🔧 NODE_ENV:', process.env.NODE_ENV);
+
   }
 }

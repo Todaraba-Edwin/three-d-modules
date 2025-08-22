@@ -4,6 +4,8 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const Home = (): ReactNode => {
   useEffect(() => {
+    console.log('VITE_API_URL:', VITE_API_URL);
+
     fetch(VITE_API_URL);
 
     fetch(`${VITE_API_URL}/api/auth/login`, {
