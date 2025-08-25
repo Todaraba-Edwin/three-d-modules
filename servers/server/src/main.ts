@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@src_apps/index';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(cookieParser());
   app.enableCors({
     origin: [
       'http://localhost:3002', // 로컬 개발 환경
@@ -12,7 +14,7 @@ async function bootstrap() {
     ],
     credentials: true,
   }); // CORS 활성화
-  await app.listen(process.env.PORT ?? 8080, '0.0.0.0');
+  await app.listen(process.env.PORT ?? 8081, '0.0.0.0');
 }
 bootstrap().catch((error) => {
   console.error('Error during bootstrap:', error);

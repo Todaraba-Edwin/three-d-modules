@@ -1,27 +1,36 @@
 import { useEffect, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const Home = (): ReactNode => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     console.log('VITE_API_URL:', VITE_API_URL);
 
     fetch(VITE_API_URL);
 
-    fetch(`${VITE_API_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: 'admin',
-        password: '1234',
-      }),
+    fetch(`${VITE_API_URL}/api/auth/validate-session`, {
+      method: 'GET',
+      credentials: 'include',
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Login response:', data);
+        console.log('data : ', data);
+        const { statusCode } = data;
+        if (statusCode === 401) {
+          navigate('/login');
+        }
       });
   }, []);
-  return <div children='Home' />;
+  return (
+    <div
+      children={
+        <>
+          <header>HOME</header>
+        </>
+      }
+    />
+  );
 };
