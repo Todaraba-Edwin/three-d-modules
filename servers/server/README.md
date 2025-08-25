@@ -1,98 +1,81 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Nest.js Server for three-d-modules
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+이 프로젝트는 `three-d-modules` pnpm 모노레포 내의 Nest.js 기반 서버입니다. 사용자 인증 및 데이터 관리를 위한 API를 제공합니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## ✨ 주요 기능
 
-## Description
+-   **사용자 인증**: 세션 기반의 로그인, 로그아웃 및 세션 유효성 검사
+-   **사용자 관리**: 사용자 생성 및 정보 조회
+-   **중앙화된 API 상수**: `common/api` 디렉토리를 통한 API 경로, 메시지, 설정의 중앙 관리
+-   **TypeORM 연동**: `mariadb` 데이터베이스와의 연동
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📚 프로젝트 구조 및 컨벤션
 
-## Project setup
+이 프로젝트는 체계적인 개발을 위해 명확한 구조와 컨벤션을 따릅니다. 자세한 내용은 아래의 내부 문서를 참고해주세요.
+
+-   **[API 관리 컨벤션](./docs/api-conventions.md)**: API 경로, 메시지, 설정 등 상수 관리 규칙에 대해 설명합니다.
+-   **[모듈 생성 컨벤션](./docs/create-modules.md)**: 신규 모듈의 파일 구조, 네이밍, 코드 스타일 규칙에 대해 설명합니다.
+
+## ⚙️ 환경 설정
+
+이 프로젝트는 `.env` 파일을 통해 환경 변수를 관리합니다. `servers/server` 디렉토리 루트에 `.env` 파일을 생성하고 아래 내용을 참고하여 작성해주세요.
+
+```env
+# .env.example
+
+# 서버 포트
+APP_PORT=8081
+
+# 데이터베이스 연결 정보
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
+DB_DATABASE=your_db_name
+```
+
+## 🚀 시작하기
+
+### 1. 의존성 설치
+
+이 프로젝트는 pnpm 워크스페이스의 일부입니다. **프로젝트 루트 디렉토리**에서 아래 명령어를 실행하여 모든 의존성을 설치하세요.
 
 ```bash
 $ pnpm install
 ```
 
-## Compile and run the project
+### 2. 애플리케이션 실행
+
+`servers/server` 디렉토리에서 아래 스크립트를 실행할 수 있습니다.
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
+# 개발 모드 (파일 변경 감지)
 $ pnpm run start:dev
 
-# production mode
+# 프로덕션 모드
 $ pnpm run start:prod
+
+# 디버그 모드
+$ pnpm run start:debug
 ```
 
-## Run tests
+## ✅ 테스트
 
 ```bash
-# unit tests
+# 유닛 테스트
 $ pnpm run test
 
-# e2e tests
+# E2E 테스트
 $ pnpm run test:e2e
 
-# test coverage
+# 테스트 커버리지
 $ pnpm run test:cov
 ```
 
-## Deployment
+## 🛠️ 주요 기술 스택
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+-   **Framework**: [NestJS](https://nestjs.com/)
+-   **Database**: [TypeORM](https://typeorm.io/) with MariaDB/MySQL
+-   **Authentication**: Session-based with Cookies
+-   **Validation**: DTO with `class-validator` (권장)
+-   **Package Manager**: [pnpm](https://pnpm.io/)

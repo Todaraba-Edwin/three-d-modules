@@ -14,7 +14,7 @@ async function bootstrap() {
     ],
     credentials: true,
   }); // CORS 활성화
-  await app.listen(process.env.PORT ?? 8081, '0.0.0.0');
+  await app.listen(process.env.APP_PORT ?? 8081, '0.0.0.0');
 }
 bootstrap().catch((error) => {
   console.error('Error during bootstrap:', error);

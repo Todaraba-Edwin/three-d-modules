@@ -41,4 +41,8 @@ fi
 
 echo "🔍 Reading version from $0"
 
-docker-compose -p "${PROJECT_NAME}" -f Dockerfiles/docker-compose.prod-$APP_NAME.yml down -v && docker-compose -p "${PROJECT_NAME}" -f Dockerfiles/docker-compose.prod-$APP_NAME.yml up --build -d
+docker-compose -p "${PROJECT_NAME}" \
+  -f Dockerfiles/docker-compose.prod-$APP_NAME.yml down -v \
+  && docker-compose -p "${PROJECT_NAME}" \
+  -f Dockerfiles/docker-compose.prod-$APP_NAME.yml up \
+  --build -d

@@ -15,6 +15,12 @@ export const AUTH = {
   SEGMENTS: {
     BASE: 'auth',
     LOGIN: 'login',
+    lOGOUT: 'logout',
+    VALIDATE_SESSION: 'validate-session',
   },
   PARAMS: {},
+  COOKIES: {
+    SESSION_ID: 'sessionId',
+    USER_NAME: 'username',
+  },
 };

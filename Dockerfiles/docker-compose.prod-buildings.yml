@@ -7,6 +7,7 @@ services:
         APP_PATH: servers/server
         APP_NAME: server
         DB_HOST: mariadb
+        APP_PORT: 8080
     image: server-app-compose
     container_name: server-app
     restart: unless-stopped
@@ -16,7 +17,6 @@ services:
       - my-network
     depends_on:
       - mariadb
-
   buildings:
     build:
       context: ..

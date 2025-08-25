@@ -39,6 +39,7 @@ docker build \
   -f $DOCKERFILE \
   --build-arg APP_PATH=$PARENT_DIR/$APP_NAME \
   --build-arg APP_NAME=$APP_NAME \
+  --build-arg APP_PORT=$PORT \
   -t $IMAGE_NAME:$VERSION \
   -t $IMAGE_NAME:latest \
   .
