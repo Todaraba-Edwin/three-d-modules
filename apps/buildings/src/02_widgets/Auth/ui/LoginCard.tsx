@@ -1,27 +1,13 @@
 import { clsx } from 'clsx';
-import { useEffect, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 export const CardLayout = ({
   className,
   ...props
 }: React.ComponentProps<'div'>): ReactNode => {
-  const [isShort, setIsShort] = useState<boolean>(false);
-
-  useEffect(() => {
-    const checkHeight = () => {
-      setIsShort(window.innerHeight < 450);
-    };
-    checkHeight();
-    window.addEventListener('resize', checkHeight);
-    return () => window.removeEventListener('resize', checkHeight);
-  }, []);
   return (
     <div
-      className={clsx(
-        'w-full  relative z-10',
-        isShort ? '' : 'max-w-md',
-        className
-      )}
+      className={clsx('w-full max-w-md relative z-10', className)}
       {...props}
     />
   );
@@ -31,21 +17,10 @@ export const CardLBody = ({
   className,
   ...props
 }: React.ComponentProps<'div'>): ReactNode => {
-  const [isShort, setIsShort] = useState<boolean>(false);
-
-  useEffect(() => {
-    const checkHeight = () => {
-      setIsShort(window.innerHeight < 450);
-    };
-    checkHeight();
-    window.addEventListener('resize', checkHeight);
-    return () => window.removeEventListener('resize', checkHeight);
-  }, []);
   return (
     <div
       className={clsx(
         'shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-xl p-4',
-        (isShort && 'flex space-x-2 justify-between') || '',
         className
       )}
       {...props}

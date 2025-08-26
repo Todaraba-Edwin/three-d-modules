@@ -131,10 +131,25 @@ export class AuthController {
    */
   @Post(API.AUTH.SEGMENTS.lOGOUT)
   async logout(
-    @Body() body: { username: string },
+    // @Body() body: { username: string },
     @Res({ passthrough: true }) res: Response,
+    @Req() req: Request,
   ) {
-    const logoutResult = await this.authService.logout(body.username);
+    const { username, sessionId } = req.cookies;
+    const validationResult = this.authService.getValidateSession(
+      username,
+      sessionId,
+      '',
+    );
+
+
+    if (!validationResult.isValid) {
+      throw new UnauthorizedException(
+        API.API_MESSAGES.AUTH.NOT_FOUND_SESSION_SERVER,
+      );
+    }
+
+    const logoutResult = await this.authService.logout(username);
     const { message } = logoutResult;
     res.clearCookie(API.AUTH.COOKIES.SESSION_ID, { path: '/' });
     res.clearCookie(API.AUTH.COOKIES.USER_NAME, { path: '/' });

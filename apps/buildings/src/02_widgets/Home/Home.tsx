@@ -1,17 +1,18 @@
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
+import { useCookies } from 'react-cookie';
+import { useLocation } from 'react-router-dom';
 import { ButtonLogout } from '../Auth/ui/ButtonLogout';
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
-
 export const Home = (): ReactNode => {
-  useEffect(() => {
-    fetch(VITE_API_URL);
-  }, []);
+  const [cookies] = useCookies(['username']);
+  const { state } = useLocation();
+  const username = state?.username || cookies.username;
+
   return (
     <div
       children={
         <>
-          <header>HOME</header>
+          <header>HOME - {username}</header>
           <ButtonLogout />
         </>
       }

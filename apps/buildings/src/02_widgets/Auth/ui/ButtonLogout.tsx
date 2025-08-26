@@ -14,13 +14,20 @@ export const ButtonLogout = (): ReactNode => {
             'Content-Type': 'application/json',
           },
           credentials: 'include', // 쿠키 자동 전송
-          body: JSON.stringify({
-            username: 'admin',
-          }),
         })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Logout response:', data);
+          .then(async response => {
+            const data = await response.json();
+            if (response.ok) {
+              return data;
+            } else {
+              throw data;
+            }
+          })
+          .then(() => {
+            navigate('/login');
+          })
+          .catch(errorDate => {
+            console.log(errorDate.message);
             navigate('/login');
           });
       }}
