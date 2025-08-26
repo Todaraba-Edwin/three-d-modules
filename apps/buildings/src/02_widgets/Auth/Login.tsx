@@ -1,6 +1,18 @@
-import { Building2 } from 'lucide-react';
-import { type ReactNode } from 'react';
+import dayjs from 'dayjs';
 import {
+  AlertTriangle,
+  Building2,
+  Eye,
+  EyeOff,
+  Package,
+  Shield,
+} from 'lucide-react';
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from './ui/Button';
+import { Input } from './ui/Input';
+import {
+  CardContent,
   CardDesc,
   CardHeader,
   CardIconBox,
@@ -9,41 +21,283 @@ import {
   CardSpan,
   CardTitle,
 } from './ui/LoginCard';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+const LOGIN_INFO = {
+  PROJECT_NAME: 'PRIZM',
+  PROJECT_FULL_NAME: `Projection planes for resource integration\nin zone-based management`,
+  PROJECT_DESC: '3D 모델 기반 건물관리 시스템',
+  PROGRAM_PROVIDER: `(주) PCN © 2020-${dayjs().format('YYYY')}`,
+};
+
+const Accounts = [
+  {
+    username: 'admin',
+    password: '1234',
+    role: '시스템 관리자',
+    description: '전체 시스템 관리 권한',
+    icon: Shield,
+    color: 'bg-red-50 border-red-200 text-red-700',
+  },
+];
 
 export const Login = (): ReactNode => {
+  const [isRender, setIsRender] = useState<boolean>(false);
+  const [isFocusLogin, setIsFocusLogin] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errMessage, setErrMessage] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    processLogin(username, password);
+  };
+
+  const onForceSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    processLogin(username, password, true);
+  };
+
+  const processLogin = (user: string, pass: string, force?: boolean) => {
+    setIsLoading(true);
+    fetch(`${VITE_API_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // 쿠키 자동 전송
+      body: JSON.stringify({
+        username: user,
+        password: pass,
+        force: force,
+      }),
+    })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+          throw data;
+        }
+        return data; // 200일 때
+      })
+      .then(data => {
+        console.log('Login success:', data);
+        setIsLoading(false);
+        setIsFocusLogin(false);
+        setErrMessage('');
+        navigate('/');
+      })
+      .catch(
+        (errData: { message: string; error: string; statusCode: number }) => {
+          const { statusCode } = errData;
+          switch (statusCode) {
+            case 409:
+              setIsFocusLogin(true);
+              break;
+            default:
+              setErrMessage(errData.message);
+              break;
+          }
+
+          setIsLoading(false);
+        }
+      );
+  };
+
+  const handleQuickLogin = (account: (typeof Accounts)[0]) => {
+    setUsername(account.username);
+    setPassword(account.password);
+    processLogin(account.username, account.password);
+  };
+
+  useEffect(() => {
+    fetch(`${VITE_API_URL}/api/auth/validate-session`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then(async response => {
+        const data = await response.json();
+        if (response.ok) {
+          return data;
+        }
+        throw data;
+      })
+      .then(() => {
+        navigate('/');
+      })
+      .catch(() => {
+        setIsRender(true);
+      });
+  }, []);
+
+  if (!isRender) {
+    return <></>;
+  }
+
   return (
-    <CardLayout className='w-full max-w-md relative z-10'>
-      <CardLBody className='shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-xl p-4'>
-        <CardHeader className='text-center pb-2'>
-          <CardIconBox className='mx-auto w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg'>
+    <CardLayout>
+      <CardLBody>
+        <CardHeader>
+          <CardIconBox>
             <Building2 className='w-8 h-8 text-white' />
           </CardIconBox>
-          <CardTitle
-            className='text-2xl bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'
-            children='PRIZM'
-          />
-          <CardDesc className='text-center'>
+          <CardTitle children={LOGIN_INFO.PROJECT_NAME} />
+          <CardDesc>
             <CardSpan
-              className='block text-sm font-medium text-gray-700 mb-1'
-              children='3D 모델 기반 건물관리 시스템'
+              spanType='text-xs-pre-line'
+              children={LOGIN_INFO.PROJECT_FULL_NAME}
             />
-            <CardSpan
-              className='block text-xs text-gray-500 whitespace-pre-line'
-              children={`Projection planes for resource integration\nin zone-based management`}
-            />
+            <CardSpan spanType='text-sm' children={LOGIN_INFO.PROJECT_DESC} />
           </CardDesc>
         </CardHeader>
+        <CardContent>
+          <form className='space-y-4' onSubmit={onSubmit}>
+            <div className=' space-y-2'>
+              <label
+                children='사용자명'
+                className='text-sm font-medium text-gray-700'
+              />
+            </div>
+            <div className='relative'>
+              <Input
+                id='username'
+                autoComplete='username'
+                type='text'
+                placeholder='사용자명을 입력하세요'
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                required
+                className='h-11 bg-white/70'
+              />
+            </div>
+            <div className='space-y-2'>
+              <label
+                htmlFor='password'
+                className='text-sm font-medium text-gray-700'
+              >
+                비밀번호
+              </label>
+              <div className='relative'>
+                <Input
+                  id='password'
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='비밀번호를 입력하세요'
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  className='h-11 bg-white/70 pr-11'
+                />
+                <button
+                  type='button'
+                  onClick={() => setShowPassword(!showPassword)}
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors'
+                >
+                  {showPassword ? (
+                    <EyeOff className='w-4 h-4' />
+                  ) : (
+                    <Eye className='w-4 h-4' />
+                  )}
+                </button>
+              </div>
+            </div>
+            {errMessage && <div>{errMessage}</div>}
+            <Button
+              type='submit'
+              className='w-full h-11 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg'
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2'></div>
+                  로그인 중...
+                </>
+              ) : (
+                '로그인'
+              )}
+            </Button>
+          </form>
+        </CardContent>
+        {/* 보안 정보 */}
+        <div>
+          <div className='space-y-3 pt-4 border-t border-gray-200 mt-4'>
+            <p className='text-sm text-gray-600 text-center'>빠른 접속</p>
+            <div className='space-y-2'>
+              {Accounts.map(account => (
+                <Button
+                  key={account.username}
+                  variant='outline'
+                  onClick={() => handleQuickLogin(account)}
+                  className={`w-full h-auto p-3 ${account.color} border hover:shadow-md transition-all duration-200`}
+                  disabled={isLoading}
+                >
+                  <div className='flex items-center justify-between w-full'>
+                    <div className='flex items-center gap-3'>
+                      <account.icon className='w-5 h-5' />
+                      <div className='text-left'>
+                        <p className='font-medium'>{account.role}</p>
+                        <p className='text-xs opacity-75'>
+                          {account.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className='text-center text-xs text-gray-500 bg-gray-50 p-3 rounded-lg'>
+            <Package className='w-4 h-4 inline mr-1' />
+            {LOGIN_INFO.PROGRAM_PROVIDER}
+          </div>
+        </div>
       </CardLBody>
+      {isFocusLogin && (
+        <div className='fixed top-0 left-0 w-full h-full'>
+          <div className='w-full h-full bg-gray-600 opacity-40' />
+          <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:max-w-md bg-white p-4  rounded-2xl'>
+            <div className='space-y-4'>
+              <div className='flex items-center gap-2'>
+                <AlertTriangle className='w-5 h-5 text-amber-500' />
+                로그인 이력 감지
+              </div>
+
+              <div className='space-y-3'>
+                <div className='bg-amber-50 border border-amber-200 rounded-lg p-3'>
+                  <p className='text-sm font-medium text-amber-800'>
+                    현재 다른 위치에서 이 계정으로 접속 중입니다. 계속하시면
+                    기존 접속이 종료됩니다.
+                  </p>
+                </div>
+
+                <div className='flex gap-2'>
+                  <Button
+                    variant='outline'
+                    onClick={() => setIsFocusLogin(false)}
+                    className='flex-1'
+                  >
+                    취소
+                  </Button>
+                  <Button
+                    onClick={onForceSubmit}
+                    className='flex-1 bg-amber-500 hover:bg-amber-600'
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2'></div>
+                        현재 PC에서 로그인 중...
+                      </>
+                    ) : (
+                      '현재 PC에서 로그인'
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </CardLayout>
   );
 };
-
-{
-  /* 
-    <ButtonLogin />
-    <br />
-    <Button />
-    <br />
-    <ButtonLogout />   
-  */
-}

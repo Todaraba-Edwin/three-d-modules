@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const ButtonLogout = (): ReactNode => {
+  const navigate = useNavigate();
+
   return (
     <button
       onClick={() => {
@@ -18,7 +21,7 @@ export const ButtonLogout = (): ReactNode => {
           .then(response => response.json())
           .then(data => {
             console.log('Logout response:', data);
-            // navigate('/');
+            navigate('/login');
           });
       }}
       children='로그아웃'

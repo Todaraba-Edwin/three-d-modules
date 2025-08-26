@@ -1,5 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ButtonLogout } from '../Auth/ui/ButtonLogout';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,6 +30,7 @@ export const Home = (): ReactNode => {
       children={
         <>
           <header>HOME</header>
+          <ButtonLogout />
         </>
       }
     />
