@@ -10,7 +10,10 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
-  private activeSessions = new Map<string, { sessionId: string }>();
+  private activeSessions = new Map<
+    string,
+    { sessionId: string; clientSignature: string }
+  >();
   constructor(private usersService: UsersService) {}
 
   /**
@@ -23,6 +26,7 @@ export class AuthService {
    * @param username - 사용자 이름
    * @param password - 사용자 비밀번호
    * @param force - 중복 로그인 허용 여부 (true일 경우 기존 세션 덮어씀)
+   * @param clientSignature - 클라이언트 식별 시그니처 (예: "Chrome on macOS")
    *
    * @returns 로그인 성공 시, 성공 메시지, 사용자 이름, 세션 ID 객체 반환
    *
@@ -33,6 +37,7 @@ export class AuthService {
     username: string,
     password: string,
     force: boolean = false,
+    clientSignature: string,
   ): Promise<{ message: string; username: string; sessionId?: string }> {
     const user = await this.usersService.getUserByUsername(username);
 
@@ -51,7 +56,7 @@ export class AuthService {
     }
 
     const sessionId = randomBytes(16).toString('hex');
-    this.activeSessions.set(username, { sessionId });
+    this.activeSessions.set(username, { sessionId, clientSignature });
 
     return {
       message: API_MESSAGES.AUTH.SUCCEED_LOGIN,
@@ -76,10 +81,21 @@ export class AuthService {
    * @description 제공된 사용자 이름과 세션 ID가 서버에 저장된 값과 일치하는지 확인.
    * @param username - 검증할 사용자 이름
    * @param sessionId - 검증할 세션 ID
-   * @returns 세션이 유효하면 true, 그렇지 않으면 false 반환
+   * @param clientSignature - 검증을 요청한 클라이언트의 식별 시그니처
+   * @returns 세션 유효성 결과 객체. 실패 시 저장된 클라이언트 시그니처를 포함할 수 있음.
    */
-  getValidateSession(username: string, sessionId: string): boolean {
+  getValidateSession(
+    username: string,
+    sessionId: string,
+    clientSignature: string,
+  ): { isValid: boolean; storedClientSignature?: string } {
     const userSession = this.activeSessions.get(username);
-    return !!userSession && userSession.sessionId === sessionId;
+
+    // 세션 정보가 없거나 세션 ID가 일치하지 않으면 실패
+    if (!userSession || userSession.sessionId !== sessionId) {
+      return { isValid: false, storedClientSignature: clientSignature };
+    }
+
+    return { isValid: true };
   }
 }

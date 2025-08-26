@@ -12,6 +12,7 @@
   "dependencies": {
     "@monorepo/shared": "workspace:*",
     "cesium": "^1.131.0",
+    "lucide-react": "^0.541.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1"
