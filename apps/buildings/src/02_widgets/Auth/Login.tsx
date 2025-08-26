@@ -143,12 +143,16 @@ export const Login = (): ReactNode => {
             <Building2 className='w-8 h-8 text-white' />
           </CardIconBox>
           <CardTitle children={LOGIN_INFO.PROJECT_NAME} />
-          <CardDesc>
+          <CardDesc >
+            <CardSpan
+              spanType='text-sm'
+              className='bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'
+              children={LOGIN_INFO.PROJECT_DESC}
+            />
             <CardSpan
               spanType='text-xs-pre-line'
               children={LOGIN_INFO.PROJECT_FULL_NAME}
             />
-            <CardSpan spanType='text-sm' children={LOGIN_INFO.PROJECT_DESC} />
           </CardDesc>
         </CardHeader>
         <CardContent>
