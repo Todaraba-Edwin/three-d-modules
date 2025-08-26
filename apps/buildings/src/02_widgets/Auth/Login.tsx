@@ -7,7 +7,7 @@ import {
   Package,
   Shield,
 } from 'lucide-react';
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useState, type FormEvent, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
@@ -42,7 +42,6 @@ const Accounts = [
 ];
 
 export const Login = (): ReactNode => {
-  const [isRender, setIsRender] = useState<boolean>(false);
   const [isFocusLogin, setIsFocusLogin] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -111,30 +110,6 @@ export const Login = (): ReactNode => {
     processLogin(account.username, account.password);
   };
 
-  useEffect(() => {
-    fetch(`${VITE_API_URL}/api/auth/validate-session`, {
-      method: 'GET',
-      credentials: 'include',
-    })
-      .then(async response => {
-        const data = await response.json();
-        if (response.ok) {
-          return data;
-        }
-        throw data;
-      })
-      .then(() => {
-        navigate('/');
-      })
-      .catch(() => {
-        setIsRender(true);
-      });
-  }, []);
-
-  if (!isRender) {
-    return <></>;
-  }
-
   return (
     <CardLayout>
       <CardLBody>
@@ -143,7 +118,7 @@ export const Login = (): ReactNode => {
             <Building2 className='w-8 h-8 text-white' />
           </CardIconBox>
           <CardTitle children={LOGIN_INFO.PROJECT_NAME} />
-          <CardDesc >
+          <CardDesc>
             <CardSpan
               spanType='text-sm'
               className='bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'
@@ -259,43 +234,45 @@ export const Login = (): ReactNode => {
       {isFocusLogin && (
         <div className='fixed top-0 left-0 w-full h-full'>
           <div className='w-full h-full bg-gray-600 opacity-40' />
-          <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:max-w-md bg-white p-4  rounded-2xl'>
-            <div className='space-y-4'>
-              <div className='flex items-center gap-2'>
-                <AlertTriangle className='w-5 h-5 text-amber-500' />
-                로그인 이력 감지
-              </div>
-
-              <div className='space-y-3'>
-                <div className='bg-amber-50 border border-amber-200 rounded-lg p-3'>
-                  <p className='text-sm font-medium text-amber-800'>
-                    현재 다른 위치에서 이 계정으로 접속 중입니다. 계속하시면
-                    기존 접속이 종료됩니다.
-                  </p>
+          <div className='absolute w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4'>
+            <div className=' bg-white p-4  rounded-2xl'>
+              <div className='space-y-4'>
+                <div className='flex items-center gap-2'>
+                  <AlertTriangle className='w-5 h-5 text-amber-500' />
+                  로그인 이력 감지
                 </div>
 
-                <div className='flex gap-2'>
-                  <Button
-                    variant='outline'
-                    onClick={() => setIsFocusLogin(false)}
-                    className='flex-1'
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    onClick={onForceSubmit}
-                    className='flex-1 bg-amber-500 hover:bg-amber-600'
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2'></div>
-                        현재 PC에서 로그인 중...
-                      </>
-                    ) : (
-                      '현재 PC에서 로그인'
-                    )}
-                  </Button>
+                <div className='space-y-3'>
+                  <div className='bg-amber-50 border border-amber-200 rounded-lg p-3'>
+                    <p className='text-sm font-medium text-amber-800'>
+                      현재 다른 위치에서 이 계정으로 접속 중입니다. 계속하시면
+                      기존 접속이 종료됩니다.
+                    </p>
+                  </div>
+
+                  <div className='flex flex-col gap-2 '>
+                    <Button
+                      onClick={onForceSubmit}
+                      className='flex-1 bg-amber-500 hover:bg-amber-600'
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2'></div>
+                          현재 PC에서 로그인 중...
+                        </>
+                      ) : (
+                        '현재 PC에서 로그인'
+                      )}
+                    </Button>
+                    <Button
+                      variant='outline'
+                      onClick={() => setIsFocusLogin(false)}
+                      className='flex-1'
+                    >
+                      취소
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
