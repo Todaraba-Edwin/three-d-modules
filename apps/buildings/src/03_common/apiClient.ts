@@ -7,7 +7,10 @@ import { router } from '../router';
  * @param options - fetch 옵션
  * @returns fetch 응답 객체
  */
-export const apiClient = async (url: string, options: RequestInit = {}) => {
+export const apiClient = async (
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> => {
   const response = await fetch(url, {
     ...options,
     credentials: 'include', // 항상 쿠키를 포함하여 요청

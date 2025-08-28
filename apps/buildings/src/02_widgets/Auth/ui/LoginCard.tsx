@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import { type ReactNode } from 'react';
+import { isMobile } from 'react-device-detect';
 
 export const CardLayout = ({
   className,
@@ -7,7 +8,11 @@ export const CardLayout = ({
 }: React.ComponentProps<'div'>): ReactNode => {
   return (
     <div
-      className={clsx('w-full max-w-md relative z-10', className)}
+      className={clsx(
+        'w-full relative z-10',
+        isMobile ? 'max-w-md ' : ' max-w-lg',
+        className
+      )}
       {...props}
     />
   );

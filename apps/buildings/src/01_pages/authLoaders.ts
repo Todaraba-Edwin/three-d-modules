@@ -58,7 +58,7 @@ export const loginPageLoader = async (): RouteLoaderType => {
  * @description 보호된 페이지들을 위한 loader.
  * 로그인되지 않은 상태라면 로그인 페이지로 리다이렉트합니다.
  */
-export const protectedRouteLoader = async () => {
+export const protectedRouteLoader = async (): Promise<Response | null> => {
   const authData = await checkAuth();
   if (!authData) {
     return redirect('/login');
