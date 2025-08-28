@@ -64,6 +64,18 @@ export class AuthController {
     );
 
     const { message, sessionId, username } = loginResult;
+    // const origin = req.headers['origin'];
+    // let cookieDomain: string | undefined;
+    // if (origin) {
+    //   try {
+    //     cookieDomain = new URL(origin).hostname;
+    //   } catch (e) {
+    //     console.error('Invalid Origin header, cannot set cookie domain', e);
+    //     cookieDomain = undefined;
+    //   }
+    // }
+
+    // console.log('cookieDomain', cookieDomain);
 
     if (sessionId) {
       res.cookie(
@@ -141,7 +153,6 @@ export class AuthController {
       sessionId,
       '',
     );
-
 
     if (!validationResult.isValid) {
       throw new UnauthorizedException(
