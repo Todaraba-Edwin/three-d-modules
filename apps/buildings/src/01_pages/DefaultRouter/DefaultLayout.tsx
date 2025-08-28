@@ -60,7 +60,7 @@ export const DefaultLayout = (): ReactNode => {
       {isFocusLogin && (
         <div className='fixed top-0 left-0 w-full h-full'>
           <div className='w-full h-full bg-gray-600 opacity-40' />
-          <div className='absolute w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4'>
+          <div className='absolute w-full max-w-sm top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4'>
             <div className=' bg-white p-4  rounded-2xl'>
               <div className='space-y-4'>
                 <div className='flex items-center gap-2'>
