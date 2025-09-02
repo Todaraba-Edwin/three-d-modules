@@ -1,9 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import * as snmp from 'net-snmp';
 import { firstValueFrom } from 'rxjs';
 import { GetSwitchInfoDto, HyesungPortStateDto } from './dto';
-
-// net-snmp 라이브러리 임포트
 
 @Injectable()
 export class SwitchesService {
@@ -48,9 +47,9 @@ export class SwitchesService {
   }
 
   async getHyesungPortState(
-    GetSwitchInfoDto: GetSwitchInfoDto,
+    getSwitchPortStateDto: GetSwitchInfoDto,
   ): Promise<HyesungPortStateDto[]> {
-    const { ipAddress, username, password } = GetSwitchInfoDto;
+    const { ipAddress, username, password } = getSwitchPortStateDto;
 
     const credentials = `${username}:${password}`;
     const encodedCredentials = Buffer.from(credentials).toString('base64');
@@ -77,6 +76,68 @@ export class SwitchesService {
         error.response?.data || error.message,
       );
       throw new InternalServerErrorException('Failed to fetch port state.');
+    }
+  }
+
+  /**
+   * @summary HYESUNG 스위치에서 SNMP를 통해 포트 상태 조회
+   * @description
+   * SNMPv2c를 사용하여 스위치의 포트 상태 정보를 가져옵니다.
+   * OID: .1.3.6.1.2.1.2.2.1.7 (ifAdminStatus), .1.3.6.1.2.1.2.2.1.8 (ifOperStatus)
+   * .1.3.6.1.2.1.2.2.1.2 (ifDescr), .1.3.6.1.2.1.2.2.1.3 (ifType)
+   *
+   * @param getSwitchPortStateDto - IP 주소, 커뮤니티 문자열(username 필드 사용) 포함 DTO
+   * @returns 포트 상태 정보 배열
+   * @throws {InternalServerErrorException} SNMP 통신 실패 시
+   */
+  async getHyesungPortStateSnmp(
+    getSwitchPortStateDto: GetSwitchInfoDto,
+  ): Promise<any[]> {
+    const { ipAddress, username: community } = getSwitchPortStateDto;
+    const ports: any[] = [];
+
+    const session = snmp.createSession(ipAddress, community, {
+      version: snmp.Version2c,
+    });
+
+    // --- DEBUGGING: Query only one simple OID ---
+    const oidsToQuery: string[] = [
+      '1.3.6.1.2.1.1.1.0', // sysDescr OID
+      '1.3.6.1.2.1.2.2.1.7.1000001',
+      '1.3.6.1.2.1.2.2.1.8.1000001',
+      '1.3.6.1.2.1.2.2.1.8.1000012',
+    ];
+    // --- END DEBUGGING ---
+
+    try {
+      const varbinds = await new Promise<any[]>((resolve, reject) => {
+        session.get(oidsToQuery, (error, varbinds) => {
+          console.error('SNMP get error (DEBUG):', error);
+          if (error) {
+            return reject(error);
+          }
+          resolve(varbinds);
+        });
+      });
+
+      // OID 결과를 포트별로 파싱 (주석 처리된 부분은 그대로 둠)
+      console.log('SNMP varbinds (DEBUG):', varbinds);
+      for (let i = 0; i < varbinds.length; i++) {
+        ports.push({
+          port_oid: varbinds[i].oid,
+          port_value: varbinds[i].value.toString(),
+          port_type: varbinds[i].type,
+        });
+      }
+
+      return ports;
+    } catch (error) {
+      console.error('SNMP fetching port state failed:', error.message);
+      throw new InternalServerErrorException(
+        'Failed to fetch port state via SNMP.',
+      );
+    } finally {
+      session.close();
     }
   }
 }
