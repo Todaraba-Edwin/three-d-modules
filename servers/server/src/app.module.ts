@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@src_apps/index';
 import { AuthModule, UsersModule } from '@src_modules/index';
 import { AppService } from 'app.service';
+import { SwitchesModule } from './modules/switches/switches.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AppService } from 'app.service';
     }),
     UsersModule,
     AuthModule,
+    SwitchesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

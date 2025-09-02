@@ -24,3 +24,12 @@ export const AUTH = {
     USER_NAME: 'username',
   },
 };
+
+export const SWITCHES = {
+  SEGMENTS: {
+    BASE: 'switches',
+    HYESUNG: 'hyesung',
+    PORT_STATE: 'port-state',
+  },
+  PARAMS: {},
+};
