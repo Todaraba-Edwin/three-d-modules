@@ -1,0 +1,185 @@
+//// ----------------------------------------------------
+//// Prizm LMS - ERD (DBML Diagram)
+//// Generated from LMS_ERD.md
+//// ----------------------------------------------------
+
+Table buildings {
+  id bigint [pk, increment]
+  name varchar(100) [not null, unique]
+  address varchar(255)
+  latitude decimal(10, 8)
+  longitude decimal(11, 8)
+}
+
+Table floors {
+  id bigint [pk, increment]
+  building_id bigint [not null]
+  name varchar(50) [not null]
+}
+
+Table spaces {
+  id bigint [pk, increment]
+  floor_id bigint [not null]
+  name varchar(100) [not null]
+  type varchar(50)
+}
+
+Table enclosures {
+  id bigint [pk, increment]
+  name varchar(100) [not null]
+  type enclosure_type
+  parent_enclosure_id bigint
+  location json [not null]
+  description json
+}
+
+Table lines {
+  id bigint [pk, increment]
+  type line_type [not null]
+  line_info_id bigint [not null, note: 'Polymorphic FK to fibers.id, etc.']
+}
+
+Table fibers {
+  id bigint [pk, increment]
+  from_enclosure_id bigint [not null]
+  to_enclosure_id bigint [not null]
+  fiber_type fiber_connection_type
+  core_count int [not null]
+  length_m bigint
+  description json
+  path json
+}
+
+Table cores {
+  id bigint [pk, increment]
+  fiber_id bigint [not null]
+  core_number int [not null]
+  from_port_id bigint
+  to_port_id bigint
+  otdr_loss decimal(10, 5)
+  otdr_distance bigint
+  state core_state [not null]
+  circuit_id bigint
+  circuit_sequence int
+}
+
+Table rings {
+  id bigint [pk, increment]
+  name varchar(255) [not null, unique]
+  description json
+}
+
+Table circuits {
+  id bigint [pk, increment]
+  ring_id bigint
+  name varchar(255) [not null, unique]
+  start_port_id bigint [not null]
+  end_port_id bigint [not null]
+  total_otdr_distance bigint
+  description json
+}
+
+Table manufacturers {
+  id bigint [pk, increment]
+  name varchar(100) [not null, unique]
+  description json
+}
+
+Table switch_models {
+  id bigint [pk, increment]
+  manufacturer_id bigint [not null]
+  model_name varchar(100) [not null, unique]
+  port_info json
+  description json
+}
+
+Table switches {
+  id bigint [pk, increment]
+  enclosure_id bigint [not null]
+  switch_model_id bigint [not null]
+  name varchar(100) [not null, unique]
+  serial_number varchar(255) [not null, unique]
+  form_factor switch_form_factor
+  description json
+}
+
+Table devices {
+  id bigint [pk, increment]
+  device_type varchar(100) [not null]
+  name varchar(100) [not null, unique]
+  description json
+}
+
+Table ports {
+  id bigint [pk, increment]
+  switch_id bigint [not null]
+  port_number int [not null]
+  port_type port_type_enum [not null]
+  is_input boolean
+  connected_device_id bigint
+  neighbor_chassis_id varchar(255)
+  neighbor_port_id varchar(255)
+  neighbor_system_name varchar(255)
+  last_updated timestamp [not null]
+}
+
+//// ----------------------------------------------------
+////     ENUMS
+//// ----------------------------------------------------
+
+Enum enclosure_type {
+  MDF
+  ODF
+  OFD
+  FDF
+  IDF
+}
+
+Enum line_type {
+  FIBER
+  ELECTRONIC
+}
+
+Enum fiber_connection_type {
+  SINGLE
+  MULTI
+  MIXED
+}
+
+Enum core_state {
+  ACTIVE
+  INACTIVE
+  BROKEN
+}
+
+Enum switch_form_factor {
+  INTERNAL
+  EXTERNAL
+}
+
+Enum port_type_enum {
+  OPTICAL
+  LAN
+}
+
+//// ----------------------------------------------------
+////     RELATIONSHIPS
+//// ----------------------------------------------------
+
+Ref: floors.building_id > buildings.id
+Ref: spaces.floor_id > floors.id
+Ref: enclosures.parent_enclosure_id > enclosures.id
+Ref: fibers.from_enclosure_id > enclosures.id
+Ref: fibers.to_enclosure_id > enclosures.id
+Ref: cores.fiber_id > fibers.id
+Ref: cores.from_port_id > ports.id
+Ref: cores.to_port_id > ports.id
+Ref: cores.circuit_id > circuits.id
+Ref: circuits.ring_id > rings.id
+Ref: circuits.start_port_id > ports.id
+Ref: circuits.end_port_id > ports.id
+Ref: switch_models.manufacturer_id > manufacturers.id
+Ref: switches.enclosure_id > enclosures.id
+Ref: switches.switch_model_id > switch_models.id
+Ref: ports.switch_id > switches.id
+Ref: ports.connected_device_id > devices.id
