@@ -42,9 +42,14 @@ services:
       - '3306:3306'
     environment:
       MARIADB_ROOT_PASSWORD: prizm
+    # volumes:
+    #   - mariadb-data:/var/lib/mysql
+    #   - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+
     volumes:
       - mariadb-data:/var/lib/mysql
-      - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db-init/init_USER.sql:/docker-entrypoint-initdb.d/init_USER.sql
+      - ./db-init/init_LMS.sql:/docker-entrypoint-initdb.d/init_LMS.sql  
     networks:
       - my-network
 
