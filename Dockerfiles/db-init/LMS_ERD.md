@@ -80,34 +80,34 @@
 
 ### 2.2. 장비 그룹
 
-#### `enclosures` - 함체 정보
+#### `enclosures` - 함체 정보 (수정)
 
 | 컬럼명 | 데이터 타입 | 제약조건 | 설명 |
 | --- | --- | --- | --- |
 | `id` | BIGINT | PK, AI | 함체 고유 ID |
+| `space_id` | BIGINT | FK | 설치된 공간 ID (`spaces.id`) |
 | `name` | VARCHAR(100) | NN | 함체명 (예: 메인배전함, 중간배전함) |
 | `type` | ENUM('MDF', 'ODF', 'OFD', 'FDF', 'IDF') | | 배전함 종류 |
 | `parent_enclosure_id` | BIGINT | FK | 상위 배전함_id |
-| `location` | JSON | NN | JSON({lat, log, height}) |
+| `location` | JSON | NN | 3D 공간 내 좌표 JSON({lat, log, height}) |
 | `description` | JSON | | 설명 (예: JSON({content, images})) |
 
-#### `lines` - 선로 정보
+#### `lines` - 선로 정보 (수정)
 
 | 컬럼명 | 데이터 타입 | 제약조건 | 설명 |
 | --- | --- | --- | --- |
-| `id` | BIGINT | PK, AI | 선로 고유 ID |
-| `type` | ENUM('FIBER', 'ELECTRONIC') | NN | 선로 타입 |
-| `line_info_id` | BIGINT | NN, FK | 해당 선로 상세ID (e.g., `fibers.id`) |
+| `id` | BIGINT | PK, AI | 선로의 고유 ID |
+| `type` | ENUM('FIBER', 'ELECTRONIC') | NN | 선로 타입 (광선로, 전기선로 등) |
 
 > **`fibers`와 `cores`의 관계**
 > - `fibers` 테이블은 **물리적인 광케이블**이 어떤 **함체(Enclosure)**와 어떤 **함체** 사이에 설치되었는지를 정의합니다. (거시적, 물리적 경로)
 > - `cores` 테이블은 그 케이블 내 **개별 광섬유 가닥**이 A 함체의 **스위치 포트(Port)**와 B 함체의 **스위치 포트**를 어떻게 연결하는지를 정의합니다. (미시적, 논리적 신호 경로)
 
-#### `fibers` - 광케이블 정보
+#### `fibers` - 광케이블 정보 (수정)
 
 | 컬럼명 | 데이터 타입 | 제약조건 | 설명 |
 | --- | --- | --- | --- |
-| `id` | BIGINT | PK, AI | 광케이블 고유 ID |
+| `line_id` | BIGINT | PK, FK | 선로 ID (`lines.id`) |
 | `from_enclosure_id` | BIGINT | NN, FK | 연결된 시작 함체 (`enclosures.id`) |
 | `to_enclosure_id` | BIGINT | NN, FK | 연결된 종료 함체 (`enclosures.id`) |
 | `fiber_type` | ENUM('SINGLE', 'MULTI', 'MIXED') | | 광케이블의 연결방식 |

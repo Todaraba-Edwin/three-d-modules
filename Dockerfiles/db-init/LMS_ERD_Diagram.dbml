@@ -26,6 +26,7 @@ Table spaces {
 
 Table enclosures {
   id bigint [pk, increment]
+  space_id bigint [note: 'FK to spaces.id']
   name varchar(100) [not null]
   type enclosure_type
   parent_enclosure_id bigint
@@ -36,11 +37,10 @@ Table enclosures {
 Table lines {
   id bigint [pk, increment]
   type line_type [not null]
-  line_info_id bigint [not null, note: 'Polymorphic FK to fibers.id, etc.']
 }
 
 Table fibers {
-  id bigint [pk, increment]
+  line_id bigint [pk, ref: > lines.id]
   from_enclosure_id bigint [not null]
   to_enclosure_id bigint [not null]
   fiber_type fiber_connection_type
@@ -168,10 +168,11 @@ Enum port_type_enum {
 
 Ref: floors.building_id > buildings.id
 Ref: spaces.floor_id > floors.id
+Ref: enclosures.space_id > spaces.id
 Ref: enclosures.parent_enclosure_id > enclosures.id
 Ref: fibers.from_enclosure_id > enclosures.id
 Ref: fibers.to_enclosure_id > enclosures.id
-Ref: cores.fiber_id > fibers.id
+Ref: cores.fiber_id > fibers.line_id
 Ref: cores.from_port_id > ports.id
 Ref: cores.to_port_id > ports.id
 Ref: cores.circuit_id > circuits.id
