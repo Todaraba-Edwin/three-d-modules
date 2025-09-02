@@ -1,3 +1,5 @@
+USE prizm;
+
 CREATE TABLE `buildings` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100) UNIQUE NOT NULL,
