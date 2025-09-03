@@ -9,7 +9,7 @@ const { SEGMENTS } = API.SWITCHES;
 export class SwitchesController {
   constructor(private readonly switchesService: SwitchesService) {}
 
-  @Post(`snmp/${SEGMENTS.PORT_STATE}`) // New endpoint path
+  @Post(`snmp/${SEGMENTS.PORT_STATE}`)
   getPortStates(@Body() getSwitchInfoDto: GetSwitchInfoDto): Promise<any> {
     return this.switchesService.getPortStates(getSwitchInfoDto);
   }
