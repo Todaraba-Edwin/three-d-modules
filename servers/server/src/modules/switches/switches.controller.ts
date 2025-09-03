@@ -1,16 +1,21 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import * as API from '@src_apps/common/api';
 import { GetSwitchInfoDto } from './dto';
 import { SwitchesService } from './switches.service';
 
-const { SEGMENTS } = API.SWITCHES;
+const {
+  API_PREFIX,
+  SWITCHES: {
+    SEGMENTS: { BASE, SNMP, PORT_STATE },
+  },
+} = API;
 
-@Controller(`${API.API_PREFIX}/${SEGMENTS.BASE}`)
+@Controller(`${API_PREFIX}/${BASE}`)
 export class SwitchesController {
   constructor(private readonly switchesService: SwitchesService) {}
 
-  @Post(`snmp/${SEGMENTS.PORT_STATE}`)
-  getPortStates(@Body() getSwitchInfoDto: GetSwitchInfoDto): Promise<any> {
+  @Get(`${SNMP}/${PORT_STATE}`)
+  getPortStates(@Query() getSwitchInfoDto: GetSwitchInfoDto): Promise<any> {
     return this.switchesService.getPortStates(getSwitchInfoDto);
   }
 }

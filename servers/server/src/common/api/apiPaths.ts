@@ -28,7 +28,7 @@ export const AUTH = {
 export const SWITCHES = {
   SEGMENTS: {
     BASE: 'switches',
-    HYESUNG: 'hyesung',
+    SNMP : 'snmp',
     PORT_STATE: 'port-state',
   },
   PARAMS: {},

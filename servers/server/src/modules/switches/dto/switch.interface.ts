@@ -1,8 +1,10 @@
+import { IsString, IsInt, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 export class GetSwitchInfoDto {
   ipAddress: string;
   username: string;
   password: string;
-  name_oid?: string;  
+  name_oid?: string;
   start_port?: number;
   end_port?: number;
 }
@@ -34,4 +36,28 @@ export class SwitchPortInfo {
 export class SwitchPortsSNMP {
   port_name: string;
   [key: `port_${number}`]: SwitchPortInfo; // 가변 포트
+}
+
+export class GetSwitchReqParams {
+  @IsString()
+  ipAddress: string;
+
+  @IsString()
+  username: string;
+
+  @IsOptional()
+  @IsString()
+  password?: string;
+
+  @IsInt()
+  @Type(() => Number)
+  start_port: number;
+
+  @IsInt()
+  @Type(() => Number)
+  end_port: number;
+
+  @IsOptional()
+  @IsString()
+  name_oid?: string;
 }
