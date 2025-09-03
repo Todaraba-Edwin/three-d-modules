@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as snmp from 'net-snmp';
-import { ERROR_MESSAGE, OID, SWITCHES_ENUM } from './const';
+import { ERROR_MESSAGE, OID, PORT_BASE_INDEX, SWITCHES_ENUM } from './const';
 import {
   GetPortStateResDto,
   GetPortStatesReqParams,
@@ -30,7 +30,6 @@ export class SwitchesService {
               list.value.toString().trim() || SWITCHES_ENUM.UNKNOWN;
             const oidParts = list.oid.split('.');
             const localPortNum = parseInt(oidParts[oidParts.length - 2], 10);
-
             if (!neighborsMap[localPortNum]) {
               neighborsMap[localPortNum] = {
                 sysName,
@@ -47,6 +46,12 @@ export class SwitchesService {
             OID.NEIGHBOR_PORT_ID,
             (neighbor_ports: SnmpResultDto[]) => {
               neighbor_ports.forEach((list) => {
+                console.log(
+                  '=============================== : NEIGHBOR_PORT_ID',
+                );
+                console.log('list : ', list);
+                console.log('list : ', list.value.toString().trim());
+
                 if (snmp.isVarbindError(list)) return;
                 const portId =
                   list.value.toString().trim() || SWITCHES_ENUM.UNKNOWN;
@@ -55,7 +60,12 @@ export class SwitchesService {
                   oidParts[oidParts.length - 2],
                   10,
                 );
+
                 const neighbor = neighborsMap[localPortNum];
+                console.log('localPortNum : ', localPortNum);
+                console.log('portId : ', portId);
+                console.log('neighbor : ', neighbor);
+
                 if (neighbor) {
                   neighbor.remotePortId = parseInt(portId, 10);
                 }
@@ -116,18 +126,16 @@ export class SwitchesService {
                     const description = list.value.toString();
                     const configStatusOid = `${OID.PORT_CONFIG_STATUS}.${portIndex}`;
                     const operStatusOid = `${OID.PORT_OPER_STATUS}.${portIndex}`;
-                    const portTypeOid = `${OID.PORT_TYPE}.${portIndex}`;
 
                     // 각 포트 상태 조회를 Promise로 감싸기
                     const portPromise = new Promise((res, rej) => {
                       session.get(
-                        [configStatusOid, operStatusOid, portTypeOid],
+                        [configStatusOid, operStatusOid],
                         (err: any, list: SnmpResultDto[]) => {
                           if (err) return rej(err);
 
                           const configStatus = list[0]?.value;
                           const operStatus = list[1]?.value;
-                          const portType = list[2]?.value;
 
                           res({
                             portIndex,
@@ -140,12 +148,6 @@ export class SwitchesService {
                               operStatus === SWITCHES_ENUM.IS_ACTIVE
                                 ? SWITCHES_ENUM.UP
                                 : SWITCHES_ENUM.DOWN,
-                            type:
-                              portType === SWITCHES_ENUM.ETHERNER_CSMACD
-                                ? SWITCHES_ENUM.LAN
-                                : portType === SWITCHES_ENUM.OPTICAL_CHANNEL
-                                  ? SWITCHES_ENUM.OPTICAL
-                                  : SWITCHES_ENUM.ETC,
                           });
                         },
                       );
@@ -173,8 +175,18 @@ export class SwitchesService {
       const lldpNeighbors = await this._getSnmpLLDPInfo(session);
 
       // 4️⃣ 포트 정보에 LLDP 정보 추가
+
       const portsWithLldp = ports.map((port) => {
-        const neighbor = lldpNeighbors[port.portIndex];
+        console.log('port: ', port);
+        console.log('lldpNeighbors: ', lldpNeighbors);
+        const isHyesung = port.portIndex > PORT_BASE_INDEX.HYESUNG;
+        const neighbor =
+          lldpNeighbors[
+            isHyesung
+              ? (port.portIndex - PORT_BASE_INDEX.HYESUNG).toString()
+              : port.portIndex.toString()
+          ];
+
         return {
           ...port,
           lldpNeighbor: neighbor || {},

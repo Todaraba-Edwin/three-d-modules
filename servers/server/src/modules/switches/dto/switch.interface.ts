@@ -22,11 +22,10 @@ export class GetPortStatesReqParams {
 }
 
 export class SetPostSnmpResultDto {
-  portIndex: number;
+  portIndex: number ;
   description: string;
   configStatus: 'UP' | 'DOWN';
   operStatus: 'UP' | 'DOWN';
-  type: 'LAN' | 'OPTICAL' | 'ETC';
   lldpNeighbor:
     | {}
     | {
