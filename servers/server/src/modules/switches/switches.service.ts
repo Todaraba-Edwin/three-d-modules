@@ -1,202 +1,93 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as snmp from 'net-snmp';
-import { ERROR_MESSAGE, OID, PORT_BASE_INDEX, SWITCHES_ENUM } from './const';
-import {
-  GetPortStateResDto,
-  GetPortStatesReqParams,
-  SetPostSnmpResultDto,
-  SnmpResultDto,
-} from './dto';
+import * as Const from './const';
+import * as Types from './dto';
+import * as Fns from './utils/snmp.utils';
 
-interface LLDPNeighbor {
-  sysName: string;
-  remotePortId: number | '';
-}
 @Injectable()
 export class SwitchesService {
-  private async _getSnmpLLDPInfo(
-    session: any,
-  ): Promise<Record<number, LLDPNeighbor>> {
-    return new Promise((resolve, reject) => {
-      const neighborsMap: Record<number, LLDPNeighbor> = {};
-
-      // 1. Get System Names
-      session.subtree(
-        OID.NEIGHBOR_SYSTEM_NAME,
-        (neighbor: SnmpResultDto[]) => {
-          neighbor.forEach((list) => {
-            if (snmp.isVarbindError(list)) return;
-            const sysName =
-              list.value.toString().trim() || SWITCHES_ENUM.UNKNOWN;
-            const oidParts = list.oid.split('.');
-            const localPortNum = parseInt(oidParts[oidParts.length - 2], 10);
-            if (!neighborsMap[localPortNum]) {
-              neighborsMap[localPortNum] = {
-                sysName,
-                remotePortId: '',
-              };
-            }
-          });
-        },
-        (error) => {
-          if (error) return reject(error);
-
-          // 2. Get Port IDs
-          session.subtree(
-            OID.NEIGHBOR_PORT_ID,
-            (neighbor_ports: SnmpResultDto[]) => {
-              neighbor_ports.forEach((list) => {
-                console.log(
-                  '=============================== : NEIGHBOR_PORT_ID',
-                );
-                console.log('list : ', list);
-                console.log('list : ', list.value.toString().trim());
-
-                if (snmp.isVarbindError(list)) return;
-                const portId =
-                  list.value.toString().trim() || SWITCHES_ENUM.UNKNOWN;
-                const oidParts = list.oid.split('.');
-                const localPortNum = parseInt(
-                  oidParts[oidParts.length - 2],
-                  10,
-                );
-
-                const neighbor = neighborsMap[localPortNum];
-                console.log('localPortNum : ', localPortNum);
-                console.log('portId : ', portId);
-                console.log('neighbor : ', neighbor);
-
-                if (neighbor) {
-                  neighbor.remotePortId = parseInt(portId, 10);
-                }
-              });
-            },
-            (err: any) => {
-              if (err) return reject(err);
-              resolve(neighborsMap);
-            },
-          );
-        },
-      );
-    });
-  }
-
   async getPortStates(
-    getPortStatesReqParams: GetPortStatesReqParams,
-  ): Promise<GetPortStateResDto> {
-    const { ipAddress, community, name_oid, start_port, end_port } =
-      getPortStatesReqParams;
-    const session = snmp.createSession(ipAddress, community, {
-      version: snmp.Version2c,
-    });
+    reqParams: Types.GetPortStatesReqParams,
+  ): Promise<Types.GetPortStateResDto> {
+    const { ipAddress, community, name_oid, start_port, end_port } = reqParams;
+
     if (!start_port || !end_port) {
       throw new InternalServerErrorException(
-        ERROR_MESSAGE.PORT_OID_START_END_REQUIRED,
+        Const.ERROR_MESSAGE.PORT_OID_START_END_REQUIRED,
       );
     }
 
+    const session = snmp.createSession(ipAddress, community, {
+      version: snmp.Version2c,
+    });
+
     try {
-      // 1️⃣ 스위치 이름 가져오기
-      const switchName: string = await new Promise((resolve, reject) => {
-        session.get(
-          [name_oid || OID.SYSTEM_NAME],
-          (error: any, data: SnmpResultDto[]) => {
-            if (error) return reject(error);
-            const name =
-              data[0]?.value?.toString().trim() || SWITCHES_ENUM.UNKNOWN;
-            resolve(name);
-          },
-        );
-      });
+      // 1. 스위치 이름과 LLDP 정보를 병렬로 가져오기
+      const [switchNameVarbind, lldpNeighbors] = await Promise.all([
+        Fns.snmpGetPromise(session, [name_oid || Const.OID.SYSTEM_NAME]),
+        Fns.snmpGetLldpNeighbors(session),
+      ]);
 
-      // 2️⃣ 포트 목록 가져오기
-      const ports: SetPostSnmpResultDto[] = await new Promise(
-        (resolve, reject) => {
-          const portPromises: Promise<any>[] = [];
+      const switchName =
+        switchNameVarbind[0]?.value?.toString().trim() ||
+        Const.SWITCHES_ENUM.UNKNOWN;
 
-          session.subtree(
-            OID.PORT_DESCRIPTION,
-            (ports: SnmpResultDto[]) => {
-              ports.forEach((list) => {
-                if (!snmp.isVarbindError(list)) {
-                  const oidParts = list.oid.split('.');
-                  const portIndex = parseInt(oidParts[oidParts.length - 1], 10);
+      // 2. 포트 목록 정보 가져오기 (Description 기준)
+      const portDescriptionOids: string[] = [];
+      for (let i = start_port; i <= end_port; i++) {
+        portDescriptionOids.push(`${Const.OID.PORT_DESCRIPTION}.${i}`);
+      }
 
-                  if (portIndex >= start_port && portIndex <= end_port) {
-                    const description = list.value.toString();
-                    const configStatusOid = `${OID.PORT_CONFIG_STATUS}.${portIndex}`;
-                    const operStatusOid = `${OID.PORT_OPER_STATUS}.${portIndex}`;
-
-                    // 각 포트 상태 조회를 Promise로 감싸기
-                    const portPromise = new Promise((res, rej) => {
-                      session.get(
-                        [configStatusOid, operStatusOid],
-                        (err: any, list: SnmpResultDto[]) => {
-                          if (err) return rej(err);
-
-                          const configStatus = list[0]?.value;
-                          const operStatus = list[1]?.value;
-
-                          res({
-                            portIndex,
-                            description,
-                            configStatus:
-                              configStatus === SWITCHES_ENUM.IS_ACTIVE
-                                ? SWITCHES_ENUM.UP
-                                : SWITCHES_ENUM.DOWN,
-                            operStatus:
-                              operStatus === SWITCHES_ENUM.IS_ACTIVE
-                                ? SWITCHES_ENUM.UP
-                                : SWITCHES_ENUM.DOWN,
-                          });
-                        },
-                      );
-                    });
-
-                    portPromises.push(portPromise);
-                  }
-                }
-              });
-            },
-            (error: any) => {
-              if (error) return reject(error);
-
-              Promise.all(portPromises)
-                .then((results) => {
-                  resolve(results);
-                })
-                .catch(reject);
-            },
-          );
-        },
+      const portDescriptions = await Fns.snmpGetPromise(
+        session,
+        portDescriptionOids,
       );
 
-      // 3️⃣ LLDP 정보 가져오기
-      const lldpNeighbors = await this._getSnmpLLDPInfo(session);
+      // 3. 각 포트의 상세 정보(상태, MAC)를 병렬로 가져오기
+      const portDetailPromises = portDescriptions
+        .filter((vb) => !snmp.isVarbindError(vb) && vb.value.toString())
+        .map(async (vb) => {
+          const portIndex = parseInt(vb.oid.split('.').pop() || '0', 10);
+          const description = vb.value.toString();
 
-      // 4️⃣ 포트 정보에 LLDP 정보 추가
-
-      const portsWithLldp = ports.map((port) => {
-        console.log('port: ', port);
-        console.log('lldpNeighbors: ', lldpNeighbors);
-        const isHyesung = port.portIndex > PORT_BASE_INDEX.HYESUNG;
-        const neighbor =
-          lldpNeighbors[
-            isHyesung
-              ? (port.portIndex - PORT_BASE_INDEX.HYESUNG).toString()
-              : port.portIndex.toString()
+          const detailOids = [
+            `${Const.OID.PORT_CONFIG_STATUS}.${portIndex}`,
+            `${Const.OID.PORT_OPER_STATUS}.${portIndex}`,
+            `${Const.OID.PORT_MAC_ADDRESS}.${portIndex}`,
           ];
 
-        return {
-          ...port,
-          lldpNeighbor: neighbor || {},
-        };
-      });
+          const [PORT_CONFIG_STATUS, PORT_OPER_STATUS, PORT_MAC_ADDRESS] =
+            await Fns.snmpGetPromise(session, detailOids);
+
+          const configStatus = PORT_CONFIG_STATUS?.value;
+          const operStatus = PORT_OPER_STATUS?.value;
+          const portMAC = PORT_MAC_ADDRESS?.value as Buffer;
+          const portNum = Fns.utilsSwitchDevicePortNum(portIndex);
+          const neighbor = lldpNeighbors[portNum] || {};
+
+          const result: Types.SetPostSnmpResultDto = {
+            portIndex: portNum,
+            portMAC: Fns.utilFormatMacAddress(portMAC),
+            description,
+            configStatus:
+              configStatus === Const.SWITCHES_ENUM.IS_ACTIVE
+                ? Const.SWITCHES_ENUM.UP
+                : Const.SWITCHES_ENUM.DOWN,
+            operStatus:
+              operStatus === Const.SWITCHES_ENUM.IS_ACTIVE
+                ? Const.SWITCHES_ENUM.UP
+                : Const.SWITCHES_ENUM.DOWN,
+            lldpNeighbor: neighbor,
+          };
+          return result;
+        });
+
+      const ports = await Promise.all(portDetailPromises);
 
       return {
         ipAddress,
         switchName,
-        ports: portsWithLldp,
+        ports,
       };
     } finally {
       session.close();

@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import * as API from '@src_apps/common/api';
-import { GetPortStateResDto, GetPortStatesReqParams } from './dto';
+import * as Types from './dto';
 import { SwitchesService } from './switches.service';
 
 const {
@@ -16,8 +16,8 @@ export class SwitchesController {
 
   @Get(`${SNMP}/${PORT_STATE}`)
   getPortStates(
-    @Query() getPortStatesReqParams: GetPortStatesReqParams,
-  ): Promise<GetPortStateResDto> {
-    return this.switchesService.getPortStates(getPortStatesReqParams);
+    @Query() reqParams: Types.GetPortStatesReqParams,
+  ): Promise<Types.GetPortStateResDto> {
+    return this.switchesService.getPortStates(reqParams);
   }
 }

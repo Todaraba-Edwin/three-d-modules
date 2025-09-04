@@ -21,17 +21,19 @@ export class GetPortStatesReqParams {
   end_port: number;
 }
 
+export class LLDPNeighbor {
+  sysName: string;
+  remotePortNum: number | '';
+  remotePortMAC: string;
+}
+
 export class SetPostSnmpResultDto {
-  portIndex: number ;
+  portIndex: number;
   description: string;
   configStatus: 'UP' | 'DOWN';
   operStatus: 'UP' | 'DOWN';
-  lldpNeighbor:
-    | {}
-    | {
-        sysName: string;
-        remotePortId: number;
-      };
+  portMAC: string;
+  lldpNeighbor: {} | LLDPNeighbor;
 }
 
 export class GetPortStateResDto {
