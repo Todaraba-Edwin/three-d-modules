@@ -144,8 +144,11 @@ export const snmpGetLldpNeighbors = async (
   // 5. IP 주소 처리
   ipAddress.forEach((list) => {
     if (snmp.isVarbindError(list)) return;
-    const lldpPortIP = list.oid.split('.').slice(16).join('.');
-    const localPortNum = list.oid.split('.')[12];
+    const lldpPortIP = `${list.oid.split('.').slice(16).join('.')} (IPv4)`;
+    const localPortNum = utilsSwitchDevicePortNum(
+      parseInt(list.oid.split('.')[12], 10),
+    );
+
     const neighbor = neighborsMap[localPortNum];
 
     if (neighbor) {
