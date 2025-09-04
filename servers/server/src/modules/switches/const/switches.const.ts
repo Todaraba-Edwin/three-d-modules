@@ -5,17 +5,18 @@ export const OID = {
   // PORT 별 OID
   PORT_DESCRIPTION: '1.3.6.1.2.1.2.2.1.2',
   PORT_CONFIG_STATUS: '1.3.6.1.2.1.2.2.1.7',
-  PORT_OPER_STATUS: '1.3.6.1.2.1.2.2.1.8',  
+  PORT_OPER_STATUS: '1.3.6.1.2.1.2.2.1.8',
   PORT_MAC_ADDRESS: '1.3.6.1.2.1.2.2.1.6',
 
   // LLDP 관련 OID
   NEIGHBOR_SYSTEM_NAME: '1.0.8802.1.1.2.1.4.1.1.9',
   NEIGHBOR_PORT_ID: '1.0.8802.1.1.2.1.4.1.1.7',
   NEIGHBOR_MAC: '1.0.8802.1.1.2.1.4.1.1.5',
+  NEIGHBOR_IP: '1.0.8802.1.1.2.1.4.2.1.4',
 };
 
 export enum SWITCHES_ENUM {
-  // 공통
+  // 공
   UNKNOWN = 'UNKNOWN',
   UP = 'UP',
   DOWN = 'DOWN',

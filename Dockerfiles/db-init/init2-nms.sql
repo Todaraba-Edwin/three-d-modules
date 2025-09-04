@@ -79,16 +79,21 @@ CREATE TABLE `circuits` (
 CREATE TABLE `manufacturers` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100) UNIQUE NOT NULL,
-  `description` json
+  `description` varchar(100)
 );
 
 CREATE TABLE `switch_models` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `manufacturer_id` bigint NOT NULL,
   `model_name` varchar(100) UNIQUE NOT NULL,
-  `port_info` json,
+  `community` varchar(255) NOT NULL,
+  `name_oid` varchar(255) NOT NULL,
+  `start_port` int NOT NULL,
+  `end_port` int NOT NULL,
+  `electronic_start_port` int NOT NULL,
+  `sfp_start_port` int NOT NULL,
   `description` json
-);
+  );
 
 CREATE TABLE `switches` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
@@ -157,3 +162,31 @@ ALTER TABLE `switches` ADD FOREIGN KEY (`switch_model_id`) REFERENCES `switch_mo
 ALTER TABLE `ports` ADD FOREIGN KEY (`switch_id`) REFERENCES `switches` (`id`);
 
 ALTER TABLE `ports` ADD FOREIGN KEY (`connected_device_id`) REFERENCES `devices` (`id`);
+
+-- ####################################################################
+-- # Initial Data for Manufacturers and Switch Models
+-- ####################################################################
+
+-- 1. HSTW
+INSERT INTO `manufacturers` (`name`, `description`) VALUES ('HSTW', '제조사_혜성');
+SET @hst_id = LAST_INSERT_ID();
+INSERT INTO `switch_models` 
+  (`manufacturer_id`, `model_name`, `community`, `name_oid`, `start_port`, `end_port`, `electronic_start_port`,`sfp_start_port`) 
+VALUES 
+  (@hst_id, 'IEL-6800M(8G4SF)', 'public', '1.3.6.1.2.1.1.1.0', 1000001, 1000012, 1, 9);
+
+-- 2. DASAN
+INSERT INTO `manufacturers` (`name`, `description`) VALUES ('DASAN', '제조사_두산');
+SET @dasan_id = LAST_INSERT_ID();
+INSERT INTO `switch_models` 
+  (`manufacturer_id`, `model_name`, `community`, `name_oid`, `start_port`, `end_port`, `electronic_start_port`,`sfp_start_port`) 
+VALUES 
+  (@dasan_id, 'D3210G', 'public', '1.3.6.1.4.1.6296.1.17.1.1.1.0', 1, 12, 1, 9);
+
+-- 3. 에이엔비 정보기술
+INSERT INTO `manufacturers` (`name`,`description`) VALUES ('A&BTECk', '제조사_에이앤비 정보기술');
+SET @aandb_id = LAST_INSERT_ID();
+INSERT INTO `switch_models` 
+  (`manufacturer_id`, `model_name`, `community`, `name_oid`, `start_port`, `end_port`, `electronic_start_port`,`sfp_start_port`) 
+VALUES 
+  (@aandb_id, 'EMR-1000RT', 'public', '1.3.6.1.2.1.1.1.0', 1, 14, 1, 9);

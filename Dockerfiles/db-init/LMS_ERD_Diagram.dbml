@@ -1,6 +1,7 @@
 //// ----------------------------------------------------
 //// Prizm LMS - ERD (DBML Diagram)
 //// Generated from LMS_ERD.md
+//// https://dbdiagram.io/d/68b63d81777b52b76c91b5bf
 //// ----------------------------------------------------
 
 Table buildings {

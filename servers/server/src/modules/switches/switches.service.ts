@@ -93,4 +93,16 @@ export class SwitchesService {
       session.close();
     }
   }
+
+  async getSnmpTest(reqParams: Types.GetPortStatesReqParams): Promise<string> {
+    const { ipAddress, community } = reqParams;
+    const session = snmp.createSession(ipAddress, community, {
+      version: snmp.Version2c,
+    });
+    const TEST_OID = '1.0.8802.1.1.2.1.4.2.1.4';
+    const [testVarbinds] = await Promise.all([
+      Fns.snmpSubtreePromise(session, TEST_OID),
+    ]);
+    return JSON.stringify(testVarbinds);
+  }
 }

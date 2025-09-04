@@ -64,7 +64,7 @@ export const snmpGetPromise = (
 /**
  * snmp.subtree 요청을 Promise로 감싸는 래퍼 함수
  */
-const snmpSubtreePromise = (
+export const snmpSubtreePromise = (
   session: any,
   oid: string,
 ): Promise<SnmpResultDto[]> => {
@@ -92,10 +92,11 @@ export const snmpGetLldpNeighbors = async (
   const neighborsMap: Record<number, LLDPNeighbor> = {};
 
   // 1. System Name, Port ID, MAC 주소를 병렬로 동시에 요청
-  const [systemNames, portIds, macAddresses] = await Promise.all([
+  const [systemNames, portIds, macAddresses, ipAddress] = await Promise.all([
     snmpSubtreePromise(session, OID.NEIGHBOR_SYSTEM_NAME),
     snmpSubtreePromise(session, OID.NEIGHBOR_PORT_ID),
     snmpSubtreePromise(session, OID.NEIGHBOR_MAC),
+    snmpSubtreePromise(session, OID.NEIGHBOR_IP),
   ]);
 
   // 2. System Name 처리
@@ -108,6 +109,7 @@ export const snmpGetLldpNeighbors = async (
       neighborsMap[localPortNum] = {
         sysName,
         remotePortNum: '',
+        remotePortIP: '',
         remotePortMAC: '',
       };
     }
@@ -136,6 +138,18 @@ export const snmpGetLldpNeighbors = async (
 
     if (neighbor) {
       neighbor.remotePortMAC = utilFormatMacAddress(portMAC);
+    }
+  });
+
+  // 5. IP 주소 처리
+  ipAddress.forEach((list) => {
+    if (snmp.isVarbindError(list)) return;
+    const lldpPortIP = list.oid.split('.').slice(16).join('.');
+    const localPortNum = list.oid.split('.')[12];
+    const neighbor = neighborsMap[localPortNum];
+
+    if (neighbor) {
+      neighbor.remotePortIP = lldpPortIP;
     }
   });
 

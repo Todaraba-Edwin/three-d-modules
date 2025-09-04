@@ -20,4 +20,11 @@ export class SwitchesController {
   ): Promise<Types.GetPortStateResDto> {
     return this.switchesService.getPortStates(reqParams);
   }
+
+  @Get(`${SNMP}/test`)
+  getSnmpTest(
+    @Query() reqParams: Types.GetPortStatesReqParams,
+  ): Promise<string> {
+    return this.switchesService.getSnmpTest(reqParams);
+  }
 }

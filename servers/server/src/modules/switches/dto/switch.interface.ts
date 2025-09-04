@@ -24,6 +24,7 @@ export class GetPortStatesReqParams {
 export class LLDPNeighbor {
   sysName: string;
   remotePortNum: number | '';
+  remotePortIP: string;
   remotePortMAC: string;
 }
 
