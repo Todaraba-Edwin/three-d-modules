@@ -1,5 +1,5 @@
 import { redirect } from 'react-router-dom';
-import { useAuthStore } from './useAuthStore';
+import { useAuthStore } from '../../01_pages/useAuthStore';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 

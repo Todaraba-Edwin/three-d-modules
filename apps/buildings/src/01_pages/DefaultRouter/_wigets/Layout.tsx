@@ -1,4 +1,4 @@
-import { utilIsProtectedRoute } from '@/01_pages/authLoaders';
+import { utilIsProtectedRoute } from '@/_templates/loader/loaders';
 import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
 import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
