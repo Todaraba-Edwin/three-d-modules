@@ -25,12 +25,14 @@ export class UsersService implements OnApplicationBootstrap {
     if (!adminUser) {
       await this.setUser(
         'admin',
+        '관리자',
         '1234',
         'admin@test.com',
         UserType.ADMIN_MAIN,
       );
       await this.setUser(
         'test',
+        '테스트계정',
         '1234',
         'admin_test@test.com',
         UserType.ADMIN_SUB,
@@ -81,6 +83,7 @@ export class UsersService implements OnApplicationBootstrap {
    */
   async setUser(
     username: string,
+    nickname: string,
     password: string,
     email: string,
     user_type: UserType,
@@ -88,6 +91,7 @@ export class UsersService implements OnApplicationBootstrap {
     const hashedPassword = await hash(password, 10);
     const newUser = this.usersRepository.create({
       username,
+      nickname,
       password: hashedPassword,
       email,
       user_type,

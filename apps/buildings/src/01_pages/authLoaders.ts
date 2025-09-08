@@ -11,6 +11,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 type CheckAuthType = Promise<{
   message: string;
   username: string;
+  nickname?: string;
   userType: string;
 } | null>;
 
@@ -63,11 +64,11 @@ export const protectedRouteLoader = async (): Promise<Response | null> => {
     return redirect('/login');
   }
 
-  console.log('authData', authData);
-
+  console.log('authData : ', authData);
   // Zustand store에 사용자 정보 설정
   useAuthStore.getState().setAuth({
     userType: authData.userType,
+    nickname: authData.nickname || '',
   });
 
   return null; // 혹은 authData를 반환하여 하위 컴포넌트에서 사용

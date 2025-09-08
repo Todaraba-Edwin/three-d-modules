@@ -91,12 +91,16 @@ export class AuthService {
     isValid: boolean;
     userType?: string;
     username?: string;
+    nickname?: string;
     message?: string;
   }> {
     const userSession = this.activeSessions.get(username);
 
     if (!userSession || userSession.sessionId !== sessionId) {
-      return { isValid: false, message: '세션 정보가 유효하지 않습니다.' };
+      return {
+        isValid: false,
+        message: API_MESSAGES.AUTH.NOT_FOUND_SESSION_SERVER,
+      };
     }
 
     const user = await this.usersService.getUserByUsername(username);
@@ -111,6 +115,7 @@ export class AuthService {
       isValid: true,
       userType: user.user_type,
       username: user.username,
+      nickname: user.nickname,
       message: API_MESSAGES.AUTH.VALID_SESSION,
     };
   }

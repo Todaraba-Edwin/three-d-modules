@@ -111,6 +111,7 @@ export class AuthController {
       message: validationResult.message,
       username: validationResult.username,
       userType: validationResult.userType,
+      nickname: validationResult.nickname,
     };
   }
 
@@ -122,10 +123,7 @@ export class AuthController {
    * @returns 로그아웃 성공 메시지 객체
    */
   @Post(API.AUTH.SEGMENTS.lOGOUT)
-  async logout(
-    @Res({ passthrough: true }) res: Response,
-    @Req() req: Request,
-  ) {
+  async logout(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
     const { username, sessionId } = req.cookies;
 
     if (!username || !sessionId) {

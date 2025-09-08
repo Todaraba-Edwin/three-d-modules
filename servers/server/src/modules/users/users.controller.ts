@@ -27,6 +27,7 @@ export class UsersController {
     return this.usersService.setUser(
       body.username,
       body.password,
+      body.nickname,
       body.email,
       body.user_type,
     );

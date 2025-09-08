@@ -1,50 +1,36 @@
 import { utilIsProtectedRoute } from '@/01_pages/authLoaders';
-import { useAuthStore } from '@/01_pages/useAuthStore';
-import { ButtonLogout } from '@/02_widgets/Auth/ui/ButtonLogout';
 import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
+import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import {
-  Camera,
-  Home,
-  Info,
-  LogOut,
-  Network,
-  PanelLeftClose,
-  PanelLeftOpen,
-  Settings,
-  Shield,
-} from 'lucide-react';
-import {
+  createRef,
+  useRef,
   useState,
   type Dispatch,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 import * as RD from 'react-router-dom';
+import { LayoutSize, type menuItemsType } from '../_shared/const';
+import { GNBTooltip } from './GNBTooltip';
 
 type Props = PropsWithChildren & {
+  nickname?: string;
+  gmbMenuItems: menuItemsType[];
   setIsFocusLogin: Dispatch<React.SetStateAction<boolean>>;
 };
 
-const LayoutSize = {
-  GNB_OPEN_W: 250,
-  GNB_PADDING: 16,
-  GNB_ICON: 24,
-  get GNB_CLOSE_W() {
-    return this.GNB_ICON + this.GNB_PADDING * 2; // 48
-  },
-  get GNB_CONTENT() {
-    return this.GNB_OPEN_W - this.GNB_PADDING * 2; // 218
-  },
-  get GNB_REST() {
-    return this.GNB_CONTENT - this.GNB_ICON - this.GNB_PADDING; // 186
-  },
-};
-
-export const Layout = ({ children, setIsFocusLogin }: Props): ReactNode => {
+export const Layout = ({
+  children,
+  nickname,
+  gmbMenuItems,
+  setIsFocusLogin,
+}: Props): ReactNode => {
   const { layout } = usePathSegments();
   const [isGnbOpen, setIsGnbOpen] = useState(true);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const onToggleIsGnbOpen = () => setIsGnbOpen(prev => !prev);
   const navigate = RD.useNavigate();
   const utilsNavigate = (url: string) => () => {
@@ -59,35 +45,28 @@ export const Layout = ({ children, setIsFocusLogin }: Props): ReactNode => {
     protectedRouteNavigate();
   };
 
-  const { isAdmin } = useAuthStore();
+  const {
+    GNB_CONTENT,
+    GNB_OPEN_W,
+    GNB_CLOSE_W,
+    GNB_ICON,
+    GNB_PADDING,
+    GNB_REST,
+    GNB_FOOTER,
+    GNB_FOOTER_CLOSE,
+  } = LayoutSize;
 
-  const menuItems = [
-    { icon: Home, label: '대시보드', path: '/' },
-    { icon: Network, label: 'LMS 관리', path: '/lms' },
-    { icon: Camera, label: 'FMS 관리', path: '/fms' },
-    { icon: Info, label: '정보', path: '/system-info' },
-    { icon: Settings, label: '설정', path: '/settings' },
-  ];
-
-  if (isAdmin) {
-    menuItems.splice(1, 0, {
-      icon: Shield,
-      label: '관리자',
-      path: '/system-admin',
-    });
-  }
-
-  const { GNB_CONTENT, GNB_OPEN_W, GNB_CLOSE_W, GNB_ICON, GNB_PADDING } =
-    LayoutSize;
+  const menuRefs = useRef(gmbMenuItems.map(() => createRef<HTMLLIElement>()));
 
   return (
     <div className='Layout max-h-screen h-screen flex bg-gray-100'>
       <nav
         className={clsx(
           `Layout_GNB`,
+          'relative',
           'z-50',
           `grid grid-rows-[auto_1fr]`,
-          `flex-shrink-0 bg-white border-r-2 shadow-sm transition-all duration-300`,
+          `flex-shrink-0 bg-white border-r-3 shadow-sm transition-all duration-300`,
           'overflow-hidden',
           {
             [`w-[${GNB_OPEN_W}px]`]: isGnbOpen,
@@ -95,20 +74,40 @@ export const Layout = ({ children, setIsFocusLogin }: Props): ReactNode => {
           }
         )}
       >
-        <h2 className='py-4'>
+        <h2
+          className={clsx('py-4 cursor-pointer', `max-w-[${GNB_OPEN_W}px]`)}
+          onClick={onToggleIsGnbOpen}
+        >
           <img src='/imgs/seoul-university.png' alt='Logo' />
         </h2>
-        <div className={clsx('overflow-hidden', 'grid grid-rows-[1fr_auto]')}>
-          <ol className={clsx(`w-[${GNB_OPEN_W}px]`, 'overflow-y-auto')}>
-            {menuItems.map(list => {
+        <div
+          className={clsx(
+            'overflow-x-hidden',
+            '[scrollbar-width:none]', // Firefox
+            '[&::-webkit-scrollbar]:hidden' // Webkit
+          )}
+        >
+          <ol
+            className={clsx(
+              `w-[${GNB_OPEN_W}px]`,
+              {
+                [`pb-[${GNB_FOOTER}px]`]: isGnbOpen,
+                [`pb-[${GNB_FOOTER_CLOSE}px]`]: !isGnbOpen,
+              },
+              'overflow-y-auto'
+            )}
+          >
+            {gmbMenuItems.map((list, index) => {
               const isActive = list.path.replace(/\//g, '') === layout;
-              console.log('path', list.path, isActive);
 
               return (
                 <li
+                  ref={menuRefs.current[index]}
                   key={list.path}
+                  onMouseEnter={() => setHoveredItem(list.path)}
+                  onMouseLeave={() => setHoveredItem(null)}
                   className={clsx(
-                    `w-[${GNB_CONTENT}px] p-4 transition-all duration-300`,
+                    `w-[${GNB_CONTENT}px] p-4 transition-all duration-300 relative`,
                     'hover:px-5 hover:font-semibold',
                     {
                       'text-gray-700 hover:text-gray-900': !isActive,
@@ -125,19 +124,72 @@ export const Layout = ({ children, setIsFocusLogin }: Props): ReactNode => {
                     )}
                   >
                     <list.icon size={GNB_ICON} className={clsx('font-bold')} />
-                    {list.label}
+                    <span className={clsx({ hidden: !isGnbOpen })}>
+                      {list.label}
+                    </span>
                   </button>
+                  {!isGnbOpen && hoveredItem === list.path && (
+                    <GNBTooltip
+                      targetRef={menuRefs.current[index]}
+                      weightRight={GNB_REST + GNB_PADDING}
+                    >
+                      {list.label}
+                    </GNBTooltip>
+                  )}
                 </li>
               );
             })}
           </ol>
-
+        </div>
+        <footer
+          className={clsx(
+            `bg-white absolute bottom-0`,
+            'shadow-[0_-5px_15px_-3px_rgb(0,0,0,0.1),0_-4px_6px_-4px_rgb(0,0,0,0.1)]',
+            `w-[${GNB_OPEN_W}px]`,
+            {
+              [`h-[${GNB_FOOTER}px]`]: isGnbOpen,
+              [`h-[${GNB_FOOTER_CLOSE}px]`]: !isGnbOpen,
+            },
+            'overflow-hidden',
+            'grid grid-rows-[1fr_auto]'
+          )}
+        >
+          {isGnbOpen && (
+            <p className='px-4 flex items-center gap-2'>
+              <span className='text-xl'>{nickname}</span>
+              <span className='font-normal'>님</span>
+            </p>
+          )}
           <div
             className={clsx(
               'p-4',
               `w-[${LayoutSize.GNB_CONTENT}px]`,
               `flex gap-[${LayoutSize.GNB_PADDING}px]`
             )}
+            onClick={() => {
+              fetch(`${VITE_API_URL}/api/auth/logout`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                credentials: 'include', // 쿠키 자동 전송
+              })
+                .then(async response => {
+                  const data = await response.json();
+                  if (response.ok) {
+                    return data;
+                  } else {
+                    throw data;
+                  }
+                })
+                .then(() => {
+                  navigate('/login');
+                })
+                .catch(errorDate => {
+                  console.error(errorDate.message);
+                  navigate('/login');
+                });
+            }}
           >
             <LogOut
               className={clsx(
@@ -145,9 +197,9 @@ export const Layout = ({ children, setIsFocusLogin }: Props): ReactNode => {
                 `w-[${LayoutSize.GNB_ICON}px] h-[${LayoutSize.GNB_ICON}px]`
               )}
             />
-            <ButtonLogout />
+            <button children='로그아웃' />
           </div>
-        </div>
+        </footer>
       </nav>
 
       {/* 3. 오른쪽 메인 컨텐츠 영역 */}
