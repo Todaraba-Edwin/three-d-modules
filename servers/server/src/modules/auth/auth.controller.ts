@@ -64,18 +64,6 @@ export class AuthController {
     );
 
     const { message, sessionId, username } = loginResult;
-    // const origin = req.headers['origin'];
-    // let cookieDomain: string | undefined;
-    // if (origin) {
-    //   try {
-    //     cookieDomain = new URL(origin).hostname;
-    //   } catch (e) {
-    //     console.error('Invalid Origin header, cannot set cookie domain', e);
-    //     cookieDomain = undefined;
-    //   }
-    // }
-
-    // console.log('cookieDomain', cookieDomain);
 
     if (sessionId) {
       res.cookie(
@@ -101,12 +89,8 @@ export class AuthController {
    * @throws {UnauthorizedException} 쿠키가 없거나 서버의 세션 정보와 일치하지 않을 경우 (HTTP 401)
    */
   @Get(API.AUTH.SEGMENTS.VALIDATE_SESSION)
-  getValidateSession(@Req() req: Request) {
+  async getValidateSession(@Req() req: Request) {
     const { username, sessionId } = req.cookies;
-    const clientSignature = createClientSignature(
-      req.headers['user-agent'],
-      req.headers['origin'],
-    );
 
     if (!username || !sessionId) {
       throw new UnauthorizedException(
@@ -114,24 +98,20 @@ export class AuthController {
       );
     }
 
-    const validationResult = this.authService.getValidateSession(
+    const validationResult = await this.authService.getValidateSession(
       username,
       sessionId,
-      clientSignature,
     );
 
     if (!validationResult.isValid) {
-      // 커스텀 에러 응답 Body 생성
-      const errorResponse = {
-        statusCode: 401,
-        message: API.API_MESSAGES.AUTH.NOT_FOUND_SESSION_SERVER,
-        storedClientSignature: JSON.parse(
-          validationResult.storedClientSignature || '',
-        ),
-      };
-      throw new UnauthorizedException(errorResponse);
+      throw new UnauthorizedException(validationResult.message);
     }
-    return { message: API.API_MESSAGES.AUTH.VALID_SESSION, username };
+
+    return {
+      message: validationResult.message,
+      username: validationResult.username,
+      userType: validationResult.userType,
+    };
   }
 
   /**
@@ -143,24 +123,27 @@ export class AuthController {
    */
   @Post(API.AUTH.SEGMENTS.lOGOUT)
   async logout(
-    // @Body() body: { username: string },
     @Res({ passthrough: true }) res: Response,
     @Req() req: Request,
   ) {
     const { username, sessionId } = req.cookies;
-    const validationResult = this.authService.getValidateSession(
-      username,
-      sessionId,
-      '',
-    );
 
-    if (!validationResult.isValid) {
+    if (!username || !sessionId) {
       throw new UnauthorizedException(
-        API.API_MESSAGES.AUTH.NOT_FOUND_SESSION_SERVER,
+        API.API_MESSAGES.AUTH.NOT_FOUND_SESSION_BROWSER,
       );
     }
 
-    const logoutResult = await this.authService.logout(username);
+    const validationResult = await this.authService.getValidateSession(
+      username,
+      sessionId,
+    );
+
+    if (!validationResult.isValid) {
+      throw new UnauthorizedException(validationResult.message);
+    }
+
+    const logoutResult = this.authService.logout(username);
     const { message } = logoutResult;
     res.clearCookie(API.AUTH.COOKIES.SESSION_ID, { path: '/' });
     res.clearCookie(API.AUTH.COOKIES.USER_NAME, { path: '/' });

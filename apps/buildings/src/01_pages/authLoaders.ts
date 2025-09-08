@@ -1,4 +1,5 @@
 import { redirect } from 'react-router-dom';
+import { useAuthStore } from './useAuthStore';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -7,14 +8,11 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
  * @returns 로그인 상태이면 사용자 정보를, 아니면 null을 반환합니다.
  */
 
-type CheckAuthType = Promise<
-  | {
-      message: string;
-      username: string;
-    }
-  | Response
-  | null
->;
+type CheckAuthType = Promise<{
+  message: string;
+  username: string;
+  userType: string;
+} | null>;
 
 type RouteLoaderType = Promise<Response | null>;
 
@@ -34,7 +32,7 @@ export const checkAuth = async (): CheckAuthType => {
     }
 
     const data = await response.json();
-    return data; // { message, username }
+    return data; // { message, username, userType }
   } catch (error) {
     console.error('Session validation error:', error);
     return null;
@@ -60,12 +58,22 @@ export const loginPageLoader = async (): RouteLoaderType => {
  */
 export const protectedRouteLoader = async (): Promise<Response | null> => {
   const authData = await checkAuth();
+
   if (!authData) {
     return redirect('/login');
   }
+
+  console.log('authData', authData);
+
+  // Zustand store에 사용자 정보 설정
+  useAuthStore.getState().setAuth({
+    userType: authData.userType,
+  });
+
   return null; // 혹은 authData를 반환하여 하위 컴포넌트에서 사용
 };
 
-export const utilIsProtectedRoute = async (): CheckAuthType => {
-  return await checkAuth();
+export const utilIsProtectedRoute = async (): Promise<boolean> => {
+  const authData = await checkAuth();
+  return !!authData;
 };

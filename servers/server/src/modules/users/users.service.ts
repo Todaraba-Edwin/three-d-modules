@@ -29,6 +29,12 @@ export class UsersService implements OnApplicationBootstrap {
         'admin@test.com',
         UserType.ADMIN_MAIN,
       );
+      await this.setUser(
+        'test',
+        '1234',
+        'admin_test@test.com',
+        UserType.ADMIN_SUB,
+      );
     }
   }
 

@@ -84,18 +84,34 @@ export class AuthService {
    * @param clientSignature - 검증을 요청한 클라이언트의 식별 시그니처
    * @returns 세션 유효성 결과 객체. 실패 시 저장된 클라이언트 시그니처를 포함할 수 있음.
    */
-  getValidateSession(
+  async getValidateSession(
     username: string,
     sessionId: string,
-    clientSignature: string,
-  ): { isValid: boolean; storedClientSignature?: string } {
+  ): Promise<{
+    isValid: boolean;
+    userType?: string;
+    username?: string;
+    message?: string;
+  }> {
     const userSession = this.activeSessions.get(username);
 
-    // 세션 정보가 없거나 세션 ID가 일치하지 않으면 실패
     if (!userSession || userSession.sessionId !== sessionId) {
-      return { isValid: false, storedClientSignature: clientSignature };
+      return { isValid: false, message: '세션 정보가 유효하지 않습니다.' };
     }
 
-    return { isValid: true };
+    const user = await this.usersService.getUserByUsername(username);
+
+    if (!user) {
+      // 세션이 있지만 사용자를 찾을 수 없는 경우 (예: DB에서 삭제됨)
+      this.activeSessions.delete(username); // 무효한 세션 제거
+      return { isValid: false, message: API_MESSAGES.AUTH.INVALID_USERS };
+    }
+
+    return {
+      isValid: true,
+      userType: user.user_type,
+      username: user.username,
+      message: API_MESSAGES.AUTH.VALID_SESSION,
+    };
   }
 }

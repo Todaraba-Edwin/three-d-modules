@@ -39,6 +39,14 @@ const Accounts = [
     icon: Shield,
     color: 'bg-red-50 border-red-200 text-red-700',
   },
+  {
+    username: 'test',
+    password: '1234',
+    role: '시스템 테스터',
+    description: '전체 시스템 관리',
+    icon: Shield,
+    color: 'bg-blue-50 border-blue-200 text-blue-700',
+  },
 ];
 
 export const Login = (): ReactNode => {
