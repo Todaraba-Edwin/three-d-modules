@@ -1,4 +1,4 @@
-import { router } from '../router';
+import { router } from '../_templates/loader/router';
 
 /**
  * 전역 fetch 유틸리티.

@@ -95,14 +95,37 @@ export class SwitchesService {
   }
 
   async getSnmpTest(reqParams: Types.GetPortStatesReqParams): Promise<string> {
-    const { ipAddress, community } = reqParams;
+    const { ipAddress, community, lldt_find_id_oid } = reqParams;
     const session = snmp.createSession(ipAddress, community, {
       version: snmp.Version2c,
     });
+
+    if (lldt_find_id_oid) {
+      const [lldt_find_ports] = await Promise.all([
+        Fns.snmpSubtreePromise(session, lldt_find_id_oid),
+      ]);
+
+      // SNMP 결과를 순회하며 MAC/IP 매핑
+      lldt_find_ports.forEach((vb) => {
+        const findMac = '1.3.6.1.4.1.6296.1.17.1.42.3.1.4';
+        const findIP = '1.3.6.1.4.1.6296.1.17.1.42.3.1.5';
+        if (vb.oid.includes(findMac)) {
+          console.log('oid : ', vb.oid, vb.value.toString());
+        }
+
+        if (vb.oid.includes(findIP)) {
+          console.log('oid : ', vb.oid, vb.value.toString());
+        }
+      });
+
+      return '테스트중';
+    }
+
     const TEST_OID = '1.0.8802.1.1.2.1.4.2.1.4';
     const [testVarbinds] = await Promise.all([
       Fns.snmpSubtreePromise(session, TEST_OID),
     ]);
+
     return JSON.stringify(testVarbinds);
   }
 }

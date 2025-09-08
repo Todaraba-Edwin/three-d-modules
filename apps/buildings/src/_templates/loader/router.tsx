@@ -1,7 +1,10 @@
 import { AuthRouter, CesiumRouter, DefaultRouter, SystemRouter } from '@pages';
 import * as RD from 'react-router-dom';
-import { loginPageLoader, protectedRouteLoader } from './01_pages/authLoaders';
-import { ProtectedLayout } from './01_pages/ProtectedLayout';
+import {
+  loginPageLoader,
+  protectedRouteLoader,
+} from '../../01_pages/authLoaders';
+import { ProtectedLayout } from '../../01_pages/ProtectedLayout';
 
 // 로그인 페이지 라우터에 loader를 적용합니다.
 // 이미 로그인한 사용자는 메인 페이지로 리다이렉트됩니다.

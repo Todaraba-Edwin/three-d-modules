@@ -12,6 +12,10 @@ export class GetPortStatesReqParams {
   @IsString()
   name_oid?: string;
 
+  @IsOptional()
+  @IsString()
+  lldt_find_id_oid?: string;
+
   @IsInt()
   @Type(() => Number)
   start_port: number;
