@@ -21,8 +21,7 @@ INSERT INTO USER_TC_MENUS (label, path, icon_name, sort_order) VALUES
 
 -- 3. Role-Menu Permissions
 -- Get Role IDs
-SET @admin_m
-ain_role_id = (SELECT id from USER_TC_ROLES where role_code = 'ADMIN_MAIN');
+SET @admin_main_role_id = (SELECT id from USER_TC_ROLES where role_code = 'ADMIN_MAIN');
 SET @admin_sub_role_id = (SELECT id from USER_TC_ROLES where role_code = 'ADMIN_SUB');
 SET @user_role_id = (SELECT id from USER_TC_ROLES where role_code = 'USER');
 

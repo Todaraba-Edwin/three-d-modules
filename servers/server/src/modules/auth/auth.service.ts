@@ -93,6 +93,7 @@ export class AuthService {
     username?: string;
     nickname?: string;
     message?: string;
+    permissions?: any[];
   }> {
     const userSession = this.activeSessions.get(username);
 
@@ -113,10 +114,11 @@ export class AuthService {
 
     return {
       isValid: true,
-      userType: user.user_type,
+      // userType: user.user_type,
       username: user.username,
       nickname: user.nickname,
       message: API_MESSAGES.AUTH.VALID_SESSION,
+      permissions: [],
     };
   }
 }

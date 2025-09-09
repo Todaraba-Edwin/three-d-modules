@@ -7,13 +7,17 @@ import { hash } from 'bcrypt';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { USER_TN_USERS, UserType } from './dto';
+import { USER_TC_ROLES, USER_TN_USERS, USER_TN_USER_ROLES } from './dto';
 
 @Injectable()
 export class UsersService implements OnApplicationBootstrap {
   constructor(
     @InjectRepository(USER_TN_USERS)
     private usersRepository: Repository<USER_TN_USERS>,
+    @InjectRepository(USER_TC_ROLES)
+    private rolesRepository: Repository<USER_TC_ROLES>,
+    @InjectRepository(USER_TN_USER_ROLES)
+    private userRolesRepository: Repository<USER_TN_USER_ROLES>,
   ) {}
 
   /**
@@ -23,21 +27,36 @@ export class UsersService implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
     console.log('✅ MariaDB connection successful. Initializing users...');
     const adminUser = await this.getUserByUsername('admin');
+
     if (!adminUser) {
-      await this.setUser(
-        'admin',
-        '관리자',
-        '1234',
-        'admin@test.com',
-        UserType.ADMIN_MAIN,
-      );
-      await this.setUser(
-        'test',
-        '테스트계정',
-        '1234',
-        'admin_test@test.com',
-        UserType.ADMIN_SUB,
-      );
+      console.log('✅ init User Registering...');
+      const adminRole = await this.rolesRepository.findOne({
+        where: { role_code: 'ADMIN_MAIN' },
+      });
+      const subAdminRole = await this.rolesRepository.findOne({
+        where: { role_code: 'ADMIN_SUB' },
+      });
+
+      if (adminRole) {
+        await this.setUser(
+          'admin',
+          '관리자',
+          '1234',
+          'admin@test.com',
+          adminRole.id,
+        );
+      }
+
+      if (subAdminRole) {
+        await this.setUser(
+          'test',
+          '테스트계정',
+          '1234',
+          'admin_test@test.com',
+          subAdminRole.id,
+        );
+      }
+      console.log('✅ init User Registered : admin, test');
     }
   }
 
@@ -65,21 +84,13 @@ export class UsersService implements OnApplicationBootstrap {
   }
 
   /**
-   * @summary 사용자 유형으로 사용자 목록 조회
-   * @param userType - 조회할 사용자 유형
-   * @returns 해당 유형의 모든 사용자 배열
-   */
-  async getUsersByUserType(userType: UserType): Promise<USER_TN_USERS[]> {
-    return this.usersRepository.find({ where: { user_type: userType } });
-  }
-
-  /**
-   * @summary 신규 사용자 생성
-   * @description 비밀번호를 해시하여 데이터베이스에 새로운 사용자를 저장.
+   * @summary 신규 사용자 생성 및 역할 매핑
+   * @description 비밀번호를 해시하여 새로운 사용자를 저장하고, 주어진 roleId로 역할 매핑.
    * @param username - 신규 사용자 이름
+   * @param nickname - 신규 사용자 닉네임
    * @param password - 신규 사용자 비밀번호 (해시 처리됨)
    * @param email - 신규 사용자 이메일
-   * @param user_type - 신규 사용자 유형
+   * @param role_id - 매핑할 역할의 ID
    * @returns 생성된 사용자 객체
    */
   async setUser(
@@ -87,16 +98,27 @@ export class UsersService implements OnApplicationBootstrap {
     nickname: string,
     password: string,
     email: string,
-    user_type: UserType,
+    role_id: number,
   ): Promise<USER_TN_USERS> {
     const hashedPassword = await hash(password, 10);
+
+    // 1. Create and save user
     const newUser = this.usersRepository.create({
       username,
       nickname,
       password: hashedPassword,
       email,
-      user_type,
+      role_id,
     });
-    return this.usersRepository.save(newUser);
+    const savedUser = await this.usersRepository.save(newUser);
+
+    // 2. Create and save user-role mapping
+    const userRoleMapping = this.userRolesRepository.create({
+      user_id: savedUser.id,
+      role_id,
+    });
+    await this.userRolesRepository.save(userRoleMapping);
+
+    return savedUser;
   }
 }

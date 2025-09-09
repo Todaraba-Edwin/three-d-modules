@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { API_PREFIX, USERS } from '@src_apps/common/api/index';
 
-import { CreateUserDto, USER_TN_USERS, UserType } from './dto';
+import { CreateUserDto, USER_TN_USERS } from './dto';
 import { UsersService } from './users.service';
 
 const { SEGMENTS, PARAMS } = USERS;
@@ -29,7 +29,7 @@ export class UsersController {
       body.password,
       body.nickname,
       body.email,
-      body.user_type,
+      body.role_id,
     );
   }
 
@@ -50,21 +50,5 @@ export class UsersController {
       );
     }
     return user;
-  }
-
-  /**
-   * @summary GET /api/users/type/:userType - 특정 유형의 사용자 목록 조회
-   * @param userType - 조회할 사용자 유형
-   * @returns 특정 유형의 사용자 목록
-   * @throws {NotFoundException} 유효하지 않은 사용자 유형일 경우
-   */
-  @Get(`${SEGMENTS.TYPE}/:${PARAMS.USERTYPE}`)
-  findByUserType(
-    @Param(PARAMS.USERTYPE) userType: UserType,
-  ): Promise<USER_TN_USERS[]> {
-    if (!Object.values(UserType).includes(userType)) {
-      throw new NotFoundException(`Invalid user type: ${userType}`);
-    }
-    return this.usersService.getUsersByUserType(userType);
   }
 }

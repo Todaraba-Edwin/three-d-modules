@@ -5,7 +5,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserType } from './user.interface';
 
 @Entity('USER_TN_USERS')
 export class USER_TN_USERS {
@@ -21,11 +20,11 @@ export class USER_TN_USERS {
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
-  @Column({ type: 'enum', enum: UserType, default: UserType.USER })
-  user_type: UserType;
-
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;
+
+  @Column({ type: 'bigint', nullable: true })
+  role_id: number;
 
   @CreateDateColumn()
   created_at: Date;
