@@ -3,18 +3,14 @@ import * as RD from 'react-router-dom';
 import * as Loaders from './loaders';
 
 const authRoutesWithLoader = {
-  loader: Loaders.loginPageLoader,
+  loader: Loaders.authRouterLoader,
   children: [...Pages.AuthRouter],
 };
 
 const protectedWithLoader = {
   element: <Pages.ProtectedLayout />,
   loader: Loaders.protectedRouteLoader,
-  children: [
-    ...Pages.DefaultRouter,
-    ...Pages.CesiumRouter,
-    ...Pages.SystemRouter,
-  ],
+  children: [...Pages.DefaultRouter, ...Pages.CesiumRouter],
 };
 
 export const router = RD.createBrowserRouter([

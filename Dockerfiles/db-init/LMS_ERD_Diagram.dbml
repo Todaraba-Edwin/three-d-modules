@@ -1,10 +1,21 @@
 //// ----------------------------------------------------
 //// Prizm LMS - ERD (DBML Diagram)
-//// Generated from LMS_ERD.md
+//// Generated from LMS_ERD.md and SQL schema
 //// https://dbdiagram.io/d/68b63d81777b52b76c91b5bf
 //// ----------------------------------------------------
 
-Table buildings {
+Table users {
+  id bigint [pk, increment]
+  username varchar(50) [not null, unique]
+  nickname varchar(50)
+  password varchar(255) [not null]
+  user_type user_type_enum [not null, default: 'USER']
+  email varchar(100) [not null, unique]
+  created_at datetime [default: `NOW()`]
+  updated_at datetime [default: `NOW()`]
+}
+
+Table TN_BUILDINGS {
   id bigint [pk, increment]
   name varchar(100) [not null, unique]
   address varchar(255)
@@ -12,20 +23,20 @@ Table buildings {
   longitude decimal(11, 8)
 }
 
-Table floors {
+Table TN_FLOORS {
   id bigint [pk, increment]
   building_id bigint [not null]
   name varchar(50) [not null]
 }
 
-Table spaces {
+Table TN_SPACES {
   id bigint [pk, increment]
   floor_id bigint [not null]
   name varchar(100) [not null]
   type varchar(50)
 }
 
-Table enclosures {
+Table TN_ENCLOSURES {
   id bigint [pk, increment]
   space_id bigint [note: 'FK to spaces.id']
   name varchar(100) [not null]
@@ -35,13 +46,13 @@ Table enclosures {
   description json
 }
 
-Table lines {
+Table TN_LINES {
   id bigint [pk, increment]
   type line_type [not null]
 }
 
-Table fibers {
-  line_id bigint [pk, ref: > lines.id]
+Table TN_FIBERS {
+  line_id bigint [pk, ref: > TN_LINES.id]
   from_enclosure_id bigint [not null]
   to_enclosure_id bigint [not null]
   fiber_type fiber_connection_type
@@ -51,7 +62,7 @@ Table fibers {
   path json
 }
 
-Table cores {
+Table TN_CORES {
   id bigint [pk, increment]
   fiber_id bigint [not null]
   core_number int [not null]
@@ -64,13 +75,13 @@ Table cores {
   circuit_sequence int
 }
 
-Table rings {
+Table TN_RINGS {
   id bigint [pk, increment]
   name varchar(255) [not null, unique]
   description json
 }
 
-Table circuits {
+Table TN_CIRCUITS {
   id bigint [pk, increment]
   ring_id bigint
   name varchar(255) [not null, unique]
@@ -80,21 +91,24 @@ Table circuits {
   description json
 }
 
-Table manufacturers {
+Table TC_MANUFACTURERS {
   id bigint [pk, increment]
   name varchar(100) [not null, unique]
-  description json
+  description varchar(100)
 }
 
-Table switch_models {
+Table TC_SWITCH_MODELS {
   id bigint [pk, increment]
   manufacturer_id bigint [not null]
   model_name varchar(100) [not null, unique]
-  port_info json
+  port_count int [not null]
+  community varchar(255) [not null]
+  name_oid varchar(255) [not null]
+  lldp_find_id_oid varchar(255)
   description json
 }
 
-Table switches {
+Table TN_SWITCHES {
   id bigint [pk, increment]
   enclosure_id bigint [not null]
   switch_model_id bigint [not null]
@@ -104,14 +118,14 @@ Table switches {
   description json
 }
 
-Table devices {
+Table TN_DEVICES {
   id bigint [pk, increment]
   device_type varchar(100) [not null]
   name varchar(100) [not null, unique]
   description json
 }
 
-Table ports {
+Table TN_PORTS {
   id bigint [pk, increment]
   switch_id bigint [not null]
   port_number int [not null]
@@ -124,9 +138,22 @@ Table ports {
   last_updated timestamp [not null]
 }
 
+Table TN_SWITCH_MODEL_PORTS {
+  id bigint [pk, increment]
+  switch_model_id bigint [not null]
+  port_number int [not null]
+  port_type switch_model_port_type [not null]
+}
+
 //// ----------------------------------------------------
 ////     ENUMS
 //// ----------------------------------------------------
+
+Enum user_type_enum {
+  ADMIN_MAIN
+  ADMIN_SUB
+  USER
+}
 
 Enum enclosure_type {
   MDF
@@ -163,25 +190,31 @@ Enum port_type_enum {
   LAN
 }
 
+Enum switch_model_port_type {
+  RJ45
+  SFP
+}
+
 //// ----------------------------------------------------
 ////     RELATIONSHIPS
 //// ----------------------------------------------------
 
-Ref: floors.building_id > buildings.id
-Ref: spaces.floor_id > floors.id
-Ref: enclosures.space_id > spaces.id
-Ref: enclosures.parent_enclosure_id > enclosures.id
-Ref: fibers.from_enclosure_id > enclosures.id
-Ref: fibers.to_enclosure_id > enclosures.id
-Ref: cores.fiber_id > fibers.line_id
-Ref: cores.from_port_id > ports.id
-Ref: cores.to_port_id > ports.id
-Ref: cores.circuit_id > circuits.id
-Ref: circuits.ring_id > rings.id
-Ref: circuits.start_port_id > ports.id
-Ref: circuits.end_port_id > ports.id
-Ref: switch_models.manufacturer_id > manufacturers.id
-Ref: switches.enclosure_id > enclosures.id
-Ref: switches.switch_model_id > switch_models.id
-Ref: ports.switch_id > switches.id
-Ref: ports.connected_device_id > devices.id
+Ref: TN_FLOORS.building_id > TN_BUILDINGS.id
+Ref: TN_SPACES.floor_id > TN_FLOORS.id
+Ref: TN_ENCLOSURES.space_id > TN_SPACES.id
+Ref: TN_ENCLOSURES.parent_enclosure_id > TN_ENCLOSURES.id
+Ref: TN_FIBERS.from_enclosure_id > TN_ENCLOSURES.id
+Ref: TN_FIBERS.to_enclosure_id > TN_ENCLOSURES.id
+Ref: TN_CORES.fiber_id > TN_FIBERS.line_id
+Ref: TN_CORES.from_port_id > TN_PORTS.id
+Ref: TN_CORES.to_port_id > TN_PORTS.id
+Ref: TN_CORES.circuit_id > TN_CIRCUITS.id
+Ref: TN_CIRCUITS.ring_id > TN_RINGS.id
+Ref: TN_CIRCUITS.start_port_id > TN_PORTS.id
+Ref: TN_CIRCUITS.end_port_id > TN_PORTS.id
+Ref: TC_SWITCH_MODELS.manufacturer_id > TC_MANUFACTURERS.id
+Ref: TN_SWITCHES.enclosure_id > TN_ENCLOSURES.id
+Ref: TN_SWITCHES.switch_model_id > TC_SWITCH_MODELS.id
+Ref: TN_PORTS.switch_id > TN_SWITCHES.id
+Ref: TN_PORTS.connected_device_id > TN_DEVICES.id
+Ref: TN_SWITCH_MODEL_PORTS.switch_model_id > TC_SWITCH_MODELS.id

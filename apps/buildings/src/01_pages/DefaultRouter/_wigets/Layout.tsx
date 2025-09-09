@@ -1,4 +1,4 @@
-import { utilIsProtectedRoute } from '@/_templates/loader/loaders';
+import { utilsProtectedRouteValidateSession } from '@/_templates/loader/loaders';
 import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
 import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
@@ -12,8 +12,9 @@ import {
 } from 'react';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
+import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { LayoutSize, type menuItemsType } from '../_shared/const';
+import { type menuItemsType } from '../_shared/const';
 import { GNBTooltip } from './GNBTooltip';
 
 type Props = PropsWithChildren & {
@@ -22,6 +23,8 @@ type Props = PropsWithChildren & {
   setIsFocusLogin: Dispatch<React.SetStateAction<boolean>>;
 };
 
+const isMobileMode = isMobile || isMobileSafari;
+
 export const Layout = ({
   children,
   nickname,
@@ -29,13 +32,18 @@ export const Layout = ({
   setIsFocusLogin,
 }: Props): ReactNode => {
   const { layout } = usePathSegments();
-  const [isGnbOpen, setIsGnbOpen] = useState(true);
+  const [isGnbOpen, setIsGnbOpen] = useState(() => {
+    return isMobileMode ? false : true;
+  });
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const onToggleIsGnbOpen = () => setIsGnbOpen(prev => !prev);
+  const onToggleIsGnbOpen = () => {
+    if (isMobileMode) return;
+    setIsGnbOpen(prev => !prev);
+  };
   const navigate = RD.useNavigate();
   const utilsNavigate = (url: string) => () => {
     const protectedRouteNavigate = async () => {
-      const isProtected = await utilIsProtectedRoute();
+      const isProtected = await utilsProtectedRouteValidateSession();
       if (isProtected) {
         navigate(url);
       } else {
@@ -44,17 +52,6 @@ export const Layout = ({
     };
     protectedRouteNavigate();
   };
-
-  const {
-    GNB_CONTENT,
-    GNB_OPEN_W,
-    GNB_CLOSE_W,
-    GNB_ICON,
-    GNB_PADDING,
-    GNB_REST,
-    GNB_FOOTER,
-    GNB_FOOTER_CLOSE,
-  } = LayoutSize;
 
   const menuRefs = useRef(gmbMenuItems.map(() => createRef<HTMLLIElement>()));
 
@@ -69,13 +66,13 @@ export const Layout = ({
           `flex-shrink-0 bg-white border-r-3 shadow-sm transition-all duration-300`,
           'overflow-hidden',
           {
-            [`w-[${GNB_OPEN_W}px]`]: isGnbOpen,
-            [`w-[${GNB_CLOSE_W}px]`]: !isGnbOpen,
+            'w-gnb-open': isGnbOpen,
+            'w-gnb-close': !isGnbOpen,
           }
         )}
       >
         <h2
-          className={clsx('py-4 cursor-pointer', `max-w-[${GNB_OPEN_W}px]`)}
+          className={clsx('py-4 cursor-pointer', 'max-w-gnb-open')}
           onClick={onToggleIsGnbOpen}
         >
           <img src='/imgs/seoul-university.png' alt='Logo' />
@@ -89,10 +86,10 @@ export const Layout = ({
         >
           <ol
             className={clsx(
-              `w-[${GNB_OPEN_W}px]`,
+              'w-gnb-open',
               {
-                [`pb-[${GNB_FOOTER}px]`]: isGnbOpen,
-                [`pb-[${GNB_FOOTER_CLOSE}px]`]: !isGnbOpen,
+                'pb-gnb-footer': isGnbOpen,
+                'pb-gnb-footer-close': !isGnbOpen,
               },
               'overflow-y-auto'
             )}
@@ -107,7 +104,7 @@ export const Layout = ({
                   onMouseEnter={() => setHoveredItem(list.path)}
                   onMouseLeave={() => setHoveredItem(null)}
                   className={clsx(
-                    `w-[${GNB_CONTENT}px] p-4 transition-all duration-300 relative`,
+                    'w-gnb-open p-4 transition-all duration-300 relative',
                     'hover:px-5 hover:font-semibold',
                     {
                       'text-gray-700 hover:text-gray-900': !isActive,
@@ -119,19 +116,19 @@ export const Layout = ({
                 >
                   <button
                     onClick={utilsNavigate(list.path)}
-                    className={clsx(
-                      `w-full flex gap-[${GNB_PADDING}px] items-center `
-                    )}
+                    className={clsx('w-full flex gap-gnb items-center ')}
                   >
-                    <list.icon size={GNB_ICON} className={clsx('font-bold')} />
+                    <list.icon
+                      className={clsx('font-bold w-gnb-icon h-gnb-icon')}
+                    />
                     <span className={clsx({ hidden: !isGnbOpen })}>
                       {list.label}
                     </span>
                   </button>
-                  {!isGnbOpen && hoveredItem === list.path && (
+                  {!isMobileMode && !isGnbOpen && hoveredItem === list.path && (
                     <GNBTooltip
                       targetRef={menuRefs.current[index]}
-                      weightRight={GNB_REST + GNB_PADDING}
+                      weightRight={194}
                     >
                       {list.label}
                     </GNBTooltip>
@@ -145,10 +142,11 @@ export const Layout = ({
           className={clsx(
             `bg-white absolute bottom-0`,
             'shadow-[0_-5px_15px_-3px_rgb(0,0,0,0.1),0_-4px_6px_-4px_rgb(0,0,0,0.1)]',
-            `w-[${GNB_OPEN_W}px]`,
+            'w-gnb-open',
+            'rounded-tl-2xl rounded-tr-2xl',
             {
-              [`h-[${GNB_FOOTER}px]`]: isGnbOpen,
-              [`h-[${GNB_FOOTER_CLOSE}px]`]: !isGnbOpen,
+              'h-gnb-footer': isGnbOpen,
+              'h-gnb-footer-close': !isGnbOpen,
             },
             'overflow-hidden',
             'grid grid-rows-[1fr_auto]'
@@ -161,11 +159,7 @@ export const Layout = ({
             </p>
           )}
           <div
-            className={clsx(
-              'p-4',
-              `w-[${LayoutSize.GNB_CONTENT}px]`,
-              `flex gap-[${LayoutSize.GNB_PADDING}px]`
-            )}
+            className={clsx('p-4', 'w-gnb-content', 'flex gap-gnb')}
             onClick={() => {
               fetch(`${VITE_API_URL}/api/auth/logout`, {
                 method: 'POST',
@@ -194,7 +188,7 @@ export const Layout = ({
             <LogOut
               className={clsx(
                 'text-gray-500 font-bold',
-                `w-[${LayoutSize.GNB_ICON}px] h-[${LayoutSize.GNB_ICON}px]`
+                'w-gnb-icon h-gnb-icon'
               )}
             />
             <button children='로그아웃' />
@@ -205,14 +199,21 @@ export const Layout = ({
       {/* 3. 오른쪽 메인 컨텐츠 영역 */}
       <div className='flex-grow grid grid-rows-[auto_1fr]'>
         <div className='bg-white h-12 p-4 flex items-center gap-2'>
-          <button onClick={onToggleIsGnbOpen}>
-            {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
-          </button>
+          {!isMobileMode && (
+            <button onClick={onToggleIsGnbOpen}>
+              {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
+            </button>
+          )}
           <p className='font-bold text-lg'>
             PRIZM <span className='font-thin text-'>건물관리 시스템</span>
           </p>
         </div>
-        <div className='overflow-y-auto'>{children}</div>
+        <div className='overflow-y-auto'>
+          {children}
+          <br />
+          {`isMobile : ${isMobile}`} <br />
+          {`isMobileSafari : ${isMobileSafari}`}
+        </div>
       </div>
     </div>
   );
