@@ -23,7 +23,19 @@ export class USER_TN_USERS {
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;
 
-  @Column({ type: 'bigint', nullable: true })
+  @Column({
+    type: 'bigint',
+    nullable: true,
+    transformer: {
+      to: (value: number | null) => value,
+      from: (value: string | null) => {
+        if (value === null) {
+          return null;
+        }
+        return parseInt(value, 10);
+      },
+    },
+  })
   role_id: number;
 
   @CreateDateColumn()

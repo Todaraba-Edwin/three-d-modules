@@ -7,7 +7,13 @@ import { hash } from 'bcrypt';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { USER_TC_ROLES, USER_TN_USERS, USER_TN_USER_ROLES } from './dto';
+import {
+  USER_TC_MENUS,
+  USER_TC_ROLES,
+  USER_TN_ROLE_MENU_PERMISSIONS,
+  USER_TN_USERS,
+  USER_TN_USER_ROLES,
+} from './dto';
 
 @Injectable()
 export class UsersService implements OnApplicationBootstrap {
@@ -18,6 +24,10 @@ export class UsersService implements OnApplicationBootstrap {
     private rolesRepository: Repository<USER_TC_ROLES>,
     @InjectRepository(USER_TN_USER_ROLES)
     private userRolesRepository: Repository<USER_TN_USER_ROLES>,
+    @InjectRepository(USER_TN_ROLE_MENU_PERMISSIONS)
+    private userMenuPermissionsRepository: Repository<USER_TN_ROLE_MENU_PERMISSIONS>,
+    @InjectRepository(USER_TC_MENUS)
+    private menusRepository: Repository<USER_TC_MENUS>,
   ) {}
 
   /**
@@ -120,5 +130,63 @@ export class UsersService implements OnApplicationBootstrap {
     await this.userRolesRepository.save(userRoleMapping);
 
     return savedUser;
+  }
+
+  /**
+   * @summary DB에 정의된 Role_id에 대한 역할정보 조회
+   * @description 주어진 roleId로 역할정보 반환.
+   * @param role_id - 매핑할 역할의 ID
+   * @returns 조회된 역할정보 객체
+   */
+
+  async getRoleCodeByRoleId(role_id: number): Promise<USER_TC_ROLES | null> {
+    if (role_id === null || role_id === undefined) return null;
+    return this.rolesRepository.findOne({ where: { id: role_id } });
+  }
+
+  /**
+   * @summary DB에 정의된 Role_id에 대한 역할별 메뉴접근정보 조회
+   * @description 주어진 roleId로 역할별 메뉴접근정보 반환.
+   * @param role_id - 매핑할 역할의 ID
+   * @returns 조회된 역할별 메뉴접근정보 객체
+   */
+
+  async getMenuPermissionByRoleId(role_id: number) {
+    if (role_id === null || role_id === undefined) {
+      return [];
+    }
+
+    const permissions = await this.menusRepository
+      .createQueryBuilder('menu')
+      .select([
+        'menu.id AS id',
+        'menu.label AS label',
+        'menu.path AS path',
+        'menu.icon_name AS icon_name',
+        'menu.parent_id AS parent_id',
+        'menu.sort_order AS sort_order',
+      ])
+      .addSelect('permission.can_access', 'can_access')
+      .leftJoin(
+        'USER_TN_ROLE_MENU_PERMISSIONS',
+        'permission',
+        'permission.menu_id = menu.id AND permission.role_id = :role_id',
+        { role_id },
+      )
+      .where('menu.is_active = :is_active', { is_active: true })
+      .orderBy('menu.sort_order', 'ASC')
+      .getRawMany();
+
+    return permissions.map(
+      ({ id, label, path, icon_name, sort_order, parent_id, can_access }) => ({
+        id: parseInt(id, 10),
+        label,
+        path,
+        icon_name,
+        parent_id: parseInt(parent_id, 10) || null,
+        sort_order,
+        can_access: can_access === 1 || can_access === true,
+      }),
+    );
   }
 }

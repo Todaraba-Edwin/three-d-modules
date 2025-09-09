@@ -40,11 +40,11 @@ export class AuthController {
 
   /**
    * @summary POST /api/auth/login - 사용자 로그인
-   * @description 사용자 로그인을 처리하고, 성공 시 세션 쿠키(sessionId, username)를 설정.
+   * @description 사용자 로그인을 처리하고, 성공 시 HttpOnly 세션 쿠키(sessionId)를 설정.
    * @param req - 요청 객체 (User-Agent 획득을 위해 사용)
    * @param body - 로그인 정보 (username, password, force)
    * @param res - 응답 객체 (쿠키 설정을 위해 사용)
-   * @returns 로그인 결과 메시지와 사용자 이름 객체
+   * @returns 로그인 결과 메시지
    */
   @Post(API.AUTH.SEGMENTS.LOGIN)
   async login(
@@ -56,52 +56,41 @@ export class AuthController {
       req.headers['user-agent'],
       req.headers['origin'],
     );
-    const loginResult = await this.authService.login(
+    const { message, sessionId } = await this.authService.login(
       body.username,
       body.password,
       body.force,
       clientSignature,
     );
 
-    const { message, sessionId, username } = loginResult;
+    res.cookie(
+      API.AUTH.COOKIES.SESSION_ID,
+      sessionId,
+      API.HTTP_ONLY_COOKIE_OPTIONS,
+    );
 
-    if (sessionId) {
-      res.cookie(
-        API.AUTH.COOKIES.SESSION_ID,
-        sessionId,
-        API.HTTP_ONLY_COOKIE_OPTIONS,
-      );
-      res.cookie(
-        API.AUTH.COOKIES.USER_NAME,
-        username,
-        API.DEFAULT_COOKIE_OPTIONS,
-      );
-    }
-
-    return { message, username };
+    return { message };
   }
 
   /**
    * @summary GET /api/auth/validate-session - 세션 유효성 검증
    * @description 브라우저에 저장된 쿠키를 이용해 현재 세션의 유효성을 검증.
-   * @param req - 요청 객체 (쿠키 정보 및 User-Agent 획득을 위해 사용)
-   * @returns 세션이 유효할 경우, 성공 메시지와 사용자 이름 객체
+   * @param req - 요청 객체 (쿠키 정보 획득을 위해 사용)
+   * @returns 세션이 유효할 경우, 성공 메시지와 사용자 정보 객체
    * @throws {UnauthorizedException} 쿠키가 없거나 서버의 세션 정보와 일치하지 않을 경우 (HTTP 401)
    */
   @Get(API.AUTH.SEGMENTS.VALIDATE_SESSION)
   async getValidateSession(@Req() req: Request) {
-    const { username, sessionId } = req.cookies;
+    const sessionId = req.cookies[API.AUTH.COOKIES.SESSION_ID];
 
-    if (!username || !sessionId) {
+    if (!sessionId) {
       throw new UnauthorizedException(
         API.API_MESSAGES.AUTH.NOT_FOUND_SESSION_BROWSER,
       );
     }
 
-    const validationResult = await this.authService.getValidateSession(
-      username,
-      sessionId,
-    );
+    const validationResult =
+      await this.authService.getValidateSession(sessionId);
 
     if (!validationResult.isValid) {
       throw new UnauthorizedException(validationResult.message);
@@ -109,42 +98,29 @@ export class AuthController {
 
     return {
       message: validationResult.message,
-      username: validationResult.username,
-      userType: validationResult.userType,
+      roleCode: validationResult.roleCode,
       nickname: validationResult.nickname,
+      permissions: validationResult.permissions,
     };
   }
 
   /**
    * @summary POST /api/auth/logout - 사용자 로그아웃
-   * @description 사용자 로그아웃을 처리하고, 브라우저의 세션 관련 쿠키를 삭제.
-   * @param body - 로그아웃할 사용자 이름
+   * @description 사용자 로그아웃을 처리하고, 브라우저의 세션 쿠키를 삭제.
+   * @param req - 요청 객체 (쿠키 정보 획득을 위해 사용)
    * @param res - 응답 객체 (쿠키 삭제를 위해 사용)
    * @returns 로그아웃 성공 메시지 객체
    */
   @Post(API.AUTH.SEGMENTS.lOGOUT)
   async logout(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
-    const { username, sessionId } = req.cookies;
+    const sessionId = req.cookies[API.AUTH.COOKIES.SESSION_ID];
 
-    if (!username || !sessionId) {
-      throw new UnauthorizedException(
-        API.API_MESSAGES.AUTH.NOT_FOUND_SESSION_BROWSER,
-      );
+    if (sessionId) {
+      this.authService.logout(sessionId);
     }
 
-    const validationResult = await this.authService.getValidateSession(
-      username,
-      sessionId,
-    );
-
-    if (!validationResult.isValid) {
-      throw new UnauthorizedException(validationResult.message);
-    }
-
-    const logoutResult = this.authService.logout(username);
-    const { message } = logoutResult;
     res.clearCookie(API.AUTH.COOKIES.SESSION_ID, { path: '/' });
-    res.clearCookie(API.AUTH.COOKIES.USER_NAME, { path: '/' });
-    return { message };
+
+    return { message: API.API_MESSAGES.AUTH.SUCCEED_LOGOUT };
   }
 }
