@@ -51,9 +51,11 @@ export const protectedRouteLoader = async (): Promise<Response | void> => {
    * @description 전역상태관리(Zustand : 사용자 정보값 설정)
    * userType, nickName
    */
+
   useAuthStore.getState().setAuth({
-    userType: authData.userType,
+    userType: authData.roleCode,
     nickname: authData.nickname || '',
+    permissions: authData.permissions,
   });
   return;
 };

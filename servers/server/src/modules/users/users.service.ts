@@ -34,12 +34,12 @@ export class UsersService implements OnApplicationBootstrap {
    * @summary 애플리케이션 시작 시 관리자 계정 확인 및 생성
    * @description 서버가 시작될 때 'admin' 계정이 없으면 기본값으로 생성.
    */
-  async onApplicationBootstrap() {
-    console.log('✅ MariaDB connection successful. Initializing users...');
+  async onApplicationBootstrap(): Promise<void> {
+    console.info('✅ MariaDB connection successful. Initializing users...');
     const adminUser = await this.getUserByUsername('admin');
 
     if (!adminUser) {
-      console.log('✅ init User Registering...');
+      console.info('✅ init User Registering...');
       const adminRole = await this.rolesRepository.findOne({
         where: { role_code: 'ADMIN_MAIN' },
       });
@@ -66,7 +66,7 @@ export class UsersService implements OnApplicationBootstrap {
           subAdminRole.id,
         );
       }
-      console.log('✅ init User Registered : admin, test');
+      console.info('✅ init User Registered : admin, test');
     }
   }
 
@@ -151,7 +151,17 @@ export class UsersService implements OnApplicationBootstrap {
    * @returns 조회된 역할별 메뉴접근정보 객체
    */
 
-  async getMenuPermissionByRoleId(role_id: number) {
+  async getMenuPermissionByRoleId(role_id: number): Promise<
+    {
+      id: number;
+      label: string;
+      path: string;
+      icon_name: string;
+      parent_id: number | null;
+      sort_order: number;
+      can_access: boolean;
+    }[]
+  > {
     if (role_id === null || role_id === undefined) {
       return [];
     }

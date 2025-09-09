@@ -20,8 +20,7 @@ export const ButtonLogin = (): ReactNode => {
           }),
         })
           .then(response => response.json())
-          .then(data => {
-            console.log('Login response:', data);
+          .then(() => {
             navigate('/');
           });
       }}

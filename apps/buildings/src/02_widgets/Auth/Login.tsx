@@ -89,7 +89,6 @@ export const Login = (): ReactNode => {
         return data; // 200일 때
       })
       .then(data => {
-        console.log('Login success:', data);
         setIsLoading(false);
         setIsFocusLogin(false);
         setErrMessage('');

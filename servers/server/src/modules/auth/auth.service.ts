@@ -84,7 +84,7 @@ export class AuthService {
    * @param sessionId - 로그아웃할 세션 ID
    * @returns 로그아웃 성공 메시지 객체 반환
    */
-  logout(sessionId: string) {
+  logout(sessionId: string): { message: string } {
     this.activeSessions.delete(sessionId);
     return { message: API_MESSAGES.AUTH.SUCCEED_LOGOUT };
   }
@@ -101,7 +101,7 @@ export class AuthService {
     username?: string;
     nickname?: string;
     message?: string;
-    permissions?: any[];
+    permissions?: PermissionsType[];
   }> {
     const sessionData = this.activeSessions.get(sessionId);
 

@@ -38,7 +38,7 @@ export class SetPostSnmpResultDto {
   configStatus: 'UP' | 'DOWN';
   operStatus: 'UP' | 'DOWN';
   portMAC: string;
-  lldpNeighbor: {} | LLDPNeighbor;
+  lldpNeighbor: LLDPNeighbor;
 }
 
 export class GetPortStateResDto {

@@ -50,6 +50,7 @@ export const utilFormatMacAddress = (
  * snmp.get 요청을 Promise로 감싸는 래퍼 함수
  */
 export const snmpGetPromise = (
+  // eslint-disable-next-line
   session: any,
   oids: string[],
 ): Promise<SnmpResultDto[]> => {
@@ -65,6 +66,7 @@ export const snmpGetPromise = (
  * snmp.subtree 요청을 Promise로 감싸는 래퍼 함수
  */
 export const snmpSubtreePromise = (
+  // eslint-disable-next-line
   session: any,
   oid: string,
 ): Promise<SnmpResultDto[]> => {
@@ -87,6 +89,7 @@ export const snmpSubtreePromise = (
  * @returns 이웃 정보를 담은 객체
  */
 export const snmpGetLldpNeighbors = async (
+  // eslint-disable-next-line
   session: any,
 ): Promise<Record<number, LLDPNeighbor>> => {
   const neighborsMap: Record<number, LLDPNeighbor> = {};

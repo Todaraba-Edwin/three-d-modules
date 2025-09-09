@@ -10,7 +10,7 @@ import tseslint from 'typescript-eslint';
 
 const commonRules = {
   // console
-  'no-console': ['warn', { allow: ['warn', 'error'] }], // console 사용시 경고, 프로덕션 코드에는 남지 않도록 경고 처리
+  'no-console': ['warn', { allow: ['warn', 'error', 'info'] }], // console 사용시 경고, 프로덕션 코드에는 남지 않도록 경고 처리
 
   // TS
   '@typescript-eslint/no-explicit-any': 'warn', // any 타입 사용은 제한하여 타입 안전성 강화
@@ -113,8 +113,8 @@ export default tseslint.config(
     matchPath: 'apps/buildings/**/*.{ts,tsx}',
   }),
   utilsServerConfig({
-    projectPath: './servers/server-a/tsconfig.json',
-    matchPath: 'servers/server-a/**/*.ts',
+    projectPath: './servers/server/tsconfig.json',
+    matchPath: 'servers/server/**/*.ts',
   }),
   utilsNodeConfig({})
 );

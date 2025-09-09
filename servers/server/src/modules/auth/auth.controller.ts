@@ -21,11 +21,11 @@ import { AuthService } from './auth.service';
  */
 const createClientSignature = (
   userAgent: string | undefined,
-  originHost: any,
+  originHost: string | undefined | null,
 ) => {
   if (!userAgent) return 'Unknown';
   const parser = new UAParser(userAgent);
-  const { browser, os, device } = parser.getResult();
+  const { os, device } = parser.getResult();
 
   return JSON.stringify({
     device: `${device}(${os.name})`,
@@ -51,7 +51,7 @@ export class AuthController {
     @Req() req: Request,
     @Body() body: { username: string; password: string; force?: boolean },
     @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Promise<{ message: string }> {
     const clientSignature = createClientSignature(
       req.headers['user-agent'],
       req.headers['origin'],
@@ -80,7 +80,12 @@ export class AuthController {
    * @throws {UnauthorizedException} 쿠키가 없거나 서버의 세션 정보와 일치하지 않을 경우 (HTTP 401)
    */
   @Get(API.AUTH.SEGMENTS.VALIDATE_SESSION)
-  async getValidateSession(@Req() req: Request) {
+  async getValidateSession(@Req() req: Request): Promise<{
+    message: string | undefined;
+    roleCode: string | undefined;
+    nickname: string | undefined;
+    permissions: PermissionsType[] | undefined;
+  }> {
     const sessionId = req.cookies[API.AUTH.COOKIES.SESSION_ID];
 
     if (!sessionId) {
@@ -112,7 +117,10 @@ export class AuthController {
    * @returns 로그아웃 성공 메시지 객체
    */
   @Post(API.AUTH.SEGMENTS.lOGOUT)
-  async logout(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
+  async logout(
+    @Res({ passthrough: true }) res: Response,
+    @Req() req: Request,
+  ): Promise<{ message: string }> {
     const sessionId = req.cookies[API.AUTH.COOKIES.SESSION_ID];
 
     if (sessionId) {

@@ -20,10 +20,7 @@
       "@src_modules/*": ["modules/*"],
       "@src_modules_users/*": ["modules/users/*"]
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ],
+    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"],
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

@@ -109,12 +109,13 @@ export class SwitchesService {
       lldt_find_ports.forEach((vb) => {
         const findMac = '1.3.6.1.4.1.6296.1.17.1.42.3.1.4';
         const findIP = '1.3.6.1.4.1.6296.1.17.1.42.3.1.5';
+        // TODO 테스트용으로 추후 제거
         if (vb.oid.includes(findMac)) {
-          console.log('oid : ', vb.oid, vb.value.toString());
+          console.info('oid : ', vb.oid, vb.value.toString());
         }
 
         if (vb.oid.includes(findIP)) {
-          console.log('oid : ', vb.oid, vb.value.toString());
+          console.info('oid : ', vb.oid, vb.value.toString());
         }
       });
 

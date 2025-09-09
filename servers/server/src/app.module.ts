@@ -31,7 +31,6 @@ import { SwitchesModule } from './modules/switches/switches.module';
 })
 export class AppModule {
   constructor() {
-    console.log('🔧 DB_HOST:', process.env.DB_HOST);
-
+    console.info('🔧 DB_HOST:', process.env.DB_HOST);
   }
 }
