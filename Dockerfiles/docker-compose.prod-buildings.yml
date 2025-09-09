@@ -44,9 +44,11 @@ services:
       MARIADB_ROOT_PASSWORD: prizm
     volumes:
       - mariadb-data:/var/lib/mysql
-      # ordering : alphabet - init1 - init2
-      - ./db-init/init1-user.sql:/docker-entrypoint-initdb.d/init1-user.sql
-      - ./db-init/init2-nms.sql:/docker-entrypoint-initdb.d/init2-nms.sql
+      # ordering : alphabet - schema first, then data
+      - ./db-init/init1.1-user-schema.sql:/docker-entrypoint-initdb.d/init1.1-user-schema.sql
+      - ./db-init/init1.2-user-data.sql:/docker-entrypoint-initdb.d/init1.2-user-data.sql
+      - ./db-init/init2.1-nms-schema.sql:/docker-entrypoint-initdb.d/init2.1-nms-schema.sql
+      - ./db-init/init2.2-nms-data.sql:/docker-entrypoint-initdb.d/init2.2-nms-data.sql
     networks:
       - my-network
 

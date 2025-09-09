@@ -1,0 +1,62 @@
+USE prizm;
+
+-- ####################################################################
+-- # Initial Data for Users, Roles, Menus
+-- ####################################################################
+
+-- 1. Roles
+INSERT INTO USER_TC_ROLES (role_code, role_name) VALUES
+('ADMIN_MAIN', '최고 관리자'),
+('ADMIN_SUB', '중간 관리자'),
+('USER', '일반 사용자');
+
+-- 2. Menus
+INSERT INTO USER_TC_MENUS (label, path, icon_name, sort_order) VALUES
+('대시보드', '/', 'HOME', 1),
+('관리자', '/system-admin', 'SHIELD', 2),
+('LMS 관리', '/lms', 'NETWORK', 3),
+('FMS 관리', '/fms', 'CAMERA', 4),
+('정보', '/system-info', 'INFO', 5),
+('설정', '/settings', 'SETTINGS', 6);
+
+-- 3. Role-Menu Permissions
+-- Get Role IDs
+SET @admin_m
+ain_role_id = (SELECT id from USER_TC_ROLES where role_code = 'ADMIN_MAIN');
+SET @admin_sub_role_id = (SELECT id from USER_TC_ROLES where role_code = 'ADMIN_SUB');
+SET @user_role_id = (SELECT id from USER_TC_ROLES where role_code = 'USER');
+
+-- Get all menu IDs
+SET @menu_dashboard_id = (SELECT id from USER_TC_MENUS where path = '/');
+SET @menu_admin_id = (SELECT id from USER_TC_MENUS where path = '/system-admin');
+SET @menu_lms_id = (SELECT id from USER_TC_MENUS where path = '/lms');
+SET @menu_fms_id = (SELECT id from USER_TC_MENUS where path = '/fms');
+SET @menu_info_id = (SELECT id from USER_TC_MENUS where path = '/system-info');
+SET @menu_settings_id = (SELECT id from USER_TC_MENUS where path = '/settings');
+
+-- ADMIN_MAIN: can access all
+INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
+(@admin_main_role_id, @menu_dashboard_id, TRUE),
+(@admin_main_role_id, @menu_admin_id, TRUE),
+(@admin_main_role_id, @menu_lms_id, TRUE),
+(@admin_main_role_id, @menu_fms_id, TRUE),
+(@admin_main_role_id, @menu_info_id, TRUE),
+(@admin_main_role_id, @menu_settings_id, TRUE);
+
+-- ADMIN_SUB: can access all except '/system-admin'
+INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
+(@admin_sub_role_id, @menu_dashboard_id, TRUE),
+(@admin_sub_role_id, @menu_admin_id, FALSE),
+(@admin_sub_role_id, @menu_lms_id, TRUE),
+(@admin_sub_role_id, @menu_fms_id, TRUE),
+(@admin_sub_role_id, @menu_info_id, TRUE),
+(@admin_sub_role_id, @menu_settings_id, TRUE);
+
+-- USER: can access all except '/system-admin' and '/settings'
+INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
+(@user_role_id, @menu_dashboard_id, TRUE),
+(@user_role_id, @menu_admin_id, FALSE),
+(@user_role_id, @menu_lms_id, TRUE),
+(@user_role_id, @menu_fms_id, TRUE),
+(@user_role_id, @menu_info_id, TRUE),
+(@user_role_id, @menu_settings_id, FALSE);

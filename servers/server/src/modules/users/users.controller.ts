@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { API_PREFIX, USERS } from '@src_apps/common/api/index';
 
-import { CreateUserDto, User, UserType } from './dto';
+import { CreateUserDto, USER_TN_USERS, UserType } from './dto';
 import { UsersService } from './users.service';
 
 const { SEGMENTS, PARAMS } = USERS;
@@ -23,7 +23,7 @@ export class UsersController {
    * @returns 생성된 사용자 정보 (비밀번호 제외)
    */
   @Post()
-  async createUser(@Body() body: CreateUserDto): Promise<User> {
+  async createUser(@Body() body: CreateUserDto): Promise<USER_TN_USERS> {
     return this.usersService.setUser(
       body.username,
       body.password,
@@ -40,7 +40,9 @@ export class UsersController {
    * @throws {NotFoundException} 사용자를 찾지 못했을 경우
    */
   @Get(`:${PARAMS.USERNAME}`)
-  async findOne(@Param(PARAMS.USERNAME) userName: string): Promise<User> {
+  async findOne(
+    @Param(PARAMS.USERNAME) userName: string,
+  ): Promise<USER_TN_USERS> {
     const user = await this.usersService.getUserByUsername(userName);
     if (!user) {
       throw new NotFoundException(
@@ -57,7 +59,9 @@ export class UsersController {
    * @throws {NotFoundException} 유효하지 않은 사용자 유형일 경우
    */
   @Get(`${SEGMENTS.TYPE}/:${PARAMS.USERTYPE}`)
-  findByUserType(@Param(PARAMS.USERTYPE) userType: UserType): Promise<User[]> {
+  findByUserType(
+    @Param(PARAMS.USERTYPE) userType: UserType,
+  ): Promise<USER_TN_USERS[]> {
     if (!Object.values(UserType).includes(userType)) {
       throw new NotFoundException(`Invalid user type: ${userType}`);
     }

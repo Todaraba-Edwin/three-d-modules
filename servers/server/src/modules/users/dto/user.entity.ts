@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { UserType } from './user.interface';
 
-@Entity('users')
-export class User {
+@Entity('USER_TN_USERS')
+export class USER_TN_USERS {
   @PrimaryGeneratedColumn()
   id: number;
 

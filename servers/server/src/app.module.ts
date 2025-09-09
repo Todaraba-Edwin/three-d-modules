@@ -20,7 +20,7 @@ import { SwitchesModule } from './modules/switches/switches.module';
       password: 'prizm',
       database: 'prizm',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false, // synchronize: true is not recommended for production
     }),
     UsersModule,
     AuthModule,

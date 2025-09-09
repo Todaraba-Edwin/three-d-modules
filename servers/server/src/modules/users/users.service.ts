@@ -7,13 +7,13 @@ import { hash } from 'bcrypt';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, UserType } from './dto';
+import { USER_TN_USERS, UserType } from './dto';
 
 @Injectable()
 export class UsersService implements OnApplicationBootstrap {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(USER_TN_USERS)
+    private usersRepository: Repository<USER_TN_USERS>,
   ) {}
 
   /**
@@ -21,6 +21,7 @@ export class UsersService implements OnApplicationBootstrap {
    * @description 서버가 시작될 때 'admin' 계정이 없으면 기본값으로 생성.
    */
   async onApplicationBootstrap() {
+    console.log('✅ MariaDB connection successful. Initializing users...');
     const adminUser = await this.getUserByUsername('admin');
     if (!adminUser) {
       await this.setUser(
@@ -46,7 +47,7 @@ export class UsersService implements OnApplicationBootstrap {
    * @returns ID에 해당하는 사용자 객체
    * @throws {NotFoundException} 해당 ID의 사용자가 없을 경우
    */
-  async getUserById(id: number): Promise<User> {
+  async getUserById(id: number): Promise<USER_TN_USERS> {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID "${id}" not found.`);
@@ -59,7 +60,7 @@ export class UsersService implements OnApplicationBootstrap {
    * @param username - 조회할 사용자 이름
    * @returns 사용자 이름에 해당하는 사용자 객체 또는 null
    */
-  async getUserByUsername(username: string): Promise<User | null> {
+  async getUserByUsername(username: string): Promise<USER_TN_USERS | null> {
     return this.usersRepository.findOne({ where: { username } });
   }
 
@@ -68,7 +69,7 @@ export class UsersService implements OnApplicationBootstrap {
    * @param userType - 조회할 사용자 유형
    * @returns 해당 유형의 모든 사용자 배열
    */
-  async getUsersByUserType(userType: UserType): Promise<User[]> {
+  async getUsersByUserType(userType: UserType): Promise<USER_TN_USERS[]> {
     return this.usersRepository.find({ where: { user_type: userType } });
   }
 
@@ -87,7 +88,7 @@ export class UsersService implements OnApplicationBootstrap {
     password: string,
     email: string,
     user_type: UserType,
-  ): Promise<User> {
+  ): Promise<USER_TN_USERS> {
     const hashedPassword = await hash(password, 10);
     const newUser = this.usersRepository.create({
       username,
