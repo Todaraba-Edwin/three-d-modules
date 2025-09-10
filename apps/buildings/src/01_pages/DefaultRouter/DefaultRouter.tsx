@@ -4,13 +4,14 @@ import { useNavigate, type RouteObject } from 'react-router-dom';
 import { useAuthStore } from '../useAuthStore';
 import { DefaultLayout } from './DefaultLayout';
 import { defaultMenuLists } from './_shared/const';
+import { SystemAdmin } from '@/02_widgets/SystemAdmin/SystemAdmin';
 
 const pathPages: Record<string, ReactNode> = {
   ['/']: <Home />,
   // ['/lms']: <div>LMS 페이지</div>,
   // ['/fms']: <div>FMS 페이지</div>,
   // ['/system-info']: <div>정보 페이지</div>,
-  ['/system-admin']: <div>관리자 페이지</div>,
+  ['/system-admin']: <SystemAdmin />,
   // ['/settings']: <div>설정 페이지</div>,
 };
 

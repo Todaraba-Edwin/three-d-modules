@@ -58,7 +58,8 @@ export const Layout = ({
   );
 
   return (
-    <div className='Layout max-h-screen h-screen flex bg-gray-100'>
+    // ✅ 최소규격 : IPadMini(768px) - theme.min-limit
+    <div className='Layout max-h-screen h-screen flex bg-gray-100 min-w-min-limit'>
       <nav
         className={clsx(
           `Layout_GNB`,
@@ -203,7 +204,7 @@ export const Layout = ({
 
       {/* 3. 오른쪽 메인 컨텐츠 영역 */}
       <div className='flex-grow grid grid-rows-[auto_1fr]'>
-        <div className='bg-white h-12 p-4 flex items-center gap-2'>
+        <div className='bg-white  h-12 p-4 flex items-center gap-2'>
           {!isMobileMode && (
             <button onClick={onToggleIsGnbOpen}>
               {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}

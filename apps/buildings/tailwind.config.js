@@ -21,6 +21,9 @@ export default {
       maxWidth: {
         'gnb-open': '250px',
       },
+      minWidth: {
+        'min-limit': '768px', // IPadMini 768 - 250(gnb-open)
+      },
       height: {
         'gnb-footer': '100px',
         'gnb-footer-close': '60px',
