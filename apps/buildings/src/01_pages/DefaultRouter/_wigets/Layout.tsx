@@ -145,10 +145,11 @@ export const Layout = ({
         <footer
           className={clsx(
             `bg-white absolute bottom-0`,
-            'shadow-[0_-5px_15px_-3px_rgb(0,0,0,0.1),0_-4px_6px_-4px_rgb(0,0,0,0.1)]',
             'w-gnb-open',
-            'rounded-tl-2xl rounded-tr-2xl',
+            'shadow-[0_-5px_15px_-3px_rgb(0,0,0,0.1),0_-4px_6px_-4px_rgb(0,0,0,0.1)]',
+            ' transition-all duration-300',
             {
+              'rounded-tl-2xl rounded-tr-2xl': isGnbOpen,
               'h-gnb-footer': isGnbOpen,
               'h-gnb-footer-close': !isGnbOpen,
             },
@@ -162,8 +163,8 @@ export const Layout = ({
               <span className='font-normal'>님</span>
             </p>
           )}
-          <div
-            className={clsx('p-4', 'w-gnb-content', 'flex gap-gnb')}
+          <button
+            className={clsx('p-4 block', 'w-gnb-content', 'flex gap-gnb')}
             onClick={() => {
               fetch(`${VITE_API_URL}/api/auth/logout`, {
                 method: 'POST',
@@ -195,8 +196,8 @@ export const Layout = ({
                 'w-gnb-icon h-gnb-icon'
               )}
             />
-            <button children='로그아웃' />
-          </div>
+            {isGnbOpen && <p children='로그아웃' />}
+          </button>
         </footer>
       </nav>
 
@@ -212,12 +213,7 @@ export const Layout = ({
             PRIZM <span className='font-thin text-'>건물관리 시스템</span>
           </p>
         </div>
-        <div className='overflow-y-auto'>
-          {children}
-          <br />
-          {`isMobile : ${isMobile}`} <br />
-          {`isMobileSafari : ${isMobileSafari}`}
-        </div>
+        <div className='overflow-y-auto p-4'>{children}</div>
       </div>
     </div>
   );

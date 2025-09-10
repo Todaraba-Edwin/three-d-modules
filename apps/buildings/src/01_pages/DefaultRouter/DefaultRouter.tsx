@@ -1,9 +1,18 @@
 import { Home } from '@/02_widgets/Home/Home';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useNavigate, type RouteObject } from 'react-router-dom';
 import { useAuthStore } from '../useAuthStore';
 import { DefaultLayout } from './DefaultLayout';
 import { defaultMenuLists } from './_shared/const';
+
+const pathPages: Record<string, ReactNode> = {
+  ['/']: <Home />,
+  // ['/lms']: <div>LMS 페이지</div>,
+  // ['/fms']: <div>FMS 페이지</div>,
+  // ['/system-info']: <div>정보 페이지</div>,
+  ['/system-admin']: <div>관리자 페이지</div>,
+  // ['/settings']: <div>설정 페이지</div>,
+};
 
 const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
   const { permissions } = useAuthStore();
@@ -22,7 +31,10 @@ const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
     }
   }, [findPath, navigate]);
 
-  return <>{findPath?.label}</>;
+  if (!findPath) return <></>;
+  if (!pathPages[findPath.path])
+    return <div>{findPath.label} 페이지 개발 중...</div>;
+  return pathPages[findPath.path];
 };
 
 export const DefaultRouter = (): RouteObject[] => {
@@ -33,7 +45,7 @@ export const DefaultRouter = (): RouteObject[] => {
       element: <DefaultLayout />,
       children: [
         // ✅ 루트경로에 대한 Permission
-        { index: true, element: <Home /> },
+        { index: true, element: pathPages['/'] },
         { path: '*', element: <div>찾을 수 없음</div> },
 
         // ✅ 접근경로에 대한 validate Permissions
