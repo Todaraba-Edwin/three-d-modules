@@ -72,6 +72,9 @@ export class AuthService {
     const sessionId = randomBytes(16).toString('hex');
     this.activeSessions.set(sessionId, { username, clientSignature });
 
+    // 로그인 성공 시, 마지막 로그인 시간 업데이트
+    await this.usersService.updateLastLogin(user.id);
+
     return {
       message: API_MESSAGES.AUTH.SUCCEED_LOGIN,
       sessionId,

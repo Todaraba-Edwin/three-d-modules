@@ -213,4 +213,14 @@ export class UsersService implements OnApplicationBootstrap {
       }),
     );
   }
+
+  /**
+   * @summary 사용자의 마지막 로그인 시간을 업데이트
+   * @param userId - 업데이트할 사용자의 ID
+   */
+  async updateLastLogin(userId: number): Promise<void> {
+    await this.usersRepository.update(userId, {
+      last_login_at: new Date(),
+    });
+  }
 }

@@ -43,4 +43,7 @@ export class USER_TN_USERS {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @UpdateDateColumn()
+  last_login_at: Date;
 }
