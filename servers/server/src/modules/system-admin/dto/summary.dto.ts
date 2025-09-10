@@ -3,4 +3,5 @@ export class SummaryResDto {
   switchModelsCount: number;
   switchesCount: number;
   devicesCount: number;
+  manufacturersCount: number;
 }

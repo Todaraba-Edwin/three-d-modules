@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { USER_TN_USERS } from '../users/dto';
 import {
+  NMS_TC_MANUFACTURERS,
   NMS_TC_SWITCH_MODELS,
   NMS_TN_DEVICES,
   NMS_TN_SWITCHES,
@@ -18,6 +19,7 @@ import { SystemAdminService } from './system-admin.service';
       NMS_TC_SWITCH_MODELS,
       NMS_TN_SWITCHES,
       NMS_TN_DEVICES,
+      NMS_TC_MANUFACTURERS,
     ]),
   ],
   controllers: [SystemAdminController],
