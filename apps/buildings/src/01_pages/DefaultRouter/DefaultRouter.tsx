@@ -1,18 +1,15 @@
-import { Home } from '@/02_widgets/Home/Home';
+import { SystemAdmin } from '@/02_widgets/SystemAdmin/SystemAdmin';
+import { DeviceManagement } from '@/02_widgets/SystemAdmin/features/DeviceManagement';
+import { UserManagement } from '@/02_widgets/SystemAdmin/features/UserManagement';
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate, type RouteObject } from 'react-router-dom';
 import { useAuthStore } from '../useAuthStore';
 import { DefaultLayout } from './DefaultLayout';
 import { defaultMenuLists } from './_shared/const';
-import { SystemAdmin } from '@/02_widgets/SystemAdmin/SystemAdmin';
 
 const pathPages: Record<string, ReactNode> = {
-  ['/']: <Home />,
-  // ['/lms']: <div>LMS 페이지</div>,
-  // ['/fms']: <div>FMS 페이지</div>,
-  // ['/system-info']: <div>정보 페이지</div>,
-  ['/system-admin']: <SystemAdmin />,
-  // ['/settings']: <div>설정 페이지</div>,
+  ['/']: <div>대시보드 페이지 개발 중...</div>,
+  // '/system-admin' 경로는 중첩 라우팅으로 인해 아래에서 별도 처리됩니다.
 };
 
 const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
@@ -33,29 +30,46 @@ const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
   }, [findPath, navigate]);
 
   if (!findPath) return <></>;
+
+  // /system-admin은 Outlet을 사용하므로, pathPages에서 찾지 않고 SystemAdmin 컴포넌트를 직접 렌더링합니다.
+  if (validationPath === '/system-admin') {
+    return <SystemAdmin />;
+  }
+
   if (!pathPages[findPath.path])
     return <div>{findPath.label} 페이지 개발 중...</div>;
   return pathPages[findPath.path];
 };
 
 export const DefaultRouter = (): RouteObject[] => {
-  useAuthStore.getState();
+  const adminRoutePath = '/system-admin';
+  const otherRoutes = defaultMenuLists
+    .slice(1)
+    .filter(({ path }) => path !== adminRoutePath);
+
   return [
     {
       path: '/',
       element: <DefaultLayout />,
       children: [
-        // ✅ 루트경로에 대한 Permission
         { index: true, element: pathPages['/'] },
         { path: '*', element: <div>찾을 수 없음</div> },
 
-        // ✅ 접근경로에 대한 validate Permissions
-        ...defaultMenuLists.slice(1).map(({ path }) => {
-          return {
-            path,
-            element: <PermittedRoute validationPath={path} />,
-          };
-        }),
+        // ✅ 중첩라우팅이 필요하지 않은, 라우팅 처리
+        ...otherRoutes.map(({ path }) => ({
+          path,
+          element: <PermittedRoute validationPath={path} />,
+        })),
+
+        // ✅ system-admin 의 경우, 중첩라우팅
+        {
+          path: adminRoutePath,
+          element: <PermittedRoute validationPath={adminRoutePath} />,
+          children: [
+            { index: true, element: <UserManagement /> },
+            { path: 'device', element: <DeviceManagement /> },
+          ],
+        },
       ],
     },
   ];
