@@ -10,7 +10,7 @@ const authRoutesWithLoader = {
 const protectedWithLoader = {
   element: <Pages.ProtectedLayout />,
   loader: Loaders.protectedRouteLoader,
-  children: [...Pages.DefaultRouter, ...Pages.CesiumRouter],
+  children: [...Pages.DefaultRouter(), ...Pages.CesiumRouter],
 };
 
 export const router = RD.createBrowserRouter([

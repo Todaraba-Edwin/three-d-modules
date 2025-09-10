@@ -1,27 +1,27 @@
 import { create } from 'zustand';
 
 type AuthState = {
-  userType: string;
+  roleCode: string;
   nickname?: string;
   isAdmin: boolean;
   permissions: PermissionsType[];
   setAuth: (_store: {
-    userType: string;
+    roleCode: string;
     nickname?: string;
     permissions: PermissionsType[];
   }) => void;
 };
 
 export const useAuthStore = create<AuthState>(set => ({
-  userType: '',
+  roleCode: '',
   nickname: '',
   permissions: [],
   isAdmin: false,
 
   setAuth: _store =>
     set({
-      userType: _store.userType,
-      isAdmin: 'ADMIN_MAIN' == _store.userType,
+      roleCode: _store.roleCode,
+      isAdmin: 'ADMIN_MAIN' == _store.roleCode,
       nickname: _store.nickname || '',
       permissions: _store.permissions,
     }),

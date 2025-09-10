@@ -137,7 +137,6 @@ export class AuthService {
     return {
       isValid: true,
       roleCode: roleCode.role_code,
-      username: user.username,
       nickname: user.nickname,
       message: API_MESSAGES.AUTH.VALID_SESSION,
       permissions: menuPermissions,

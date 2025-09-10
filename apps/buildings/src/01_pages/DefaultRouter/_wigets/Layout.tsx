@@ -14,12 +14,12 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { type menuItemsType } from '../_shared/const';
+import { defaultMenuLists, noneIcon } from '../_shared/const';
 import { GNBTooltip } from './GNBTooltip';
 
 type Props = PropsWithChildren & {
   nickname?: string;
-  gmbMenuItems: menuItemsType[];
+  permissionPaths: any[];
   setIsFocusLogin: Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -28,7 +28,7 @@ const isMobileMode = isMobile || isMobileSafari;
 export const Layout = ({
   children,
   nickname,
-  gmbMenuItems,
+  permissionPaths,
   setIsFocusLogin,
 }: Props): ReactNode => {
   const { layout } = usePathSegments();
@@ -53,7 +53,9 @@ export const Layout = ({
     protectedRouteNavigate();
   };
 
-  const menuRefs = useRef(gmbMenuItems.map(() => createRef<HTMLLIElement>()));
+  const menuRefs = useRef(
+    permissionPaths.map(() => createRef<HTMLLIElement>())
+  );
 
   return (
     <div className='Layout max-h-screen h-screen flex bg-gray-100'>
@@ -94,8 +96,12 @@ export const Layout = ({
               'overflow-y-auto'
             )}
           >
-            {gmbMenuItems.map((list, index) => {
+            {permissionPaths.map((list, index) => {
               const isActive = list.path.replace(/\//g, '') === layout;
+              // ✅ ICON을 찾지 못한 경우에 대한 기본 아이콘 설정
+              const ICON =
+                defaultMenuLists.find(({ path }) => path === list.path)?.icon ||
+                noneIcon;
 
               return (
                 <li
@@ -118,9 +124,7 @@ export const Layout = ({
                     onClick={utilsNavigate(list.path)}
                     className={clsx('w-full flex gap-gnb items-center ')}
                   >
-                    <list.icon
-                      className={clsx('font-bold w-gnb-icon h-gnb-icon')}
-                    />
+                    <ICON className={clsx('font-bold w-gnb-icon h-gnb-icon')} />
                     <span className={clsx({ hidden: !isGnbOpen })}>
                       {list.label}
                     </span>
