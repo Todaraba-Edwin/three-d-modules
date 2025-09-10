@@ -5,6 +5,7 @@ import { AppController } from '@src_apps/index';
 import { AuthModule, UsersModule } from '@src_modules/index';
 import { AppService } from 'app.service';
 import { SwitchesModule } from './modules/switches/switches.module';
+import { SystemAdminModule } from './modules/system-admin/system-admin.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SwitchesModule } from './modules/switches/switches.module';
     UsersModule,
     AuthModule,
     SwitchesModule,
+    SystemAdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
