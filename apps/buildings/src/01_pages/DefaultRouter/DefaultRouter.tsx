@@ -35,6 +35,7 @@ export const DefaultRouter = (): RouteObject[] => {
         // ✅ 루트경로에 대한 Permission
         { index: true, element: <Home /> },
         { path: '*', element: <div>찾을 수 없음</div> },
+
         // ✅ 접근경로에 대한 validate Permissions
         ...defaultMenuLists.slice(1).map(({ path }) => {
           return {

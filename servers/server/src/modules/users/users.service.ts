@@ -47,10 +47,14 @@ export class UsersService implements OnApplicationBootstrap {
         where: { role_code: 'ADMIN_SUB' },
       });
 
+      const userRole = await this.rolesRepository.findOne({
+        where: { role_code: 'USER' },
+      });
+
       if (adminRole) {
         await this.setUser(
           'admin',
-          '관리자',
+          '최고관리자',
           '1234',
           'admin@test.com',
           adminRole.id,
@@ -60,10 +64,20 @@ export class UsersService implements OnApplicationBootstrap {
       if (subAdminRole) {
         await this.setUser(
           'test',
-          '테스트계정',
+          '중간관리자',
           '1234',
           'admin_test@test.com',
           subAdminRole.id,
+        );
+      }
+
+      if (userRole) {
+        await this.setUser(
+          'user',
+          '일반 사용자',
+          '1234',
+          'admin_user@test.com',
+          userRole.id,
         );
       }
       console.info('✅ init User Registered : admin, test');
