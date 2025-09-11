@@ -69,6 +69,7 @@ export class SystemAdminService {
         'role.id AS id',
         'role.role_code AS role_code',
         'role.role_name AS role_name',
+        'role.role_description AS role_description',
       ])
       .addSelect([
         'permission.menu_id AS menu_id',
@@ -94,6 +95,7 @@ export class SystemAdminService {
           role_id: parseInt(p.id, 10),
           role_code: p.role_code,
           role_name: p.role_name,
+          role_description: p.role_description,
           permissionMenu: [],
         });
       }

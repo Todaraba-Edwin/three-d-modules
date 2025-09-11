@@ -1,5 +1,4 @@
 import { Button } from '@/02_common/Button';
-import clsx from 'clsx';
 import { Plus } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode } from 'react';
 
@@ -46,20 +45,7 @@ export const GridSections = ({
       </div>
 
       {/* 도표부분 */}
-      <div
-        className={clsx(
-          'border-2 border-slate-300 rounded-xl grid grid-rows-[auto_1fr]',
-          'overflow-scroll',
-          'max-xl:h-[150px]'
-        )}
-      >
-        <div className='p-2 bg-blue-100 grid grid-cols-[2fr_4.5fr_1.5fr]'>
-          <div>역할</div>
-          <div>권한</div>
-          <div>설정</div>
-        </div>
-        <div className='overflow-auto'>{children}</div>
-      </div>
+      {children}
     </div>
   );
 };
