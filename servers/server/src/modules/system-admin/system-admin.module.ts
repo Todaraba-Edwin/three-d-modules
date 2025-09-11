@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
-import { USER_TN_USERS } from '../users/dto';
+import { USER_TC_ROLES, USER_TN_USERS } from '../users/dto';
 import {
   NMS_TC_MANUFACTURERS,
   NMS_TC_SWITCH_MODELS,
@@ -16,6 +16,7 @@ import { SystemAdminService } from './system-admin.service';
     AuthModule,
     TypeOrmModule.forFeature([
       USER_TN_USERS,
+      USER_TC_ROLES,
       NMS_TC_SWITCH_MODELS,
       NMS_TN_SWITCHES,
       NMS_TN_DEVICES,

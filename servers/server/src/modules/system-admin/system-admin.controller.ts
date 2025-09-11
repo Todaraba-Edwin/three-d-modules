@@ -17,4 +17,13 @@ export class SystemAdminController {
   getSummary(): Promise<SummaryResDto> {
     return this.systemAdminService.getSummary();
   }
+
+  /**
+   * @summary GET /api/system-admin/permissions-roles - 사용자 역할별 정보 조회
+   * @returns 역할별 메뉴접근 진위값
+   */
+  @Get(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
+  getPermissionsByRoles(): Promise<any> {
+    return this.systemAdminService.getPermissionsByRole();
+  }
 }

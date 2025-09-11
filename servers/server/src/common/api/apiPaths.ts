@@ -38,5 +38,6 @@ export const SYSTEM_ADMIN = {
   SEGMENTS: {
     BASE: 'system-admin',
     SUMMARY: 'summary',
+    PERMISSIONS_ROLES : 'permissions-roles'
   },
 };
