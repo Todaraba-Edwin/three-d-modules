@@ -62,7 +62,7 @@ export class SystemAdminService {
    * @description 역할별 메뉴 접근 권한 목록을 반환
    * @returns 역할별 메뉴 권한 목록
    */
-  async getPermissionsByRole(): Promise<any> {
+  async getPermissionsByRole(): Promise<PermissionsByRoleResDto[]> {
     const permissionsByRole = await this.rolesRepository
       .createQueryBuilder('role')
       .select([

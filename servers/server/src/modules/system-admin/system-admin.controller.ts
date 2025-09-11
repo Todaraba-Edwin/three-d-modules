@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import * as API from '@src_apps/common/api';
 import { AuthGuard } from '../auth/auth.guard';
-import { SummaryResDto } from './dto';
+import { PermissionsByRoleResDto, SummaryResDto } from './dto';
 import { SystemAdminService } from './system-admin.service';
 
 @Controller(`${API.API_PREFIX}/${API.SYSTEM_ADMIN.SEGMENTS.BASE}`)
@@ -23,7 +23,7 @@ export class SystemAdminController {
    * @returns 역할별 메뉴접근 진위값
    */
   @Get(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
-  getPermissionsByRoles(): Promise<any> {
+  getPermissionsByRoles(): Promise<PermissionsByRoleResDto[]> {
     return this.systemAdminService.getPermissionsByRole();
   }
 }
