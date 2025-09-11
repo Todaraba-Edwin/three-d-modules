@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, UseGuards } from '@nestjs/common';
 import * as API from '@src_apps/common/api';
 import { AuthGuard } from '../auth/auth.guard';
 import { PermissionsByRoleResDto, SummaryResDto } from './dto';
@@ -25,5 +25,17 @@ export class SystemAdminController {
   @Get(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
   getPermissionsByRoles(): Promise<PermissionsByRoleResDto[]> {
     return this.systemAdminService.getPermissionsByRole();
+  }
+
+  /**
+   * @summary DELETE /api/system-admin/permissions-roles - 역할 삭제
+   * @param body roleIds - 삭제할 역할 ID 배열
+   * @param body force - 강제 삭제 여부
+   */
+  @Delete(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
+  deleteRoles(
+    @Body() body: { roleIds: number[]; force?: boolean },
+  ): Promise<void> {
+    return this.systemAdminService.deleteRoles(body.roleIds, body.force);
   }
 }

@@ -53,6 +53,10 @@
             ├── DefaultRouter.tsx
             ├── _wigets/        # 페이지의 특정 섹션을 구성하는 위젯
             │   └── SystemAdmin/
+            │       ├── entities/       # 비즈니스 로직과 API 호출을 캡슐화하는 훅
+            │       │   └── useDeleteRole.ts
+            │       └── features/       # 위젯보다 작은 단위의 기능
+            │           └── UserManagement/
             └── features/       # 위젯보다 작은 단위의 기능
                 └── UserManagement/
         ```
@@ -75,6 +79,7 @@
 
 -   **페이지 중심 설계**: 각 페이지(`AuthRouter`, `DefaultRouter`)는 독립적인 단위로 구성.
 -   **위젯 (`_wigets`)**: 여러 `features`나 `entities`를 조합하여 만드는 독립적인 UI 블록. 예: `AuthRouter/_wigets/Login.tsx`는 로그인 페이지의 전체 UI를 구성하는 위젯.
+-   **엔티티 (`entities`)**: 비즈니스 로직과 API 호출을 캡슐화하는 계층. 주로 `useQuery`나 `useMutation`을 사용한 커스텀 훅 형태로 작성되어, 컴포넌트로부터 데이터 페칭 로직을 분리함. 예: `useDeleteRole.ts`는 역할 삭제 API 호출과 관련된 상태 관리(성공, 실패, 로딩)를 처리.
 -   **기능 공유 (`@packages/shared`)**:
     -   FSD의 `shared` 레이어 개념을 모노레포의 `@packages/shared` 패키지로 확장하여 사용.
     -   `@packages/shared/src/features/_shared`: 여러 애플리케이션(`apps/buildings` 등)에서 공통으로 사용될 수 있는 저수준 유틸리티, 훅(hook), 공통 타입(e.g., `utilsThrottle`) 등을 포함.

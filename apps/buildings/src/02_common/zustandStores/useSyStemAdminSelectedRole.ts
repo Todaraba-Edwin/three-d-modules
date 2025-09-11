@@ -4,7 +4,7 @@ type useSyStemAdminSelectedRoleType = {
   selectedRoleId: number | undefined;
   selectedRoleName: string;
   setAction: (_store: {
-    selectedRoleId: number;
+    selectedRoleId: number | string;
     selectedRoleName: string;
   }) => void;
 };
@@ -15,11 +15,18 @@ export const useSyStemAdminSelectedRole =
     selectedRoleName: '모든',
     setAction: ({ selectedRoleId, selectedRoleName }) => {
       const currentSelectedRoleId = get().selectedRoleId;
+      const isInit = typeof selectedRoleId === 'string';
       set({
-        selectedRoleId:
-          currentSelectedRoleId === selectedRoleId ? undefined : selectedRoleId,
-        selectedRoleName:
-          currentSelectedRoleId === selectedRoleId ? '모든' : selectedRoleName,
+        selectedRoleId: isInit
+          ? undefined
+          : currentSelectedRoleId === selectedRoleId
+            ? undefined
+            : selectedRoleId,
+        selectedRoleName: isInit
+          ? '모든'
+          : currentSelectedRoleId === selectedRoleId
+            ? '모든'
+            : selectedRoleName,
       });
     },
   }));

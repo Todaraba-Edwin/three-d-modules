@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { USER_TC_ROLES, USER_TN_USERS } from '../users/dto';
 import {
   NMS_TC_MANUFACTURERS,
@@ -110,5 +110,72 @@ export class SystemAdminService {
     }
 
     return Array.from(rolesMap.values());
+  }
+
+  /**
+   * @summary 역할 삭제
+   * @description 역할 ID 배열을 받아 역할을 삭제합니다. ADMIN_MAIN 역할은 삭제할 수 없습니다.
+   *              역할에 할당된 사용자가 있을 경우, force 플래그가 없으면 에러를 반환합니다.
+   * @param roleIds 삭제할 역할 ID 배열
+   * @param force 강제 삭제 여부
+   */
+  async deleteRoles(roleIds: number[], force = false): Promise<void> {
+    if (!roleIds || roleIds.length === 0) {
+      return;
+    }
+
+    const roles = await this.rolesRepository.find({
+      where: { id: In(roleIds) },
+    });
+
+    if (roles.some((role) => role.role_code === 'ADMIN_MAIN')) {
+      throw new BadRequestException('ADMIN_MAIN 역할은 삭제할 수 없습니다.');
+    }
+
+    const idsToDelete = roles.map((role) => role.id);
+    if (idsToDelete.length === 0) {
+      return;
+    }
+
+    const usersInRoles = await this.usersRepository.find({
+      where: { role_id: In(idsToDelete) },
+      select: ['id', 'username', 'role_id', 'email'],
+    });
+
+    if (usersInRoles.length > 0 && !force) {
+      const usersByRoleId = usersInRoles.reduce(
+        (acc, user) => {
+          const roleId = user.role_id;
+          if (!acc[roleId]) {
+            acc[roleId] = [];
+          }
+          acc[roleId].push({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+          });
+          return acc;
+        },
+        {} as Record<number, { id: number; username: string; email: string }[]>,
+      );
+
+      const rolesWithUsers = roles
+        .filter((role) => usersByRoleId[role.id])
+        .map((role) => ({
+          role_id: role.id,
+          role_name: role.role_name,
+          user_count: usersByRoleId[role.id].length,
+          users: usersByRoleId[role.id],
+        }));
+
+      throw new BadRequestException({
+        message: 'Cannot delete roles with assigned users.',
+        code: 'ROLE_IN_USE',
+        details: rolesWithUsers,
+      });
+    }
+
+    // With ON DELETE CASCADE, users will be deleted automatically.
+    await this.rolesRepository.delete(idsToDelete);
   }
 }
