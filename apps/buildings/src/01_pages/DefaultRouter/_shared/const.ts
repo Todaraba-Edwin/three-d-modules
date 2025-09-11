@@ -1,4 +1,3 @@
-import type { menuItemsType } from '@/03_common/type';
 import { Camera, Home, Info, Network, Settings, Shield, X } from 'lucide-react';
 
 export const noneIcon = X;

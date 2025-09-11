@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../../03_common/Button';
+import { Button } from '../../../02_common/Button';
 import { Input } from './ui/Input';
 import {
   CardContent,

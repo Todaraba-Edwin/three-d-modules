@@ -1,10 +1,10 @@
-import { SystemAdmin } from '@/02_widgets/SystemAdmin/SystemAdmin';
-import { DeviceManagement } from '@/02_widgets/SystemAdmin/features/DeviceManagement';
-import { UserManagement } from '@/02_widgets/SystemAdmin/features/UserManagement';
+import { SystemAdmin } from '@/01_pages/DefaultRouter/_wigets/SystemAdmin/SystemAdmin';
+import { DeviceManagement } from '@/01_pages/DefaultRouter/_wigets/SystemAdmin/features/DeviceManagement/DeviceManagement';
+import { UserManagement } from '@/01_pages/DefaultRouter/_wigets/SystemAdmin/features/UserManagement/UserManagement';
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate, type RouteObject } from 'react-router-dom';
-import { useAuthStore } from '../useAuthStore';
-import { DefaultLayout } from './DefaultLayout';
+import { useAuthStore } from '../../02_common/zustandStores/useAuthStore';
+import { DefaultMainFrame } from './DefaultMainFrame';
 import { defaultMenuLists } from './_shared/const';
 
 const pathPages: Record<string, ReactNode> = {
@@ -50,7 +50,7 @@ export const DefaultRouter = (): RouteObject[] => {
   return [
     {
       path: '/',
-      element: <DefaultLayout />,
+      element: <DefaultMainFrame />,
       children: [
         { index: true, element: pathPages['/'] },
         { path: '*', element: <div>찾을 수 없음</div> },

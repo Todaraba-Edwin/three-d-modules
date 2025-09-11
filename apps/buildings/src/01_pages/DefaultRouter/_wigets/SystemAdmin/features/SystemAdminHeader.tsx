@@ -2,7 +2,7 @@ import {
   defaultMenuLists,
   noneIcon,
 } from '@/01_pages/DefaultRouter/_shared/const';
-import { useAuthStore } from '@/01_pages/useAuthStore';
+import { useAuthStore } from '@/02_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 
 export const SystemAdminHeader = (): ReactNode => {

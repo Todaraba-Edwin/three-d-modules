@@ -1,4 +1,4 @@
-import { AuthLayout, Login } from '@/02_widgets/Auth';
+import { AuthLayout, Login } from '@/01_pages/AuthRouter/_wigets';
 import { type RouteObject } from 'react-router-dom';
 
 export const AuthRouter: RouteObject[] = [

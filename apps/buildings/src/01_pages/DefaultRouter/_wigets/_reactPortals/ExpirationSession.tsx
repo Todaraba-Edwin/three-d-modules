@@ -1,4 +1,4 @@
-import { Button } from '@/03_common/Button';
+import { Button } from '@/02_common/Button';
 import { AlertTriangle } from 'lucide-react';
 import { type ReactNode } from 'react';
 import * as RD from 'react-router-dom';

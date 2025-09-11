@@ -14,8 +14,8 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { defaultMenuLists, noneIcon } from '../_shared/const';
-import { GNBTooltip } from './GNBTooltip';
+import { defaultMenuLists, noneIcon } from './_shared/const';
+import { GNBTooltip } from './_wigets/_reactPortals/GNBTooltip';
 
 type Props = PropsWithChildren & {
   nickname?: string;
@@ -25,7 +25,7 @@ type Props = PropsWithChildren & {
 
 const isMobileMode = isMobile || isMobileSafari;
 
-export const Layout = ({
+export const DefaultMainFrameLayout = ({
   children,
   nickname,
   permissionPaths,
@@ -75,7 +75,7 @@ export const Layout = ({
         )}
       >
         <h2
-          className={clsx('py-4 cursor-pointer', 'max-w-gnb-open')}
+          className={clsx('py-4', 'cursor-pointer', 'max-w-gnb-open')}
           onClick={onToggleIsGnbOpen}
         >
           <img src='/imgs/seoul-university.png' alt='Logo' />
@@ -111,12 +111,17 @@ export const Layout = ({
                   onMouseEnter={() => setHoveredItem(list.path)}
                   onMouseLeave={() => setHoveredItem(null)}
                   className={clsx(
+                    'h-[60px]',
+                    'box-border',
+                    'flex items-center',
                     'w-gnb-open p-4 transition-all duration-300 relative',
-                    'hover:px-5 hover:font-semibold',
+                    'hover:font-semibold',
                     {
+                      'hover:px-5': isGnbOpen,
                       'text-gray-700 hover:text-gray-900': !isActive,
                       'bg-blue-50 text-blue-700 border-r-4 border-blue-700':
                         isActive,
+                      'border-l-4': isActive && !isGnbOpen,
                       'hover:bg-gray-50': !isActive,
                     }
                   )}
