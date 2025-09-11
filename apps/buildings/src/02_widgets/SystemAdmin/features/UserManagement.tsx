@@ -19,8 +19,8 @@ export const UserManagement = (): ReactNode => {
       <div
         className={clsx(
           'grid min-h-0',
-          'grid-cols-1 grid-rows-2 gap-x-2  ',
-          'lg:grid-cols-2 lg:grid-rows-1 gap-y-2 '
+          'grid-cols-1 grid-rows-[auto_1fr] gap-y-4',
+          'xl:grid-cols-2 xl:grid-rows-1 gap-x-4'
         )}
       >
         <div className='border-2 border-slate-300 rounded-xl p-4 grid grid-rows-[auto_auto_1fr] gap-y-2'>
@@ -44,10 +44,17 @@ export const UserManagement = (): ReactNode => {
               <Plus className='w-4 h-4' />
               역할 추가
             </Button>
+            <div className='h-[600px] border-2 border-red-600'>추가로직</div>
           </div>
 
           {/* 도표부분 */}
-          <div className='border-2 border-slate-300 rounded-xl grid grid-rows-[auto_1fr]  overflow-scroll '>
+          <div
+            className={clsx(
+              'border-2 border-slate-300 rounded-xl grid grid-rows-[auto_1fr]',
+              'overflow-scroll',
+              'max-xl:h-[150px]'
+            )}
+          >
             <div className='p-2 bg-blue-100 grid grid-cols-[2fr_4.5fr_1.5fr]'>
               <div>역할</div>
               <div>권한</div>
@@ -89,10 +96,16 @@ export const UserManagement = (): ReactNode => {
               <Plus className='w-4 h-4' />
               역할 추가
             </Button>
+            <div className='h-[600px] border-2 border-red-600'>추가로직</div>
           </div>
 
           {/* 도표부분 */}
-          <div className='border-2 border-slate-300 rounded-xl grid grid-rows-[auto_1fr] overflow-scroll'>
+          <div
+            className={clsx(
+              'border-2 border-slate-300 rounded-xl grid grid-rows-[auto_1fr]',
+              'overflow-scroll'
+            )}
+          >
             <div className='p-2 bg-blue-100 grid grid-cols-[2fr_4.5fr_1.5fr]'>
               <div>역할</div>
               <div>권한</div>

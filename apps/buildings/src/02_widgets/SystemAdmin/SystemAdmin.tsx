@@ -41,7 +41,7 @@ export const SystemAdmin = (): ReactNode => {
             ))}
           </nav>
         </div>
-        <div className='pt-4 overflow-y-auto'>
+        <div className={clsx('pt-4 max-xl:pb-4', 'xl:overflow-y-auto')}>
           <Outlet />
         </div>
       </div>
