@@ -113,6 +113,17 @@ export class UsersService implements OnApplicationBootstrap {
   }
 
   /**
+   * @summary 사용자 삭제
+   * @description 주어진 ID 배열에 해당하는 사용자들을 삭제합니다.
+   * @param userIds - 삭제할 사용자 ID들의 배열
+   * @returns 삭제 결과
+   */
+  async deleteUsers(userIds: number[]): Promise<any> {
+    const result = await this.usersRepository.delete(userIds);
+    return result;
+  }
+
+  /**
    * @summary ID로 사용자 조회
    * @param id - 조회할 사용자의 ID
    * @returns ID에 해당하는 사용자 객체

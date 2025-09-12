@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -27,6 +28,17 @@ export class UsersController {
   async findAllUsers(@Query('role_id') roleId?: string) {
     const roleIdNum = roleId ? parseInt(roleId, 10) : undefined;
     return this.usersService.getAllUsersWithRoles(roleIdNum);
+  }
+
+  /**
+   * @summary 사용자 삭제
+   * @description 주어진 ID 배열에 해당하는 사용자들을 삭제합니다.
+   * @param userIds - 삭제할 사용자 ID들의 배열
+   * @returns 삭제 결과
+   */
+  @Delete()
+  async deleteUsers(@Body('userIds') userIds: number[]) {
+    return this.usersService.deleteUsers(userIds);
   }
 
   /**
