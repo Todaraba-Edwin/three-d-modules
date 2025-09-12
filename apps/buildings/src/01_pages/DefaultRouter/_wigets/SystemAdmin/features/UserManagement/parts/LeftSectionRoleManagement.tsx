@@ -2,16 +2,18 @@ import { Confirm } from '@/01_pages/DefaultRouter/_wigets/_reactPortals/Confirm'
 import { Button } from '@/02_common/Button';
 import { apiClient } from '@/02_common/apiClient';
 import { queryKey } from '@/02_common/queryKey';
-import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRole';
+import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
+import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { CircleCheckBig, CircleX, Settings, Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { useDeleteRole } from '../../../entities/useDeleteRole';
+import { AddFormRole } from './AddFormRole';
 import { GridSections } from './GridSections';
 import { UM_CONST } from './const';
 
-type QueryResult = {
+export type PermissionsRolesQueryResult = {
   permissionMenu: {
     menu_id: number;
     menu_label: string;
@@ -60,7 +62,7 @@ type ConfirmState = {
 export const LeftSectionRoleManagement = (): ReactNode => {
   const { selectedRoleId, setAction } = useSyStemAdminSelectedRole();
   const { data: permissionsMenuByRoleData, isLoading } = useQuery<
-    QueryResult[]
+    PermissionsRolesQueryResult[]
   >({
     queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
     queryFn: () => apiClient.get('api/system-admin/permissions-roles').json(),
@@ -80,32 +82,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
         const response = await error.response.json();
         if (response.code === 'ROLE_IN_USE') {
           const roleInfo = response.details[0];
-          const users = [
-            ...roleInfo.users,
-            ...roleInfo.users,
-            ...roleInfo.users,
-            ...roleInfo.users,
-            ...roleInfo.users,
-            ...roleInfo.users,
-          ];
-          // let userList;
-          // if (users.length > 4) {
-          //   const firstFour = users
-          //     .slice(0, 4)
-          //     .map(
-          //       (u: { username: string; id: number; email: string }) =>
-          //         `${u.username} - ${u.email}`
-          //     )
-          //     .join(', ');
-          //   userList = `${firstFour} 외 ${users.length - 4}명`;
-          // } else {
-          //   userList = users
-          //     .map(
-          //       (u: { username: string; id: number; email: string }) =>
-          //         `${u.username} - ${u.email}`
-          //     )
-          //     .join(', ');
-          // }
+          const users = roleInfo.users;
 
           const showUserNum = 3;
           setConfirmState({
@@ -165,6 +142,14 @@ export const LeftSectionRoleManagement = (): ReactNode => {
     });
   };
 
+  const {
+    isShowAddRoleNode,
+    isEditModeRole,
+    openIsShowAddRoleNode,
+    openIsEditModeRole,
+    closeAllStated,
+  } = useSystemAdminAddRoleStore();
+
   return (
     <>
       <GridSections
@@ -173,8 +158,12 @@ export const LeftSectionRoleManagement = (): ReactNode => {
         sectionDesc={UM_CONST.LeftSection.desc}
         addActions={{
           addActionName: UM_CONST.LeftSection.addActionName,
-          addActionNode: (
-            <div className='h-[600px] border-2 border-red-600'>추가로직</div>
+          addActionClick: () => {
+            if (isShowAddRoleNode) return closeAllStated();
+            return openIsShowAddRoleNode();
+          },
+          addActionNode: (isShowAddRoleNode || isEditModeRole) && (
+            <AddFormRole />
           ),
         }}
         children={
@@ -281,7 +270,15 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                               size='sm'
                               onClick={e => {
                                 e.stopPropagation();
-                                // setAction({ selectedRoleId: role_id });
+                                openIsEditModeRole({
+                                  targetEditRole: {
+                                    permissionMenu,
+                                    role_code,
+                                    role_id,
+                                    role_name,
+                                    role_description,
+                                  },
+                                });
                               }}
                               className='h-8 w-8 p-0'
                             >

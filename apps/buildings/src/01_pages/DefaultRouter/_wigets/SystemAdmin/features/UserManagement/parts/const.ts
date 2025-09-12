@@ -23,7 +23,7 @@ export const UM_CONST: {
     ICON: Shield,
     title: '권한 관리',
     desc: '역할별 시스템 접근 권한을 설정합니다.',
-    addActionName: '권한 추가',
+    addActionName: '역할 추가',
   },
   RightSection: {
     title: '사용자 관리',

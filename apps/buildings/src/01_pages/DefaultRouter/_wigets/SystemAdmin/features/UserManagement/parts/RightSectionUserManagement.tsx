@@ -1,4 +1,4 @@
-import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRole';
+import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 import { GridSections } from './GridSections';
@@ -13,6 +13,7 @@ export const RightSectionUserManagement = (): ReactNode => {
       sectionDesc={`${selectedRoleName} ${UM_CONST.RightSection.desc}`}
       addActions={{
         addActionName: UM_CONST.RightSection.addActionName,
+        addActionClick: () => {},
         addActionNode: (
           <div className='h-[600px] border-2 border-red-600'>추가로직</div>
         ),

@@ -8,6 +8,7 @@ type Props = PropsWithChildren & {
   sectionDesc: string;
   addActions: {
     addActionName: string;
+    addActionClick: () => void;
     addActionNode: ReactNode;
   };
 };
@@ -31,10 +32,9 @@ export const GridSections = ({
       </div>
 
       {/* 역할 추가로직 */}
-      <div>
+      <div className='space-y-2'>
         <Button
-          onClick={() => {}}
-          disabled={false}
+          onClick={addActions.addActionClick}
           size='sm'
           className='bg-purple-600 hover:bg-purple-700 text-white'
         >
