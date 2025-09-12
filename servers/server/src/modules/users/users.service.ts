@@ -85,6 +85,34 @@ export class UsersService implements OnApplicationBootstrap {
   }
 
   /**
+   * @summary 모든 사용자 정보와 역할 정보를 함께 조회
+   * @description 모든 사용자의 목록을 해당 사용자의 역할 이름과 함께 반환합니다.
+   * @returns 사용자 목록 (역할 정보 포함)
+   */
+  async getAllUsersWithRoles(roleId?: number): Promise<any[]> {
+    const query = this.usersRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id AS id',
+        'user.username AS username',
+        'user.nickname AS nickname',
+        'user.email AS email',
+        'user.last_login_at AS last_login_at',
+        'role.role_code AS role_code',
+        'role.role_name AS role_name',
+      ])
+      .leftJoin('USER_TC_ROLES', 'role', 'role.id = user.role_id');
+
+    if (roleId) {
+      query.where('user.role_id = :roleId', { roleId });
+    }
+
+    const users = await query.getRawMany();
+
+    return users;
+  }
+
+  /**
    * @summary ID로 사용자 조회
    * @param id - 조회할 사용자의 ID
    * @returns ID에 해당하는 사용자 객체

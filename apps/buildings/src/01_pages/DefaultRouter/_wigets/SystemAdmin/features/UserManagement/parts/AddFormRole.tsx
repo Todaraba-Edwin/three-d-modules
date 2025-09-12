@@ -7,6 +7,7 @@ import { Input } from '@/02_common/Input';
 import { apiClient } from '@/02_common/apiClient';
 import { queryKey } from '@/02_common/queryKey';
 import { useAuthStore } from '@/02_common/zustandStores/useAuthStore';
+import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -37,6 +38,8 @@ export const AddFormRole = (): ReactNode => {
   } = useSystemAdminAddRoleStore();
   const { permissions } = useAuthStore();
   const queryClient = useQueryClient();
+  const { selectedRoleId, setUpdateSelectedName } =
+    useSyStemAdminSelectedRole();
 
   const {
     register,
@@ -90,15 +93,22 @@ export const AddFormRole = (): ReactNode => {
           })
         ),
       };
-      return apiClient.post('api/users/role', { json: payload }).json();
+      return apiClient.post('users/role', { json: payload }).json();
     },
     onSuccess: (_, variables) => {
-      console.log('Role saved successfully!');
       queryClient.invalidateQueries({
         queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
       });
 
       if (isEditModeRole) {
+        if (
+          typeof variables.role_id === 'number' &&
+          selectedRoleId === variables.role_id
+        )
+          setUpdateSelectedName({
+            selectedRoleName: variables.role_name,
+          });
+
         openIsEditModeRole({
           targetEditRole: variables as PermissionsRolesQueryResult,
         });

@@ -4,5 +4,9 @@ export const queryKey = {
     summary: () => [...queryKey.systemAdmin.all, 'summary'] as const,
     nm_permissionsMenuByRole: () =>
       [...queryKey.systemAdmin.all, 'permissions-roles'] as const,
+    users: (roleId?: number) =>
+      roleId
+        ? [...queryKey.systemAdmin.all, 'users', roleId]
+        : [...queryKey.systemAdmin.all, 'users'],
   },
 };

@@ -9,13 +9,13 @@ type DeleteRoleParams = {
 
 export const useDeleteRole = (
   onSuccessCallback?: () => void,
-  onErrorCallback?: (error: any, variables: DeleteRoleParams) => void,
+  onErrorCallback?: (error: any, variables: DeleteRoleParams) => void
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ roleId, force = false }: DeleteRoleParams) =>
-      apiClient.delete('api/system-admin/permissions-roles', {
+      apiClient.delete('system-admin/permissions-roles', {
         json: { roleIds: [roleId], force },
       }),
     onSuccess: () => {

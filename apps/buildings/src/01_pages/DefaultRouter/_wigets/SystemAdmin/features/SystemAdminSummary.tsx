@@ -36,7 +36,7 @@ type SummaryData = {
 export const SystemAdminSummary = (): ReactNode => {
   const { data: summaryData, isLoading } = useQuery<SummaryData>({
     queryKey: queryKey.systemAdmin.summary(),
-    queryFn: () => apiClient.get('api/system-admin/summary').json(),
+    queryFn: () => apiClient.get('system-admin/summary').json(),
     staleTime: 30 * 1000, // 30초
     refetchInterval: 40 * 1000, // 40초
   });

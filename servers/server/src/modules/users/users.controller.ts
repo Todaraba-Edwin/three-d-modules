@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { API_PREFIX, USERS } from '@src_apps/common/api/index';
 
@@ -16,6 +17,17 @@ const { SEGMENTS, PARAMS } = USERS;
 @Controller(`${API_PREFIX}/${SEGMENTS.BASE}`)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  /**
+   * @summary GET /api/users - 모든 또는 특정 역할의 사용자 목록 조회
+   * @param roleId - (선택) 특정 역할 ID로 사용자 필터링
+   * @returns 사용자 정보 목록 (역할 포함)
+   */
+  @Get()
+  async findAllUsers(@Query('role_id') roleId?: string) {
+    const roleIdNum = roleId ? parseInt(roleId, 10) : undefined;
+    return this.usersService.getAllUsersWithRoles(roleIdNum);
+  }
 
   /**
    * @summary POST /api/users - 신규 사용자 생성

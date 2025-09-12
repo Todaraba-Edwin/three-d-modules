@@ -65,9 +65,10 @@ export const LeftSectionRoleManagement = (): ReactNode => {
     PermissionsRolesQueryResult[]
   >({
     queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
-    queryFn: () => apiClient.get('api/system-admin/permissions-roles').json(),
+    queryFn: () => apiClient.get('system-admin/permissions-roles').json(),
   });
   const [confirmState, setConfirmState] = useState<ConfirmState>(null);
+  console.log('selectedRoleId', selectedRoleId);
 
   const { mutate: deleteRole } = useDeleteRole(
     () => {
@@ -268,7 +269,11 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                             <Button
                               variant='ghost'
                               size='sm'
-                              onClick={() => {
+                              onClick={e => {
+                                if (selectedRoleId === role_id) {
+                                  e.stopPropagation();
+                                }
+
                                 openIsEditModeRole({
                                   targetEditRole: {
                                     permissionMenu,
@@ -287,12 +292,9 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                               <Button
                                 variant='ghost'
                                 size='sm'
-                                onClick={() => {
-                                  if (selectedRoleId != role_id) {
-                                    setAction({
-                                      selectedRoleId: role_id,
-                                      selectedRoleName: role_name,
-                                    });
+                                onClick={e => {
+                                  if (selectedRoleId === role_id) {
+                                    e.stopPropagation();
                                   }
                                   handleDeleteClick(role_id, role_name);
                                 }}

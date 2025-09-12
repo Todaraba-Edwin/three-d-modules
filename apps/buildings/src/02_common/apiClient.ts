@@ -9,7 +9,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
  * 401 응답을 받으면 강제 로그아웃을 실행합니다.
  */
 export const apiClient = ky.create({
-  prefixUrl: VITE_API_URL,
+  prefixUrl: `${VITE_API_URL}/api`,
   credentials: 'include', // 항상 쿠키를 포함하여 요청
   hooks: {
     afterResponse: [
