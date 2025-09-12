@@ -215,6 +215,78 @@ export class UsersService implements OnApplicationBootstrap {
   }
 
   /**
+   * @summary 역할 및 메뉴 권한 생성 또는 업데이트
+   * @description role_code를 기준으로 역할을 찾아, 있으면 업데이트하고 없으면 생성합니다.
+   *              연관된 메뉴 권한도 모두 새로 설정합니다.
+   * @param payload - 역할 정보 및 메뉴 권한 데이터
+   * @returns 생성 또는 업데이트된 역할 객체
+   */
+  async upsertRoleWithPermissions(payload: {
+    role_id: number | undefined;
+    role_code: string;
+    role_name: string;
+    role_description: string;
+    menu_permissions: {
+      menu_id: number;
+      menu_can_access: boolean;
+    }[];
+  }): Promise<USER_TC_ROLES> {
+    return this.rolesRepository.manager.transaction(
+      async (transactionalEntityManager) => {
+        // 1. Find existing role or create a new one
+        let role =
+          typeof payload.role_id === 'number' &&
+          (await transactionalEntityManager.findOne(USER_TC_ROLES, {
+            where: { id: payload.role_id },
+          }));
+
+        console.log('role', role);
+
+        if (role) {
+          // Update existing role
+          role.role_code = payload.role_code;
+          role.role_name = payload.role_name;
+          role.role_description = payload.role_description;
+        } else {
+          // Create new role
+          role = transactionalEntityManager.create(USER_TC_ROLES, {
+            role_code: payload.role_code,
+            role_name: payload.role_name,
+            role_description: payload.role_description,
+          });
+        }
+        const savedRole = await transactionalEntityManager.save(role);
+        const role_id = savedRole.id;
+
+        // 2. Delete old permissions for this role
+        await transactionalEntityManager.delete(USER_TN_ROLE_MENU_PERMISSIONS, {
+          role_id,
+        });
+
+        // 3. Insert new permissions
+        if (payload.menu_permissions && payload.menu_permissions.length > 0) {
+          const permissionsToInsert = payload.menu_permissions.map(
+            (permission) => ({
+              role_id,
+              menu_id: permission.menu_id,
+              can_access: permission.menu_can_access,
+            }),
+          );
+
+          // Using create and save for multiple entities
+          const newPermissions = transactionalEntityManager.create(
+            USER_TN_ROLE_MENU_PERMISSIONS,
+            permissionsToInsert,
+          );
+          await transactionalEntityManager.save(newPermissions);
+        }
+
+        return savedRole;
+      },
+    );
+  }
+
+  /**
    * @summary 사용자의 마지막 로그인 시간을 업데이트
    * @param userId - 업데이트할 사용자의 ID
    */

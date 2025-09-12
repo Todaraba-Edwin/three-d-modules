@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { API_PREFIX, USERS } from '@src_apps/common/api/index';
 
-import { CreateUserDto, USER_TN_USERS } from './dto';
+import { CreateUserDto, UpsertRoleDto, USER_TN_USERS } from './dto';
 import { UsersService } from './users.service';
 
 const { SEGMENTS, PARAMS } = USERS;
@@ -31,6 +31,16 @@ export class UsersController {
       body.email,
       body.role_id,
     );
+  }
+
+  /**
+   * @summary POST /api/users/role - 역할 및 메뉴 권한 생성 또는 업데이트
+   * @param body - 역할 및 권한 수정을 위한 DTO
+   * @returns 생성 또는 업데이트된 역할 정보
+   */
+  @Post('role')
+  async upsertRole(@Body() body: UpsertRoleDto) {
+    return this.usersService.upsertRoleWithPermissions(body);
   }
 
   /**

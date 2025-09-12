@@ -4,13 +4,19 @@ import {
 } from '@/01_pages/DefaultRouter/_shared/const';
 import { Button } from '@/02_common/Button';
 import { Input } from '@/02_common/Input';
+import { apiClient } from '@/02_common/apiClient';
+import { queryKey } from '@/02_common/queryKey';
 import { useAuthStore } from '@/02_common/zustandStores/useAuthStore';
 import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { Save, X } from 'lucide-react';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import type { PermissionsRolesQueryResult } from './LeftSectionRoleManagement';
 
 type RoleFormDateType = {
+  role_id?: number | undefined;
   role_code: string;
   role_name: string;
   role_description: string;
@@ -22,17 +28,28 @@ type RoleFormDateType = {
 };
 
 export const AddFormRole = (): ReactNode => {
-  const { isShowAddRoleNode, isEditModeRole, closeAllStated } =
-    useSystemAdminAddRoleStore(); // isShowAddRoleNode, isEditModeRole,
+  const {
+    isShowAddRoleNode,
+    isEditModeRole,
+    targetEditRole,
+    closeAllStated,
+    openIsEditModeRole,
+  } = useSystemAdminAddRoleStore();
   const { permissions } = useAuthStore();
+  const queryClient = useQueryClient();
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<RoleFormDateType>({
     defaultValues: {
+      role_id: undefined,
+      role_code: '',
+      role_name: '',
+      role_description: '',
       permissionMenu: permissions.map(p => ({
         menu_id: p.id,
         menu_label: p.label,
@@ -40,17 +57,76 @@ export const AddFormRole = (): ReactNode => {
       })),
     },
   });
+
+  useEffect(() => {
+    if (isEditModeRole && targetEditRole) {
+      reset(targetEditRole);
+    } else {
+      reset({
+        role_id: undefined,
+        role_code: '',
+        role_name: '',
+        role_description: '',
+        permissionMenu: permissions.map(p => ({
+          menu_id: p.id,
+          menu_label: p.label,
+          menu_can_access: false,
+        })),
+      });
+    }
+  }, [isEditModeRole, targetEditRole, reset, permissions]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (newRole: RoleFormDateType) => {
+      const payload = {
+        role_id: newRole.role_id,
+        role_code: newRole.role_code,
+        role_name: newRole.role_name,
+        role_description: newRole.role_description,
+        menu_permissions: newRole.permissionMenu.map(
+          ({ menu_id, menu_can_access }) => ({
+            menu_id,
+            menu_can_access,
+          })
+        ),
+      };
+      return apiClient.post('api/users/role', { json: payload }).json();
+    },
+    onSuccess: (_, variables) => {
+      console.log('Role saved successfully!');
+      queryClient.invalidateQueries({
+        queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
+      });
+
+      if (isEditModeRole) {
+        openIsEditModeRole({
+          targetEditRole: variables as PermissionsRolesQueryResult,
+        });
+        reset(variables);
+      } else {
+        reset();
+      }
+    },
+    onError: error => {
+      console.error('Error saving role:', error);
+    },
+  });
+
   const permissionMenu = watch('permissionMenu');
 
   const onSubmit = handleSubmit(
-    (data, e) => console.log(data, e),
-    (errors, e) => console.log(errors, e)
+    data => {
+      mutate(data);
+    },
+    errors => console.log('Form validation errors:', errors)
   );
+
+  const isMainAdmin =
+    isEditModeRole && targetEditRole?.role_code === 'ADMIN_MAIN';
 
   return (
     <form onSubmit={onSubmit} className='bg-orange-50 border-orange-200'>
       <div className='p-4'>
-        {/* 해더부분 */}
         <div className='flex items-center justify-between mb-3'>
           <h5 className='font-medium text-orange-900'>
             {isShowAddRoleNode && '새 역할 추가'}
@@ -66,7 +142,6 @@ export const AddFormRole = (): ReactNode => {
           </Button>
         </div>
 
-        {/* 상단 제출항목 */}
         <div className='space-y-3'>
           <div className='grid grid-cols-2 gap-3'>
             <div className='space-y-1'>
@@ -88,6 +163,9 @@ export const AddFormRole = (): ReactNode => {
                 })}
                 placeholder='예: VIEWER, VIEWER_A, VIEWER_A'
                 className='text-sm'
+                disabled={
+                  isEditModeRole && targetEditRole?.role_code === 'ADMIN_MAIN'
+                }
               />
               {errors.role_code && <span>{errors.role_code.message}</span>}
             </div>
@@ -122,37 +200,47 @@ export const AddFormRole = (): ReactNode => {
               className='text-sm'
             />
           </div>
-          <div className='grid grid-cols-2 gap-2 text-xs'>
-            {permissions.map((module, index) => {
-              const hasAccess = permissionMenu?.[index]?.menu_can_access;
-              const ICON =
-                defaultMenuLists.find(({ path }) => path === module.path)
-                  ?.icon || noneIcon;
-              return (
-                <label
-                  key={module.id}
-                  className='flex items-center gap-2 p-2 bg-white border border-orange-200 rounded cursor-pointer hover:bg-orange-50'
-                >
-                  <input
-                    type='checkbox'
-                    {...register(`permissionMenu.${index}.menu_can_access`)}
-                    className='rounded'
-                  />
-                  <span
-                    className={`text-xs font-medium ${
-                      hasAccess ? 'text-gray-900' : 'text-gray-500'
-                    } inline-flex gap-2 items-center`}
+          <div>
+            <label className='text-sm'>역할에 대한 권한 설정</label>
+            <div className='grid grid-cols-2 gap-2 text-xs'>
+              {permissions.map((module, index) => {
+                const hasAccess = permissionMenu?.[index]?.menu_can_access;
+                const ICON =
+                  defaultMenuLists.find(({ path }) => path === module.path)
+                    ?.icon || noneIcon;
+                return (
+                  <label
+                    key={module.id}
+                    className={clsx(
+                      'flex items-center gap-2 p-2 border border-orange-200 rounded',
+                      {
+                        'hover:bg-orange-50 cursor-pointer': !isMainAdmin,
+                        'bg-white': !hasAccess,
+                        'bg-orange-100': hasAccess,
+                      }
+                    )}
                   >
-                    <ICON className='w-3 h-3' />
-                    {module.label}
-                  </span>
-                </label>
-              );
-            })}
+                    <input
+                      type='checkbox'
+                      {...register(`permissionMenu.${index}.menu_can_access`)}
+                      className='rounded'
+                      disabled={isMainAdmin}
+                    />
+                    <span
+                      className={`text-xs font-medium ${
+                        hasAccess ? 'text-gray-900' : 'text-gray-500'
+                      } inline-flex gap-2 items-center`}
+                    >
+                      <ICON className='w-3 h-3' />
+                      {module.label}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* 하단 버튼 */}
         <div className='flex justify-end gap-2 mt-4'>
           <Button
             variant='outline'
@@ -160,6 +248,7 @@ export const AddFormRole = (): ReactNode => {
             className='bg-white hover:bg-slate-200'
             size='sm'
             onClick={closeAllStated}
+            disabled={isPending}
           >
             취소
           </Button>
@@ -167,9 +256,16 @@ export const AddFormRole = (): ReactNode => {
             size='sm'
             type='submit'
             className='bg-orange-600 hover:bg-orange-700 text-white '
+            disabled={isPending}
           >
-            <Save className='w-3 h-3 mr-1' />
-            {isShowAddRoleNode ? '추가하기' : '수정하기'}
+            {isPending ? (
+              '저장 중...'
+            ) : (
+              <>
+                <Save className='w-3 h-3 mr-1' />
+                {isShowAddRoleNode ? '추가하기' : '수정하기'}
+              </>
+            )}
           </Button>
         </div>
       </div>

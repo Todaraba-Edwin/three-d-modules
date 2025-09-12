@@ -268,8 +268,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                             <Button
                               variant='ghost'
                               size='sm'
-                              onClick={e => {
-                                e.stopPropagation();
+                              onClick={() => {
                                 openIsEditModeRole({
                                   targetEditRole: {
                                     permissionMenu,
@@ -288,8 +287,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                               <Button
                                 variant='ghost'
                                 size='sm'
-                                onClick={e => {
-                                  e.stopPropagation();
+                                onClick={() => {
                                   if (selectedRoleId != role_id) {
                                     setAction({
                                       selectedRoleId: role_id,

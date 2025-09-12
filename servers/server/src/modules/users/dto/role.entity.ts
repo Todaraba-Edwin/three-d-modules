@@ -10,4 +10,7 @@ export class USER_TC_ROLES {
 
   @Column({ type: 'varchar', length: 100 })
   role_name: string;
+
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  role_description: string;
 }
