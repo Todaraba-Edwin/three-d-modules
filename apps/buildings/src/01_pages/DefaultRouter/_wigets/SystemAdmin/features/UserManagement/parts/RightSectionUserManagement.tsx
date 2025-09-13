@@ -4,10 +4,12 @@ import { apiClient } from '@/02_common/apiClient';
 import { queryKey } from '@/02_common/queryKey';
 import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
+import { useSystemAdminAddUSerStore } from '@/02_common/zustandStores/useSystemAdminAddUSerStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Settings, Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
+import { AddFormUser } from './AddFormUser';
 import { GridSections } from './GridSections';
 import { UM_CONST } from './const';
 
@@ -30,9 +32,20 @@ type ConfirmState = {
 
 export const RightSectionUserManagement = (): ReactNode => {
   const { isEditModeRole, targetEditRole } = useSystemAdminAddRoleStore();
-  const { selectedRoleId } = useSyStemAdminSelectedRole();
+  const { selectedRoleId, selectedRoleName } = useSyStemAdminSelectedRole();
   const queryClient = useQueryClient();
   const [confirmState, setConfirmState] = useState<ConfirmState>(null);
+
+  const {
+    // isShowPassword,
+    isShowAddUserNode,
+    // isEditModeUser,
+    openIsShowAddUserNode,
+    // targetEditUser,
+    // toggleIsShowPassword,
+    closeAllStated,
+    // openIsEditModeUser,
+  } = useSystemAdminAddUSerStore();
 
   const roleIdToFilter = isEditModeRole ? targetEditRole?.role_id : undefined;
 
@@ -77,21 +90,20 @@ export const RightSectionUserManagement = (): ReactNode => {
     });
   };
 
-  const roleNameForTitle =
-    isEditModeRole && targetEditRole ? targetEditRole.role_name : '모든';
-
   return (
     <>
       <GridSections
         ICON={UM_CONST.RightSection.ICON}
         sectionTitle={UM_CONST.RightSection.title}
-        sectionDesc={`${roleNameForTitle} ${UM_CONST.RightSection.desc}`}
+        sectionDesc={`${selectedRoleName} ${UM_CONST.RightSection.desc}`}
         addActions={{
           addActionName: UM_CONST.RightSection.addActionName,
-          addActionClick: () => {},
-          addActionNode: (
-            <></>
-            // <div className='h-[600px] border-2'>추가로직</div>
+          addActionClick: () => {
+            if (isShowAddUserNode) return closeAllStated();
+            return openIsShowAddUserNode();
+          },
+          addActionNode: (isShowAddUserNode || isEditModeRole) && (
+            <AddFormUser />
           ),
         }}
         children={
@@ -102,7 +114,7 @@ export const RightSectionUserManagement = (): ReactNode => {
               'max-xl:h-[150px]'
             )}
           >
-            <div className='p-2 bg-blue-100 grid grid-cols-[200px_100px_1fr_80px] text-sm font-medium'>
+            <div className='p-2 bg-blue-100 grid grid-cols-[200px_150px_1fr_80px] text-sm font-medium'>
               <div className='text-center'>사용자</div>
               <div className='text-center'>권한(역할)</div>
               <div className='text-center'>마지막 로그인</div>
@@ -115,7 +127,7 @@ export const RightSectionUserManagement = (): ReactNode => {
                   return (
                     <div
                       key={user.id}
-                      className='p-2 grid grid-cols-[200px_100px_1fr_80px] text-sm border-b border-slate-200'
+                      className='p-2 grid grid-cols-[200px_150px_1fr_80px] text-sm border-b border-slate-200'
                     >
                       <div className='flex flex-col justify-center px-2'>
                         <p className='font-semibold'>

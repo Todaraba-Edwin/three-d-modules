@@ -177,7 +177,9 @@ export const AddFormRole = (): ReactNode => {
                   isEditModeRole && targetEditRole?.role_code === 'ADMIN_MAIN'
                 }
               />
-              {errors.role_code && <span>{errors.role_code.message}</span>}
+              {errors.role_code && (
+                <span className='text-red-500'>{errors.role_code.message}</span>
+              )}
             </div>
 
             <div className='space-y-1'>
@@ -199,8 +201,10 @@ export const AddFormRole = (): ReactNode => {
                 placeholder='예: 매니저'
                 className='text-sm'
               />
+              {errors.role_name && (
+                <span className='text-red-500'>{errors.role_name.message}</span>
+              )}
             </div>
-            {errors.role_name && <span>{errors.role_name.message}</span>}
           </div>
           <div className='space-y-1'>
             <label className='text-sm'>설명</label>

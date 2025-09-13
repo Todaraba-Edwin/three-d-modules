@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -47,14 +49,32 @@ export class UsersController {
    * @returns 생성된 사용자 정보 (비밀번호 제외)
    */
   @Post()
-  async createUser(@Body() body: CreateUserDto): Promise<USER_TN_USERS> {
-    return this.usersService.setUser(
-      body.username,
-      body.password,
-      body.nickname,
-      body.email,
-      body.role_id,
-    );
+  async createUser(@Body() body: CreateUserDto) {
+    return this.usersService.createUser(body);
+  }
+
+  /**
+   * @summary POST /api/users/check-username - 유효성검사 - 사용자명
+   * @param body - 사용자 생성을 위한 DTO, 기 사용자명 확인
+   * @returns 생성가능 여부, 200 | 409
+   */
+  @Post('check-username')
+  @HttpCode(HttpStatus.OK)
+  async checkUsername(@Body() body: { username: string }) {
+    await this.usersService.checkUsername(body.username);
+    return { message: 'Username is available' };
+  }
+
+  /**
+   * @summary POST /api/users/check-email - 유효성검사 - 이메일
+   * @param body - 이메일 중복 확인
+   * @returns 생성가능 여부, 200 | 409
+   */
+  @Post('check-email')
+  @HttpCode(HttpStatus.OK)
+  async checkEmail(@Body() body: { email: string }) {
+    await this.usersService.checkEmail(body.email);
+    return { message: 'Email is available' };
   }
 
   /**
@@ -80,7 +100,7 @@ export class UsersController {
     const user = await this.usersService.getUserByUsername(userName);
     if (!user) {
       throw new NotFoundException(
-        `User with username "${userName}" not found.`,
+        `"${userName}"은 이미 사용 중에 있습니다.`,
       );
     }
     return user;

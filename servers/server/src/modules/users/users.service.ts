@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   OnApplicationBootstrap,
@@ -8,6 +9,7 @@ import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
+  CreateUserDto,
   USER_TC_MENUS,
   USER_TC_ROLES,
   USER_TN_ROLE_MENU_PERMISSIONS,
@@ -144,6 +146,70 @@ export class UsersService implements OnApplicationBootstrap {
    */
   async getUserByUsername(username: string): Promise<USER_TN_USERS | null> {
     return this.usersRepository.findOne({ where: { username } });
+  }
+
+  /**
+   * @summary 신규 사용자 생성
+   * @description 사용자명과 이메일의 중복을 확인한 후, 비밀번호를 해시하여 새로운 사용자를 생성합니다.
+   * @param userDto - 사용자 생성을 위한 데이터
+   * @returns 생성된 사용자 객체 (비밀번호 제외)
+   * @throws {ConflictException} 사용자명 또는 이메일이 이미 존재할 경우
+   */
+
+  async checkUsername(username: string): Promise<void> {
+    const existingUser = await this.usersRepository.findOne({
+      where: { username },
+    });
+
+    if (existingUser) {
+      throw new ConflictException(`"${username}"은/는 이미 사용 중에 있습니다.`);
+    }
+  }
+
+  async checkEmail(email: string): Promise<void> {
+    const existingUser = await this.usersRepository.findOne({
+      where: { email },
+    });
+
+    if (existingUser) {
+      throw new ConflictException(`"${email}"은/는 이미 사용 중에 있습니다.`);
+    }
+  }
+
+  async createUser(
+    userDto: CreateUserDto,
+  ): Promise<Omit<USER_TN_USERS, 'password'>> {
+    const { username, email, nickname, password, role_id } = userDto;
+
+    // Check for existing user by username or email
+    const existingUser = await this.usersRepository.findOne({
+      where: [{ username }, { email }],
+    });
+
+    if (existingUser) {
+      if (existingUser.username === username) {
+        throw new ConflictException(`Username "${username}" already exists.`);
+      }
+      if (existingUser.email === email) {
+        throw new ConflictException(`Email "${email}" already exists.`);
+      }
+    }
+
+    const hashedPassword = await hash(password, 10);
+
+    const newUser = this.usersRepository.create({
+      username,
+      nickname,
+      password: hashedPassword,
+      email,
+      role_id,
+    });
+
+    const savedUser = await this.usersRepository.save(newUser);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...result } = savedUser;
+    return result;
   }
 
   /**

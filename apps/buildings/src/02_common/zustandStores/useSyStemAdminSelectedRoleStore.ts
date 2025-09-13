@@ -13,9 +13,8 @@ type useSyStemAdminSelectedRoleType = {
 export const useSyStemAdminSelectedRole =
   create<useSyStemAdminSelectedRoleType>((set, get) => ({
     selectedRoleId: undefined,
-    selectedRoleName: '',
+    selectedRoleName: '모든',
     setAction: ({ selectedRoleId, selectedRoleName }) => {
-      console.log('동작 #2');
       const currentSelectedRoleId = get().selectedRoleId;
       const isInit = typeof selectedRoleId === 'string';
       set({
