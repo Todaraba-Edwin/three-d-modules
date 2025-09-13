@@ -103,11 +103,17 @@ export const AddFormUser = (): ReactNode => {
       return apiClient.post('users', { json: payload }).json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKey.systemAdmin.users() });
+      [queryKey.systemAdmin.users(), queryKey.systemAdmin.summary()].forEach(
+        queryKey => {
+          queryClient.invalidateQueries({
+            queryKey,
+          });
+        }
+      );
       reset();
     },
-    // eslint-disable-next-line
-    onError: async (error: any) => {
+
+    onError: async () => {
       // 전체 폼 제출 에러 처리 (예: toast message)
     },
   });
@@ -121,7 +127,7 @@ export const AddFormUser = (): ReactNode => {
     onSuccess: () => {
       // 3. 유효한 사용자명이므로, 서버 에러가 있었다면 지웁니다.
       console.log('유효');
-      
+
       clearErrors('username');
     },
     // eslint-disable-next-line
@@ -200,7 +206,7 @@ export const AddFormUser = (): ReactNode => {
     'checkEmail',
     handleCheckEmail,
     200,
-    true,
+    true
   );
 
   const onSubmit = handleSubmit(data => {
@@ -234,6 +240,7 @@ export const AddFormUser = (): ReactNode => {
               <>
                 <Select
                   {...field}
+                  value={field.value || null}
                   styles={customSelectStyles}
                   options={roleOptions}
                   placeholder='사용자의 역할을 선택해주세요.'

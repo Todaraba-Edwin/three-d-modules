@@ -7,7 +7,7 @@ import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemA
 import { useSystemAdminAddUSerStore } from '@/02_common/zustandStores/useSystemAdminAddUSerStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { Settings, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { AddFormUser } from './AddFormUser';
 import { GridSections } from './GridSections';
@@ -69,6 +69,9 @@ export const RightSectionUserManagement = (): ReactNode => {
       console.log('User(s) deleted successfully!');
       queryClient.invalidateQueries({
         queryKey: queryKey.systemAdmin.users(roleIdToFilter),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKey.systemAdmin.summary(),
       });
       setConfirmState(null);
     },
@@ -143,14 +146,14 @@ export const RightSectionUserManagement = (): ReactNode => {
                           ? new Date(user.last_login_at).toLocaleString()
                           : 'N/A'}
                       </div>
-                      <div className='flex items-center gap-1'>
-                        <Button
+                      <div className='flex items-center justify-center gap-1'>
+                        {/* <Button
                           variant='ghost'
                           size='sm'
                           className='h-8 w-8 p-0'
                         >
                           <Settings className='w-3 h-3' />
-                        </Button>
+                        </Button> */}
                         {!isAdminMain && (
                           <Button
                             variant='ghost'

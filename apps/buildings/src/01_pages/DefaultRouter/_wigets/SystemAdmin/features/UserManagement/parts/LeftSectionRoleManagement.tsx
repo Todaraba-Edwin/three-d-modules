@@ -4,7 +4,7 @@ import { apiClient } from '@/02_common/apiClient';
 import { queryKey } from '@/02_common/queryKey';
 import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { CircleCheckBig, CircleX, Settings, Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
@@ -60,6 +60,7 @@ type ConfirmState = {
 } | null;
 
 export const LeftSectionRoleManagement = (): ReactNode => {
+  const queryClient = useQueryClient();
   const { selectedRoleId, setAction } = useSyStemAdminSelectedRole();
   const { data: permissionsMenuByRoleData, isLoading } = useQuery<
     PermissionsRolesQueryResult[]
@@ -77,6 +78,9 @@ export const LeftSectionRoleManagement = (): ReactNode => {
         selectedRoleName: '',
       });
       setConfirmState(null);
+      queryClient.invalidateQueries({
+        queryKey: queryKey.systemAdmin.summary(),
+      });
     },
     async (error, variables) => {
       try {

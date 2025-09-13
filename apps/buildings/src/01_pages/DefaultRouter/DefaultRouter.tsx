@@ -4,11 +4,14 @@ import { UserManagement } from '@/01_pages/DefaultRouter/_wigets/SystemAdmin/fea
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate, type RouteObject } from 'react-router-dom';
 import { useAuthStore } from '../../02_common/zustandStores/useAuthStore';
+import { Building } from '../CesiumRouter/Building/Building';
 import { DefaultMainFrame } from './DefaultMainFrame';
 import { defaultMenuLists } from './_shared/const';
+import { HomeDashboard } from './_wigets/Home/HomeDashboard';
 
 const pathPages: Record<string, ReactNode> = {
-  ['/']: <div>대시보드 페이지 개발 중...</div>,
+  ['/']: <HomeDashboard />,
+  ['/3dms']: <Building />,
   // '/system-admin' 경로는 중첩 라우팅으로 인해 아래에서 별도 처리됩니다.
 };
 

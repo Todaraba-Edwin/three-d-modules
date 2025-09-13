@@ -5,4 +5,5 @@ type LucideIconType = React.ForwardRefExoticComponent<
 type menuItemsType = {
   icon: LucideIconType;
   path: string;
+  desc?: string;
 };

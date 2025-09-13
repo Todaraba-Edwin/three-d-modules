@@ -6,7 +6,7 @@ import { SystemAdminSummary } from './features/SystemAdminSummary';
 
 const tabs = [
   { name: '사용자 관리', href: '/system-admin' },
-  { name: '장비 관리', href: '/system-admin/device' },
+  // { name: '장비 관리', href: '/system-admin/device' },
 ];
 
 export const SystemAdmin = (): ReactNode => {

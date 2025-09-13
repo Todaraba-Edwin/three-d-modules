@@ -99,6 +99,9 @@ export const AddFormRole = (): ReactNode => {
       queryClient.invalidateQueries({
         queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKey.systemAdmin.summary(),
+      });
 
       if (isEditModeRole) {
         if (
