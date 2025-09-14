@@ -229,7 +229,7 @@ export const NMSMain = (): ReactNode => {
           'grid grid-rows-[auto_1fr] space-y-4  min-h-0'
         )}
       >
-        <header className='space-y-1 p-4 '>
+        <header className='space-y-1 pt-4 px-4'>
           <h2 className='text-lg font-bold flex space-x-2 items-center'>
             <EthernetPort />
             <span>Access Switch 상세정보</span>
@@ -237,7 +237,7 @@ export const NMSMain = (): ReactNode => {
           <h3 className='text-base font-bold flex space-x-2 items-center'>
             <span>{selectedSwitchInfo.name}</span>
           </h3>
-          <dl className={clsx('grid grid-cols-[100px_1fr] gap-y-4 py-4')}>
+          <dl className={clsx('grid grid-cols-[100px_1fr] gap-y-4 pt-4')}>
             <dt>RJ45 포트</dt>
             <dd className='grid grid-cols-8 gap-4 '>
               {Array.from({ length: 8 }, (_, idx) => idx + 1).map(list => {
@@ -286,9 +286,9 @@ export const NMSMain = (): ReactNode => {
                 );
               })}
             </dd>
-            <dt>LLDP 정보</dt>
+            <dt></dt>
             <dd className='text-gray-500'>
-              [ 9번포트 ] 스위치(192.168.1.1) - {selectedSwitch}번 포트 연결
+              9번포트 : 192.168.1.1(Core Switch) - {selectedSwitch}포트 연결
             </dd>
           </dl>
         </header>
