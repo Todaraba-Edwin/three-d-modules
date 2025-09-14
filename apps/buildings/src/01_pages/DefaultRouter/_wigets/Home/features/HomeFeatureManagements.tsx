@@ -2,40 +2,14 @@ import { Progress } from '@/02_common/Progress';
 import dayjs from 'dayjs';
 import {
   AlertTriangle,
-  BrickWallShield,
   CalendarCheck,
-  Cctv,
   DoorOpen,
-  FireExtinguisher,
   LayoutGrid,
-  Monitor,
-  Speaker,
-  Wifi,
   Zap,
 } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 const featureList = [
-  {
-    id: 1,
-    typeName: 'CCTV',
-    TypeIcon: Cctv,
-  },
-  {
-    id: 2,
-    typeName: 'WIFI',
-    TypeIcon: Wifi,
-  },
-  {
-    id: 3,
-    typeName: 'PC',
-    TypeIcon: Monitor,
-  },
-  {
-    id: 4,
-    typeName: '방송스피커',
-    TypeIcon: Speaker,
-  },
   {
     id: 5,
     typeName: '석면자제',
@@ -46,25 +20,17 @@ const featureList = [
     typeName: '출입문',
     TypeIcon: DoorOpen,
   },
-  {
-    id: 7,
-    typeName: '소화전',
-    TypeIcon: FireExtinguisher,
-  },
-  {
-    id: 8,
-    typeName: '차단벽',
-    TypeIcon: BrickWallShield,
-  },
 ];
 
 export const HomeFeatureManagements = (): ReactNode => {
   return (
-    <div className='bg-white border-2 border-slate-300 rounded-xl p-4 space-y-4'>
+    <div className='bg-white border-2 border-slate-300 rounded-xl p-4 space-y-4 '>
       {/* LMS 관리 */}
       <div className='flex items-center gap-2 '>
-        <Zap className='w-5 h-5 text-orange-500' />
-        FMS (Feature Management System)
+        <Zap className='w-5 h-5 text-green-500' />
+        <span className=' text-[20px] text-green-500'>
+          시설물 관리 (Feature Management System)
+        </span>
       </div>
       <div className='grid grid-cols-2 lg:grid-cols-3 gap-6'>
         {/* 광섬유 관리 */}

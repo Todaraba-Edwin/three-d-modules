@@ -8,7 +8,7 @@ import { HomeNetworkManagements } from './features/HomeNetworkManagements';
 
 export const HomeDashboard = (): ReactNode => {
   return (
-    <div className={clsx('w-full h-full', 'space-y-4')}>
+    <div className={clsx('w-full', 'space-y-4')}>
       <HomeHeader />
       <HomeNavigation />
       <HomeNetworkManagements />
