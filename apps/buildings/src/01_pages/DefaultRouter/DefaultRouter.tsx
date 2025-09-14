@@ -8,10 +8,14 @@ import { Building } from '../CesiumRouter/Building/Building';
 import { DefaultMainFrame } from './DefaultMainFrame';
 import { defaultMenuLists } from './_shared/const';
 import { HomeDashboard } from './_wigets/Home/HomeDashboard';
+import { NetworkManagement } from './_wigets/NMS/NetworkManagement';
+import { NetworkManagement2 } from './_wigets/NMS/features/NetworkManagement2';
 
 const pathPages: Record<string, ReactNode> = {
   ['/']: <HomeDashboard />,
   ['/3dms']: <Building />,
+  ['/nms']: <NetworkManagement />,
+  ['/fms']: <NetworkManagement2 />,
   // '/system-admin' 경로는 중첩 라우팅으로 인해 아래에서 별도 처리됩니다.
 };
 
