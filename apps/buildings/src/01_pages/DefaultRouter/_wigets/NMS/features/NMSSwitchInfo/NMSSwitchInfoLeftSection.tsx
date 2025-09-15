@@ -14,7 +14,7 @@ export const NMSSwitchInfoLeftSection = ({
   // eslint-disable-next-line
 }: any): ReactNode => {
   return (
-    <div className='border-2 rounded-lg p-4 space-y-4 grid grid-rows-[auto_auto_1fr] min-h-0'>
+    <div className='border-2 rounded-lg p-4 space-y-4 grid grid-rows-[auto_auto_1fr] min-h-0 max-xl:h-[400px]'>
       <button
         onClick={() => setSelectedSwitch(coreSwitchInfo)}
         className={clsx(

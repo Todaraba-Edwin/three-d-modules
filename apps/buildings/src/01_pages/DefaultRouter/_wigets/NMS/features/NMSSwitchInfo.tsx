@@ -12,7 +12,7 @@ const allSwitches = [...accessSwitches.map(sw => ({ ...sw, type: 'Access' }))];
 export const NMSSwitchInfo = (): ReactNode => {
   const [searchTerm, setSearchTerm] = useState('');
   // eslint-disable-next-line
-  const [selectedSwitch, setSelectedSwitch] = useState<any>(allSwitches[0]);
+  const [selectedSwitch, setSelectedSwitch] = useState<any>(coreSwitchInfo);
 
   const filteredSwitches = useMemo(() => {
     if (!searchTerm) return allSwitches;
@@ -33,7 +33,7 @@ export const NMSSwitchInfo = (): ReactNode => {
           스위치 관리
         </h2>
       </header>
-      <main className='grid grid-cols-[350px_1fr] gap-4 min-h-0'>
+      <main className='grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-4 min-h-0'>
         {/* Left: Switch List */}
         <NMSSwitchInfoLeftSection
           setSearchTerm={setSearchTerm}
