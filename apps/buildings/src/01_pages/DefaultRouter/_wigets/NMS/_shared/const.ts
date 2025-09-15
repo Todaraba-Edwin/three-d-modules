@@ -40,22 +40,42 @@ export const accessSwitches = Array.from({ length: 20 }, (_, i) => ({
 }));
 
 // Updated mock data to be port-centric
+export const extendSwitch: Record<number, any> = {
+  1: [{ port: 10, id: 201, name: `EXT-${1} 액세스 스위치` }],
+};
+
 export const devices: PortDeviceMap = {
   1: {
     // switchId
     1: { id: 1, type: 'CCTV', name: 'CAM-01' }, // portId
     3: { id: 2, type: 'AP', name: 'AP-01-01' },
+    11: { id: 1, type: 'CCTV', name: 'CAM-01' },
+    12: { id: 3, type: 'PC', name: 'PC-DEV-1' },
+    13: { id: 2, type: 'AP', name: 'AP-01-01' },
+    14: { id: 2, type: 'AP', name: 'AP-01-01' },
   },
   2: {
     2: { id: 3, type: 'PC', name: 'PC-DEV-01' },
+    11: { id: 1, type: 'CCTV', name: 'CAM-01' },
+    12: { id: 3, type: 'PC', name: 'PC-DEV-1' },
+    13: { id: 2, type: 'AP', name: 'AP-01-01' },
+    14: { id: 2, type: 'AP', name: 'AP-01-01' },
   },
   3: {
     1: { id: 4, type: 'CCTV', name: 'CAM-02' },
+    11: { id: 1, type: 'CCTV', name: 'CAM-01' },
+    12: { id: 3, type: 'PC', name: 'PC-DEV-1' },
+    13: { id: 2, type: 'AP', name: 'AP-01-01' },
+    14: { id: 2, type: 'AP', name: 'AP-01-01' },
   },
   4: {
     6: { id: 1, type: 'CCTV', name: 'CAM-01' },
     7: { id: 3, type: 'PC', name: 'PC-DEV-1' },
     8: { id: 2, type: 'AP', name: 'AP-01-01' },
+    11: { id: 1, type: 'CCTV', name: 'CAM-01' },
+    12: { id: 3, type: 'PC', name: 'PC-DEV-1' },
+    13: { id: 2, type: 'AP', name: 'AP-01-01' },
+    14: { id: 2, type: 'AP', name: 'AP-01-01' },
   },
 };
 

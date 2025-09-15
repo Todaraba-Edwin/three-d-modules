@@ -17,6 +17,7 @@ import {
   coreSwitch,
   deviceDetails,
   devices,
+  extendSwitch,
 } from '../_shared/const';
 
 const DeviceIcon = {
@@ -28,7 +29,7 @@ const DeviceIcon = {
 type DeviceIconType = keyof typeof DeviceIcon;
 
 export const NMSMain = (): ReactNode => {
-  const [selectedSwitch, setSelectedSwitch] = useState<number | null>(1);
+  const [selectedSwitch, setSelectedSwitch] = useState<number>(1);
   const [randomDevices, setRandomDevices] = useState<number>(1);
   const [selectedSwitchInfo, setSelectedSwitchInfo] = useState<{
     id: number | '';
@@ -68,6 +69,8 @@ export const NMSMain = (): ReactNode => {
   });
 
   useEffect(() => {
+    console.log('selectedDevice', selectedDevice);
+
     const device = devices?.[randomDevices]?.[selectedDevice];
     if (!device) return;
 
@@ -80,10 +83,15 @@ export const NMSMain = (): ReactNode => {
     });
   }, [selectedDevice, randomDevices]);
 
+  console.log(
+    'extendSwitch?.[selectedSwitch]?.length',
+    extendSwitch?.[selectedSwitch]?.length
+  );
+
   return (
     <main
       className={clsx(
-        'grid grid-cols-1 xl:grid-cols-[2fr_2fr_3fr_4fr] gap-4 h-full min-h-0 p-2'
+        'grid grid-cols-1 xl:grid-cols-[2fr_2fr_3.5fr_3.5fr] gap-4 h-full min-h-0 pt-2 pb-4'
       )}
     >
       {/* 1번째 섹션 */}
@@ -237,60 +245,160 @@ export const NMSMain = (): ReactNode => {
           <h3 className='text-base font-bold flex space-x-2 items-center'>
             <span>{selectedSwitchInfo.name}</span>
           </h3>
-          <dl className={clsx('grid grid-cols-[100px_1fr] gap-y-4 pt-4')}>
-            <dt>RJ45 포트</dt>
-            <dd className='grid grid-cols-8 gap-4 '>
-              {Array.from({ length: 8 }, (_, idx) => idx + 1).map(list => {
-                const findRJ45 = Object.keys(devices[randomDevices]).map(list =>
-                  Number(list)
-                );
-                const isActive = findRJ45.includes(list);
+          {/* 스위치 정보 */}
+          <div className='border-2 py-4 rounded-xl space-y-4'>
+            <dl className={clsx('grid grid-cols-[100px_1fr] gap-y-4 px-4')}>
+              <dt>IP</dt>
+              <dd className='text-gray-500'>192.168.1.101</dd>
+              <dt>RJ45 포트</dt>
+              <dd className='grid grid-cols-8 gap-4 '>
+                {Array.from({ length: 8 }, (_, idx) => idx + 1).map(list => {
+                  const findRJ45 = Object.keys(devices[randomDevices]).map(
+                    list => Number(list)
+                  );
+                  const isActive = findRJ45.includes(list);
 
-                return (
+                  return (
+                    <div
+                      key={list}
+                      className={clsx(
+                        'flex flex-col justify-center items-center gap-1 p-2 rounded-xl',
+                        {
+                          'bg-gradient-to-br from-purple-500 to-blue-600 text-white':
+                            isActive,
+                          'border-2 ': !isActive,
+                        }
+                      )}
+                    >
+                      <Square size={10} />
+                      <span className='text-sm'>{list}</span>
+                    </div>
+                  );
+                })}
+              </dd>
+              <dt>SFP 포트</dt>
+              <dd className='grid grid-cols-4 gap-4 '>
+                {Array.from({ length: 4 }, (_, idx) => idx + 9).map(list => {
+                  const isFirst = list === 9;
+                  const extendSwitchList = extendSwitch?.[selectedSwitch];
+                  const isExtentProt =
+                    extendSwitchList?.filter(
+                      ({ port }: { port: number }) => port === list
+                    ).length ?? 0;
+                  return (
+                    <div
+                      key={list}
+                      className={clsx(
+                        'flex flex-col justify-center items-center gap-1 p-2 rounded-xl',
+                        {
+                          'bg-gradient-to-br from-purple-500 to-blue-600 text-white':
+                            isFirst || isExtentProt,
+                          'border-2 ': !isFirst || !isExtentProt,
+                        }
+                      )}
+                    >
+                      <EthernetPort />
+                      <span className='text-sm'>{list}포트</span>
+                    </div>
+                  );
+                })}
+              </dd>
+              <dt></dt>
+              <dd className='text-gray-500'>
+                <p>
+                  9번포트 : 192.168.1.1(Core Switch) - {selectedSwitch}포트 연결
+                </p>
+                {selectedSwitch &&
+                  extendSwitch?.[selectedSwitch] &&
+                  extendSwitch?.[selectedSwitch]?.length &&
+                  extendSwitch?.[selectedSwitch]?.map(
+                    (list: { id: number; port: number }) => (
+                      <p key={list.id}>
+                        10번포트 : 192.168.1.{list.id}(Access Switch) -{' '}
+                        {list.port - 1}포트 연결
+                      </p>
+                    )
+                  )}
+              </dd>
+            </dl>{' '}
+            {selectedSwitch &&
+              extendSwitch?.[selectedSwitch] &&
+              extendSwitch?.[selectedSwitch]?.length && (
+                <>
                   <div
-                    key={list}
-                    className={clsx(
-                      'flex flex-col justify-center items-center gap-1 p-2 rounded-xl',
-                      {
-                        'bg-gradient-to-br from-purple-500 to-blue-600 text-white':
-                          isActive,
-                        'border-2 ': !isActive,
-                      }
-                    )}
+                    className='h-10 bg-blue-500 flex justify-center items-center text-white'
+                    children='확장 PDF스위치'
+                  />
+                  <dl
+                    className={clsx('grid grid-cols-[100px_1fr] gap-y-4  px-4')}
                   >
-                    <Square size={10} />
-                    <span className='text-sm'>{list}</span>
-                  </div>
-                );
-              })}
-            </dd>
-            <dt>SFP 포트</dt>
-            <dd className='grid grid-cols-4 gap-4 '>
-              {Array.from({ length: 4 }, (_, idx) => idx + 9).map(list => {
-                const isFirst = list === 9;
-                return (
-                  <div
-                    key={list}
-                    className={clsx(
-                      'flex flex-col justify-center items-center gap-1 p-2 rounded-xl',
-                      {
-                        'bg-gradient-to-br from-purple-500 to-blue-600 text-white':
-                          isFirst,
-                        'border-2 ': !isFirst,
-                      }
-                    )}
-                  >
-                    <EthernetPort />
-                    <span className='text-sm'>{list}포트</span>
-                  </div>
-                );
-              })}
-            </dd>
-            <dt></dt>
-            <dd className='text-gray-500'>
-              9번포트 : 192.168.1.1(Core Switch) - {selectedSwitch}포트 연결
-            </dd>
-          </dl>
+                    <dt>IP</dt>
+                    <dd className='text-gray-500'>192.168.1.201</dd>
+                    <dt>RJ45 포트</dt>
+                    <dd className='grid grid-cols-8 gap-4 '>
+                      {Array.from({ length: 8 }, (_, idx) => idx + 1).map(
+                        list => {
+                          const findRJ45 = Object.keys(
+                            devices[randomDevices]
+                          ).map(list => Number(list));
+                          const isActive = findRJ45.includes(list);
+
+                          return (
+                            <div
+                              key={list}
+                              className={clsx(
+                                'flex flex-col justify-center items-center gap-1 p-2 rounded-xl',
+                                {
+                                  'bg-gradient-to-br from-purple-500 to-blue-600 text-white':
+                                    isActive,
+                                  'border-2 ': !isActive,
+                                }
+                              )}
+                            >
+                              <Square size={10} />
+                              <span className='text-sm'>
+                                {list}({list + 8})
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </dd>
+                    <dt>SFP 포트</dt>
+                    <dd className='grid grid-cols-4 gap-4 '>
+                      {Array.from({ length: 4 }, (_, idx) => idx + 9).map(
+                        list => {
+                          const isFirst = list === 9;
+                          return (
+                            <div
+                              key={list}
+                              className={clsx(
+                                'flex flex-col justify-center items-center gap-1 p-2 rounded-xl',
+                                {
+                                  'bg-gradient-to-br from-purple-500 to-blue-600 text-white':
+                                    isFirst,
+                                  'border-2 ': !isFirst,
+                                }
+                              )}
+                            >
+                              <EthernetPort />
+                              <span className='text-sm'>{list}포트</span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </dd>
+                    <dt></dt>
+                    <dd className='text-gray-500'>
+                      <p>
+                        9번포트 : 192.168.1.101(Core Switch) - {10}
+                        포트 연결
+                      </p>
+                    </dd>
+                  </dl>
+                </>
+              )}
+          </div>
         </header>
         <section className={clsx('px-4 pb-4', 'overflow-y-auto space-y-2')}>
           {/* Connected Devices List */}
@@ -334,6 +442,48 @@ export const NMSMain = (): ReactNode => {
                   </button>
                 );
               })}
+              {selectedSwitch &&
+                extendSwitch?.[selectedSwitch] &&
+                extendSwitch?.[selectedSwitch]?.length &&
+                Array.from({ length: 8 }, (_, i) => i + 1).map(portIndex => {
+                  const device = devices[randomDevices]?.[portIndex];
+                  const isConnected = !!device;
+                  return (
+                    <button
+                      key={portIndex + 10}
+                      onClick={() => {
+                        setSelectedDevice(portIndex + 10);
+                      }}
+                      className={clsx(
+                        'p-2 rounded-md flex items-center space-x-3 w-full border-2',
+                        {
+                          'border-blue-600 bg-blue-50':
+                            selectedDevice === portIndex + 10,
+                          'hover:bg-gray-100 ':
+                            isConnected && selectedDevice != portIndex + 10,
+                          'border-white opacity-50': !isConnected,
+                        }
+                      )}
+                      disabled={!isConnected}
+                    >
+                      <span className='font-mono text-sm'>
+                        {portIndex + 8}.
+                      </span>
+                      {isConnected && <Link2 className={`w-5 h-5`} />}
+                      {!isConnected && <Link2Off className={`w-5 h-5`} />}
+                      {isConnected ? (
+                        <>
+                          {/* <DeviceIcon.[device.type] /> */}
+                          <span className=' text-black font-semibold'>
+                            {device.name}
+                          </span>
+                        </>
+                      ) : (
+                        <span>연결 없음</span>
+                      )}
+                    </button>
+                  );
+                })}
             </div>
           </div>
         </section>
@@ -382,7 +532,7 @@ export const NMSMain = (): ReactNode => {
                 </span>
               </dd>
               <dt>위치</dt>
-              <dd className='text-gray-500'>{`본관 > 1층 > 다목적실`}</dd>
+              <dd className='text-gray-500'>{`본관 > ${selectedDevice > 10 ? 2 : 1}층 > ${selectedDevice > 10 ? '2-1반' : '1-1반'}`}</dd>
               <dt>설치업체 </dt>
               <dd className='text-gray-500'>AA 솔류션</dd>
               <dt>설치시기 </dt>
