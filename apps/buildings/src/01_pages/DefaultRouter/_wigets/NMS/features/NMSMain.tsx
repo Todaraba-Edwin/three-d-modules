@@ -104,7 +104,7 @@ export const NMSMain = (): ReactNode => {
         <header className='space-y-1 p-4 border-b-2'>
           <h2 className='text-lg font-bold flex space-x-2 items-center'>
             <Network />
-            <span>메인분배함 - Core Switch</span>
+            <span>메인분배함 - Core</span>
           </h2>
           <dl className={clsx('grid grid-cols-[80px_1fr]')}>
             <dt>모델명</dt>
@@ -119,7 +119,9 @@ export const NMSMain = (): ReactNode => {
           className={clsx(
             'px-4 pb-4',
             'grid grid-cols-4 gap-4 content-start',
-            'overflow-y-auto'
+            'overflow-y-auto',
+            'max-xl:h-60',
+            'max-xl:grid-cols-8'
           )}
         >
           {coreSwitch.ports.map(({ id, connected }) => (
@@ -148,7 +150,7 @@ export const NMSMain = (): ReactNode => {
                   ' text-gray-300': !connected,
                 })}
               >
-                <EthernetPort className='w-8 h-8' />
+                <EthernetPort className='w-6 h-6' />
                 <span className='text-xs font-bold'>{id}</span>
               </div>
             </button>
@@ -185,7 +187,13 @@ export const NMSMain = (): ReactNode => {
             </dd>
           </dl>
         </header>
-        <section className={clsx('px-4 pb-4', 'overflow-y-auto space-y-2')}>
+        <section
+          className={clsx(
+            'px-4 pb-4',
+            'overflow-y-auto space-y-2',
+            'max-xl:h-60'
+          )}
+        >
           {accessSwitches.map(sw => (
             <button
               key={sw.id}
@@ -305,17 +313,15 @@ export const NMSMain = (): ReactNode => {
               </dd>
               <dt></dt>
               <dd className='text-gray-500'>
-                <p>
-                  9번포트 : 192.168.1.1(Core Switch) - {selectedSwitch}포트 연결
-                </p>
+                <p>9번포트 : 192.168.1.1(Core) - {selectedSwitch}포트 연결</p>
                 {selectedSwitch &&
                   extendSwitch?.[selectedSwitch] &&
                   extendSwitch?.[selectedSwitch]?.length &&
                   extendSwitch?.[selectedSwitch]?.map(
                     (list: { id: number; port: number }) => (
                       <p key={list.id}>
-                        10번포트 : 192.168.1.{list.id}(Access Switch) -{' '}
-                        {list.port - 1}포트 연결
+                        10번포트 : 192.168.1.{list.id}(Access) - {list.port - 1}
+                        포트 연결
                       </p>
                     )
                   )}
@@ -391,7 +397,7 @@ export const NMSMain = (): ReactNode => {
                     <dt></dt>
                     <dd className='text-gray-500'>
                       <p>
-                        9번포트 : 192.168.1.101(Core Switch) - {10}
+                        9번포트 : 192.168.1.101(Core) - {10}
                         포트 연결
                       </p>
                     </dd>
@@ -400,7 +406,13 @@ export const NMSMain = (): ReactNode => {
               )}
           </div>
         </header>
-        <section className={clsx('px-4 pb-4', 'overflow-y-auto space-y-2')}>
+        <section
+          className={clsx(
+            'px-4 pb-4',
+            'overflow-y-auto space-y-2',
+            'max-xl:h-60'
+          )}
+        >
           {/* Connected Devices List */}
           <div className='mt-4'>
             <h4 className='font-medium'>연결 장비 목록</h4>

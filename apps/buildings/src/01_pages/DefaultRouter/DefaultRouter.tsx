@@ -8,14 +8,14 @@ import { Building } from '../CesiumRouter/Building/Building';
 import { DefaultMainFrame } from './DefaultMainFrame';
 import { defaultMenuLists } from './_shared/const';
 import { HomeDashboard } from './_wigets/Home/HomeDashboard';
-import { NetworkManagement } from './_wigets/NMS/NetworkManagement';
-import { NetworkManagement2 } from './_wigets/NMS/features/NetworkManagement2';
+import { NMSRouterOutlet } from './_wigets/NMS/NMSRouterOutlet';
+import { NMSMain } from './_wigets/NMS/features/NMSMain';
 
 const pathPages: Record<string, ReactNode> = {
   ['/']: <HomeDashboard />,
   ['/3dms']: <Building />,
-  ['/nms']: <NetworkManagement />,
-  ['/fms']: <NetworkManagement2 />,
+  // ['/nms']: <NetworkManagement />,
+  // ['/fms']: <NetworkManagement2 />,
   // '/system-admin' 경로는 중첩 라우팅으로 인해 아래에서 별도 처리됩니다.
 };
 
@@ -43,12 +43,17 @@ const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
     return <SystemAdmin />;
   }
 
+  if (validationPath === '/nms') {
+    return <NMSRouterOutlet />;
+  }
+
   if (!pathPages[findPath.path])
     return <div>{findPath.label} 페이지 개발 중...</div>;
   return pathPages[findPath.path];
 };
 
 export const DefaultRouter = (): RouteObject[] => {
+  const nmsRoutePath = '/nms';
   const adminRoutePath = '/system-admin';
   const otherRoutes = defaultMenuLists
     .slice(1)
@@ -75,6 +80,18 @@ export const DefaultRouter = (): RouteObject[] => {
           children: [
             { index: true, element: <UserManagement /> },
             { path: 'device', element: <DeviceManagement /> },
+          ],
+        },
+
+        //
+        {
+          path: nmsRoutePath,
+          element: <PermittedRoute validationPath={nmsRoutePath} />,
+          children: [
+            { index: true, element: <div children='개발 중...' /> },
+            { path: 'info', element: <NMSMain /> },
+            { path: 'info-switch', element: <div children='개발 중...' /> },
+            { path: 'info-device', element: <div children='개발 중...' /> },
           ],
         },
       ],
