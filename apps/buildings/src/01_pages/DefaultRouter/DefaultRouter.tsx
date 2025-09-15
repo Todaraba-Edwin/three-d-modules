@@ -10,6 +10,7 @@ import { defaultMenuLists } from './_shared/const';
 import { HomeDashboard } from './_wigets/Home/HomeDashboard';
 import { NMSRouterOutlet } from './_wigets/NMS/NMSRouterOutlet';
 import { NMSMain } from './_wigets/NMS/features/NMSMain';
+import { NMSSwitchInfo } from './_wigets/NMS/features/NMSSwitchInfo';
 import { NMSTopology } from './_wigets/NMS/features/NMSTopology';
 
 const pathPages: Record<string, ReactNode> = {
@@ -91,7 +92,7 @@ export const DefaultRouter = (): RouteObject[] => {
           children: [
             { index: true, element: <NMSTopology /> },
             { path: 'info', element: <NMSMain /> },
-            { path: 'info-switch', element: <div children='개발 중...' /> },
+            { path: 'info-switch', element: <NMSSwitchInfo /> },
             { path: 'info-device', element: <div children='개발 중...' /> },
           ],
         },

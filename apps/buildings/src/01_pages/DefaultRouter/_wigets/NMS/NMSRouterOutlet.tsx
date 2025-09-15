@@ -7,7 +7,7 @@ import { NMSHeader } from './features/NMSHeader';
 const tabs = [
   { name: '네트워크 전체 구성도', href: '/nms' },
   { name: '네트워크 연결정보', href: '/nms/info' },
-  //   { name: '스위치 상세정보', href: '/nms/info-switch' },
+  { name: '스위치 상세정보', href: '/nms/info-switch' },
   //   { name: '장비 상세정보', href: '/nms/info-device' },
 ];
 

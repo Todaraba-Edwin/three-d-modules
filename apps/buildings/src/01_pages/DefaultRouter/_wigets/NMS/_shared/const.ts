@@ -14,6 +14,7 @@ type DeviceDetailMap = {
 
 // Mock Data
 export const coreSwitch = {
+  id: 100,
   ip: '192.168.1.1',
   model: 'Cisco Catalyst 9500',
   ports: Array.from({ length: 48 }, (_, i) => ({

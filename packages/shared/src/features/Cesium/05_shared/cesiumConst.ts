@@ -91,7 +91,7 @@ export const glbList: GlbListType[] = [
   {
     name: '체육관',
     type: 'type2',
-    url: '/model/test2.glb',
+    url: '/model/sample2.glb',
     isError: true,
     positions: {
       lon:
