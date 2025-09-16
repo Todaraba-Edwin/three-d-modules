@@ -8,7 +8,7 @@ const authRoutesWithLoader = {
 };
 
 const protectedWithLoader = {
-  element: <Pages.ProtectedLayout />,
+  element: <RD.Outlet />,
   loader: Loaders.protectedRouteLoader,
   children: [...Pages.DefaultRouter()],
 };
