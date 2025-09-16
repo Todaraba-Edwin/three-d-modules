@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
-import { utilsSetFloor, utilsSetGltfAsync } from '../04_utils';
+import { utilsSetGltfAsync } from '../04_utils';
 import type { BoundaryCoordinateType, GlbListType } from '../05_shared/types';
 
 export const useSetGltfAsync = ({
@@ -23,14 +23,16 @@ export const useSetGltfAsync = ({
         viewer: viewer,
         glbList: glbList,
       });
-
-      if (isFloor) {
-        utilsSetFloor({
-          viewer: viewer,
-          boundaryCoordinate,
-          color: Cesium.Color.DARKGRAY.withAlpha(0.3),
-        });
-      }
     });
   }, [viewer, boundaryCoordinate, glbList, isFloor]);
 };
+
+/*
+      // if (isFloor) {
+      //   utilsSetFloor({
+      //     viewer: viewer,
+      //     boundaryCoordinate,
+      //     color: Cesium.Color.DARKGRAY.withAlpha(0.3),
+      //   });
+      // }
+*/

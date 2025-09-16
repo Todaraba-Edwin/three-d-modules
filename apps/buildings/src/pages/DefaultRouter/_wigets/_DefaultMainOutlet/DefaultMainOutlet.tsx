@@ -1,8 +1,8 @@
+import { useAuthStore } from '@/_common/zustandStores';
 import { useState, type ReactNode } from 'react';
 import * as RD from 'react-router-dom';
-import { useAuthStore } from '../../../../_common/zustandStores/useAuthStore';
-import { ExpirationSession } from '../_reactPortals/ExpirationSession';
-import { DefaultMainFrameLayout } from './DefaultMainFrameLayout';
+import { ExpirationSessionPortal } from '../_reactPortals';
+import { DefaultMainOutletLayout } from './DefaultMainOutletLayout';
 
 export const DefaultMainOutlet = (): ReactNode => {
   const [isFocusLogin, setIsFocusLogin] = useState<boolean>(false);
@@ -10,13 +10,13 @@ export const DefaultMainOutlet = (): ReactNode => {
   const permissionPaths = permissions.filter(({ can_access }) => can_access);
 
   return (
-    <DefaultMainFrameLayout
+    <DefaultMainOutletLayout
       setIsFocusLogin={setIsFocusLogin}
       permissionPaths={permissionPaths}
       nickname={nickname}
     >
       <RD.Outlet />
-      {isFocusLogin && <ExpirationSession />}
-    </DefaultMainFrameLayout>
+      {isFocusLogin && <ExpirationSessionPortal />}
+    </DefaultMainOutletLayout>
   );
 };

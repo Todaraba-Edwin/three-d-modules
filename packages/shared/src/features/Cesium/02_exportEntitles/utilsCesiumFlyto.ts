@@ -49,8 +49,8 @@ export const utilsCesiumFlyto =
               primitive.silhouetteSize = 0;
               primitive.silhouetteColor = Cesium.Color.TRANSPARENT;
             } else {
-              primitive.silhouetteSize = 5;
-              primitive.silhouetteColor = Cesium.Color.RED;
+              // primitive.silhouetteSize = 5;
+              // primitive.silhouetteColor = Cesium.Color.RED;
             }
           }
 

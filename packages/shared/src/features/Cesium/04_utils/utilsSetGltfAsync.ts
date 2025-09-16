@@ -15,7 +15,7 @@ export const utilsSetGltfAsync = ({
       type,
       url,
       positions: { lon, lat, height, heading = 0, scale },
-      isError,
+      // isError,
     }: Ty.GlbListType) => {
       (async () => {
         const modelPosition = Cesium.Cartesian3.fromDegrees(lon, lat, height);
@@ -37,10 +37,6 @@ export const utilsSetGltfAsync = ({
             name,
             groupName: type,
           }),
-          ...(isError && {
-            silhouetteColor: Cesium.Color.ORANGERED, // 빨간 테두리
-            silhouetteSize: 5.0,
-          }),
         });
 
         viewer.scene.primitives.add(model);
@@ -49,3 +45,8 @@ export const utilsSetGltfAsync = ({
   );
   return;
 };
+
+// ...(isError && {
+//   silhouetteColor: Cesium.Color.ORANGERED, // 빨간 테두리
+//   silhouetteSize: 5.0,
+// }),

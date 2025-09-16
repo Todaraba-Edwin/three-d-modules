@@ -54,8 +54,8 @@ export const useEffectCesiumViewerNoneGlobe = ({
     viewer.camera.setView({
       destination: position,
       orientation: {
-        heading: Cesium.Math.toRadians(0),
-        pitch: Cesium.Math.toRadians(-25),
+        heading: Cesium.Math.toRadians(65),
+        pitch: Cesium.Math.toRadians(-20),
         roll: 0.0,
       },
     });

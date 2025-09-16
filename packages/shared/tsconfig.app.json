@@ -7,5 +7,10 @@
       "@_shared": ["src/features/_shared"]
     }
   },
-  "include": ["src", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "src",
+    "**/*.ts",
+    "**/*.tsx",
+    "../../apps/buildings/src/pages/DefaultRouter/_wigets/ThreeDMsPage/parts/prizm.ts"
+  ]
 }
