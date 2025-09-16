@@ -1,4 +1,4 @@
-import { Progress } from '@/common/components/Progress';
+import { Progress } from '@/_common/components/Progress';
 import dayjs from 'dayjs';
 import {
   AlertTriangle,

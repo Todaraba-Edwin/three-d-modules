@@ -1,5 +1,5 @@
-import { Button } from '@/common/components/Button';
-import { useAuthStore } from '@/common/zustandStores/useAuthStore';
+import { Button } from '@/_common/components/Button';
+import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import {
   defaultMenuLists,
   noneIcon,

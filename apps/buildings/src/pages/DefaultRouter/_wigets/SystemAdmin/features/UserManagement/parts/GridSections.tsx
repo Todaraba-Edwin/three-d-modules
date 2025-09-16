@@ -1,4 +1,4 @@
-import { Button } from '@/common/components/Button';
+import { Button } from '@/_common/components/Button';
 import { Plus } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode } from 'react';
 

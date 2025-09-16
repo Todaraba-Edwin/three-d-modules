@@ -1,5 +1,5 @@
-import { apiClient } from '@/common/apis/apiCreate';
-import { queryKey } from '@/common/apis/queryKey';
+import { apiClient } from '@/_common/apis/apiCreate';
+import { queryKey } from '@/_common/apis/queryKey';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Bot, Database, Router, Users } from 'lucide-react';

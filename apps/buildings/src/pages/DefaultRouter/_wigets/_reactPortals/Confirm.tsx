@@ -1,4 +1,4 @@
-import { Button } from '@/common/components/Button';
+import { Button } from '@/_common/components/Button';
 import { AlertTriangle } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';

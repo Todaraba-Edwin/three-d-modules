@@ -1,10 +1,10 @@
-import { apiClient } from '@/common/apis/apiCreate';
-import { queryKey } from '@/common/apis/queryKey';
-import { Button } from '@/common/components/Button';
-import { Input } from '@/common/components/Input';
-import { useAuthStore } from '@/common/zustandStores/useAuthStore';
-import { useSyStemAdminSelectedRole } from '@/common/zustandStores/useSyStemAdminSelectedRoleStore';
-import { useSystemAdminAddRoleStore } from '@/common/zustandStores/useSystemAdminAddRoleStore';
+import { apiClient } from '@/_common/apis/apiCreate';
+import { queryKey } from '@/_common/apis/queryKey';
+import { Button } from '@/_common/components/Button';
+import { Input } from '@/_common/components/Input';
+import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
+import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
+import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
 import {
   defaultMenuLists,
   noneIcon,

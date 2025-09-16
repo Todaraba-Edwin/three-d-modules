@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/common/zustandStores/useAuthStore';
+import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import {
   defaultMenuLists,
   noneIcon,

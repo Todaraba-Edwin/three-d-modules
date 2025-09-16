@@ -1,5 +1,5 @@
-import { apiClient } from '@/common/apis/apiCreate';
-import { queryKey } from '@/common/apis/queryKey';
+import { apiClient } from '@/_common/apis/apiCreate';
+import { queryKey } from '@/_common/apis/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type DeleteRoleParams = {

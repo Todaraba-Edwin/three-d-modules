@@ -1,8 +1,8 @@
-import { apiClient } from '@/common/apis/apiCreate';
-import { queryKey } from '@/common/apis/queryKey';
-import { Button } from '@/common/components/Button';
-import { useSyStemAdminSelectedRole } from '@/common/zustandStores/useSyStemAdminSelectedRoleStore';
-import { useSystemAdminAddRoleStore } from '@/common/zustandStores/useSystemAdminAddRoleStore';
+import { apiClient } from '@/_common/apis/apiCreate';
+import { queryKey } from '@/_common/apis/queryKey';
+import { Button } from '@/_common/components/Button';
+import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
+import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
 import { Confirm } from '@/pages/DefaultRouter/_wigets/_reactPortals/Confirm';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';

@@ -1,4 +1,4 @@
-import { Input } from '@/common/components/Input';
+import { Input } from '@/_common/components/Input';
 import clsx from 'clsx';
 import { Search } from 'lucide-react';
 import { type ReactNode } from 'react';

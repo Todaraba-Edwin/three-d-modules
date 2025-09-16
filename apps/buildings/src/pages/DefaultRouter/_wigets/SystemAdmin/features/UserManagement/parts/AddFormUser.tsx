@@ -1,8 +1,8 @@
-import { apiClient } from '@/common/apis/apiCreate';
-import { queryKey } from '@/common/apis/queryKey';
-import { Button } from '@/common/components/Button';
-import { Input } from '@/common/components/Input';
-import { useSystemAdminAddUSerStore } from '@/common/zustandStores/useSystemAdminAddUSerStore';
+import { apiClient } from '@/_common/apis/apiCreate';
+import { queryKey } from '@/_common/apis/queryKey';
+import { Button } from '@/_common/components/Button';
+import { Input } from '@/_common/components/Input';
+import { useSystemAdminAddUSerStore } from '@/_common/zustandStores/useSystemAdminAddUSerStore';
 import { utilsThrottle } from '@_shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeOff, Save, X } from 'lucide-react';

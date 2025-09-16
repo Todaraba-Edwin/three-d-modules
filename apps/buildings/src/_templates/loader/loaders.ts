@@ -1,5 +1,5 @@
-import * as API from '@/common/apis';
-import { useAuthStore } from '@/common/zustandStores';
+import * as API from '@/_common/apis';
+import { useAuthStore } from '@/_common/zustandStores';
 import { redirect } from 'react-router-dom';
 
 /**
