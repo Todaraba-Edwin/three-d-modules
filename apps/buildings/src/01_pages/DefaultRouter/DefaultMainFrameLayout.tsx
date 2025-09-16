@@ -210,6 +210,8 @@ export const DefaultMainFrameLayout = ({
                   console.error(errorDate.message);
                   navigate('/login');
                 });
+
+              // ✅ zustand Store에 대한 초기화 코드
               utilsStoreResets();
             }}
           >
