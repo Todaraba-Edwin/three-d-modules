@@ -11,8 +11,8 @@ import {
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../../../_common/components/Button';
-import { Input } from './LoginPage/Input';
+import { Button } from '../../../../_common/components/Button';
+import { Input } from './features/Input';
 import {
   CardContent,
   CardDesc,
@@ -22,7 +22,7 @@ import {
   CardLBody,
   CardSpan,
   CardTitle,
-} from './LoginPage/LoginCard';
+} from './features/LoginCard';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const LOGIN_INFO = {
