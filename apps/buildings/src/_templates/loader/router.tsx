@@ -1,4 +1,4 @@
-import * as Pages from '@pages';
+import * as Pages from '@/pages';
 import * as RD from 'react-router-dom';
 import * as Loaders from './loaders';
 

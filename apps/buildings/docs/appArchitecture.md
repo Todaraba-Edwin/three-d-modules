@@ -112,7 +112,7 @@
 -   **동작 방식 상세**:
 
     1.  **프론트엔드 메뉴 정의 (`const.ts`)**:
-        -   먼저 프론트엔드에서는 애플리케이션에 존재할 수 있는 모든 메뉴의 경로를 `defaultMenuLists` 배열에 정적으로 정의함 (`@/01_pages/DefaultRouter/_shared/const.ts`). 이는 시스템의 전체 네비게이션 구조를 나타냄.
+        -   먼저 프론트엔드에서는 애플리케이션에 존재할 수 있는 모든 메뉴의 경로를 `defaultMenuLists` 배열에 정적으로 정의함 (`@/pages/DefaultRouter/_shared/const.ts`). 이는 시스템의 전체 네비게이션 구조를 나타냄.
 
     2.  **백엔드 권한 정보 조회 (`users.service.ts`)**:
         -   사용자가 로그인하면, 서버는 해당 사용자의 `role_id`를 기반으로 `getMenuPermissionByRoleId` 함수를 호출함.
