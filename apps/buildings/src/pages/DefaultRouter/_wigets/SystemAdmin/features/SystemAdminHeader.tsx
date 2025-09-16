@@ -1,8 +1,5 @@
+import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
-import {
-  defaultMenuLists,
-  noneIcon,
-} from '@/pages/DefaultRouter/_shared/const';
 import { type ReactNode } from 'react';
 
 export const SystemAdminHeader = (): ReactNode => {

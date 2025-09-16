@@ -15,7 +15,11 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 import { utilsStoreResets } from '@/_common/zustandStores/utilsStoreResets';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { defaultMenuLists, DefaultPathEnum, noneIcon } from './_shared/const';
+import {
+  defaultMenuLists,
+  DefaultPathEnum,
+  noneIcon,
+} from '../../_common/const/routerPaths';
 import { GNBTooltip } from './_wigets/_reactPortals/GNBTooltip';
 
 type Props = PropsWithChildren & {

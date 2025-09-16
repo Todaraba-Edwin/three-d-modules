@@ -2,13 +2,10 @@ import { apiClient } from '@/_common/apis/apiCreate';
 import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
 import { Input } from '@/_common/components/Input';
+import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
-import {
-  defaultMenuLists,
-  noneIcon,
-} from '@/pages/DefaultRouter/_shared/const';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Save, X } from 'lucide-react';

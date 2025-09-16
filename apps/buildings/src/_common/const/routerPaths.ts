@@ -9,6 +9,11 @@ import {
   X,
 } from 'lucide-react';
 
+export const AuthPathEnum = {
+  // 로그인 관련
+  LOGIN: '/login',
+};
+
 export const DefaultPathEnum = {
   ROOT: '/',
   THREE_D_MS: '/3dms',
@@ -18,7 +23,6 @@ export const DefaultPathEnum = {
   SYSTEM_ADMIN: '/system-admin',
   SYSTEM_SETTINGS: '/settings',
 } as const;
-// export const DefaultPathEnum = {};
 
 export const noneIcon = X;
 export const defaultMenuLists: menuItemsType[] = [

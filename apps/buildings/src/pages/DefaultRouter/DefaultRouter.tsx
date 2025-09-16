@@ -3,10 +3,10 @@ import { DeviceManagement } from '@/pages/DefaultRouter/_wigets/SystemAdmin/feat
 import { UserManagement } from '@/pages/DefaultRouter/_wigets/SystemAdmin/features/UserManagement/UserManagement';
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate, type RouteObject } from 'react-router-dom';
+import { defaultMenuLists } from '../../_common/const/routerPaths';
 import { useAuthStore } from '../../_common/zustandStores/useAuthStore';
 import { Building } from './Building/Building';
 import { DefaultMainFrame } from './DefaultMainFrame';
-import { defaultMenuLists } from './_shared/const';
 import { FMSRouterOutlet } from './_wigets/FMS/FMSRouterOutlet';
 import { FMSDeviceInfo } from './_wigets/FMS/features/FMSDeviceInfo';
 import { HomeDashboard } from './_wigets/Home/HomeDashboard';
