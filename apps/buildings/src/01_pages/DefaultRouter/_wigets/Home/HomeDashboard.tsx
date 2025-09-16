@@ -11,9 +11,10 @@ export const HomeDashboard = (): ReactNode => {
     <div className={clsx('w-full', 'space-y-4')}>
       <HomeHeader />
       <HomeNavigation />
-      <HomeNetworkManagements />
-      <HomeFeatureManagements />
-      {/* <HomeFeatureManagements /> */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <HomeNetworkManagements />
+        <HomeFeatureManagements />
+      </div>
     </div>
   );
 };

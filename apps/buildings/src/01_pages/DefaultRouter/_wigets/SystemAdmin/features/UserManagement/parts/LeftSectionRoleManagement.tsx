@@ -1,6 +1,6 @@
 import { Confirm } from '@/01_pages/DefaultRouter/_wigets/_reactPortals/Confirm';
 import { Button } from '@/02_common/Button';
-import { apiClient } from '@/02_common/apiClient';
+import { apiClient } from '@/02_common/apis/apiCreate';
 import { queryKey } from '@/02_common/queryKey';
 import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
@@ -69,7 +69,6 @@ export const LeftSectionRoleManagement = (): ReactNode => {
     queryFn: () => apiClient.get('system-admin/permissions-roles').json(),
   });
   const [confirmState, setConfirmState] = useState<ConfirmState>(null);
-  console.log('selectedRoleId', selectedRoleId);
 
   const { mutate: deleteRole } = useDeleteRole(
     () => {

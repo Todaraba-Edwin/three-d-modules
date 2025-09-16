@@ -1,4 +1,4 @@
-import { apiClient } from '@/02_common/apiClient';
+import { apiClient } from '@/02_common/apis/apiCreate';
 import { queryKey } from '@/02_common/queryKey';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';

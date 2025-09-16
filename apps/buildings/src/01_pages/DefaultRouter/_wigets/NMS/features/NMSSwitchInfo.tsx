@@ -1,7 +1,7 @@
 import { Network } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { accessSwitches, coreSwitch } from '../_shared/const';
-import { NMSSwitchInfoLeftSection } from './NMSSwitchInfo/NMSSwitchInfoLeftsection';
+import { NMSSwitchInfoLeftSection } from './NMSSwitchInfo/NMSSwitchInfoLeftSection';
 import { NMSSwitchInfoRightSection } from './NMSSwitchInfo/NMSSwitchInfoRightSection';
 
 const coreSwitchInfo = { ...coreSwitch, type: 'Core', name: 'MDF-코어 스위치' };

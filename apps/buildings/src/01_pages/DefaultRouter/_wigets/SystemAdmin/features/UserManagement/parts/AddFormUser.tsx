@@ -1,4 +1,4 @@
-import { apiClient } from '@/02_common/apiClient';
+import { apiClient } from '@/02_common/apis/apiCreate';
 import { Button } from '@/02_common/Button';
 import { Input } from '@/02_common/Input';
 import { queryKey } from '@/02_common/queryKey';
@@ -126,7 +126,6 @@ export const AddFormUser = (): ReactNode => {
     },
     onSuccess: () => {
       // 3. 유효한 사용자명이므로, 서버 에러가 있었다면 지웁니다.
-      console.log('유효');
 
       clearErrors('username');
     },
@@ -136,7 +135,7 @@ export const AddFormUser = (): ReactNode => {
       if (error.response && error.response.status === 409) {
         try {
           const errorData = await error.response.json();
-          console.log('errorData.message', errorData.message);
+
           setError('username', {
             type: 'server',
             message:

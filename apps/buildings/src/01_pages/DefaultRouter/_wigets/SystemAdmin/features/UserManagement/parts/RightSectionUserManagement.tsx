@@ -1,6 +1,6 @@
 import { Confirm } from '@/01_pages/DefaultRouter/_wigets/_reactPortals/Confirm';
 import { Button } from '@/02_common/Button';
-import { apiClient } from '@/02_common/apiClient';
+import { apiClient } from '@/02_common/apis/apiCreate';
 import { queryKey } from '@/02_common/queryKey';
 import { useSyStemAdminSelectedRole } from '@/02_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/02_common/zustandStores/useSystemAdminAddRoleStore';
@@ -66,7 +66,6 @@ export const RightSectionUserManagement = (): ReactNode => {
       return apiClient.delete('users', { json: { userIds } }).json();
     },
     onSuccess: () => {
-      console.log('User(s) deleted successfully!');
       queryClient.invalidateQueries({
         queryKey: queryKey.systemAdmin.users(roleIdToFilter),
       });

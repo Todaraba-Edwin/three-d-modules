@@ -162,7 +162,9 @@ export class UsersService implements OnApplicationBootstrap {
     });
 
     if (existingUser) {
-      throw new ConflictException(`"${username}"은/는 이미 사용 중에 있습니다.`);
+      throw new ConflictException(
+        `"${username}"은/는 이미 사용 중에 있습니다.`,
+      );
     }
   }
 
@@ -344,8 +346,6 @@ export class UsersService implements OnApplicationBootstrap {
           (await transactionalEntityManager.findOne(USER_TC_ROLES, {
             where: { id: payload.role_id },
           }));
-
-        console.log('role', role);
 
         if (role) {
           // Update existing role

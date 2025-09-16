@@ -50,7 +50,7 @@ export const Building = (): ReactNode => {
       containerRef={containerRef}
       isNonBackground
       children={
-        <div className='absolute top-4 left-4 z-[99] grid grid-cols-1'>
+        <div className='absolute bottom-10 left-4 z-40 grid grid-cols-1'>
           {glbList.map(({ name, type, cameraPosition }) => (
             <button
               key={name}

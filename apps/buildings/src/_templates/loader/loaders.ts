@@ -1,29 +1,22 @@
+import * as API from '@/02_common/apis';
+import { useAuthStore } from '@/02_common/zustandStores';
 import { redirect } from 'react-router-dom';
-import { useAuthStore } from '../../02_common/zustandStores/useAuthStore';
-
-const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 /**
  * @description 백엔드에 세션 유효성 검사를 요청하는 loader 함수.
  * @returns 로그인 상태이면 사용자 정보를, 아니면 null을 반환합니다.
  */
-export const checkAuth = async (): CheckAuthType => {
+export const utilsCheckAuth = async (): utilsCheckAuthType => {
   try {
-    const response = await fetch(`${VITE_API_URL}/api/auth/validate-session`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include', // HttpOnly 쿠키 전송을 위해 필수
-    });
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-    return data;
+    const response = await API.authClient.get(
+      API.AUTH.SEGMENTS.VALIDATE_SESSION
+    );
+    const isSuccess = response.ok;
+    if (!isSuccess) return null;
+    const resultDate: CheckAuthResultType = await response.json();
+    return resultDate;
   } catch (error) {
-    console.error('Session validation error:', error);
-    return null;
+    return API.utilsKyErrorControl(error);
   }
 };
 
@@ -32,9 +25,8 @@ export const checkAuth = async (): CheckAuthType => {
  * 로그인(세션) 정보가 유효하면 ProtectedRouter로 리다이렉트.
  */
 export const authRouterLoader = async (): RouteLoaderType => {
-  const authData = await checkAuth();
-  if (authData) return redirect('/');
-  return null;
+  const authData = await utilsCheckAuth();
+  if (authData) return redirect(API.REDIRECT_PATH.SEGMENTS.ROOT);
 };
 
 /**
@@ -43,24 +35,14 @@ export const authRouterLoader = async (): RouteLoaderType => {
  * 로그인(세션) 정보가 유효하지 않으면 authRouter로 리다이렉트.
  */
 export const protectedRouteLoader = async (): Promise<Response | void> => {
-  const authData = await checkAuth();
-
-  if (!authData) return redirect('/login');
-
+  const authData = await utilsCheckAuth();
+  if (!authData) return redirect(API.REDIRECT_PATH.SEGMENTS.LOGIN);
   /**
    * @description 전역상태관리(Zustand : 사용자 정보값 설정)
    */
-
   useAuthStore.getState().setAuth({
     roleCode: authData.roleCode,
     nickname: authData.nickname || '',
     permissions: authData.permissions,
   });
-  return;
 };
-
-export const utilsProtectedRouteValidateSession =
-  async (): Promise<boolean> => {
-    const authData = await checkAuth();
-    return !!authData;
-  };

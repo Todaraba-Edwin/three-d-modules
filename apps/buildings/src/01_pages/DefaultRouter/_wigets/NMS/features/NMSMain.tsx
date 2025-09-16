@@ -69,8 +69,6 @@ export const NMSMain = (): ReactNode => {
   });
 
   useEffect(() => {
-    console.log('selectedDevice', selectedDevice);
-
     const device = devices?.[randomDevices]?.[selectedDevice];
     if (!device) return;
 
@@ -82,11 +80,6 @@ export const NMSMain = (): ReactNode => {
       Type: DeviceIcon[deviceType] ?? DeviceIcon['CCTV'],
     });
   }, [selectedDevice, randomDevices]);
-
-  console.log(
-    'extendSwitch?.[selectedSwitch]?.length',
-    extendSwitch?.[selectedSwitch]?.length
-  );
 
   return (
     <main

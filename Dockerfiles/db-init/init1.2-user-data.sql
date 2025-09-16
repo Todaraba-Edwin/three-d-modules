@@ -43,7 +43,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@admin_main_role_id, @menu_nms_id, TRUE),
 (@admin_main_role_id, @menu_fms_id, TRUE),
 (@admin_main_role_id, @menu_info_id, TRUE),
-(@admin_main_role_id, @menu_settings_id, TRUE);
+(@admin_main_role_id, @menu_settings_id, FALSE);
 
 -- ADMIN_SUB: can access all except '/system-admin'
 INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
@@ -53,7 +53,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@admin_sub_role_id, @menu_nms_id, TRUE),
 (@admin_sub_role_id, @menu_fms_id, TRUE),
 (@admin_sub_role_id, @menu_info_id, TRUE),
-(@admin_sub_role_id, @menu_settings_id, TRUE);
+(@admin_sub_role_id, @menu_settings_id, FALSE);
 
 -- USER: can access all except '/system-admin' and '/settings'
 INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES

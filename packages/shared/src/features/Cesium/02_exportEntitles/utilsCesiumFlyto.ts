@@ -1,5 +1,5 @@
-import { utilsThrottle } from '@_shared';
 import * as Cesium from 'cesium';
+import throttle from 'lodash/throttle';
 import { utilsGetModelID, utilsSetInitCameraPosition } from '../04_utils';
 import type { utilsCesiumFlytoProps } from '../05_shared/types';
 
@@ -24,8 +24,6 @@ export const utilsCesiumFlyto =
           initCameraHeight: height,
         })
       : Cesium.Cartesian3.fromDegrees(lon, lat, height);
-
-    const key = name;
 
     if (destination) {
       const primitives = viewer.scene.primitives;
@@ -79,5 +77,5 @@ export const utilsCesiumFlyto =
         duration: 1.5,
       });
 
-    utilsThrottle(key, fly, 2500, false)();
+    throttle(fly, 2500, { leading: true, trailing: false })();
   };

@@ -1,23 +1,20 @@
-import { type ReactNode } from 'react';
-
 import clsx from 'clsx';
+import { type ReactNode } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { NMSHeader } from './features/NMSHeader';
+import { FMSHeader } from './features/FMSHeader';
 
 const tabs = [
-  { name: '네트워크 전체 구성도', href: '/nms' },
-  { name: '네트워크 연결정보', href: '/nms/info' },
-  { name: '스위치 상세정보', href: '/nms/info-switch' },
-  { name: '장비 상세정보', href: '/nms/info-device' },
+  { name: '장비 상세보기', href: '/fms' },
+  // { name: '장비정보 간추려보기', href: '/fms' },
+  // { name: '사업관리', href: '/fms/project' },
 ];
 
-export const NMSRouterOutlet = (): ReactNode => {
+export const FMSRouterOutlet = (): ReactNode => {
   return (
     <div
       className={clsx('w-full h-full', 'grid grid-rows-[auto_1fr] space-y-4')}
     >
-      <NMSHeader />
-
+      <FMSHeader />
       <div className='grid grid-rows-[auto_1fr] min-h-0'>
         <div className='border-b border-gray-200'>
           <nav className='-mb-px flex space-x-4' aria-label='Tabs'>
@@ -25,7 +22,7 @@ export const NMSRouterOutlet = (): ReactNode => {
               <NavLink
                 key={tab.name}
                 to={tab.href}
-                end // 하위 경로가 활성화되는 것을 방지
+                end
                 className={({ isActive }) =>
                   clsx(
                     isActive

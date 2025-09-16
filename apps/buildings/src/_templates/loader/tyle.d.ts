@@ -8,11 +8,12 @@ type PermissionsType = {
   sort_order: number;
 };
 
-type CheckAuthType = Promise<{
+type CheckAuthResultType = {
   message: string;
   nickname: string;
+  permissions: permissionsType[];
   roleCode: string;
-  permissions: PermissionsType[];
-} | null>;
+};
 
-type RouteLoaderType = Promise<Response | null>;
+type utilsCheckAuthType = Promise<CheckAuthResultType | null>;
+type RouteLoaderType = Promise<Response | void>;

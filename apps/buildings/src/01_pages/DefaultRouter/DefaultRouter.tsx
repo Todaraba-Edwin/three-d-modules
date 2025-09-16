@@ -4,21 +4,26 @@ import { UserManagement } from '@/01_pages/DefaultRouter/_wigets/SystemAdmin/fea
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate, type RouteObject } from 'react-router-dom';
 import { useAuthStore } from '../../02_common/zustandStores/useAuthStore';
-import { Building } from '../CesiumRouter/Building/Building';
+import { Building } from './Building/Building';
 import { DefaultMainFrame } from './DefaultMainFrame';
 import { defaultMenuLists } from './_shared/const';
+import { FMSRouterOutlet } from './_wigets/FMS/FMSRouterOutlet';
+import { FMSDeviceInfo } from './_wigets/FMS/features/FMSDeviceInfo';
 import { HomeDashboard } from './_wigets/Home/HomeDashboard';
 import { NMSRouterOutlet } from './_wigets/NMS/NMSRouterOutlet';
+import { NMSDeviceInfo } from './_wigets/NMS/features/NMSDeviceInfo';
 import { NMSMain } from './_wigets/NMS/features/NMSMain';
 import { NMSSwitchInfo } from './_wigets/NMS/features/NMSSwitchInfo';
 import { NMSTopology } from './_wigets/NMS/features/NMSTopology';
+import { SystemInfoPage } from './_wigets/SystemInfo/SystemInfoPage';
 
 const pathPages: Record<string, ReactNode> = {
   ['/']: <HomeDashboard />,
+  ['/system-admin']: <SystemAdmin />,
   ['/3dms']: <Building />,
-  // ['/nms']: <NetworkManagement />,
-  // ['/fms']: <NetworkManagement2 />,
-  // '/system-admin' 경로는 중첩 라우팅으로 인해 아래에서 별도 처리됩니다.
+  ['/nms']: <NMSRouterOutlet />,
+  ['/fms']: <FMSRouterOutlet />,
+  ['/system-info']: <SystemInfoPage />,
 };
 
 const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
@@ -38,28 +43,25 @@ const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
     }
   }, [findPath, navigate]);
 
-  if (!findPath) return <></>;
-
-  // /system-admin은 Outlet을 사용하므로, pathPages에서 찾지 않고 SystemAdmin 컴포넌트를 직접 렌더링합니다.
-  if (validationPath === '/system-admin') {
-    return <SystemAdmin />;
-  }
-
-  if (validationPath === '/nms') {
-    return <NMSRouterOutlet />;
-  }
-
-  if (!pathPages[findPath.path])
-    return <div>{findPath.label} 페이지 개발 중...</div>;
+  if (!findPath || !pathPages[findPath.path])
+    return <div>{findPath ? findPath.label : ''} 페이지 개발 중...</div>;
   return pathPages[findPath.path];
 };
 
 export const DefaultRouter = (): RouteObject[] => {
+  // const threeDRouterPath = '/3dms';
   const nmsRoutePath = '/nms';
+  const fmsRoutePath = '/fms';
   const adminRoutePath = '/system-admin';
-  const otherRoutes = defaultMenuLists
-    .slice(1)
-    .filter(({ path }) => path !== adminRoutePath);
+  const otherRoutes = defaultMenuLists.slice(1).filter(
+    ({ path }) =>
+      ![
+        adminRoutePath,
+        fmsRoutePath,
+        nmsRoutePath,
+        // threeDRouterPath,
+      ].includes(path)
+  );
 
   return [
     {
@@ -85,7 +87,7 @@ export const DefaultRouter = (): RouteObject[] => {
           ],
         },
 
-        //
+        // ✅ nms 의 경우, 중첩라우팅
         {
           path: nmsRoutePath,
           element: <PermittedRoute validationPath={nmsRoutePath} />,
@@ -93,7 +95,18 @@ export const DefaultRouter = (): RouteObject[] => {
             { index: true, element: <NMSTopology /> },
             { path: 'info', element: <NMSMain /> },
             { path: 'info-switch', element: <NMSSwitchInfo /> },
-            { path: 'info-device', element: <div children='개발 중...' /> },
+            { path: 'info-device', element: <NMSDeviceInfo /> },
+          ],
+        },
+
+        // ✅ fms 의 경우, 중첩라우팅
+        {
+          path: fmsRoutePath,
+          element: <PermittedRoute validationPath={fmsRoutePath} />,
+          children: [
+            { index: true, element: <FMSDeviceInfo /> },
+            // { path: 'detail', element: <FMSDeviceInfo /> },
+            // { path: 'project', element: <div children='개발예정' /> },
           ],
         },
       ],

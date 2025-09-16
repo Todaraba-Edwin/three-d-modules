@@ -1,4 +1,4 @@
-import { utilsProtectedRouteValidateSession } from '@/_templates/loader/loaders';
+import { utilsCheckAuth } from '@/_templates/loader/loaders';
 import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
 import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
@@ -14,7 +14,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { defaultMenuLists, noneIcon } from './_shared/const';
+import { defaultMenuLists, DefaultPathEnum, noneIcon } from './_shared/const';
 import { GNBTooltip } from './_wigets/_reactPortals/GNBTooltip';
 
 type Props = PropsWithChildren & {
@@ -32,6 +32,10 @@ export const DefaultMainFrameLayout = ({
   setIsFocusLogin,
 }: Props): ReactNode => {
   const { layout } = usePathSegments();
+  const is3DmsMode = layout.includes(
+    DefaultPathEnum.THREE_D_MS.replace('/', '')
+  );
+
   const [isGnbOpen, setIsGnbOpen] = useState(() => {
     return isMobileMode ? false : true;
   });
@@ -43,7 +47,7 @@ export const DefaultMainFrameLayout = ({
   const navigate = RD.useNavigate();
   const utilsNavigate = (url: string) => () => {
     const protectedRouteNavigate = async () => {
-      const isProtected = await utilsProtectedRouteValidateSession();
+      const isProtected = Boolean(await utilsCheckAuth());
       if (isProtected) {
         navigate(url);
       } else {
@@ -66,11 +70,13 @@ export const DefaultMainFrameLayout = ({
           'relative',
           'z-50',
           `grid grid-rows-[auto_1fr]`,
-          `flex-shrink-0 bg-white border-r-3 shadow-sm transition-all duration-300`,
+          `flex-shrink-0 border-r-3 shadow-sm transition-all duration-300`,
           'overflow-hidden',
           {
-            'w-gnb-open': isGnbOpen,
-            'w-gnb-close': !isGnbOpen,
+            'bg-white': !is3DmsMode,
+            'bg-black text-white': is3DmsMode,
+            'w-gnb-open': !is3DmsMode && isGnbOpen,
+            'w-gnb-close': !isGnbOpen || is3DmsMode,
           }
         )}
       >
@@ -117,16 +123,19 @@ export const DefaultMainFrameLayout = ({
                     'w-gnb-open p-4 transition-all duration-300 relative',
                     'hover:font-semibold',
                     {
-                      'hover:px-5': isGnbOpen,
-                      'text-gray-700 hover:text-gray-900': !isActive,
+                      'text-gray-700 hover:text-gray-900':
+                        !isActive && !is3DmsMode,
+                      'text-white hover:text-gray-900': !isActive && is3DmsMode,
                       'bg-blue-50 text-blue-700 border-r-4 border-blue-700':
                         isActive,
                       'border-l-4': isActive && !isGnbOpen,
+                      'hover:px-5': !isActive && isGnbOpen,
                       'hover:bg-gray-50': !isActive,
                     }
                   )}
                 >
                   <button
+                    disabled={isActive}
                     onClick={utilsNavigate(list.path)}
                     className={clsx('w-full flex gap-gnb items-center ')}
                   >
@@ -135,7 +144,7 @@ export const DefaultMainFrameLayout = ({
                       {list.label}
                     </span>
                   </button>
-                  {!isMobileMode && !isGnbOpen && hoveredItem === list.path && (
+                  {!isMobileMode && (!isGnbOpen || is3DmsMode) && hoveredItem === list.path && (
                     <GNBTooltip
                       targetRef={menuRefs.current[index]}
                       weightRight={194}
@@ -150,20 +159,24 @@ export const DefaultMainFrameLayout = ({
         </div>
         <footer
           className={clsx(
-            `bg-white absolute bottom-0`,
+            ` absolute bottom-0`,
             'w-gnb-open',
-            'shadow-[0_-5px_15px_-3px_rgb(0,0,0,0.1),0_-4px_6px_-4px_rgb(0,0,0,0.1)]',
+
             ' transition-all duration-300',
             {
               'rounded-tl-2xl rounded-tr-2xl': isGnbOpen,
-              'h-gnb-footer': isGnbOpen,
+              'h-gnb-footer': isGnbOpen && !is3DmsMode,
               'h-gnb-footer-close': !isGnbOpen,
+              'bg-white shadow-[0_-5px_15px_-3px_rgb(0,0,0,0.1),0_-4px_6px_-4px_rgb(0,0,0,0.1)]':
+                !is3DmsMode,
+              'bg-black shadow-[0_-5px_40px_-3px_rgb(255,255,255,0.1),0_-4px_40px_-4px_rgb(255,255,255,0.1)]':
+                is3DmsMode,
             },
             'overflow-hidden',
             'grid grid-rows-[1fr_auto]'
           )}
         >
-          {isGnbOpen && (
+          {isGnbOpen && !is3DmsMode && (
             <p className='px-4 flex items-center gap-2'>
               <span className='text-xl'>{nickname}</span>
               <span className='font-normal'>님</span>
@@ -208,19 +221,23 @@ export const DefaultMainFrameLayout = ({
       </nav>
 
       {/* 3. 오른쪽 메인 컨텐츠 영역 */}
-      <div className='flex-grow grid grid-rows-[auto_1fr]'>
-        <div className='bg-white  h-12 p-4 flex items-center gap-2'>
-          {!isMobileMode && (
-            <button onClick={onToggleIsGnbOpen}>
-              {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
-            </button>
-          )}
-          <p className='font-bold text-lg'>
-            PRIZM <span className='font-thin text-'>건물관리 시스템</span>
-          </p>
+      {is3DmsMode ? (
+        <>{children}</>
+      ) : (
+        <div className='flex-grow grid grid-rows-[auto_1fr]'>
+          <div className='bg-white  h-12 p-4 flex items-center gap-2'>
+            {!isMobileMode && (
+              <button onClick={onToggleIsGnbOpen}>
+                {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
+              </button>
+            )}
+            <p className='font-bold text-lg'>
+              PRIZM <span className='font-thin text-'>건물관리 시스템</span>
+            </p>
+          </div>
+          <div className='overflow-y-auto p-4'>{children}</div>
         </div>
-        <div className='overflow-y-auto p-4'>{children}</div>
-      </div>
+      )}
     </div>
   );
 };

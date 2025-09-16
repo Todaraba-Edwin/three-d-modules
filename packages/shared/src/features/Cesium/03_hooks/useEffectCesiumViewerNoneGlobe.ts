@@ -60,7 +60,7 @@ export const useEffectCesiumViewerNoneGlobe = ({
       },
     });
 
-    viewer.scene.postUpdate.addEventListener(() => {
+    const postUpdateListener = viewer.scene.postUpdate.addEventListener(() => {
       if (Math.abs(viewer.camera.roll) > EPSILON) {
         viewer.camera.setView({
           destination: viewer.camera.positionWC,
@@ -74,10 +74,14 @@ export const useEffectCesiumViewerNoneGlobe = ({
     });
 
     return () => {
-      viewer.destroy();
+      postUpdateListener();
+      if (!viewer.isDestroyed()) {
+        viewer.destroy();
+      }
       setViewer(null);
     };
     //eslint-disable-next-line
   }, [containerRef, setViewer, coordinate.lat, coordinate.lon]);
+
   return;
 };
