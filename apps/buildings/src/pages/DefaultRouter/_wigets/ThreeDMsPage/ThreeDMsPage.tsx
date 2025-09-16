@@ -1,9 +1,7 @@
 import {
   CesiumInitBody,
-  InitPosition,
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
-  utilsCesiumFlyto,
   utilsGetListBoundary,
 } from '@monorepo/shared';
 import { type ReactNode } from 'react';
@@ -51,7 +49,7 @@ export const ThreeDMsPage = (): ReactNode => {
       isNonBackground
       children={
         <div className='absolute bottom-10 left-4 z-40 grid grid-cols-1'>
-          {prizmLists.map(({ name, type, cameraPosition }) => (
+          {/* {prizmLists.map(({ name, type, cameraPosition }) => (
             <button
               key={name}
               className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
@@ -76,7 +74,7 @@ export const ThreeDMsPage = (): ReactNode => {
               },
             })}
             children={'초기 위치'}
-          />
+          /> */}
         </div>
       }
     />
