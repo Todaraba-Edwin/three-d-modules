@@ -53,11 +53,14 @@ export const AddFormRole = (): ReactNode => {
       role_code: '',
       role_name: '',
       role_description: '',
-      permissionMenu: permissions.map(p => ({
-        menu_id: p.id,
-        menu_label: p.label,
-        menu_can_access: false,
-      })),
+      permissionMenu: permissions.map((p, index) => {
+        const isRoot = index === 0;
+        return {
+          menu_id: p.id,
+          menu_label: p.label,
+          menu_can_access: isRoot ? true : false,
+        };
+      }),
     },
   });
 
@@ -70,11 +73,14 @@ export const AddFormRole = (): ReactNode => {
         role_code: '',
         role_name: '',
         role_description: '',
-        permissionMenu: permissions.map(p => ({
-          menu_id: p.id,
-          menu_label: p.label,
-          menu_can_access: false,
-        })),
+        permissionMenu: permissions.map((p, index) => {
+          const isRoot = index === 0;
+          return {
+            menu_id: p.id,
+            menu_label: p.label,
+            menu_can_access: isRoot ? true : false,
+          };
+        }),
       });
     }
   }, [isEditModeRole, targetEditRole, reset, permissions]);
@@ -221,7 +227,9 @@ export const AddFormRole = (): ReactNode => {
             <label className='text-sm'>역할에 대한 권한 설정</label>
             <div className='grid grid-cols-2 gap-2 text-xs'>
               {permissions.map((module, index) => {
+                const isRoot = index === 0;
                 const hasAccess = permissionMenu?.[index]?.menu_can_access;
+
                 const ICON =
                   defaultMenuLists.find(({ path }) => path === module.path)
                     ?.icon || noneIcon;
@@ -231,7 +239,8 @@ export const AddFormRole = (): ReactNode => {
                     className={clsx(
                       'flex items-center gap-2 p-2 border border-orange-200 rounded',
                       {
-                        'hover:bg-orange-50 cursor-pointer': !isMainAdmin,
+                        'hover:bg-orange-50 cursor-pointer':
+                          !isMainAdmin && !isRoot,
                         'bg-white': !hasAccess,
                         'bg-orange-100': hasAccess,
                       }
@@ -241,7 +250,7 @@ export const AddFormRole = (): ReactNode => {
                       type='checkbox'
                       {...register(`permissionMenu.${index}.menu_can_access`)}
                       className='rounded'
-                      disabled={isMainAdmin}
+                      disabled={isMainAdmin || isRoot}
                     />
                     <span
                       className={`text-xs font-medium ${

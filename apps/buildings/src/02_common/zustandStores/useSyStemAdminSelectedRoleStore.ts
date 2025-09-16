@@ -8,12 +8,17 @@ type useSyStemAdminSelectedRoleType = {
     selectedRoleName: string;
   }) => void;
   setUpdateSelectedName: (_store: { selectedRoleName: string }) => void;
+  reset: () => void;
+};
+
+const initialState = {
+  selectedRoleId: undefined,
+  selectedRoleName: '모든',
 };
 
 export const useSyStemAdminSelectedRole =
   create<useSyStemAdminSelectedRoleType>((set, get) => ({
-    selectedRoleId: undefined,
-    selectedRoleName: '모든',
+    ...initialState,
     setAction: ({ selectedRoleId, selectedRoleName }) => {
       const currentSelectedRoleId = get().selectedRoleId;
       const isInit = typeof selectedRoleId === 'string';
@@ -34,5 +39,8 @@ export const useSyStemAdminSelectedRole =
       set({
         selectedRoleName: _store.selectedRoleName,
       });
+    },
+    reset() {
+      set(initialState);
     },
   }));

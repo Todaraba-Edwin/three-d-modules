@@ -10,14 +10,18 @@ type AuthState = {
     nickname?: string;
     permissions: PermissionsType[];
   }) => void;
+  reset: () => void;
 };
 
-export const useAuthStore = create<AuthState>(set => ({
+const initialState = {
   roleCode: '',
   nickname: '',
   permissions: [],
   isAdmin: false,
+};
 
+export const useAuthStore = create<AuthState>(set => ({
+  ...initialState,
   setAuth: _store =>
     set({
       roleCode: _store.roleCode,
@@ -25,4 +29,7 @@ export const useAuthStore = create<AuthState>(set => ({
       nickname: _store.nickname || '',
       permissions: _store.permissions,
     }),
+  reset: () => {
+    set(initialState);
+  },
 }));

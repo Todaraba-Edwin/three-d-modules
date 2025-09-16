@@ -12,6 +12,7 @@ import {
 } from 'react';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
+import { utilsStoreResets } from '@/02_common/zustandStores/utilsStoreResets';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
 import { defaultMenuLists, DefaultPathEnum, noneIcon } from './_shared/const';
@@ -144,14 +145,16 @@ export const DefaultMainFrameLayout = ({
                       {list.label}
                     </span>
                   </button>
-                  {!isMobileMode && (!isGnbOpen || is3DmsMode) && hoveredItem === list.path && (
-                    <GNBTooltip
-                      targetRef={menuRefs.current[index]}
-                      weightRight={194}
-                    >
-                      {list.label}
-                    </GNBTooltip>
-                  )}
+                  {!isMobileMode &&
+                    (!isGnbOpen || is3DmsMode) &&
+                    hoveredItem === list.path && (
+                      <GNBTooltip
+                        targetRef={menuRefs.current[index]}
+                        weightRight={194}
+                      >
+                        {list.label}
+                      </GNBTooltip>
+                    )}
                 </li>
               );
             })}
@@ -207,6 +210,7 @@ export const DefaultMainFrameLayout = ({
                   console.error(errorDate.message);
                   navigate('/login');
                 });
+              utilsStoreResets();
             }}
           >
             <LogOut

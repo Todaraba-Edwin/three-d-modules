@@ -10,13 +10,18 @@ type useSystemAdminAddRoleStoreType = {
     targetEditRole: PermissionsRolesQueryResult;
   }) => void;
   closeAllStated: () => void;
+  reset: () => void;
+};
+
+const initialState = {
+  isShowAddRoleNode: false,
+  isEditModeRole: false,
+  targetEditRole: undefined,
 };
 
 export const useSystemAdminAddRoleStore =
   create<useSystemAdminAddRoleStoreType>(set => ({
-    isShowAddRoleNode: false,
-    isEditModeRole: false,
-    targetEditRole: undefined,
+    ...initialState,
     openIsShowAddRoleNode: () => {
       set({
         isShowAddRoleNode: true,
@@ -37,5 +42,8 @@ export const useSystemAdminAddRoleStore =
         isEditModeRole: false,
         targetEditRole: undefined,
       });
+    },
+    reset() {
+      set(initialState);
     },
   }));
