@@ -1,4 +1,4 @@
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 
@@ -6,8 +6,7 @@ export const FMSHeader = (): ReactNode => {
   const { permissions } = useAuthStore();
 
   const findLabel = permissions.find(({ path }) => path === '/fms')?.label;
-  const ICON =
-    defaultMenuLists.find(({ path }) => path === '/fms')?.icon || noneIcon;
+  const ICON = menuLists.find(({ path }) => path === '/fms')?.icon || noneIcon;
 
   return (
     <div className='space-y-2'>

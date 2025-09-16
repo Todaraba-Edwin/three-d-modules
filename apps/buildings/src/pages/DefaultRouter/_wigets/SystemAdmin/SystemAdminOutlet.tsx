@@ -9,7 +9,7 @@ const tabs = [
   // { name: '장비 관리', href: '/system-admin/device' },
 ];
 
-export const SystemAdmin = (): ReactNode => {
+export const SystemAdminOutlet = (): ReactNode => {
   return (
     <div
       className={clsx(

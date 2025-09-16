@@ -2,7 +2,7 @@ import { apiClient } from '@/_common/apis/apiCreate';
 import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
 import { Input } from '@/_common/components/Input';
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
@@ -228,8 +228,8 @@ export const AddFormRole = (): ReactNode => {
                 const hasAccess = permissionMenu?.[index]?.menu_can_access;
 
                 const ICON =
-                  defaultMenuLists.find(({ path }) => path === module.path)
-                    ?.icon || noneIcon;
+                  menuLists.find(({ path }) => path === module.path)?.icon ||
+                  noneIcon;
                 return (
                   <label
                     key={module.id}

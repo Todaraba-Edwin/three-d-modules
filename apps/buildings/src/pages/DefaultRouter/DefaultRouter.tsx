@@ -1,113 +1,101 @@
-import { SystemAdmin } from '@/pages/DefaultRouter/_wigets/SystemAdmin/SystemAdmin';
-import { DeviceManagement } from '@/pages/DefaultRouter/_wigets/SystemAdmin/features/DeviceManagement/DeviceManagement';
-import { UserManagement } from '@/pages/DefaultRouter/_wigets/SystemAdmin/features/UserManagement/UserManagement';
-import { useEffect, type ReactNode } from 'react';
-import { useNavigate, type RouteObject } from 'react-router-dom';
-import { defaultMenuLists } from '../../_common/const/routerPaths';
-import { useAuthStore } from '../../_common/zustandStores/useAuthStore';
-import { Building } from './Building/Building';
-import { DefaultMainFrame } from './DefaultMainFrame';
-import { FMSRouterOutlet } from './_wigets/FMS/FMSRouterOutlet';
-import { FMSDeviceInfo } from './_wigets/FMS/features/FMSDeviceInfo';
-import { HomeDashboard } from './_wigets/Home/HomeDashboard';
-import { NMSRouterOutlet } from './_wigets/NMS/NMSRouterOutlet';
-import { NMSDeviceInfo } from './_wigets/NMS/features/NMSDeviceInfo';
-import { NMSMain } from './_wigets/NMS/features/NMSMain';
-import { NMSSwitchInfo } from './_wigets/NMS/features/NMSSwitchInfo';
-import { NMSTopology } from './_wigets/NMS/features/NMSTopology';
-import { SystemInfoPage } from './_wigets/SystemInfo/SystemInfoPage';
+import { DefaultPathEnum, menuLists } from '@/_common/const';
+import { type ReactNode } from 'react';
+import { type RouteObject } from 'react-router-dom';
+import { PermittedRoute } from './_shared';
+import * as Wigets from './_wigets';
+
+const {
+  ROOT,
+  SYSTEM_ADMIN,
+  SYSTEM_INFO,
+  THREE_D_MS,
+  NETWORK_MS,
+  FACILITY_MS,
+  NOT_FOUND,
+} = DefaultPathEnum;
 
 const pathPages: Record<string, ReactNode> = {
-  ['/']: <HomeDashboard />,
-  ['/system-admin']: <SystemAdmin />,
-  ['/3dms']: <Building />,
-  ['/nms']: <NMSRouterOutlet />,
-  ['/fms']: <FMSRouterOutlet />,
-  ['/system-info']: <SystemInfoPage />,
+  [ROOT]: <Wigets.HomeDashboardPage />,
+  [THREE_D_MS]: <Wigets.ThreeDMsPage />,
+  [SYSTEM_INFO.BASE]: <Wigets.SystemInfoPage />,
+
+  // 중첩 레이아웃 - Outlet
+  [SYSTEM_ADMIN.BASE]: <Wigets.SystemAdminOutlet />,
+  [NETWORK_MS.BASE]: <Wigets.NMSRouterOutlet />,
+  [FACILITY_MS]: <Wigets.FMSRouterOutlet />,
 };
 
-const PermittedRoute = ({ validationPath }: { validationPath: string }) => {
-  const { permissions } = useAuthStore();
-  const navigate = useNavigate();
-  const findPath = permissions.find(({ path }) => path === validationPath);
-  useEffect(() => {
-    const isFIndPathPermission = findPath && findPath.can_access;
-    if (isFIndPathPermission) return;
-
-    // ✅ window.history를 체크하여 루트경로를 보장하며 되돌리기 실행
-    const isHistory = window.history.state && window.history.state.idx > 0;
-    if (isHistory) {
-      navigate(-1);
-    } else {
-      navigate('/', { replace: true });
-    }
-  }, [findPath, navigate]);
-
-  if (!findPath || !pathPages[findPath.path])
-    return <div>{findPath ? findPath.label : ''} 페이지 개발 중...</div>;
-  return pathPages[findPath.path];
+const NestedRoutesOptions = ({ path }: { path: string }): RouterOptionType => {
+  return {
+    path,
+    element: <PermittedRoute validationPath={path} pathPages={pathPages} />,
+  };
 };
 
 export const DefaultRouter = (): RouteObject[] => {
-  // const threeDRouterPath = '/3dms';
-  const nmsRoutePath = '/nms';
-  const fmsRoutePath = '/fms';
-  const adminRoutePath = '/system-admin';
-  const otherRoutes = defaultMenuLists.slice(1).filter(
-    ({ path }) =>
-      ![
-        adminRoutePath,
-        fmsRoutePath,
-        nmsRoutePath,
-        // threeDRouterPath,
-      ].includes(path)
-  );
+  const otherRoutes = menuLists
+    .slice(1)
+    .filter(
+      ({ path }) =>
+        ![
+          SYSTEM_ADMIN.BASE as string,
+          FACILITY_MS as string,
+          NETWORK_MS.BASE as string,
+        ].includes(path)
+    );
 
   return [
     {
-      path: '/',
-      element: <DefaultMainFrame />,
+      path: DefaultPathEnum.ROOT,
+      element: <Wigets.DefaultMainOutlet />,
       children: [
-        { index: true, element: pathPages['/'] },
-        { path: '*', element: <div>찾을 수 없음</div> },
+        { index: true, element: pathPages[ROOT] },
+        { path: NOT_FOUND, element: <div>찾을 수 없음</div> },
 
-        // ✅ 중첩라우팅이 필요하지 않은, 라우팅 처리
+        // ✅ 중첩라우팅이 필요하지 않은 일반 경로 PATHS
         ...otherRoutes.map(({ path }) => ({
           path,
-          element: <PermittedRoute validationPath={path} />,
+          element: (
+            <PermittedRoute validationPath={path} pathPages={pathPages} />
+          ),
         })),
 
-        // ✅ system-admin 의 경우, 중첩라우팅
+        // ⚠️ 중첩라우팅 : SYSTEM_ADMIN.BASE
         {
-          path: adminRoutePath,
-          element: <PermittedRoute validationPath={adminRoutePath} />,
+          ...NestedRoutesOptions({ path: SYSTEM_ADMIN.BASE }),
           children: [
-            { index: true, element: <UserManagement /> },
-            { path: 'device', element: <DeviceManagement /> },
+            { index: true, element: <Wigets.UserManagementPage /> },
+            {
+              path: SYSTEM_ADMIN.SEGMENTS.DEVICE,
+              element: <Wigets.DeviceManagementPage />,
+            },
           ],
         },
 
-        // ✅ nms 의 경우, 중첩라우팅
+        // ⚠️ 중첩라우팅 : NETWORK_MS.BASE
         {
-          path: nmsRoutePath,
-          element: <PermittedRoute validationPath={nmsRoutePath} />,
+          ...NestedRoutesOptions({ path: NETWORK_MS.BASE }),
           children: [
-            { index: true, element: <NMSTopology /> },
-            { path: 'info', element: <NMSMain /> },
-            { path: 'info-switch', element: <NMSSwitchInfo /> },
-            { path: 'info-device', element: <NMSDeviceInfo /> },
+            { index: true, element: <Wigets.NMSTopology /> },
+            {
+              path: NETWORK_MS.SEGMENTS.INFO,
+              element: <Wigets.NMSMain />,
+            },
+            {
+              path: NETWORK_MS.SEGMENTS.INFO_SWITCH,
+              element: <Wigets.NMSSwitchInfo />,
+            },
+            {
+              path: NETWORK_MS.SEGMENTS.INFO_DEVICE,
+              element: <Wigets.NMSDeviceInfo />,
+            },
           ],
         },
 
-        // ✅ fms 의 경우, 중첩라우팅
+        // ⚠️ 중첩라우팅 : FACILITY_MS
         {
-          path: fmsRoutePath,
-          element: <PermittedRoute validationPath={fmsRoutePath} />,
-          children: [
-            { index: true, element: <FMSDeviceInfo /> },
-            // { path: 'detail', element: <FMSDeviceInfo /> },
-            // { path: 'project', element: <div children='개발예정' /> },
-          ],
+          ...NestedRoutesOptions({ path: FACILITY_MS }),
+          children: [{ index: true, element: <Wigets.FMSDeviceInfo /> }],
         },
       ],
     },

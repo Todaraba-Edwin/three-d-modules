@@ -1,4 +1,4 @@
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 
@@ -6,7 +6,7 @@ export const NMSHeader = (): ReactNode => {
   const { permissions } = useAuthStore();
 
   const findLabel = permissions.find(({ path }) => path === '/nms')?.label;
-  const { icon: ICON, desc } = defaultMenuLists.find(
+  const { icon: ICON, desc } = menuLists.find(
     ({ path }) => path === '/nms'
   ) || {
     icon: noneIcon,

@@ -1,5 +1,5 @@
 import { Button } from '@/_common/components/Button';
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ export const HomeNavigation = (): ReactNode => {
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
       {navigationPaths.map(({ label, id, path }) => {
-        const { icon: ICON, desc } = defaultMenuLists.find(
+        const { icon: ICON, desc } = menuLists.find(
           ({ path: findPath }) => findPath === path
         ) || {
           icon: noneIcon,

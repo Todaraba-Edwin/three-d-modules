@@ -1,4 +1,4 @@
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 
@@ -6,8 +6,7 @@ export const HomeHeader = (): ReactNode => {
   const { permissions } = useAuthStore();
 
   const findLabel = permissions.find(({ path }) => path === '/')?.label;
-  const ICON =
-    defaultMenuLists.find(({ path }) => path === '/')?.icon || noneIcon;
+  const ICON = menuLists.find(({ path }) => path === '/')?.icon || noneIcon;
 
   return (
     <div className='space-y-2'>

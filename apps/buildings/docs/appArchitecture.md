@@ -112,17 +112,17 @@
 -   **동작 방식 상세**:
 
     1.  **프론트엔드 메뉴 정의 (`const.ts`)**:
-        -   먼저 프론트엔드에서는 애플리케이션에 존재할 수 있는 모든 메뉴의 경로를 `defaultMenuLists` 배열에 정적으로 정의함 (`@/pages/DefaultRouter/_shared/const.ts`). 이는 시스템의 전체 네비게이션 구조를 나타냄.
+        -   먼저 프론트엔드에서는 애플리케이션에 존재할 수 있는 모든 메뉴의 경로를 `menuLists` 배열에 정적으로 정의함 (`@/pages/DefaultRouter/_shared/const.ts`). 이는 시스템의 전체 네비게이션 구조를 나타냄.
 
     2.  **백엔드 권한 정보 조회 (`users.service.ts`)**:
         -   사용자가 로그인하면, 서버는 해당 사용자의 `role_id`를 기반으로 `getMenuPermissionByRoleId` 함수를 호출함.
-        -   이 함수는 DB의 `menus` 테이블과 `role_menu_permissions` 테이블을 조인하여, 프론트엔드의 모든 메뉴(`defaultMenuLists`에 대응)에 대해 현재 사용자가 접근 가능한지를 나타내는 `can_access: boolean` 플래그가 포함된 배열을 반환함.
+        -   이 함수는 DB의 `menus` 테이블과 `role_menu_permissions` 테이블을 조인하여, 프론트엔드의 모든 메뉴(`menuLists`에 대응)에 대해 현재 사용자가 접근 가능한지를 나타내는 `can_access: boolean` 플래그가 포함된 배열을 반환함.
 
     3.  **권한 상태 저장 (`useAuthStore`)**:
         -   백엔드로부터 받은 권한 배열은 프론트엔드의 전역 상태 관리자인 `Zustand`의 `useAuthStore`에 저장되어, 애플리케이션 전역에서 사용될 수 있게 됨.
 
     4.  **동적 라우트 생성 및 보호 (`DefaultRouter.tsx`)**:
-        -   `DefaultRouter.tsx`에서는 `defaultMenuLists`를 기반으로 `react-router-dom`의 `RouteObject`를 동적으로 생성함.
+        -   `DefaultRouter.tsx`에서는 `menuLists`를 기반으로 `react-router-dom`의 `RouteObject`를 동적으로 생성함.
         -   이때 각 라우트의 `element`는 일반 페이지 컴포넌트가 아닌, 권한 검사를 수행하는 `PermittedRoute`라는 특수한 컴포넌트로 감싸짐.
 
     5.  **`PermittedRoute` 가드 컴포넌트**:
@@ -133,7 +133,7 @@
 
 -   **아키텍처 장점**:
     -   **관심사의 분리 (SoC)**: UI 렌더링과 권한 검증의 책임이 명확하게 분리됨. 각 페이지 컴포넌트는 자신의 컨텐츠를 렌더링하는 데만 집중할 수 있으며, 권한 확인 로직은 `PermittedRoute`에 캡슐화됨.
-    -   **중앙화된 권한 관리**: 라우팅 계층에서 모든 권한을 일괄적으로 처리하므로, 권한 정책의 변경 및 유지보수가 매우 용이함. 새로운 메뉴가 추가되거나 권한 정책이 변경될 때, `PermittedRoute` 수정 없이 백엔드 DB와 프론트엔드의 `defaultMenuLists`만 관리하면 됨.
+    -   **중앙화된 권한 관리**: 라우팅 계층에서 모든 권한을 일괄적으로 처리하므로, 권한 정책의 변경 및 유지보수가 매우 용이함. 새로운 메뉴가 추가되거나 권한 정책이 변경될 때, `PermittedRoute` 수정 없이 백엔드 DB와 프론트엔드의 `menuLists`만 관리하면 됨.
     -   **안정성 및 보안 강화**: 개발자가 각 페이지 컴포넌트에서 개별적으로 권한 검사 로직을 구현할 때 발생할 수 있는 휴먼 에러나 누락을 원천적으로 차단함. 이로써 더욱 안정적이고 예측 가능한 보안 아키텍처를 구현.
 
 #### 중첩 라우팅과 상태 유지

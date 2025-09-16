@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 import Select from 'react-select';
-import { type FmsDeviceForm } from '../FMSDeviceInfo';
+import type { FmsDeviceForm } from '../FMSDeviceInfo';
 
 const deviceTypeOptions = [
   { value: '', label: '전체' },

@@ -16,11 +16,11 @@ import { utilsStoreResets } from '@/_common/zustandStores/utilsStoreResets';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
 import {
-  defaultMenuLists,
   DefaultPathEnum,
+  menuLists,
   noneIcon,
-} from '../../_common/const/routerPaths';
-import { GNBTooltip } from './_wigets/_reactPortals/GNBTooltip';
+} from '../../../../_common/const/routerPaths';
+import { GNBTooltip } from '../_reactPortals/GNBTooltip';
 
 type Props = PropsWithChildren & {
   nickname?: string;
@@ -112,7 +112,7 @@ export const DefaultMainFrameLayout = ({
               const isActive = list.path.replace(/\//g, '') === layout;
               // ✅ ICON을 찾지 못한 경우에 대한 기본 아이콘 설정
               const ICON =
-                defaultMenuLists.find(({ path }) => path === list.path)?.icon ||
+                menuLists.find(({ path }) => path === list.path)?.icon ||
                 noneIcon;
 
               return (

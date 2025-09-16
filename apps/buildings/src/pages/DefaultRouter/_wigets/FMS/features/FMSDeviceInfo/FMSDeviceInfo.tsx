@@ -1,9 +1,9 @@
 import { Network } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
-import { deviceDetails } from '../../NMS/_shared/const';
-import { FMSDeviceInfoLeftSection } from './FMSDeviceInfo/FMSDeviceInfoLeftSection';
-import { FMSDeviceInfoRightSection } from './FMSDeviceInfo/FMSDeviceInfoRightSection';
+import { deviceDetails } from '../../../NMS/_shared/const';
+import { FMSDeviceInfoLeftSection } from './paths/FMSDeviceInfoLeftSection';
+import { FMSDeviceInfoRightSection } from './paths/FMSDeviceInfoRightSection';
 
 const allDevices = Object.values(deviceDetails).map((device, index) => ({
   ...device,

@@ -10,7 +10,7 @@ import {
 import { glbList } from '@monorepo/shared/features/Cesium/05_shared/cesiumConst';
 import { useEffect, type ReactNode } from 'react';
 
-export const Building = (): ReactNode => {
+export const ThreeDMsPage = (): ReactNode => {
   const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
     boundaryCoordinate,

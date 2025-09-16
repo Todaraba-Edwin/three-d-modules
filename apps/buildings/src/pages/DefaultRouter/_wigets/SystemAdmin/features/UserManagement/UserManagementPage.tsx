@@ -4,7 +4,7 @@ import { LeftSectionRoleManagement } from './parts/LeftSectionRoleManagement';
 import { RightSectionUserManagement } from './parts/RightSectionUserManagement';
 import { UM_CONST } from './parts/const';
 
-export const UserManagement = (): ReactNode => {
+export const UserManagementPage = (): ReactNode => {
   return (
     <SystemAdminTabLayout
       tabTitle={UM_CONST.Tab.title}

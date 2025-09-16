@@ -1,4 +1,4 @@
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 
@@ -8,8 +8,7 @@ export const SystemAdminHeader = (): ReactNode => {
     ({ path }) => path === '/system-admin'
   )?.label;
   const ICON =
-    defaultMenuLists.find(({ path }) => path === '/system-admin')?.icon ||
-    noneIcon;
+    menuLists.find(({ path }) => path === '/system-admin')?.icon || noneIcon;
   return (
     <div className='space-y-2'>
       <div className='flex items-center gap-3'>

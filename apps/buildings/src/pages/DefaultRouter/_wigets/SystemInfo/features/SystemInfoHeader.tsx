@@ -1,4 +1,4 @@
-import { defaultMenuLists, noneIcon } from '@/_common/const/routerPaths';
+import { menuLists, noneIcon } from '@/_common/const/routerPaths';
 import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
 import { type ReactNode } from 'react';
 
@@ -8,7 +8,7 @@ export const SystemInfoHeader = (): ReactNode => {
   const findLabel = permissions.find(
     ({ path }) => path === '/system-info'
   )?.label;
-  const { icon: ICON, desc } = defaultMenuLists.find(
+  const { icon: ICON, desc } = menuLists.find(
     ({ path }) => path === '/system-info'
   ) || {
     icon: noneIcon,
