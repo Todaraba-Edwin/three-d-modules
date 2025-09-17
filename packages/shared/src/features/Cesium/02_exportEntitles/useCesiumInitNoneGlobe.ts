@@ -8,6 +8,7 @@ export const useCesiumInitNoneGlobe = ({
   initCameraHeight,
   cameraInitCoordinate,
   boundaryCoordinate,
+  initCameraPosition,
 }: Ty.useCesiumInitNoneGlobeProps): Ty.useCesiumInitReturn & {
   setViewer: any;
 } => {
@@ -22,6 +23,7 @@ export const useCesiumInitNoneGlobe = ({
     coordinate: cameraInitCoordinate
       ? cameraInitCoordinate
       : boundaryCoordinate.center,
+    initCameraPosition,
   });
   Hook.useEffectCesiumBoundaryLimit({
     containerRef,

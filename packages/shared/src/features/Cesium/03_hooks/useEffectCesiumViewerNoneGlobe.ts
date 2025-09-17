@@ -7,13 +7,11 @@ const EPSILON = Cesium.Math.toRadians(0.1);
 export const useEffectCesiumViewerNoneGlobe = ({
   containerRef,
   setViewer,
-  coordinate,
-  initCameraHeight = 80,
+  initCameraPosition,
 }: Ty.useEffectCesiumViewerProps): void => {
   useEffect(() => {
     if (!containerRef.current) return;
     if (!setViewer) return;
-    if (!coordinate.lat || !coordinate.lon) return;
 
     const container = containerRef.current;
 
@@ -45,20 +43,25 @@ export const useEffectCesiumViewerNoneGlobe = ({
     Util.utilsClearCesiumLog({ container }); // CesiumLog 제거
     Util.utilsRemoteZoomDistance({ viewer, isBuildingMode: true }); // 카메라 영역제한 설정
 
-    // 2️⃣ 초기 카메라 이동
-    const position = Util.utilsSetInitCameraPosition({
-      coordinate,
-      initCameraHeight,
-    });
+    if (initCameraPosition) {
+      // 2️⃣ 초기 카메라 이동
+      const position = Util.utilsSetInitCameraPosition({
+        coordinate: {
+          lat: initCameraPosition.lat,
+          lon: initCameraPosition.lon,
+        },
+        initCameraHeight: initCameraPosition.height,
+      });
 
-    viewer.camera.setView({
-      destination: position,
-      orientation: {
-        heading: Cesium.Math.toRadians(65),
-        pitch: Cesium.Math.toRadians(-20),
-        roll: 0.0,
-      },
-    });
+      viewer.camera.setView({
+        destination: position,
+        orientation: {
+          heading: Cesium.Math.toRadians(initCameraPosition.heading),
+          pitch: Cesium.Math.toRadians(initCameraPosition.pitch as number),
+          roll: 0.0,
+        },
+      });
+    }
 
     const postUpdateListener = viewer.scene.postUpdate.addEventListener(() => {
       if (Math.abs(viewer.camera.roll) > EPSILON) {
@@ -81,7 +84,7 @@ export const useEffectCesiumViewerNoneGlobe = ({
       setViewer(null);
     };
     //eslint-disable-next-line
-  }, [containerRef, setViewer, coordinate.lat, coordinate.lon]);
+  }, [containerRef, setViewer]);
 
   return;
 };

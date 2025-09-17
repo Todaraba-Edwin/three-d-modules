@@ -13,14 +13,68 @@ type GlbListType = {
   isError: boolean;
 };
 
-export const vWorldUrl = 'https://api.vworld.kr/req/wmts/1.0.0';
+export const initCameraPosition = {
+  lat: 37.56692,
+  lon: 126.97693,
+  height: 150,
+  heading: 65,
+  pitch: -25,
+};
 
+export const GLB_ModuleLists = [
+  {
+    name: 'BottomSurface',
+    cameraPosition: {
+      lat: 37.5667,
+      lon: 126.9784,
+      height: -5,
+      heading: 0,
+    },
+  },
+  {
+    name: 'Floor1',
+    cameraPosition: {
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
+      height: undefined,
+      heading: 0,
+    },
+  },
+  {
+    name: 'Floor2',
+    cameraPosition: {
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
+      height: 0,
+      heading: 0,
+    },
+  },
+  {
+    name: 'Floor3',
+    cameraPosition: {
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
+      height: 0,
+      heading: 0,
+    },
+  },
+  {
+    name: 'Floor4',
+    cameraPosition: {
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
+      height: 0,
+      heading: 0,
+    },
+  },
+];
+
+/// ==========================================================
 export const CesiumCoordinate = {
   lon: 126.9784,
   lat: 37.5667,
 };
 
-// TODO: glbList 생성을 위한 임시함수, uilts에 존재함으로 API 연결시 삭제 필요
 export const utilsGetDegreeFromMeter = ({
   type,
   meter,
@@ -44,13 +98,12 @@ export const utilsGetDegreeFromMeter = ({
   return meter / (111_320 * Math.cos(latRad)); // ✅ 경도는 cos(lat) 보정
 };
 
-const latNum = 37.5667;
 export const buildingCoordinate = {
-  lon:
-    126.9784 +
-    utilsGetDegreeFromMeter({ type: 'lon', meter: 180, lat: latNum }),
-  lat: latNum + utilsGetDegreeFromMeter({ type: 'lat', meter: -150 }),
+  lon: 126.98043995723785,
+  lat: 37.56535253323751,
 };
+
+console.log('buildingCoordinate', buildingCoordinate);
 
 export const CesiumCameraControl = {
   minimumZoomDistance: 50, // 지상 50 M
@@ -158,3 +211,14 @@ export const prizmLists: GlbListType[] = [
     },
   },
 ];
+
+prizmLists.forEach(list => {
+  console.log(`
+      name: ${list.name}
+      cameraPosition: 
+      - lat : ${list.positions.lat}
+      - log : ${list.positions.lon}
+      - height : ${list.positions.height}
+      - heading : ${list.positions.heading}
+    `);
+});

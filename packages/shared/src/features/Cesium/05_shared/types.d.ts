@@ -30,6 +30,7 @@ type cameraPositionType = {
   lat: number;
   height: number;
   heading: number;
+  pitch?: number;
 };
 
 export type vWorldTileMapType = 'Base' | 'Satellite' | 'Hybrid' | 'midnight';
@@ -90,6 +91,7 @@ export type useCesiumInitNoneGlobeProps = {
   initCameraHeight?: number;
   cameraInitCoordinate?: BoundaryCoordinateType['center'];
   boundaryCoordinate: BoundaryCoordinateType;
+  initCameraPosition?: cameraPositionType;
 };
 
 export type useCesiumInitReturn = {
@@ -152,6 +154,7 @@ export type useEffectCesiumViewerProps = {
   addImageryLayers: useCesiumInitProps['addImageryLayers'];
   setViewer: React.Dispatch<React.SetStateAction<Cesium.Viewer | null>>;
   initCameraHeight?: number;
+  initCameraPosition?: cameraPositionType;
 };
 
 /**

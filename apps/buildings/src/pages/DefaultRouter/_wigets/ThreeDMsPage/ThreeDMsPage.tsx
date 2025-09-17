@@ -7,6 +7,7 @@ import {
 import { type ReactNode } from 'react';
 import {
   buildingCoordinate,
+  initCameraPosition,
   prizmLists,
   utilsGetDegreeFromMeter,
 } from './parts/prizm';
@@ -15,6 +16,15 @@ export const ThreeDMsPage = (): ReactNode => {
   const boundaryCoordinate = utilsGetListBoundary({ list: prizmLists });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
     boundaryCoordinate,
+    cameraInitCoordinate: {
+      lon: 1,
+      lat: 1,
+    },
+    initCameraHeight: 1,
+    initCameraPosition: initCameraPosition,
+  });
+
+  console.log({
     cameraInitCoordinate: {
       lon:
         buildingCoordinate.lon +
@@ -48,34 +58,7 @@ export const ThreeDMsPage = (): ReactNode => {
       containerRef={containerRef}
       isNonBackground
       children={
-        <div className='absolute bottom-10 left-4 z-40 grid grid-cols-1'>
-          {/* {prizmLists.map(({ name, type, cameraPosition }) => (
-            <button
-              key={name}
-              className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
-              onClick={utilsCesiumFlyto({
-                viewer: viewerRef,
-                name,
-                type,
-                position: cameraPosition,
-              })}
-              children={name}
-            />
-          ))}
-          <button
-            className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
-            onClick={utilsCesiumFlyto({
-              viewer: viewerRef,
-              type: '',
-              name: InitPosition,
-              position: {
-                ...boundaryCoordinate.center,
-                height: 200,
-              },
-            })}
-            children={'초기 위치'}
-          /> */}
-        </div>
+        <div className='absolute bottom-10 left-4 z-40 grid grid-cols-1'></div>
       }
     />
   );
@@ -103,3 +86,32 @@ export const ThreeDMsPage = (): ReactNode => {
         .catch(e => console.error(e));
     });
   }, [viewerRef, boundaryCoordinate]);*/
+
+{
+  /* {prizmLists.map(({ name, type, cameraPosition }) => (
+            <button
+              key={name}
+              className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+              onClick={utilsCesiumFlyto({
+                viewer: viewerRef,
+                name,
+                type,
+                position: cameraPosition,
+              })}
+              children={name}
+            />
+          ))}
+          <button
+            className='p-2 text-gray-700 bg-red-100 rounded-sm mb-2'
+            onClick={utilsCesiumFlyto({
+              viewer: viewerRef,
+              type: '',
+              name: InitPosition,
+              position: {
+                ...boundaryCoordinate.center,
+                height: 200,
+              },
+            })}
+            children={'초기 위치'}
+          /> */
+}
