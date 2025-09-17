@@ -27,7 +27,26 @@ import {
   type GlbListType,
 } from './parts/prizm';
 
-const allLineLists: Record<string, any[][][]> = {
+type CoordinatePoint = {
+  type: string;
+  index: number;
+  lat: number;
+  lon: number;
+  height: number;
+  distance: number;
+  length?: number;
+};
+
+type LineDefinition = {
+  connection_IN: string;
+  connection_OUT: string;
+  totalDistance: number;
+  coordinates: CoordinatePoint[];
+};
+
+type LineListType = LineDefinition[];
+
+const allLineLists: Record<string, LineListType[]> = {
   '1': [LineList, LineList2, LineList3, LineList4, LineList5],
   '2': [LineList21, LineList22, LineList23, LineList24, LineList25, LineList26],
   // '3': [LineList31, LineList32, LineList33, LineList34, LineList35],
@@ -194,9 +213,9 @@ export const ThreeDMsPage = (): ReactNode => {
 
       const lists = allLineLists[floor];
       lists.forEach(lineDef => {
-        lineDef.forEach((line: any) => {
+        lineDef.forEach((line: LineDefinition) => {
           // 1. Build the base path from instructions
-          const basePath: any[] = [];
+          const basePath: CoordinatePoint[] = [];
           if (line.coordinates.length > 0) {
             basePath.push(line.coordinates[0]);
 
@@ -209,7 +228,7 @@ export const ThreeDMsPage = (): ReactNode => {
                   ...instruction,
                   lat: lastPoint.lat,
                   lon: lastPoint.lon,
-                  height: lastPoint.height + instruction.length,
+                  height: lastPoint.height + (instruction.length || 0),
                 });
               } else {
                 basePath.push(instruction);
@@ -231,7 +250,12 @@ export const ThreeDMsPage = (): ReactNode => {
             return { ...coord, lon, height };
           });
 
-          // 3. Draw the entity
+          // 3. Determine Material and draw
+          const material =
+            selectedType === 'protruding' && selectedFloor !== floorNum
+              ? Cesium.Color.CYAN.withAlpha(0.3)
+              : Cesium.Color.CYAN;
+
           const flatCoords = finalPath.flatMap(p => [p.lon, p.lat, p.height]);
           if (flatCoords.length < 6) return;
 
@@ -239,7 +263,7 @@ export const ThreeDMsPage = (): ReactNode => {
             polyline: {
               positions: Cesium.Cartesian3.fromDegreesArrayHeights(flatCoords),
               width: 5,
-              material: Cesium.Color.CYAN,
+              material: material,
             },
           });
           lineEntitiesRef.current.push(entity);
