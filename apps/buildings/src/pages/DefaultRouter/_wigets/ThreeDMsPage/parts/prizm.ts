@@ -4,75 +4,13 @@ import type {
 } from '@monorepo/shared/features/Cesium/05_shared/types';
 import * as Cesium from 'cesium';
 
-type GlbListType = {
+export type GlbListType = {
   name: string;
   type: string;
   url: string;
   positions: positionsType;
   cameraPosition: cameraPositionType;
   isError: boolean;
-};
-
-export const initCameraPosition = {
-  lat: 37.56692,
-  lon: 126.97693,
-  height: 150,
-  heading: 65,
-  pitch: -25,
-};
-
-export const GLB_ModuleLists = [
-  {
-    name: 'BottomSurface',
-    cameraPosition: {
-      lat: 37.5667,
-      lon: 126.9784,
-      height: -5,
-      heading: 0,
-    },
-  },
-  {
-    name: 'Floor1',
-    cameraPosition: {
-      lat: 37.56535253323751,
-      lon: 126.98043995723785,
-      height: undefined,
-      heading: 0,
-    },
-  },
-  {
-    name: 'Floor2',
-    cameraPosition: {
-      lat: 37.56535253323751,
-      lon: 126.98043995723785,
-      height: 0,
-      heading: 0,
-    },
-  },
-  {
-    name: 'Floor3',
-    cameraPosition: {
-      lat: 37.56535253323751,
-      lon: 126.98043995723785,
-      height: 0,
-      heading: 0,
-    },
-  },
-  {
-    name: 'Floor4',
-    cameraPosition: {
-      lat: 37.56535253323751,
-      lon: 126.98043995723785,
-      height: 0,
-      heading: 0,
-    },
-  },
-];
-
-/// ==========================================================
-export const CesiumCoordinate = {
-  lon: 126.9784,
-  lat: 37.5667,
 };
 
 export const utilsGetDegreeFromMeter = ({
@@ -98,127 +36,296 @@ export const utilsGetDegreeFromMeter = ({
   return meter / (111_320 * Math.cos(latRad)); // ✅ 경도는 cos(lat) 보정
 };
 
-export const buildingCoordinate = {
-  lon: 126.98043995723785,
-  lat: 37.56535253323751,
+export const initCameraPosition = {
+  lat: 37.56422506647503, //37.56692,
+  lon: 126.97693,
+  height: 150,
+  heading: 65,
+  pitch: -25,
 };
 
-console.log('buildingCoordinate', buildingCoordinate);
+export const SelectedFloorWithType: Record<
+  'origin' | 'protruding',
+  Record<number, Record<string, number>>
+> = {
+  ['origin']: {
+    0: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 160,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 200,
+          lat: initCameraPosition.lat,
+        }),
+      height: 300,
+      heading: 100,
+      pitch: -70,
+    },
+    1: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 150,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 200 + 30,
+          lat: initCameraPosition.lat,
+        }),
+      height: 220,
+      heading: 100,
+      pitch: -70,
+    },
+    2: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 150 + 30,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 200 + 30,
+          lat: initCameraPosition.lat,
+        }),
+      height: 240,
+      heading: 100,
+      pitch: -70,
+    },
+    3: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 150 + 30,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 200 + 20,
+          lat: initCameraPosition.lat,
+        }),
+      height: 260,
+      heading: 100,
+      pitch: -70,
+    },
+    4: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 150 + 30,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 200 + 10,
+          lat: initCameraPosition.lat,
+        }),
+      height: 280,
+      heading: 100,
+      pitch: -70,
+    },
+  },
+  ['protruding']: {
+    1: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 60,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 180,
+          lat: initCameraPosition.lat,
+        }),
+      height: 180,
+      heading: 65,
+      pitch: -50,
+    },
 
-export const CesiumCameraControl = {
-  minimumZoomDistance: 50, // 지상 50 M
-  maximumZoomDistance: 80000, // 지상 80 KM
-  buildingMode: {
-    minimumZoomDistance: 0, // 지상 0 M
-    maximumZoomDistance: 1000, // 지상 1000 M
+    2: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 60 + 25,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 180,
+          lat: initCameraPosition.lat,
+        }),
+      height: 180 + 30,
+      heading: 65,
+      pitch: -50,
+    },
+    3: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 60 + 35,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 180,
+          lat: initCameraPosition.lat,
+        }),
+      height: 180 + 60,
+      heading: 65,
+      pitch: -50,
+    },
+    4: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 60 + 35,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 180,
+          lat: initCameraPosition.lat,
+        }),
+      height: 180 + 90,
+      heading: 65,
+      pitch: -50,
+    },
   },
 };
 
-export const prizmLists: GlbListType[] = [
+export const GLB_ModuleList: GlbListType[] = [
   {
-    name: 'G1',
-    type: 'type1',
+    name: 'BottomSurface',
+    type: 'BottomSurface',
     url: '/imgs/G1.glb',
+    isError: false,
     positions: {
-      lon: CesiumCoordinate.lon,
-      lat: CesiumCoordinate.lat,
-      height: -5,
-    },
-    cameraPosition: {
-      lon: CesiumCoordinate.lon,
-      lat:
-        CesiumCoordinate.lat -
-        utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      height: 0, // 조금 위쪽
+      lat: 37.5667,
+      lon: 126.9784,
+      height: 0,
       heading: 0,
     },
-    isError: false,
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
   },
   {
-    name: 'F1',
-    type: 'type1',
+    name: 'Floor1',
+    type: 'Floor1',
     url: '/imgs/F_01.glb',
     isError: false,
     positions: {
-      lon: buildingCoordinate.lon,
-      lat: buildingCoordinate.lat,
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
+      height: undefined,
       heading: 0,
     },
-    cameraPosition: {
-      lon: buildingCoordinate.lon,
-      lat:
-        buildingCoordinate.lat -
-        utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      height: 0, // 조금 위쪽
-      heading: 0,
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
     },
   },
   {
-    name: 'F2',
-    type: 'type1',
+    name: 'Floor2',
+    type: 'Floor2',
     url: '/imgs/F_02.glb',
     isError: false,
     positions: {
-      lon: buildingCoordinate.lon,
-      lat: buildingCoordinate.lat,
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
       height: 0,
-    },
-    cameraPosition: {
-      lon: buildingCoordinate.lon,
-      lat:
-        buildingCoordinate.lat -
-        utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      height: 0, // 조금 위쪽
       heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
     },
   },
   {
-    name: 'F3',
-    type: 'type1',
+    name: 'Floor3',
+    type: 'Floor3',
     url: '/imgs/F_03.glb',
     isError: false,
     positions: {
-      lon: buildingCoordinate.lon,
-      lat: buildingCoordinate.lat,
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
       height: 0,
-    },
-    cameraPosition: {
-      lon: buildingCoordinate.lon,
-      lat:
-        buildingCoordinate.lat -
-        utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      height: 0, // 조금 위쪽
       heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
     },
   },
   {
-    name: 'F4',
-    type: 'type1',
+    name: 'Floor4',
+    type: 'Floor4',
     url: '/imgs/F_04.glb',
     isError: false,
     positions: {
-      lon: buildingCoordinate.lon,
-      lat: buildingCoordinate.lat,
+      lat: 37.56535253323751,
+      lon: 126.98043995723785,
       height: 0,
-    },
-    cameraPosition: {
-      lon: buildingCoordinate.lon,
-      lat:
-        buildingCoordinate.lat -
-        utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
-      height: 0, // 조금 위쪽
       heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
     },
   },
 ];
-
-prizmLists.forEach(list => {
-  console.log(`
-      name: ${list.name}
-      cameraPosition: 
-      - lat : ${list.positions.lat}
-      - log : ${list.positions.lon}
-      - height : ${list.positions.height}
-      - heading : ${list.positions.heading}
-    `);
-});

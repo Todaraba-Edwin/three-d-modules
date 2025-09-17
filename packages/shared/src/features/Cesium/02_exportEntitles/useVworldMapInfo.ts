@@ -1,6 +1,6 @@
 //✅ 01. vWorld 를 위한 상수 설정
 
-import { utilsImageryLayersAddIsDefault } from '../04_utils';
+import { utilsImageryLayersAddIsDefault } from '../04_utils/utilsImageryLayersAddIsDefault';
 import type * as Ty from '../05_shared/types';
 
 export const vWorldMapArrByType = {

@@ -1,7 +1,9 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
-import * as Util from '../04_utils';
+import { utilsClearCesiumLog } from '../04_utils/utilsClearCesiumLog';
+import { utilsRemoteZoomDistance } from '../04_utils/utilsRemoteZoomDistance';
 import type * as Ty from '../05_shared/types';
+import { utilsSetInitCameraPosition } from '../04_utils/utilsSetInitCameraPosition';
 
 const EPSILON = Cesium.Math.toRadians(0.1);
 export const useEffectCesiumViewerNoneGlobe = ({
@@ -40,18 +42,24 @@ export const useEffectCesiumViewerNoneGlobe = ({
     viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
     setViewer(viewer);
 
-    Util.utilsClearCesiumLog({ container }); // CesiumLog 제거
-    Util.utilsRemoteZoomDistance({ viewer, isBuildingMode: true }); // 카메라 영역제한 설정
+    utilsClearCesiumLog({ container }); // CesiumLog 제거
+    utilsRemoteZoomDistance({ viewer, isBuildingMode: true }); // 카메라 영역제한 설정
 
     if (initCameraPosition) {
       // 2️⃣ 초기 카메라 이동
-      const position = Util.utilsSetInitCameraPosition({
+      const position = utilsSetInitCameraPosition({
         coordinate: {
           lat: initCameraPosition.lat,
           lon: initCameraPosition.lon,
         },
         initCameraHeight: initCameraPosition.height,
       });
+
+      // const position = Cesium.Cartesian3.fromDegrees(
+      //   initCameraPosition.lat,
+      //   37.56422506647503,
+      //   0 // initCameraPosition.height
+      // );
 
       viewer.camera.setView({
         destination: position,

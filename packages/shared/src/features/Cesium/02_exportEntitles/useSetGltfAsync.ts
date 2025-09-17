@@ -1,30 +1,38 @@
 import * as Cesium from 'cesium';
-import { useEffect } from 'react';
-import { utilsSetGltfAsync } from '../04_utils';
+import { useEffect, useRef } from 'react';
+import { utilsSetGltfAsync, utilsUpdateGltfPosition } from '../04_utils';
 import type { BoundaryCoordinateType, GlbListType } from '../05_shared/types';
 
 export const useSetGltfAsync = ({
   viewer,
   glbList,
   boundaryCoordinate,
-  isFloor = false,
+  selectedFloor,
 }: {
   viewer: Cesium.Viewer | null;
   glbList: GlbListType[];
   boundaryCoordinate: BoundaryCoordinateType;
-  isFloor?: boolean;
+  selectedFloor?: number;
 }): void => {
+  const isInitialLoad = useRef(true);
+
   useEffect(() => {
     if (!viewer) return;
-    // 3️⃣ GLB 객체 추가
 
-    setTimeout(() => {
+    if (isInitialLoad.current) {
       utilsSetGltfAsync({
         viewer: viewer,
         glbList: glbList,
       });
-    });
-  }, [viewer, boundaryCoordinate, glbList, isFloor]);
+      isInitialLoad.current = false;
+    } else {
+      utilsUpdateGltfPosition({
+        viewer: viewer,
+        glbList: glbList,
+        selectedFloor
+      });
+    }
+  }, [viewer, glbList, boundaryCoordinate, selectedFloor]);
 };
 
 /*

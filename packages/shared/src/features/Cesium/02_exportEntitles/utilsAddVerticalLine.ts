@@ -1,4 +1,5 @@
-import { utilsAdSphere, utilsCreatePerpendicularLine } from '../04_utils';
+import { utilsAdSphere } from '../04_utils/utilsAdSphere';
+import { utilsCreatePerpendicularLine } from '../04_utils/utilsCreatePerpendicularLine';
 import type { ViewerProps } from '../05_shared/types';
 
 export const utilsAddVerticalLine = ({

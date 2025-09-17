@@ -1,6 +1,10 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
-import * as Util from '../04_utils';
+import { utilsClearCesiumLog } from '../04_utils/utilsClearCesiumLog';
+import { utilsImageryLayersInit } from '../04_utils/utilsImageryLayersInit';
+import { utilsRemoteDepthTestAgainstTerrain } from '../04_utils/utilsRemoteDepthTestAgainstTerrain';
+import { utilsRemoteZoomDistance } from '../04_utils/utilsRemoteZoomDistance';
+import { utilsSetAddImageryLayers } from '../04_utils/utilsSetAddImageryLayers';
 import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumViewer = ({
@@ -33,18 +37,18 @@ export const useEffectCesiumViewer = ({
           },
         },
       });
-      Util.utilsImageryLayersInit({ viewer });
+      utilsImageryLayersInit({ viewer });
       viewer.scene.skyBox.show = false; // 별자리 제거
       setViewer(viewer);
 
-      Util.utilsSetAddImageryLayers({
+      utilsSetAddImageryLayers({
         viewer,
         addImageryLayers,
       });
 
-      Util.utilsClearCesiumLog({ container });
-      Util.utilsRemoteDepthTestAgainstTerrain({ viewer });
-      Util.utilsRemoteZoomDistance({ viewer });
+      utilsClearCesiumLog({ container });
+      utilsRemoteDepthTestAgainstTerrain({ viewer });
+      utilsRemoteZoomDistance({ viewer });
 
       viewer.scene.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(

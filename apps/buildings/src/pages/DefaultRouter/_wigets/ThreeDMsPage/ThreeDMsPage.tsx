@@ -4,16 +4,25 @@ import {
   useSetGltfAsync,
   utilsGetListBoundary,
 } from '@monorepo/shared';
-import { type ReactNode } from 'react';
+import { utilsSetInitCameraPosition } from '@monorepo/shared/features/Cesium/04_utils/utilsSetInitCameraPosition';
+import * as Cesium from 'cesium';
+import clsx from 'clsx';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
-  buildingCoordinate,
+  GLB_ModuleList,
   initCameraPosition,
-  prizmLists,
+  SelectedFloorWithType,
   utilsGetDegreeFromMeter,
+  type GlbListType,
 } from './parts/prizm';
 
 export const ThreeDMsPage = (): ReactNode => {
-  const boundaryCoordinate = utilsGetListBoundary({ list: prizmLists });
+  const [glbList, setGlbList] = useState<GlbListType[]>(() => GLB_ModuleList);
+  const [selectedType, setSelectedType] = useState<'origin' | 'protruding'>(
+    'origin'
+  );
+  const [selectedFloor, setSelectedFloor] = useState<number>(0);
+  const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
     boundaryCoordinate,
     cameraInitCoordinate: {
@@ -24,33 +33,105 @@ export const ThreeDMsPage = (): ReactNode => {
     initCameraPosition: initCameraPosition,
   });
 
-  console.log({
-    cameraInitCoordinate: {
-      lon:
-        buildingCoordinate.lon +
-        utilsGetDegreeFromMeter({
-          type: 'lon',
-          meter: -310,
-          lat: buildingCoordinate.lat,
-        }),
-      lat:
-        buildingCoordinate.lat +
-        utilsGetDegreeFromMeter({
-          type: 'lat',
-          meter: 175,
-        }),
-    },
-    initCameraHeight: 150,
-  });
-
   useSetGltfAsync({
     viewer: viewerRef,
-    glbList: prizmLists,
+    glbList: glbList,
     boundaryCoordinate,
-    isFloor: true,
+    selectedFloor,
   });
 
-  console.log(viewerRef?.camera);
+  const onFloorCameraFlyTo = ({
+    lat,
+    lon,
+    height,
+    heading,
+    pitch,
+  }: Record<string, number>) => {
+    if (viewerRef) {
+      const position = utilsSetInitCameraPosition({
+        coordinate: {
+          lat,
+          lon,
+        },
+        initCameraHeight: height,
+      });
+
+      viewerRef.camera.flyTo({
+        destination: position,
+        orientation: {
+          heading: Cesium.Math.toRadians(heading),
+          pitch: Cesium.Math.toRadians(pitch),
+          roll: 0,
+        },
+        duration: 1.5,
+      });
+    }
+  };
+
+  const onSetGlbList = (type: 'origin' | 'protruding') => () => {
+    switch (type) {
+      case 'origin':
+        setSelectedType('origin');
+        setGlbList(() => {
+          const newList = GLB_ModuleList.map(list => ({
+            ...list,
+            positions: { ...list.positions, height: 0 },
+          }));
+          return newList;
+        });
+        onFloorCameraFlyTo(SelectedFloorWithType['origin'][selectedFloor]);
+        break;
+      case 'protruding':
+        setSelectedType('protruding');
+        if (selectedFloor === 0) {
+          setSelectedFloor(1);
+          onFloorCameraFlyTo(SelectedFloorWithType['protruding'][1]);
+        } else {
+          onFloorCameraFlyTo(
+            SelectedFloorWithType['protruding'][selectedFloor]
+          );
+        }
+
+        setGlbList(() => {
+          const newList = GLB_ModuleList.map((list, idx) => {
+            const weight = idx <= 1 ? 0 : idx - 1;
+            const isFloor = selectedFloor === idx;
+            return {
+              ...list,
+              positions: {
+                ...list.positions,
+                height: 30 * weight,
+                lon:
+                  idx === 0
+                    ? list.positions.lon
+                    : isFloor
+                      ? list.positions.lon
+                      : list.positions.lon +
+                        utilsGetDegreeFromMeter({
+                          type: 'lon',
+                          meter: 100,
+                          lat: list.positions.lat,
+                        }),
+              },
+            };
+          });
+          return newList;
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (selectedType === 'origin') {
+      onSetGlbList('origin')();
+    } else {
+      onSetGlbList('protruding')();
+    }
+
+    // eslint-disable-next-line
+  }, [selectedFloor, selectedType]);
 
   return (
     <CesiumInitBody
@@ -58,7 +139,67 @@ export const ThreeDMsPage = (): ReactNode => {
       containerRef={containerRef}
       isNonBackground
       children={
-        <div className='absolute bottom-10 left-4 z-40 grid grid-cols-1'></div>
+        <div className='absolute top-10 right-4 z-40 flex flex-col items-end gap-2 '>
+          <div className='flex  gap-x-1 rounded-lg bg-gray-900/50 p-1 backdrop-blur-sm'>
+            {selectedType === 'origin'
+              ? [0, 1, 2, 3, 4].map(list => (
+                  <button
+                    key={list}
+                    className={clsx(
+                      'rounded-md px-4 py-1.5 text-sm font-medium text-white transition-colors focus:outline-none',
+                      {
+                        'bg-blue-600': selectedFloor === list,
+                        'hover:bg-white/10': selectedFloor !== list,
+                      }
+                    )}
+                    onClick={() => {
+                      setSelectedFloor(list);
+                    }}
+                    children={list === 0 ? '층 선택 해제' : `${list}층`}
+                  />
+                ))
+              : [1, 2, 3, 4].map(list => (
+                  <button
+                    key={list}
+                    className={clsx(
+                      'rounded-md px-4 py-1.5 text-sm font-medium text-white transition-colors focus:outline-none',
+                      {
+                        'bg-blue-600': selectedFloor === list,
+                        'hover:bg-white/10': selectedFloor !== list,
+                      }
+                    )}
+                    onClick={() => {
+                      setSelectedFloor(list);
+                    }}
+                    children={`${list}층`}
+                  />
+                ))}
+          </div>
+          <div className='flex gap-x-1 rounded-lg bg-gray-900/50 p-1 backdrop-blur-sm'>
+            <button
+              className={clsx(
+                'rounded-md px-6 py-1.5 text-sm font-medium text-white transition-colors focus:outline-none',
+                {
+                  'bg-blue-600': selectedType === 'origin',
+                  'hover:bg-white/10': selectedType !== 'origin',
+                }
+              )}
+              onClick={onSetGlbList('origin')}
+              children={'기본형'}
+            />
+            <button
+              className={clsx(
+                'rounded-md px-6 py-1.5 text-sm font-medium text-white transition-colors focus:outline-none',
+                {
+                  'bg-blue-600': selectedType === 'protruding',
+                  'hover:bg-white/10': selectedType !== 'protruding',
+                }
+              )}
+              onClick={onSetGlbList('protruding')}
+              children={'돌출형'}
+            />
+          </div>
+        </div>
       }
     />
   );
