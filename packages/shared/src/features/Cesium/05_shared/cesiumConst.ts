@@ -46,7 +46,11 @@ export const glbList: GlbListType[] = [
     name: '문화시설',
     type: 'type1',
     url: '/model/testmodules.glb',
-    positions: { lon: CesiumCoordinate.lon, lat: CesiumCoordinate.lat },
+    positions: {
+      lon: CesiumCoordinate.lon,
+      lat: CesiumCoordinate.lat,
+      height: 0,
+    },
     cameraPosition: {
       lon: CesiumCoordinate.lon,
       lat:
@@ -63,6 +67,7 @@ export const glbList: GlbListType[] = [
     url: '/model/testmodules.glb',
     isError: false,
     positions: {
+      height: 0,
       lon:
         CesiumCoordinate.lon +
         utilsGetDegreeFromMeter({
@@ -94,6 +99,7 @@ export const glbList: GlbListType[] = [
     url: '/model/test2.glb',
     isError: true,
     positions: {
+      height: 0,
       lon:
         CesiumCoordinate.lon +
         utilsGetDegreeFromMeter({
@@ -107,6 +113,7 @@ export const glbList: GlbListType[] = [
           type: 'lat',
           meter: 100,
         }),
+
       scale: 2.0,
     },
     cameraPosition: {

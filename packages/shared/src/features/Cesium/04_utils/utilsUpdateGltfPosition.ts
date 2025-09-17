@@ -13,10 +13,12 @@ export const utilsUpdateGltfPosition = ({
   if (!glbList.length) return;
 
   const { primitives } = viewer.scene;
+  const targetType = glbList[selectedFloor].type;
 
   glbList.forEach(
     (
       {
+        isError,
         name,
         type,
         positions: { lon, lat, height, heading = 0 },
@@ -24,6 +26,7 @@ export const utilsUpdateGltfPosition = ({
       idx
     ) => {
       const modelId = utilsSetModelID({ name, groupName: type });
+      const isSelectedGroupType = type === targetType && idx > 4;
 
       for (let i = 0; i < primitives.length; i++) {
         const model = primitives.get(i);
@@ -39,7 +42,18 @@ export const utilsUpdateGltfPosition = ({
             modelHeadingPitchRoll
           );
 
-          if (selectedFloor === 0) {
+          if (isSelectedGroupType) {
+            model.color = Cesium.Color.WHITE.withAlpha(1);
+            model.colorBlendMode = Cesium.ColorBlendMode.MIX;
+            model.colorBlendAmount = 0;
+
+            console.log('isError', isError, name);
+
+            if (isError) {
+              model.silhouetteColor = Cesium.Color.ORANGERED;
+              model.silhouetteSize = 5.0;
+            }
+          } else if (selectedFloor === 0) {
             model.color = Cesium.Color.WHITE.withAlpha(1);
             model.colorBlendMode = Cesium.ColorBlendMode.MIX;
             model.colorBlendAmount = 0;
@@ -52,6 +66,8 @@ export const utilsUpdateGltfPosition = ({
               model.color = Cesium.Color.TRANSPARENT.withAlpha(0.1);
               model.colorBlendMode = Cesium.ColorBlendMode.MIX;
             }
+            model.silhouetteColor = Cesium.Color.TRANSPARENT;
+            model.silhouetteSize = 0;
           }
           break;
         }

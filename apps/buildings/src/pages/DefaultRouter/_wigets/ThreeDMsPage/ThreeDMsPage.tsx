@@ -2,6 +2,8 @@ import {
   CesiumInitBody,
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
+  utilsAddLines,
+  // utilsAddLines,
   utilsGetListBoundary,
 } from '@monorepo/shared';
 import { utilsSetInitCameraPosition } from '@monorepo/shared/features/Cesium/04_utils/utilsSetInitCameraPosition';
@@ -11,6 +13,13 @@ import { useEffect, useState, type ReactNode } from 'react';
 import {
   GLB_ModuleList,
   initCameraPosition,
+  LineList,
+  LineList2,
+  LineList3,
+  LineList4,
+  LineList5,
+  // LineList,
+  // LineList2,
   SelectedFloorWithType,
   utilsGetDegreeFromMeter,
   type GlbListType,
@@ -22,6 +31,7 @@ export const ThreeDMsPage = (): ReactNode => {
     'origin'
   );
   const [selectedFloor, setSelectedFloor] = useState<number>(0);
+  const [lineEntities, setLineEntities] = useState<Cesium.Entity[]>([]);
   const boundaryCoordinate = utilsGetListBoundary({ list: glbList });
   const { containerRef, viewerRef } = useCesiumInitNoneGlobe({
     boundaryCoordinate,
@@ -96,22 +106,38 @@ export const ThreeDMsPage = (): ReactNode => {
           const newList = GLB_ModuleList.map((list, idx) => {
             const weight = idx <= 1 ? 0 : idx - 1;
             const isFloor = selectedFloor === idx;
+            const isDevice = idx > 4;
+            const floorIndex =
+              GLB_ModuleList.findIndex(({ type }) => type === list.type) - 1;
+            const isSelectedFloor = floorIndex + 1 === selectedFloor;
+
             return {
               ...list,
               positions: {
                 ...list.positions,
-                height: 30 * weight,
+                height: isDevice
+                  ? 30 * floorIndex + list.positions.height
+                  : 30 * weight,
                 lon:
                   idx === 0
                     ? list.positions.lon
-                    : isFloor
+                    : isDevice && isSelectedFloor
                       ? list.positions.lon
-                      : list.positions.lon +
-                        utilsGetDegreeFromMeter({
-                          type: 'lon',
-                          meter: 100,
-                          lat: list.positions.lat,
-                        }),
+                      : isDevice && !isSelectedFloor
+                        ? list.positions.lon +
+                          utilsGetDegreeFromMeter({
+                            type: 'lon',
+                            meter: 100,
+                            lat: list.positions.lat,
+                          })
+                        : isFloor
+                          ? list.positions.lon
+                          : list.positions.lon +
+                            utilsGetDegreeFromMeter({
+                              type: 'lon',
+                              meter: 100,
+                              lat: list.positions.lat,
+                            }),
               },
             };
           });
@@ -132,6 +158,46 @@ export const ThreeDMsPage = (): ReactNode => {
 
     // eslint-disable-next-line
   }, [selectedFloor, selectedType]);
+
+  // // 라인 추가하기
+  useEffect(() => {
+    [LineList, LineList2, LineList3, LineList4, LineList5].forEach(list => {
+      list.forEach(({ coordinates }: any) => {
+        utilsAddLines({
+          viewer: viewerRef,
+          lines: coordinates,
+        });
+      });
+    });
+  }, [viewerRef, boundaryCoordinate]);
+
+  useEffect(() => {
+    if (!viewerRef) return;
+
+    const handler = new Cesium.ScreenSpaceEventHandler(viewerRef.scene.canvas);
+    handler.setInputAction(
+      (movement: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
+        const cartesian = viewerRef.scene.pickPosition(movement.position);
+        if (cartesian) {
+          const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+          const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+          const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+          const height = cartographic.height;
+          console.log('더블클릭 3D 좌표 (lon, lat, height):', {
+            longitude,
+            latitude,
+            height,
+          });
+        }
+      },
+      Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+    );
+
+    // 컴포넌트 언마운트 시 핸들러 정리
+    return () => {
+      handler.destroy();
+    };
+  }, [viewerRef]);
 
   return (
     <CesiumInitBody

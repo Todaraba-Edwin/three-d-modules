@@ -66,7 +66,7 @@ export const utilsAddLines = ({ viewer, lines }: Props): void => {
             index: curr.index,
             lon: curr.lon,
             lat: curr.lat,
-            height: curr.length - curr.height,
+            height: curr.length + curr.height,
             distance: 0.0,
           },
         ];

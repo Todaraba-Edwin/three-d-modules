@@ -20,7 +20,7 @@ type BoundaryCoordinateType = {
 type positionsType = {
   lon: number;
   lat: number;
-  height?: number;
+  height: number;
   heading?: number;
   scale?: number;
 };
