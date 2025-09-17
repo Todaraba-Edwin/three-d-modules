@@ -551,6 +551,38 @@ export const GLB_ModuleList: GlbListType[] = [
       };
     },
   },
+  {
+    name: 'CCTV2_5',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56560195434649,
+      lon: 126.98015914752635,
+
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+
+  /*
+latitude
+: 
+37.56560195434649
+longitude
+: 
+126.98015914752635
+  */
 ];
 
 // long 서 +, 동 -
