@@ -439,6 +439,118 @@ export const GLB_ModuleList: GlbListType[] = [
       };
     },
   },
+
+  {
+    name: 'EnClosure2_1',
+    type: 'Floor2',
+    url: '/imgs/enclosure.glb',
+    isError: true,
+    positions: {
+      lat: 37.56544416097736,
+      lon: 126.98049775505184,
+      height: 14.3,
+      heading: 66,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_1',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56620406757204,
+      lon: 126.98015218629105,
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_2',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56604131370697,
+      lon: 126.98009912274684,
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 18.2,
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_3',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.565876291329985,
+      lon: 126.98008538485904,
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_4',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56573494346668,
+      lon: 126.9801168271253,
+
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
 ];
 
 // long 서 +, 동 -
@@ -619,18 +731,3 @@ export const LineList5 = [
     ],
   },
 ];
-
-/*
-latitude
-: 
-37.56575614268759
-longitude
-: 
-126.98016233966631
-latitude
-: 
-37.56574396977437
-longitude
-: 
-126.98009730853066
-*/
