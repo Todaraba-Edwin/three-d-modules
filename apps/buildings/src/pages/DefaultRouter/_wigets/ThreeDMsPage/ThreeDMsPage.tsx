@@ -2,19 +2,23 @@ import {
   CesiumInitBody,
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
-  utilsAddLines,
-  // utilsAddLines,
   utilsGetListBoundary,
 } from '@monorepo/shared';
 import { utilsSetInitCameraPosition } from '@monorepo/shared/features/Cesium/04_utils/utilsSetInitCameraPosition';
 import * as Cesium from 'cesium';
 import clsx from 'clsx';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   GLB_ModuleList,
   initCameraPosition,
   LineList,
   LineList2,
+  LineList21,
+  LineList22,
+  LineList23,
+  LineList24,
+  LineList25,
+  LineList26,
   LineList3,
   LineList4,
   LineList5,
@@ -22,6 +26,12 @@ import {
   utilsGetDegreeFromMeter,
   type GlbListType,
 } from './parts/prizm';
+
+const allLineLists: Record<string, any[][][]> = {
+  '1': [LineList, LineList2, LineList3, LineList4, LineList5],
+  '2': [LineList21, LineList22, LineList23, LineList24, LineList25, LineList26],
+  // '3': [LineList31, LineList32, LineList33, LineList34, LineList35],
+};
 
 export const ThreeDMsPage = (): ReactNode => {
   const [glbList, setGlbList] = useState<GlbListType[]>(() => GLB_ModuleList);
@@ -39,6 +49,7 @@ export const ThreeDMsPage = (): ReactNode => {
     initCameraHeight: 1,
     initCameraPosition: initCameraPosition,
   });
+  const lineEntitiesRef = useRef<Cesium.Entity[]>([]);
 
   useSetGltfAsync({
     viewer: viewerRef,
@@ -156,17 +167,86 @@ export const ThreeDMsPage = (): ReactNode => {
     // eslint-disable-next-line
   }, [selectedFloor, selectedType]);
 
-  // // 라인 추가하기
   useEffect(() => {
-    [LineList, LineList2, LineList3, LineList4, LineList5].forEach(list => {
-      list.forEach(({ coordinates }: any) => {
-        utilsAddLines({
-          viewer: viewerRef,
-          lines: coordinates,
+    if (!viewerRef) return;
+
+    lineEntitiesRef.current.forEach(entity =>
+      viewerRef.entities.remove(entity)
+    );
+    lineEntitiesRef.current = [];
+
+    const lonOffset = utilsGetDegreeFromMeter({
+      type: 'lon',
+      meter: 100,
+      lat: initCameraPosition.lat,
+    });
+
+    for (const floor in allLineLists) {
+      const floorNum = parseInt(floor, 10);
+
+      if (
+        selectedType === 'origin' &&
+        selectedFloor !== 0 &&
+        selectedFloor !== floorNum
+      ) {
+        continue;
+      }
+
+      const lists = allLineLists[floor];
+      lists.forEach(lineDef => {
+        lineDef.forEach((line: any) => {
+          // 1. Build the base path from instructions
+          const basePath: any[] = [];
+          if (line.coordinates.length > 0) {
+            basePath.push(line.coordinates[0]);
+
+            for (let i = 1; i < line.coordinates.length; i++) {
+              const instruction = line.coordinates[i];
+              const lastPoint = basePath[basePath.length - 1];
+
+              if (instruction.type === 'vertical') {
+                basePath.push({
+                  ...instruction,
+                  lat: lastPoint.lat,
+                  lon: lastPoint.lon,
+                  height: lastPoint.height + instruction.length,
+                });
+              } else {
+                basePath.push(instruction);
+              }
+            }
+          }
+
+          // 2. Apply dynamic offsets
+          const finalPath = basePath.map(coord => {
+            let height = coord.height;
+            let lon = coord.lon;
+
+            if (selectedType === 'protruding') {
+              height += 30 * (floorNum - 1);
+              if (selectedFloor !== floorNum) {
+                lon += lonOffset;
+              }
+            }
+            return { ...coord, lon, height };
+          });
+
+          // 3. Draw the entity
+          const flatCoords = finalPath.flatMap(p => [p.lon, p.lat, p.height]);
+          if (flatCoords.length < 6) return;
+
+          const entity = viewerRef.entities.add({
+            polyline: {
+              positions: Cesium.Cartesian3.fromDegreesArrayHeights(flatCoords),
+              width: 5,
+              material: Cesium.Color.CYAN,
+            },
+          });
+          lineEntitiesRef.current.push(entity);
         });
       });
-    });
-  }, [viewerRef, boundaryCoordinate]);
+    }
+  }, [selectedFloor, selectedType, viewerRef]);
 
   useEffect(() => {
     if (!viewerRef) return;

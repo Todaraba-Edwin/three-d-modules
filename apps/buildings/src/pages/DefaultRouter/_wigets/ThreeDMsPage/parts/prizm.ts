@@ -645,8 +645,8 @@ export const LineList2 = [
       {
         type: 'horizontal',
         index: 1,
-        lat: 37.56604280824939,
-        lon: 126.98015962508765,
+        lat: 37.565965661041076,
+        lon: 126.98014069031586,
         height: 10,
         distance: 0,
       },
@@ -713,8 +713,8 @@ export const LineList4 = [
       {
         type: 'horizontal',
         index: 1,
-        lat: 37.56588936899734,
-        lon: 126.98014286190538,
+        lat: 37.565965661041076,
+        lon: 126.98014069031586,
         height: 10,
         distance: 0,
       },
@@ -758,6 +758,382 @@ export const LineList5 = [
         lat: 37.56574396977437,
         lon: 126.98009730853066,
         height: 10,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList21 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: startCord.lat,
+        lon: startCord.lon,
+        height: 13.2,
+        distance: 0,
+      },
+      {
+        type: 'vertical',
+        index: 1,
+        lat: startCord.lat,
+        lon: startCord.lon,
+        height: 13.2,
+        length: 6,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList22 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56604280824939,
+        lon: 126.98015962508765,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56604131370697,
+        lon: 126.98009912274684,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList23 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56574433312347,
+        lon: 126.98015646796442,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.565876291329985,
+        lon: 126.98008538485904,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList24 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56574433312347,
+        lon: 126.98015646796442,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56573494346668,
+        lon: 126.9801168271253,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList25 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56574433312347,
+        lon: 126.98015646796442,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56560195434649,
+        lon: 126.98015914752635,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList26 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56604280824939,
+        lon: 126.98015962508765,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56620406757204,
+        lon: 126.98015218629105,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList31 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: startCord.lat,
+        lon: startCord.lon,
+        height: 22.2,
+        distance: 0,
+      },
+      {
+        type: 'vertical',
+        index: 1,
+        lat: startCord.lat,
+        lon: startCord.lon,
+        height: 22.2,
+        length: 5,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 27.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList32 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56604280824939,
+        lon: 126.98015962508765,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.566053659014095,
+        lon: 126.98010462806941,
+        height: 27.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList33 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.565965661041076,
+        lon: 126.98014069031586,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.565974571543656,
+        lon: 126.98008814105461,
+        height: 27.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList34 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56588936899734,
+        lon: 126.98014286190538,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.565890080925726,
+        lon: 126.9800796878212,
+        height: 27.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList35 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565798792874375,
+        lon: 126.98029629355457,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 1,
+        lat: 37.56569781253095,
+        lon: 126.98026287115246,
+        height: 27.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56574396977437,
+        lon: 126.98009730853066,
+        height: 27.2,
         distance: 0,
       },
     ],
