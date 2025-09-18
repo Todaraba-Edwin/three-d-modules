@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
-import { type ReactNode } from 'react';
+import { Package } from 'lucide-react';
+import { type PropsWithChildren, type ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 
 export const CardLayout = ({
@@ -99,4 +100,13 @@ export const CardContent = ({
   ...props
 }: React.ComponentProps<'span'>): ReactNode => {
   return <section className={clsx(className, 'space-y-6')} {...props} />;
+};
+
+export const CardFooter = ({ children }: PropsWithChildren): ReactNode => {
+  return (
+    <div className='text-center text-xs text-gray-500 bg-gray-50 p-3 rounded-lg'>
+      <Package className='w-4 h-4 inline mr-1' />
+      {children}
+    </div>
+  );
 };

@@ -1,6 +1,6 @@
 import { Button, Input } from '@/_common/components';
 import clsx from 'clsx';
-import { Building2, Eye, EyeOff, Package } from 'lucide-react';
+import { Building2, Eye, EyeOff } from 'lucide-react';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
@@ -199,10 +199,7 @@ export const LoginPage = (): ReactNode => {
                 ))}
               </div>
             </div>
-            <div className='text-center text-xs text-gray-500 bg-gray-50 p-3 rounded-lg'>
-              <Package className='w-4 h-4 inline mr-1' />
-              {MANUFACTURE_INFO.PROGRAM_PROVIDER}
-            </div>
+            <LO.CardFooter children={MANUFACTURE_INFO.PROGRAM_PROVIDER} />
           </LO.CardContent>
         </LO.CardLBody>
         {isFocusLogin && (
