@@ -7,3 +7,7 @@ type menuListsType = {
   path: string;
   desc?: string;
 };
+
+type onClosePortalType = {
+  onClosePortal?: () => void;
+};

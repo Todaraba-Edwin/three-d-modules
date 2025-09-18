@@ -1,21 +1,13 @@
+import { Button, Input } from '@/_common/components';
 import clsx from 'clsx';
-import { AlertTriangle, Building2, Eye, EyeOff, Package } from 'lucide-react';
+import { Building2, Eye, EyeOff, Package } from 'lucide-react';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../../../../_common/components/Button';
 import { MANUFACTURE_INFO, QUICKSTART_LOGIN_LIST } from '../../_shared';
-import { Input } from './features/Input';
-import {
-  CardContent,
-  CardDesc,
-  CardHeader,
-  CardIconBox,
-  CardLayout,
-  CardLBody,
-  CardSpan,
-  CardTitle,
-} from './features/LoginCard';
+import { LoginActivityDetectedPortal } from '../_reactPortals';
+import * as LO from './features/LoginCard';
+
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const LoginPage = (): ReactNode => {
@@ -95,26 +87,26 @@ export const LoginPage = (): ReactNode => {
           : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100'
       )}
     >
-      <CardLayout>
-        <CardLBody>
-          <CardHeader>
-            <CardIconBox>
+      <LO.CardLayout>
+        <LO.CardLBody>
+          <LO.CardHeader>
+            <LO.CardIconBox>
               <Building2 className='w-8 h-8 text-white' />
-            </CardIconBox>
-            <CardTitle children={MANUFACTURE_INFO.PROJECT_NAME} />
-            <CardDesc>
-              <CardSpan
+            </LO.CardIconBox>
+            <LO.CardTitle children={MANUFACTURE_INFO.PROJECT_NAME} />
+            <LO.CardDesc>
+              <LO.CardSpan
                 spanType='text-sm'
                 className='bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'
                 children={MANUFACTURE_INFO.PROJECT_DESC}
               />
-              <CardSpan
+              <LO.CardSpan
                 spanType='text-xs-pre-line'
                 children={MANUFACTURE_INFO.PROJECT_FULL_NAME}
               />
-            </CardDesc>
-          </CardHeader>
-          <CardContent>
+            </LO.CardDesc>
+          </LO.CardHeader>
+          <LO.CardContent>
             <form className='space-y-4' onSubmit={onSubmit}>
               <div className=' space-y-2'>
                 <label
@@ -211,57 +203,16 @@ export const LoginPage = (): ReactNode => {
               <Package className='w-4 h-4 inline mr-1' />
               {MANUFACTURE_INFO.PROGRAM_PROVIDER}
             </div>
-          </CardContent>
-        </CardLBody>
+          </LO.CardContent>
+        </LO.CardLBody>
         {isFocusLogin && (
-          <div className='fixed top-0 left-0 w-full h-full'>
-            <div className='w-full h-full bg-gray-600 opacity-40' />
-            <div className='absolute w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4'>
-              <div className=' bg-white p-4  rounded-2xl'>
-                <div className='space-y-4'>
-                  <div className='flex items-center gap-2'>
-                    <AlertTriangle className='w-5 h-5 text-amber-500' />
-                    로그인 이력 감지
-                  </div>
-
-                  <div className='space-y-3'>
-                    <div className='bg-amber-50 border border-amber-200 rounded-lg p-3'>
-                      <p className='text-sm font-medium text-amber-800'>
-                        현재 다른 위치에서 이 계정으로 접속 중입니다. 계속하시면
-                        기존 접속은 종료됩니다.
-                      </p>
-                    </div>
-
-                    <div className='flex flex-col gap-2 '>
-                      <Button
-                        onClick={onForceSubmit}
-                        className='flex-1 bg-amber-500 hover:bg-amber-600  text-white'
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          <>
-                            <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2'></div>
-                            현재 PC에서 로그인 중...
-                          </>
-                        ) : (
-                          '현재 PC에서 로그인'
-                        )}
-                      </Button>
-                      <Button
-                        variant='outline'
-                        onClick={() => setIsFocusLogin(false)}
-                        className='flex-1'
-                      >
-                        취소
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <LoginActivityDetectedPortal
+            isLoading={isLoading}
+            onForceSubmit={onForceSubmit}
+            onClosePortal={() => setIsFocusLogin(false)}
+          />
         )}
-      </CardLayout>
+      </LO.CardLayout>
     </div>
   );
 };
