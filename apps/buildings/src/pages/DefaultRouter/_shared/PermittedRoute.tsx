@@ -2,10 +2,9 @@ import { DefaultPathEnum } from '@/_common/const';
 import { useAuthStore } from '@/_common/zustandStores';
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 const { ROOT } = DefaultPathEnum;
 
-export const PermittedRoute = ({
+const PermittedRoute = ({
   validationPath,
   pathPages,
 }: {
@@ -31,4 +30,17 @@ export const PermittedRoute = ({
   if (!findPath || !pathPages[findPath.path])
     return <div>{findPath ? findPath.label : ''} 페이지 개발 중...</div>;
   return pathPages[findPath.path];
+};
+
+export const PermittedRouteOption = ({
+  path,
+  pathPages,
+}: {
+  path: string;
+  pathPages: Record<string, ReactNode>;
+}): RouterOptionType => {
+  return {
+    path,
+    element: <PermittedRoute validationPath={path} pathPages={pathPages} />,
+  };
 };

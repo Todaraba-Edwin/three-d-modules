@@ -1,3 +1,4 @@
+import { utilsStoreResets } from '@/_common/zustandStores/utilsStoreResets';
 import { utilsCheckAuth } from '@/_templates/loader/loaders';
 import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
@@ -10,9 +11,6 @@ import {
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
-const VITE_API_URL = import.meta.env.VITE_API_URL;
-
-import { utilsStoreResets } from '@/_common/zustandStores/utilsStoreResets';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
 import {
@@ -21,6 +19,7 @@ import {
   noneIcon,
 } from '../../../../_common/const/routerPaths';
 import { GNBTooltipPortal } from '../_reactPortals/GNBTooltipPortal';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 type Props = PropsWithChildren & {
   nickname?: string;

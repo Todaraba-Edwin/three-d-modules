@@ -1,7 +1,7 @@
-import { DefaultPathEnum, menuLists } from '@/_common/const';
+import * as Const from '@/_common/const';
 import { type ReactNode } from 'react';
 import { type RouteObject } from 'react-router-dom';
-import { PermittedRoute } from './_shared';
+import { PermittedRouteOption } from './_shared';
 import * as Wigets from './_wigets';
 
 const {
@@ -12,57 +12,44 @@ const {
   NETWORK_MS,
   FACILITY_MS,
   NOT_FOUND,
-} = DefaultPathEnum;
+} = Const.DefaultPathEnum;
 
 const pathPages: Record<string, ReactNode> = {
   [ROOT]: <Wigets.HomeDashboardPage />,
   [THREE_D_MS]: <Wigets.ThreeDMsPage />,
   [SYSTEM_INFO.BASE]: <Wigets.SystemInfoPage />,
 
-  // 중첩 레이아웃 - Outlet
+  // ⚠️ 중첩라우팅 Layout With Outlet
   [SYSTEM_ADMIN.BASE]: <Wigets.SystemAdminOutlet />,
   [NETWORK_MS.BASE]: <Wigets.NMSRouterOutlet />,
   [FACILITY_MS]: <Wigets.FMSRouterOutlet />,
 };
 
-const NestedRoutesOptions = ({ path }: { path: string }): RouterOptionType => {
-  return {
-    path,
-    element: <PermittedRoute validationPath={path} pathPages={pathPages} />,
-  };
-};
-
 export const DefaultRouter = (): RouteObject[] => {
-  const otherRoutes = menuLists
-    .slice(1)
-    .filter(
-      ({ path }) =>
-        ![
-          SYSTEM_ADMIN.BASE as string,
-          FACILITY_MS as string,
-          NETWORK_MS.BASE as string,
-        ].includes(path)
-    );
+  const restRoutes = Const.pathWithoutNestedRouter({
+    nestedPaths: [
+      SYSTEM_ADMIN.BASE as string,
+      FACILITY_MS as string,
+      NETWORK_MS.BASE as string,
+    ],
+  });
 
   return [
     {
-      path: DefaultPathEnum.ROOT,
+      path: ROOT,
       element: <Wigets.DefaultMainOutlet />,
       children: [
         { index: true, element: pathPages[ROOT] },
         { path: NOT_FOUND, element: <div>찾을 수 없음</div> },
 
         // ✅ 중첩라우팅이 필요하지 않은 일반 경로 PATHS
-        ...otherRoutes.map(({ path }) => ({
-          path,
-          element: (
-            <PermittedRoute validationPath={path} pathPages={pathPages} />
-          ),
-        })),
+        ...restRoutes.map(({ path }) => {
+          return PermittedRouteOption({ path, pathPages });
+        }),
 
-        // ⚠️ 중첩라우팅 : SYSTEM_ADMIN.BASE
         {
-          ...NestedRoutesOptions({ path: SYSTEM_ADMIN.BASE }),
+          // ⚠️ 중첩라우팅 : SYSTEM_ADMIN.BASE
+          ...PermittedRouteOption({ path: SYSTEM_ADMIN.BASE, pathPages }),
           children: [
             { index: true, element: <Wigets.UserManagementPage /> },
             {
@@ -72,9 +59,9 @@ export const DefaultRouter = (): RouteObject[] => {
           ],
         },
 
-        // ⚠️ 중첩라우팅 : NETWORK_MS.BASE
         {
-          ...NestedRoutesOptions({ path: NETWORK_MS.BASE }),
+          // ⚠️ 중첩라우팅 : NETWORK_MS.BASE
+          ...PermittedRouteOption({ path: NETWORK_MS.BASE, pathPages }),
           children: [
             { index: true, element: <Wigets.NMSTopology /> },
             {
@@ -92,9 +79,9 @@ export const DefaultRouter = (): RouteObject[] => {
           ],
         },
 
-        // ⚠️ 중첩라우팅 : FACILITY_MS
         {
-          ...NestedRoutesOptions({ path: FACILITY_MS }),
+          // ⚠️ 중첩라우팅 : FACILITY_MS
+          ...PermittedRouteOption({ path: FACILITY_MS, pathPages }),
           children: [{ index: true, element: <Wigets.FMSDeviceInfo /> }],
         },
       ],

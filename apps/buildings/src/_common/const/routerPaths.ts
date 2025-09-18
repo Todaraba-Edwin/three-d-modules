@@ -76,3 +76,11 @@ export const menuLists: menuListsType[] = [
     desc: '시스템을 설정합니다.',
   },
 ];
+
+export const pathWithoutNestedRouter = ({
+  nestedPaths,
+}: {
+  nestedPaths: string[];
+}): menuListsType[] => {
+  return menuLists.slice(1).filter(({ path }) => !nestedPaths.includes(path));
+};
