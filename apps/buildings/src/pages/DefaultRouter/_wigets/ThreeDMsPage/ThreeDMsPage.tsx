@@ -19,6 +19,11 @@ import {
   LineList24,
   LineList25,
   LineList26,
+  LineList27,
+  LineList28,
+  LineList291,
+  LineList292,
+  LineList293,
   LineList3,
   LineList4,
   LineList5,
@@ -48,7 +53,19 @@ type LineListType = LineDefinition[];
 
 const allLineLists: Record<string, LineListType[]> = {
   '1': [LineList, LineList2, LineList3, LineList4, LineList5],
-  '2': [LineList21, LineList22, LineList23, LineList24, LineList25, LineList26],
+  '2': [
+    LineList21,
+    LineList22,
+    LineList23,
+    LineList24,
+    LineList25,
+    LineList26,
+    LineList27,
+    LineList28,
+    LineList291,
+    LineList292,
+    LineList293,
+  ],
   // '3': [LineList31, LineList32, LineList33, LineList34, LineList35],
 };
 

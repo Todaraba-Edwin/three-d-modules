@@ -574,6 +574,120 @@ export const GLB_ModuleList: GlbListType[] = [
       };
     },
   },
+  {
+    name: 'CCTV2_6',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56551621696619,
+      lon: 126.98094382482931,
+
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_7',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.5657193644578,
+      lon: 126.98088995799405,
+
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_8',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56584479435457,
+      lon: 126.98084441056204,
+
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_9',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56597154147753,
+      lon: 126.98078316136137,
+
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
+  {
+    name: 'CCTV2_10',
+    type: 'Floor2',
+    url: '/imgs/cctv.glb',
+    isError: true,
+    positions: {
+      lat: 37.56597454991434,
+      lon: 126.98045846620448,
+      height: 18.2,
+      heading: 0,
+    },
+    get cameraPosition(): cameraPositionType {
+      return {
+        lon: this.positions.lon,
+        lat:
+          this.positions.lat -
+          utilsGetDegreeFromMeter({ type: 'lat', meter: 160 }),
+        height: 0, // 조금 위쪽
+        heading: 0,
+      };
+    },
+  },
 
   /*
 latitude
@@ -627,6 +741,8 @@ export const LineList = [
     ],
   },
 ];
+
+
 
 export const LineList2 = [
   {
@@ -790,8 +906,48 @@ export const LineList21 = [
       {
         type: 'horizontal',
         index: 2,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
+        lat: 37.56538591385158,
+        lon: 126.98033087631181,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 3,
+        lat: 37.565615959960105,
+        lon: 126.98020266219233,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 4,
+        lat: 37.565736985456404,
+        lon: 126.98014744768788,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 5,
+        lat: 37.565886842153546,
+        lon: 126.98011325289674,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 6,
+        lat: 37.56603793137929,
+        lon: 126.98012835422475,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 7,
+        lat: 37.56619317104714,
+        lon: 126.9801853942748,
         height: 19.2,
         distance: 0,
       },
@@ -808,16 +964,8 @@ export const LineList22 = [
       {
         type: 'horizontal',
         index: 0,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
-        height: 19.2,
-        distance: 0,
-      },
-      {
-        type: 'horizontal',
-        index: 1,
-        lat: 37.56604280824939,
-        lon: 126.98015962508765,
+        lat: 37.56603793137929,
+        lon: 126.98012835422475,
         height: 19.2,
         distance: 0,
       },
@@ -842,19 +990,12 @@ export const LineList23 = [
       {
         type: 'horizontal',
         index: 0,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
+        lat: 37.565886842153546,
+        lon: 126.98011325289674,
         height: 19.2,
         distance: 0,
       },
-      {
-        type: 'horizontal',
-        index: 1,
-        lat: 37.56574433312347,
-        lon: 126.98015646796442,
-        height: 19.2,
-        distance: 0,
-      },
+
       {
         type: 'horizontal',
         index: 2,
@@ -876,19 +1017,12 @@ export const LineList24 = [
       {
         type: 'horizontal',
         index: 0,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
+        lat: 37.565736985456404,
+        lon: 126.98014744768788,
         height: 19.2,
         distance: 0,
       },
-      {
-        type: 'horizontal',
-        index: 1,
-        lat: 37.56574433312347,
-        lon: 126.98015646796442,
-        height: 19.2,
-        distance: 0,
-      },
+
       {
         type: 'horizontal',
         index: 2,
@@ -910,16 +1044,8 @@ export const LineList25 = [
       {
         type: 'horizontal',
         index: 0,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
-        height: 19.2,
-        distance: 0,
-      },
-      {
-        type: 'horizontal',
-        index: 1,
-        lat: 37.56574433312347,
-        lon: 126.98015646796442,
+        lat: 37.565615959960105,
+        lon: 126.98020266219233,
         height: 19.2,
         distance: 0,
       },
@@ -944,16 +1070,8 @@ export const LineList26 = [
       {
         type: 'horizontal',
         index: 0,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
-        height: 19.2,
-        distance: 0,
-      },
-      {
-        type: 'horizontal',
-        index: 1,
-        lat: 37.56604280824939,
-        lon: 126.98015962508765,
+        lat: 37.56619317104714,
+        lon: 126.9801853942748,
         height: 19.2,
         distance: 0,
       },
@@ -962,6 +1080,176 @@ export const LineList26 = [
         index: 2,
         lat: 37.56620406757204,
         lon: 126.98015218629105,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList27 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: startCord.lat,
+        lon: startCord.lon,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.565553612182875,
+        lon: 126.98078790116345,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 3,
+        lat: 37.565673565239344,
+        lon: 126.9807199565644,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 4,
+        lat: 37.56579561929208,
+        lon: 126.98065193467355,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 5,
+        lat: 37.56590403564518,
+        lon: 126.98058741444882,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 6,
+        lat: 37.56602889116317,
+        lon: 126.98051757760756,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 7,
+        lat: 37.56597454991434,
+        lon: 126.98045846620448,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList28 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565553612182875,
+        lon: 126.98078790116345,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56551621696619,
+        lon: 126.98094382482931,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList291 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.565673565239344,
+        lon: 126.9807199565644,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.5657193644578,
+        lon: 126.98088995799405,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList292 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.56579561929208,
+        lon: 126.98065193467355,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56584479435457,
+        lon: 126.98084441056204,
+        height: 19.2,
+        distance: 0,
+      },
+    ],
+  },
+];
+
+export const LineList293 = [
+  {
+    connection_IN: 'A시설물',
+    connection_OUT: 'B시설물',
+    totalDistance: 0,
+    coordinates: [
+      {
+        type: 'horizontal',
+        index: 0,
+        lat: 37.56602889116317,
+        lon: 126.98051757760756,
+        height: 19.2,
+        distance: 0,
+      },
+      {
+        type: 'horizontal',
+        index: 2,
+        lat: 37.56597154147753,
+        lon: 126.98078316136137,
         height: 19.2,
         distance: 0,
       },
