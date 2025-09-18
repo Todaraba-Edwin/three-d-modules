@@ -3,7 +3,8 @@ import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
 import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
-import { Confirm } from '@/pages/DefaultRouter/_wigets/_reactPortals/Confirm';
+
+import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { CircleCheckBig, CircleX, Settings, Trash2 } from 'lucide-react';
@@ -52,11 +53,11 @@ const Badge = ({ className, ...props }: React.ComponentProps<'span'>) => {
   );
 };
 
-type ConfirmState = {
+type ConfirmPortalState = {
   isOpen: boolean;
   title: string;
   content: ReactNode;
-  onConfirm: () => void;
+  onConfirmPortal: () => void;
 } | null;
 
 export const LeftSectionRoleManagement = (): ReactNode => {
@@ -68,7 +69,8 @@ export const LeftSectionRoleManagement = (): ReactNode => {
     queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
     queryFn: () => apiClient.get('system-admin/permissions-roles').json(),
   });
-  const [confirmState, setConfirmState] = useState<ConfirmState>(null);
+  const [confirmState, setConfirmPortalState] =
+    useState<ConfirmPortalState>(null);
 
   const { mutate: deleteRole } = useDeleteRole(
     () => {
@@ -76,7 +78,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
         selectedRoleId: '',
         selectedRoleName: '',
       });
-      setConfirmState(null);
+      setConfirmPortalState(null);
       queryClient.invalidateQueries({
         queryKey: queryKey.systemAdmin.summary(),
       });
@@ -89,7 +91,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
           const users = roleInfo.users;
 
           const showUserNum = 3;
-          setConfirmState({
+          setConfirmPortalState({
             isOpen: true,
             title: '강제 삭제 확인',
             content: (
@@ -119,28 +121,28 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                 </p>
               </div>
             ),
-            onConfirm: () => {
+            onConfirmPortal: () => {
               deleteRole({ roleId: variables.roleId, force: true });
             },
           });
         } else {
           alert(`Error: ${response.message}`);
-          setConfirmState(null);
+          setConfirmPortalState(null);
         }
         // eslint-disable-next-line
       } catch (e) {
         alert('An unexpected error occurred.');
-        setConfirmState(null);
+        setConfirmPortalState(null);
       }
     }
   );
 
   const handleDeleteClick = (roleId: number, roleName: string) => {
-    setConfirmState({
+    setConfirmPortalState({
       isOpen: true,
       title: '역할 삭제 확인',
       content: `'${roleName}' 역할을 삭제하시겠습니까?`,
-      onConfirm: () => {
+      onConfirmPortal: () => {
         deleteRole({ roleId });
       },
     });
@@ -317,14 +319,14 @@ export const LeftSectionRoleManagement = (): ReactNode => {
         }
       />
       {confirmState?.isOpen && (
-        <Confirm
+        <ConfirmPortal
           title={confirmState.title}
-          onConfirm={confirmState.onConfirm}
-          onCancel={() => setConfirmState(null)}
+          onConfirmPortal={confirmState.onConfirmPortal}
+          onCancel={() => setConfirmPortalState(null)}
           confirmVariant='destructive'
         >
           {confirmState.content}
-        </Confirm>
+        </ConfirmPortal>
       )}
     </>
   );

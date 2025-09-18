@@ -1,3 +1,3 @@
-export * from './Confirm';
+export * from './ConfirmPortal';
 export * from './ExpirationSessionPortal';
-export * from './GNBTooltip';
+export * from './GNBTooltipPortal';

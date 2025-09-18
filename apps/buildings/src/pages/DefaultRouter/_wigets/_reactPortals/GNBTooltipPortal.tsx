@@ -7,16 +7,16 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-type GNBTooltipProps = PropsWithChildren & {
+type GNBTooltipPortalProps = PropsWithChildren & {
   targetRef: RefObject<HTMLElement | null>;
   weightRight: number;
 };
 
-export const GNBTooltip = ({
+export const GNBTooltipPortal = ({
   children,
   weightRight,
   targetRef,
-}: GNBTooltipProps): ReactNode => {
+}: GNBTooltipPortalProps): ReactNode => {
   const [position, setPosition] = useState<{
     top: number;
     left: number;
@@ -36,7 +36,7 @@ export const GNBTooltip = ({
 
   return createPortal(
     <div
-      className='GNBTooltip z-[9999] absolute px-3 py-2 ml-2 bg-black text-white rounded text-sm whitespace-nowrap'
+      className='GNBTooltipPortal z-[9999] absolute px-3 py-2 ml-2 bg-black text-white rounded text-sm whitespace-nowrap'
       style={{
         top: position.top,
         left: position.left,

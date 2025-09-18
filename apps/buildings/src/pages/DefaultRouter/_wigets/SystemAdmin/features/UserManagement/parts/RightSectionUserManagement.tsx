@@ -4,7 +4,7 @@ import { Button } from '@/_common/components/Button';
 import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
 import { useSystemAdminAddUSerStore } from '@/_common/zustandStores/useSystemAdminAddUSerStore';
-import { Confirm } from '@/pages/DefaultRouter/_wigets/_reactPortals/Confirm';
+import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Trash2 } from 'lucide-react';
@@ -23,18 +23,19 @@ export type UserWithRole = {
   role_code: string;
 };
 
-type ConfirmState = {
+type ConfirmPortalState = {
   isOpen: boolean;
   title: string;
   content: ReactNode;
-  onConfirm: () => void;
+  onConfirmPortal: () => void;
 } | null;
 
 export const RightSectionUserManagement = (): ReactNode => {
   const { isEditModeRole, targetEditRole } = useSystemAdminAddRoleStore();
   const { selectedRoleId, selectedRoleName } = useSyStemAdminSelectedRole();
   const queryClient = useQueryClient();
-  const [confirmState, setConfirmState] = useState<ConfirmState>(null);
+  const [confirmState, setConfirmPortalState] =
+    useState<ConfirmPortalState>(null);
 
   const {
     // isShowPassword,
@@ -72,21 +73,21 @@ export const RightSectionUserManagement = (): ReactNode => {
       queryClient.invalidateQueries({
         queryKey: queryKey.systemAdmin.summary(),
       });
-      setConfirmState(null);
+      setConfirmPortalState(null);
     },
     onError: error => {
       console.error('Error deleting user(s):', error);
       alert('사용자 삭제 중 오류가 발생했습니다.');
-      setConfirmState(null);
+      setConfirmPortalState(null);
     },
   });
 
   const handleDeleteClick = (userId: number, username: string) => {
-    setConfirmState({
+    setConfirmPortalState({
       isOpen: true,
       title: '사용자 삭제 확인',
       content: `'${username}' 사용자를 삭제하시겠습니까?`,
-      onConfirm: () => {
+      onConfirmPortal: () => {
         deleteUserMutation([userId]);
       },
     });
@@ -174,14 +175,14 @@ export const RightSectionUserManagement = (): ReactNode => {
         }
       />
       {confirmState?.isOpen && (
-        <Confirm
+        <ConfirmPortal
           title={confirmState.title}
-          onConfirm={confirmState.onConfirm}
-          onCancel={() => setConfirmState(null)}
+          onConfirmPortal={confirmState.onConfirmPortal}
+          onCancel={() => setConfirmPortalState(null)}
           confirmVariant='destructive'
         >
           {confirmState.content}
-        </Confirm>
+        </ConfirmPortal>
       )}
     </>
   );

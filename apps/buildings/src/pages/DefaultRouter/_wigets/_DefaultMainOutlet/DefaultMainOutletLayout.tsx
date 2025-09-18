@@ -20,7 +20,7 @@ import {
   menuLists,
   noneIcon,
 } from '../../../../_common/const/routerPaths';
-import { GNBTooltip } from '../_reactPortals/GNBTooltip';
+import { GNBTooltipPortal } from '../_reactPortals/GNBTooltipPortal';
 
 type Props = PropsWithChildren & {
   nickname?: string;
@@ -156,12 +156,11 @@ export const DefaultMainOutletLayout = ({
                   {!isMobileMode &&
                     (!isGnbOpen || is3DmsMode) &&
                     hoveredItem === list.path && (
-                      <GNBTooltip
+                      <GNBTooltipPortal
                         targetRef={menuRefs.current[index]}
                         weightRight={194}
-                      >
-                        {list.label}
-                      </GNBTooltip>
+                        children={list.label}
+                      />
                     )}
                 </li>
               );
