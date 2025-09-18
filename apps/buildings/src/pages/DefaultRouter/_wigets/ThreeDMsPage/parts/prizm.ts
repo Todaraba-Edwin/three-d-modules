@@ -742,8 +742,6 @@ export const LineList = [
   },
 ];
 
-
-
 export const LineList2 = [
   {
     connection_IN: 'A시설물',

@@ -69,6 +69,20 @@ const allLineLists: Record<string, LineListType[]> = {
   // '3': [LineList31, LineList32, LineList33, LineList34, LineList35],
 };
 
+function computeCircle(radius: number): Cesium.Cartesian2[] {
+  const points: Cesium.Cartesian2[] = [];
+  for (let i = 0; i <= 360; i += 10) {
+    const angle = Cesium.Math.toRadians(i);
+    points.push(
+      new Cesium.Cartesian2(
+        radius * Math.cos(angle),
+        radius * Math.sin(angle)
+      )
+    );
+  }
+  return points;
+}
+
 export const ThreeDMsPage = (): ReactNode => {
   const [glbList, setGlbList] = useState<GlbListType[]>(() => GLB_ModuleList);
   const [selectedType, setSelectedType] = useState<'origin' | 'protruding'>(
@@ -267,23 +281,78 @@ export const ThreeDMsPage = (): ReactNode => {
             return { ...coord, lon, height };
           });
 
-          // 3. Determine Material and draw
+          // 3. Determine Material
           const material =
             selectedType === 'protruding' && selectedFloor !== floorNum
               ? Cesium.Color.CYAN.withAlpha(0.3)
               : Cesium.Color.CYAN;
 
-          const flatCoords = finalPath.flatMap(p => [p.lon, p.lat, p.height]);
-          if (flatCoords.length < 6) return;
+          // 4. Draw segments
+          for (let i = 0; i < finalPath.length - 1; i++) {
+            const p1 = finalPath[i];
+            const p2 = finalPath[i + 1];
 
-          const entity = viewerRef.entities.add({
-            polyline: {
-              positions: Cesium.Cartesian3.fromDegreesArrayHeights(flatCoords),
-              width: 5,
-              material: material,
-            },
-          });
-          lineEntitiesRef.current.push(entity);
+            // Check if vertical
+            if (
+              p1.lon === p2.lon &&
+              p1.lat === p2.lat &&
+              p1.height !== p2.height
+            ) {
+              // Vertical segment: draw a cylinder
+              const p1_cartesian = Cesium.Cartesian3.fromDegrees(
+                p1.lon,
+                p1.lat,
+                p1.height
+              );
+              const p2_cartesian = Cesium.Cartesian3.fromDegrees(
+                p2.lon,
+                p2.lat,
+                p2.height
+              );
+              const midpoint = Cesium.Cartesian3.lerp(
+                p1_cartesian,
+                p2_cartesian,
+                0.5,
+                new Cesium.Cartesian3()
+              );
+              const length = Cesium.Cartesian3.distance(
+                p1_cartesian,
+                p2_cartesian
+              );
+
+              const entity = viewerRef.entities.add({
+                position: midpoint,
+                cylinder: {
+                  length: length,
+                  topRadius: 0.2,
+                  bottomRadius: 0.2,
+                  material: material,
+                },
+              });
+              lineEntitiesRef.current.push(entity);
+            } else {
+              // Horizontal/angled segment: draw a polylineVolume
+              const flatCoords = [
+                p1.lon,
+                p1.lat,
+                p1.height,
+                p2.lon,
+                p2.lat,
+                p2.height,
+              ];
+              if (flatCoords.length < 6) return;
+
+              const entity = viewerRef.entities.add({
+                polylineVolume: {
+                  positions:
+                    Cesium.Cartesian3.fromDegreesArrayHeights(flatCoords),
+                  shape: computeCircle(0.2),
+                  material: material,
+                },
+              });
+              lineEntitiesRef.current.push(entity);
+            }
+          }
         });
       });
     }
