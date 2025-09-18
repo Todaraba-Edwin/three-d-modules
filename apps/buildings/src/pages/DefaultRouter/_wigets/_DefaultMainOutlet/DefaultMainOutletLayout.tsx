@@ -24,7 +24,7 @@ import { GNBTooltip } from '../_reactPortals/GNBTooltip';
 
 type Props = PropsWithChildren & {
   nickname?: string;
-  permissionPaths: any[];
+  permissionPaths: PermissionsType[];
   setIsFocusLogin: Dispatch<React.SetStateAction<boolean>>;
 };
 

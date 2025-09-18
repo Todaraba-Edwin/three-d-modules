@@ -19,7 +19,6 @@ export const NMSSwitchInfoLeftSection = ({
         onClick={() => setSelectedSwitch(coreSwitchInfo)}
         className={clsx(
           'w-full text-left p-3 rounded-lg border-2',
-          // eslint-disable-next-line
           selectedSwitch?.id === coreSwitchInfo.id
             ? 'border-blue-500 bg-blue-50'
             : 'hover:bg-gray-100'

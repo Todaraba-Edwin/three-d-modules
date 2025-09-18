@@ -10,7 +10,7 @@ export const useCesiumInitNoneGlobe = ({
   boundaryCoordinate,
   initCameraPosition,
 }: Ty.useCesiumInitNoneGlobeProps): Ty.useCesiumInitReturn & {
-  setViewer: any;
+  setViewer: Ty.useEffectCesiumViewerProps['setViewer'];
 } => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewer, setViewer] = useState<Cesium.Viewer | null>(() => null);

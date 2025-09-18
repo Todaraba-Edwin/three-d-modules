@@ -41,7 +41,10 @@ export const accessSwitches = Array.from({ length: 20 }, (_, i) => ({
 }));
 
 // Updated mock data to be port-centric
-export const extendSwitch: Record<number, any> = {
+export const extendSwitch: Record<
+  number,
+  { port: number; id: number; name: string }[]
+> = {
   1: [{ port: 10, id: 201, name: `EXT-${1} 액세스 스위치` }],
 };
 

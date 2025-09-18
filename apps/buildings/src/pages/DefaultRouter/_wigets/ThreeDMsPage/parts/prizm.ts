@@ -139,7 +139,26 @@ export const SelectedFloorWithType: Record<
       heading: 100,
       pitch: -70,
     },
+    5: {
+      lat:
+        initCameraPosition.lat +
+        utilsGetDegreeFromMeter({
+          type: 'lat',
+          meter: 160,
+        }),
+      lon:
+        initCameraPosition.lon +
+        utilsGetDegreeFromMeter({
+          type: 'lon',
+          meter: 200,
+          lat: initCameraPosition.lat,
+        }),
+      height: 300,
+      heading: 100,
+      pitch: -70,
+    },
   },
+
   ['protruding']: {
     1: {
       lat:
@@ -889,7 +908,7 @@ export const LineList21 = [
         index: 0,
         lat: startCord.lat,
         lon: startCord.lon,
-        height: 13.2,
+        height: 10,
         distance: 0,
       },
       {
@@ -897,8 +916,8 @@ export const LineList21 = [
         index: 1,
         lat: startCord.lat,
         lon: startCord.lon,
-        height: 13.2,
-        length: 6,
+        height: 10,
+        length: 9.2,
         distance: 0,
       },
       {

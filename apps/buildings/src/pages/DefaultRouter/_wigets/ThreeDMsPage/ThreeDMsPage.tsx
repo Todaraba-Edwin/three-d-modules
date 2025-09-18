@@ -233,7 +233,8 @@ export const ThreeDMsPage = (): ReactNode => {
 
       if (
         selectedType === 'origin' &&
-        selectedFloor !== 0 &&
+        selectedFloor > 0 &&
+        selectedFloor < 5 &&
         selectedFloor !== floorNum
       ) {
         continue;
@@ -362,7 +363,7 @@ export const ThreeDMsPage = (): ReactNode => {
               (next && (next.lon !== point.lon || next.lat !== point.lat));
 
             // Adjust sphere height: +0.1 for horizontal points, 0 for vertical points.
-            const heightAdjustment = isHorizontalPoint ? -0.00 : 0;
+            const heightAdjustment = isHorizontalPoint ? -0.0 : 0;
 
             const entity = viewerRef.entities.add({
               position: Cesium.Cartesian3.fromDegrees(
@@ -382,33 +383,33 @@ export const ThreeDMsPage = (): ReactNode => {
     }
   }, [selectedFloor, selectedType, viewerRef]);
 
-  useEffect(() => {
-    if (!viewerRef) return;
+  // useEffect(() => {
+  //   if (!viewerRef) return;
 
-    const handler = new Cesium.ScreenSpaceEventHandler(viewerRef.scene.canvas);
-    handler.setInputAction(
-      (movement: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
-        const cartesian = viewerRef.scene.pickPosition(movement.position);
-        if (cartesian) {
-          const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-          const longitude = Cesium.Math.toDegrees(cartographic.longitude);
-          const latitude = Cesium.Math.toDegrees(cartographic.latitude);
-          const height = cartographic.height;
-          console.log('더블클릭 3D 좌표 (lon, lat, height):', {
-            longitude,
-            latitude,
-            height,
-          });
-        }
-      },
-      Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
-    );
+  //   const handler = new Cesium.ScreenSpaceEventHandler(viewerRef.scene.canvas);
+  //   handler.setInputAction(
+  //     (movement: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
+  //       const cartesian = viewerRef.scene.pickPosition(movement.position);
+  //       if (cartesian) {
+  //         const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+  //         const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+  //         const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+  //         const height = cartographic.height;
+  //         console.log('더블클릭 3D 좌표 (lon, lat, height):', {
+  //           longitude,
+  //           latitude,
+  //           height,
+  //         });
+  //       }
+  //     },
+  //     Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+  //   );
 
-    // 컴포넌트 언마운트 시 핸들러 정리
-    return () => {
-      handler.destroy();
-    };
-  }, [viewerRef]);
+  //   // 컴포넌트 언마운트 시 핸들러 정리
+  //   return () => {
+  //     handler.destroy();
+  //   };
+  // }, [viewerRef]);
 
   return (
     <CesiumInitBody
@@ -419,7 +420,7 @@ export const ThreeDMsPage = (): ReactNode => {
         <div className='absolute top-10 right-4 z-40 flex flex-col items-end gap-2 '>
           <div className='flex  gap-x-1 rounded-lg bg-gray-900/50 p-1 backdrop-blur-sm'>
             {selectedType === 'origin'
-              ? [0, 1, 2, 3, 4].map(list => (
+              ? [0, 1, 2, 3, 4, 5].map(list => (
                   <button
                     key={list}
                     className={clsx(
@@ -432,7 +433,13 @@ export const ThreeDMsPage = (): ReactNode => {
                     onClick={() => {
                       setSelectedFloor(list);
                     }}
-                    children={list === 0 ? '층 선택 해제' : `${list}층`}
+                    children={
+                      list === 0
+                        ? '층 선택 해제'
+                        : list === 5
+                          ? '건물 투명화'
+                          : `${list}층`
+                    }
                   />
                 ))
               : [1, 2, 3, 4].map(list => (

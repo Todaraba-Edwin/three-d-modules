@@ -13,7 +13,8 @@ export const utilsUpdateGltfPosition = ({
   if (!glbList.length) return;
 
   const { primitives } = viewer.scene;
-  const targetType = glbList[selectedFloor].type;
+  const targetFloor = selectedFloor === 5 ? 0 : selectedFloor;
+  const targetType = glbList[targetFloor].type;
 
   glbList.forEach(
     (
@@ -47,8 +48,6 @@ export const utilsUpdateGltfPosition = ({
             model.colorBlendMode = Cesium.ColorBlendMode.MIX;
             model.colorBlendAmount = 0;
 
-            console.log('isError', isError, name);
-
             if (isError) {
               model.silhouetteColor = Cesium.Color.ORANGERED;
               model.silhouetteSize = 5.0;
@@ -58,7 +57,7 @@ export const utilsUpdateGltfPosition = ({
             model.colorBlendMode = Cesium.ColorBlendMode.MIX;
             model.colorBlendAmount = 0;
           } else if (idx > 0) {
-            if (idx === selectedFloor) {
+            if (idx === targetFloor) {
               model.color = Cesium.Color.WHITE.withAlpha(1);
               model.colorBlendMode = Cesium.ColorBlendMode.MIX;
               model.colorBlendAmount = 0;

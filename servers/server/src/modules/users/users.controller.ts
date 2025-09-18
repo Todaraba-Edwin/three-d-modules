@@ -12,8 +12,9 @@ import {
 } from '@nestjs/common';
 import { API_PREFIX, USERS } from '@src_apps/common/api/index';
 
-import { CreateUserDto, UpsertRoleDto, USER_TN_USERS } from './dto';
+import { CreateUserDto, UpsertRoleDto, USER_TC_ROLES, USER_TN_USERS } from './dto';
 import { UsersService } from './users.service';
+import { DeleteResult } from 'typeorm';
 
 const { SEGMENTS, PARAMS } = USERS;
 
@@ -27,7 +28,17 @@ export class UsersController {
    * @returns 사용자 정보 목록 (역할 포함)
    */
   @Get()
-  async findAllUsers(@Query('role_id') roleId?: string) {
+  async findAllUsers(@Query('role_id') roleId?: string): Promise<
+    {
+      id: number;
+      username: string;
+      nickname: string;
+      email: string;
+      last_login_at: Date;
+      role_code: string;
+      role_name: string;
+    }[]
+  > {
     const roleIdNum = roleId ? parseInt(roleId, 10) : undefined;
     return this.usersService.getAllUsersWithRoles(roleIdNum);
   }
@@ -39,7 +50,7 @@ export class UsersController {
    * @returns 삭제 결과
    */
   @Delete()
-  async deleteUsers(@Body('userIds') userIds: number[]) {
+  async deleteUsers(@Body('userIds') userIds: number[]): Promise<DeleteResult> {
     return this.usersService.deleteUsers(userIds);
   }
 
@@ -49,7 +60,9 @@ export class UsersController {
    * @returns 생성된 사용자 정보 (비밀번호 제외)
    */
   @Post()
-  async createUser(@Body() body: CreateUserDto) {
+  async createUser(
+    @Body() body: CreateUserDto,
+  ): Promise<Omit<USER_TN_USERS, 'password'>> {
     return this.usersService.createUser(body);
   }
 
@@ -60,7 +73,9 @@ export class UsersController {
    */
   @Post('check-username')
   @HttpCode(HttpStatus.OK)
-  async checkUsername(@Body() body: { username: string }) {
+  async checkUsername(@Body() body: { username: string }): Promise<{
+    message: string;
+  }> {
     await this.usersService.checkUsername(body.username);
     return { message: 'Username is available' };
   }
@@ -72,7 +87,9 @@ export class UsersController {
    */
   @Post('check-email')
   @HttpCode(HttpStatus.OK)
-  async checkEmail(@Body() body: { email: string }) {
+  async checkEmail(@Body() body: { email: string }):Promise<{
+    message: string;
+}> {
     await this.usersService.checkEmail(body.email);
     return { message: 'Email is available' };
   }
@@ -83,7 +100,7 @@ export class UsersController {
    * @returns 생성 또는 업데이트된 역할 정보
    */
   @Post('role')
-  async upsertRole(@Body() body: UpsertRoleDto) {
+  async upsertRole(@Body() body: UpsertRoleDto):Promise<USER_TC_ROLES> {
     return this.usersService.upsertRoleWithPermissions(body);
   }
 
@@ -99,9 +116,7 @@ export class UsersController {
   ): Promise<USER_TN_USERS> {
     const user = await this.usersService.getUserByUsername(userName);
     if (!user) {
-      throw new NotFoundException(
-        `"${userName}"은 이미 사용 중에 있습니다.`,
-      );
+      throw new NotFoundException(`"${userName}"은 이미 사용 중에 있습니다.`);
     }
     return user;
   }

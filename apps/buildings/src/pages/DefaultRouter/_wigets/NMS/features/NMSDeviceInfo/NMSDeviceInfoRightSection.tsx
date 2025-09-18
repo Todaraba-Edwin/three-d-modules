@@ -1,11 +1,7 @@
 import clsx from 'clsx';
 import { Cable, Circle } from 'lucide-react';
 import { useMemo, type ReactNode } from 'react';
-import {
-  devices,
-  accessSwitches,
-  coreSwitch,
-} from '../../_shared/const';
+import { accessSwitches, coreSwitch, devices } from '../../_shared/const';
 
 const allSwitches = [
   { ...coreSwitch, type: 'Core', name: 'MDF-코어 스위치' },
@@ -16,7 +12,15 @@ const switchesMap = new Map(allSwitches.map(sw => [sw.id.toString(), sw]));
 
 export const NMSDeviceInfoRightSection = ({
   selectedDevice,
-}: any): ReactNode => {
+}: {
+  selectedDevice: {
+    id: string;
+    name: string;
+    ip: string;
+    mac: string;
+    status: string;
+  };
+}): ReactNode => {
   const connectionInfo = useMemo(() => {
     if (!selectedDevice) return null;
 
@@ -78,7 +82,9 @@ export const NMSDeviceInfoRightSection = ({
                 연결 정보
               </h4>
               <p>
-                <span className='font-semibold'>{connectionInfo.switchName}</span>
+                <span className='font-semibold'>
+                  {connectionInfo.switchName}
+                </span>
                 <span> 스위치의 </span>
                 <span className='font-semibold'>{connectionInfo.portId}번</span>
                 <span> 포트에 연결되어 있습니다.</span>

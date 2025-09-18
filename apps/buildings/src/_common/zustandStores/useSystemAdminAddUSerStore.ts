@@ -4,10 +4,10 @@ type useSystemAdminAddUSerStoreType = {
   isShowPassword: boolean;
   isShowAddUserNode: boolean;
   isEditModeUser: boolean;
-  targetEditUser: any | undefined;
+  // targetEditUser: any | undefined;
   toggleIsShowPassword: () => void;
   openIsShowAddUserNode: () => void;
-  openIsEditModeUser: (_state: { targetEditUser: any }) => void;
+  // openIsEditModeUser: (_state: { targetEditUser: any }) => void;
   closeAllStated: () => void;
   reset: () => void;
 };
@@ -29,21 +29,21 @@ export const useSystemAdminAddUSerStore =
       set({
         isShowAddUserNode: true,
         isEditModeUser: false,
-        targetEditUser: undefined,
+        // targetEditUser: undefined,
       });
     },
-    openIsEditModeUser: _state => {
-      set({
-        isShowAddUserNode: false,
-        isEditModeUser: true,
-        targetEditUser: _state.targetEditUser,
-      });
-    },
+    // openIsEditModeUser: _state => {
+    //   set({
+    //     isShowAddUserNode: false,
+    //     isEditModeUser: true,
+    //     targetEditUser: _state.targetEditUser,
+    //   });
+    // },
     closeAllStated: () => {
       set({
         isShowAddUserNode: false,
         isEditModeUser: false,
-        targetEditUser: undefined,
+        // targetEditUser: undefined,
       });
     },
     reset() {

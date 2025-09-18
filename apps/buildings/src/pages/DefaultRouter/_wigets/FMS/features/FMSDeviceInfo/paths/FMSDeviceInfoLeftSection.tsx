@@ -6,6 +6,14 @@ import { Controller, type Control } from 'react-hook-form';
 import Select from 'react-select';
 import type { FmsDeviceForm } from '../FMSDeviceInfo';
 
+type DeviceType = {
+  id: string;
+  name: string;
+  ip: string;
+  mac: string;
+  status: string;
+};
+
 const deviceTypeOptions = [
   { value: '', label: '전체' },
   { value: 'CCTV', label: 'CCTV' },
@@ -20,9 +28,9 @@ export const FMSDeviceInfoLeftSection = ({
   setSelectedDevice,
 }: {
   control: Control<FmsDeviceForm>;
-  filteredDevices: any[];
-  selectedDevice: any;
-  setSelectedDevice: (device: any) => void;
+  filteredDevices: DeviceType[];
+  selectedDevice: DeviceType;
+  setSelectedDevice: React.Dispatch<React.SetStateAction<DeviceType>>;
 }): ReactNode => {
   return (
     <div className='border-2 rounded-lg p-4 space-y-4 grid grid-rows-[auto_1fr] min-h-0 max-xl:h-[400px]'>
@@ -57,7 +65,7 @@ export const FMSDeviceInfoLeftSection = ({
         />
       </div>
       <div className='overflow-y-auto space-y-2 pr-2 pt-2'>
-        {filteredDevices.map((device: any) => (
+        {filteredDevices.map((device: DeviceType) => (
           <button
             key={device.id}
             onClick={() => setSelectedDevice(device)}

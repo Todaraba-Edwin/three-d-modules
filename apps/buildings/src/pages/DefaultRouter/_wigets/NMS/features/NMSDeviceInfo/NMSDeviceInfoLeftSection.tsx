@@ -3,13 +3,29 @@ import clsx from 'clsx';
 import { Search } from 'lucide-react';
 import { type ReactNode } from 'react';
 
+type DeviceType = {
+  id: string;
+  name: string;
+  ip: string;
+  mac: string;
+  status: string;
+};
+
+type Props = {
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  searchTerm: string;
+  selectedDevice: DeviceType;
+  setSelectedDevice: React.Dispatch<React.SetStateAction<DeviceType>>;
+  filteredDevices: DeviceType[];
+};
+
 export const NMSDeviceInfoLeftSection = ({
   setSearchTerm,
   searchTerm,
   selectedDevice,
   setSelectedDevice,
   filteredDevices,
-}: any): ReactNode => {
+}: Props): ReactNode => {
   return (
     <div className='border-2 rounded-lg p-4 space-y-4 grid grid-rows-[auto_1fr] min-h-0 max-xl:h-[400px]'>
       <div className='relative'>
@@ -22,7 +38,7 @@ export const NMSDeviceInfoLeftSection = ({
         />
       </div>
       <div className='overflow-y-auto space-y-2 pr-2'>
-        {filteredDevices.map((device: any) => (
+        {filteredDevices.map((device: DeviceType) => (
           <button
             key={device.id}
             onClick={() => setSelectedDevice(device)}

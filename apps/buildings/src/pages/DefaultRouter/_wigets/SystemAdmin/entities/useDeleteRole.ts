@@ -1,6 +1,11 @@
 import { apiClient } from '@/_common/apis/apiCreate';
 import { queryKey } from '@/_common/apis/queryKey';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  type DefaultError,
+  type UseMutationResult,
+} from '@tanstack/react-query';
 
 type DeleteRoleParams = {
   roleId: number;
@@ -9,8 +14,9 @@ type DeleteRoleParams = {
 
 export const useDeleteRole = (
   onSuccessCallback?: () => void,
-  onErrorCallback?: (error: any, variables: DeleteRoleParams) => void
-) => {
+  // eslint-disable-next-line
+  onErrorCallback?: (_error: any, _variables: DeleteRoleParams) => void
+): UseMutationResult<unknown, DefaultError, DeleteRoleParams, unknown> => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -24,6 +30,7 @@ export const useDeleteRole = (
       });
       if (onSuccessCallback) onSuccessCallback();
     },
+    // eslint-disable-next-line
     onError: (error: any, variables) => {
       if (onErrorCallback) onErrorCallback(error, variables);
     },

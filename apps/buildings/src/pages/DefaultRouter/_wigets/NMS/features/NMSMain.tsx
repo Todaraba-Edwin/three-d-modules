@@ -40,7 +40,7 @@ export const NMSMain = (): ReactNode => {
       name: accessSwitches[0].name,
     };
   });
-  const [selectedDevice, setSelectedDevice] = useState<any | null>(null);
+  const [selectedDevice, setSelectedDevice] = useState<number | null>(null);
   const onSetSelectedSwitch = (switchPortNum: number) => () => {
     setSelectedSwitch(switchPortNum);
     setSelectedDevice(null);
@@ -69,6 +69,7 @@ export const NMSMain = (): ReactNode => {
   });
 
   useEffect(() => {
+    if (!selectedDevice) return;
     const device = devices?.[randomDevices]?.[selectedDevice];
     if (!device) return;
 
@@ -537,7 +538,7 @@ export const NMSMain = (): ReactNode => {
                 </span>
               </dd>
               <dt>위치</dt>
-              <dd className='text-gray-500'>{`본관 > ${selectedDevice > 10 ? 2 : 1}층 > ${selectedDevice > 10 ? '2-1반' : '1-1반'}`}</dd>
+              <dd className='text-gray-500'>{`본관 > ${!selectedDevice ? '-' : selectedDevice > 10 ? 2 : 1}층 > ${!selectedDevice ? '-' : selectedDevice > 10 ? '2-1반' : '1-1반'}`}</dd>
               <dt>설치업체 </dt>
               <dd className='text-gray-500'>AA 솔류션</dd>
               <dt>설치시기 </dt>

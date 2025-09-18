@@ -7,7 +7,7 @@ import {
 import { hash } from 'bcrypt';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import {
   CreateUserDto,
   USER_TC_MENUS,
@@ -91,7 +91,17 @@ export class UsersService implements OnApplicationBootstrap {
    * @description 모든 사용자의 목록을 해당 사용자의 역할 이름과 함께 반환합니다.
    * @returns 사용자 목록 (역할 정보 포함)
    */
-  async getAllUsersWithRoles(roleId?: number): Promise<any[]> {
+  async getAllUsersWithRoles(roleId?: number): Promise<
+    {
+      id: number;
+      username: string;
+      nickname: string;
+      email: string;
+      last_login_at: Date;
+      role_code: string;
+      role_name: string;
+    }[]
+  > {
     const query = this.usersRepository
       .createQueryBuilder('user')
       .select([
@@ -110,7 +120,6 @@ export class UsersService implements OnApplicationBootstrap {
     }
 
     const users = await query.getRawMany();
-
     return users;
   }
 
@@ -120,7 +129,7 @@ export class UsersService implements OnApplicationBootstrap {
    * @param userIds - 삭제할 사용자 ID들의 배열
    * @returns 삭제 결과
    */
-  async deleteUsers(userIds: number[]): Promise<any> {
+  async deleteUsers(userIds: number[]): Promise<DeleteResult> {
     const result = await this.usersRepository.delete(userIds);
     return result;
   }

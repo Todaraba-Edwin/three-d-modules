@@ -11,15 +11,27 @@ const allDevices = Object.values(deviceDetails).map((device, index) => ({
 
 export const NMSDeviceInfo = (): ReactNode => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDevice, setSelectedDevice] = useState<any>(allDevices[0]);
+  const [selectedDevice, setSelectedDevice] = useState<{
+    id: string;
+    name: string;
+    ip: string;
+    mac: string;
+    status: string;
+  }>(allDevices[0]);
 
   const filteredDevices = useMemo(() => {
     if (!searchTerm) return allDevices;
     return allDevices.filter(
-      (device: any) =>
+      (device: {
+        id: string;
+        name: string;
+        ip: string;
+        mac: string;
+        status: string;
+      }) =>
         device.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         device.ip.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        device.mac.toLowerCase().includes(searchTerm.toLowerCase()),
+        device.mac.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
 

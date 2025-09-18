@@ -20,10 +20,16 @@ export const FMSDeviceInfo = (): ReactNode => {
     defaultValues: { searchTerm: '', deviceType: null },
   });
 
-  const [selectedDevice, setSelectedDevice] = useState<any>(allDevices[0]);
+  const [selectedDevice, setSelectedDevice] = useState<{
+    id: string;
+    name: string;
+    ip: string;
+    mac: string;
+    status: string;
+  }>(allDevices[0]);
 
   const searchTerm = watch('searchTerm');
-  const deviceType = watch('deviceType');
+  // const deviceType = watch('deviceType');
 
   const filteredDevices = useMemo(() => {
     return allDevices.filter(device => {
@@ -36,7 +42,7 @@ export const FMSDeviceInfo = (): ReactNode => {
         device.mac.toLowerCase().includes(searchTerm.toLowerCase());
       return typeMatch && termMatch;
     });
-  }, [searchTerm, deviceType]);
+  }, [searchTerm]);
 
   return (
     <div className='bg-white p-4 rounded-lg h-full grid grid-rows-[auto_1fr] gap-4'>
