@@ -1,32 +1,15 @@
-import { utilsStoreResets } from '@/_common/zustandStores/utilsStoreResets';
-import { utilsCheckAuth } from '@/_templates/loader/loaders';
+import { DefaultPathEnum, menuLists, noneIcon } from '@/_common/const';
+import { utilsStoreResets } from '@/_common/zustandStores';
+import { utilsCheckAuth } from '@/_templates';
 import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
 import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
-import {
-  createRef,
-  useRef,
-  useState,
-  type Dispatch,
-  type PropsWithChildren,
-  type ReactNode,
-} from 'react';
+import { createRef, useRef, useState, type ReactNode } from 'react';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import {
-  DefaultPathEnum,
-  menuLists,
-  noneIcon,
-} from '../../../../_common/const/routerPaths';
-import { GNBTooltipPortal } from '../_reactPortals/GNBTooltipPortal';
+import { GNBTooltipPortal } from '../_reactPortals';
+import { NavSection } from './features/NavSection';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-
-type Props = PropsWithChildren & {
-  nickname?: string;
-  permissionPaths: PermissionsType[];
-  setIsFocusLogin: Dispatch<React.SetStateAction<boolean>>;
-};
-
 const isMobileMode = isMobile || isMobileSafari;
 
 export const DefaultMainOutletLayout = ({
@@ -34,7 +17,7 @@ export const DefaultMainOutletLayout = ({
   nickname,
   permissionPaths,
   setIsFocusLogin,
-}: Props): ReactNode => {
+}: DefaultMainOutletLayoutProps): ReactNode => {
   const { layout } = usePathSegments();
   const is3DmsMode = layout.includes(
     DefaultPathEnum.THREE_D_MS.replace('/', '')
@@ -66,33 +49,24 @@ export const DefaultMainOutletLayout = ({
   );
 
   return (
-    // ✅ 최소규격 : IPadMini(768px) - theme.min-limit
-    <div className='Layout max-h-screen h-screen flex bg-gray-100 min-w-min-limit'>
-      <nav
-        className={clsx(
-          `Layout_GNB`,
-          'relative',
-          'z-50',
-          `grid grid-rows-[auto_1fr]`,
-          `flex-shrink-0 border-r-3 shadow-sm transition-all duration-300`,
-          'overflow-hidden',
-          {
-            'bg-white': !is3DmsMode,
-            'bg-black text-white': is3DmsMode,
-            'w-gnb-open': !is3DmsMode && isGnbOpen,
-            'w-gnb-close': !isGnbOpen || is3DmsMode,
-          }
-        )}
-      >
+    <div className='DefaultMainOutletLayout'>
+      <NavSection {...{ is3DmsMode, isGnbOpen }}>
         <h2
-          className={clsx(
-            'py-4',
-            { 'cursor-pointer': !is3DmsMode },
-            'max-w-gnb-open'
-          )}
-          onClick={onToggleIsGnbOpen}
+          {...{
+            className: clsx(
+              'py-4',
+              { 'cursor-pointer': !is3DmsMode },
+              'max-w-gnb-open'
+            ),
+            onClick: onToggleIsGnbOpen,
+          }}
         >
-          <img src='/imgs/seoul-university.png' alt='Logo' />
+          <img
+            {...{
+              src: '/imgs/seoul-university.png',
+              alt: 'Logo',
+            }}
+          />
         </h2>
         <div
           className={clsx(
@@ -111,7 +85,7 @@ export const DefaultMainOutletLayout = ({
               'overflow-y-auto'
             )}
           >
-            {permissionPaths.map((list, index) => {
+            {permissionPaths.map((list: PermissionsType, idx: number) => {
               const isActive = list.path.replace(/\//g, '') === layout;
               // ✅ ICON을 찾지 못한 경우에 대한 기본 아이콘 설정
               const ICON =
@@ -120,7 +94,7 @@ export const DefaultMainOutletLayout = ({
 
               return (
                 <li
-                  ref={menuRefs.current[index]}
+                  ref={menuRefs.current[idx]}
                   key={list.path}
                   onMouseEnter={() => setHoveredItem(list.path)}
                   onMouseLeave={() => setHoveredItem(null)}
@@ -156,9 +130,11 @@ export const DefaultMainOutletLayout = ({
                     (!isGnbOpen || is3DmsMode) &&
                     hoveredItem === list.path && (
                       <GNBTooltipPortal
-                        targetRef={menuRefs.current[index]}
-                        weightRight={194}
-                        children={list.label}
+                        {...{
+                          targetRef: menuRefs.current[idx],
+                          weightRight: 194,
+                          children: list.label,
+                        }}
                       />
                     )}
                 </li>
@@ -230,7 +206,7 @@ export const DefaultMainOutletLayout = ({
             {isGnbOpen && <p children='로그아웃' />}
           </button>
         </footer>
-      </nav>
+      </NavSection>
 
       {/* 3. 오른쪽 메인 컨텐츠 영역 */}
       {is3DmsMode ? (

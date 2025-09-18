@@ -11,9 +11,7 @@ export const DefaultMainOutlet = (): ReactNode => {
 
   return (
     <DefaultMainOutletLayout
-      setIsFocusLogin={setIsFocusLogin}
-      permissionPaths={permissionPaths}
-      nickname={nickname}
+      {...{ setIsFocusLogin, permissionPaths, nickname }}
     >
       <RD.Outlet />
       {isFocusLogin && <ExpirationSessionPortal />}

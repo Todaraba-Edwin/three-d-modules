@@ -1,9 +1,11 @@
+/* Unknown at rule @tailwindcss(unknownAtRules) -> Extension : PostCSS Language Support */
+/* TailWind의 기본 box-sizig은 content-box */
+/* custom global settings */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* TailWind의 기본 box-sizig은 content-box */
-/* custom global settings */
 *,
 *::before,
 *::after {
@@ -21,4 +23,11 @@
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+}
+
+@layer components {
+  .DefaultMainOutletLayout {
+    @apply h-screen flex bg-gray-100 min-w-min-limit;
+    /* ✅ 최소규격 : IPadMini(768px) */
+  }
 }
