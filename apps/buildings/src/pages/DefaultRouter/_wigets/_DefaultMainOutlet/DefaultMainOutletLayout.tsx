@@ -7,8 +7,13 @@ import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { createRef, useRef, useState, type ReactNode } from 'react';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { GNBTooltipPortal } from '../_reactPortals';
-import { NavSection } from './features/NavSection';
+import {
+  DefaultMainLayout,
+  NavBody,
+  NavHeader,
+  NavListItem,
+  NavSection,
+} from './features';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 const isMobileMode = isMobile || isMobileSafari;
 
@@ -49,99 +54,36 @@ export const DefaultMainOutletLayout = ({
   );
 
   return (
-    <div className='DefaultMainOutletLayout'>
+    <DefaultMainLayout>
       <NavSection {...{ is3DmsMode, isGnbOpen }}>
-        <h2
-          {...{
-            className: clsx(
-              'py-4',
-              { 'cursor-pointer': !is3DmsMode },
-              'max-w-gnb-open'
-            ),
-            onClick: onToggleIsGnbOpen,
-          }}
-        >
-          <img
-            {...{
-              src: '/imgs/seoul-university.png',
-              alt: 'Logo',
-            }}
-          />
-        </h2>
-        <div
-          className={clsx(
-            'overflow-x-hidden',
-            '[scrollbar-width:none]', // Firefox
-            '[&::-webkit-scrollbar]:hidden' // Webkit
-          )}
-        >
-          <ol
-            className={clsx(
-              'w-gnb-open',
-              {
-                'pb-gnb-footer': isGnbOpen,
-                'pb-gnb-footer-close': !isGnbOpen,
-              },
-              'overflow-y-auto'
-            )}
-          >
-            {permissionPaths.map((list: PermissionsType, idx: number) => {
-              const isActive = list.path.replace(/\//g, '') === layout;
-              // ✅ ICON을 찾지 못한 경우에 대한 기본 아이콘 설정
-              const ICON =
-                menuLists.find(({ path }) => path === list.path)?.icon ||
-                noneIcon;
+        <NavHeader {...{ is3DmsMode }} />
+        <NavBody {...{ isGnbOpen }}>
+          {permissionPaths.map((list: PermissionsType, idx: number) => {
+            const isActive = list.path.replace(/\//g, '') === layout;
 
-              return (
-                <li
-                  ref={menuRefs.current[idx]}
-                  key={list.path}
-                  onMouseEnter={() => setHoveredItem(list.path)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                  className={clsx(
-                    'h-[60px]',
-                    'box-border',
-                    'flex items-center',
-                    'w-gnb-open p-4 transition-all duration-300 relative',
-                    'hover:font-semibold',
-                    {
-                      'text-gray-700 hover:text-gray-900':
-                        !isActive && !is3DmsMode,
-                      'text-white hover:text-gray-900': !isActive && is3DmsMode,
-                      'bg-blue-50 text-blue-700 border-r-4 border-blue-700':
-                        isActive,
-                      'border-l-4': isActive && !isGnbOpen,
-                      'hover:px-5': !isActive && isGnbOpen,
-                      'hover:bg-gray-50': !isActive,
-                    }
-                  )}
-                >
-                  <button
-                    disabled={isActive}
-                    onClick={utilsNavigate(list.path)}
-                    className={clsx('w-full flex gap-gnb items-center ')}
-                  >
-                    <ICON className={clsx('font-bold w-gnb-icon h-gnb-icon')} />
-                    <span className={clsx({ hidden: !isGnbOpen })}>
-                      {list.label}
-                    </span>
-                  </button>
-                  {!isMobileMode &&
-                    (!isGnbOpen || is3DmsMode) &&
-                    hoveredItem === list.path && (
-                      <GNBTooltipPortal
-                        {...{
-                          targetRef: menuRefs.current[idx],
-                          weightRight: 194,
-                          children: list.label,
-                        }}
-                      />
-                    )}
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+            const ICON =
+              menuLists.find(({ path }) => path === list.path)?.icon ||
+              noneIcon; // ✅ ICON Default
+
+            return (
+              <NavListItem
+                {...{
+                  ref: menuRefs.current[idx],
+                  list,
+                  isMobileMode,
+                  isActive,
+                  isHoverItem: hoveredItem === list.path,
+                  is3DmsMode,
+                  isGnbOpen,
+                  ICON,
+                  onMouseEnter: () => setHoveredItem(list.path),
+                  onMouseLeave: () => setHoveredItem(null),
+                  listItemOnClick: utilsNavigate(list.path),
+                }}
+              />
+            );
+          })}
+        </NavBody>
         <footer
           className={clsx(
             ` absolute bottom-0`,
@@ -226,6 +168,6 @@ export const DefaultMainOutletLayout = ({
           <div className='overflow-y-auto p-4'>{children}</div>
         </div>
       )}
-    </div>
+    </DefaultMainLayout>
   );
 };

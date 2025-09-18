@@ -30,4 +30,31 @@
     @apply h-screen flex bg-gray-100 min-w-min-limit;
     /* ✅ 최소규격 : IPadMini(768px) */
   }
+  .NavHeader {
+    @apply py-4 max-w-gnb-open;
+  }
+
+  .NavBody {
+    @apply overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+  }
+  .NavOrderedList {
+    @apply w-gnb-open overflow-y-auto;
+  }
+
+  .NavListItem {
+    @apply h-[60px] box-border 
+    flex items-center 
+    w-gnb-open p-4 
+    transition-all duration-300 
+    relative 
+    hover:font-semibold;
+
+    .NavLitsItemsButton {
+      @apply w-full flex gap-gnb items-center;
+    }
+
+    .NavLitsItemsButtonIcon {
+      @apply font-bold w-gnb-icon h-gnb-icon;
+    }
+  }
 }
