@@ -74,10 +74,7 @@ function computeCircle(radius: number): Cesium.Cartesian2[] {
   for (let i = 0; i <= 360; i += 10) {
     const angle = Cesium.Math.toRadians(i);
     points.push(
-      new Cesium.Cartesian2(
-        radius * Math.cos(angle),
-        radius * Math.sin(angle)
-      )
+      new Cesium.Cartesian2(radius * Math.cos(angle), radius * Math.sin(angle))
     );
   }
   return points;
@@ -335,10 +332,10 @@ export const ThreeDMsPage = (): ReactNode => {
               const flatCoords = [
                 p1.lon,
                 p1.lat,
-                p1.height,
+                p1.height - 0.2,
                 p2.lon,
                 p2.lat,
-                p2.height,
+                p2.height - 0.2,
               ];
               if (flatCoords.length < 6) return;
 
@@ -353,6 +350,33 @@ export const ThreeDMsPage = (): ReactNode => {
               lineEntitiesRef.current.push(entity);
             }
           }
+
+          // 5. Draw spheres at each point to connect segments
+          finalPath.forEach((point, i) => {
+            const prev = i > 0 ? finalPath[i - 1] : null;
+            const next = i < finalPath.length - 1 ? finalPath[i + 1] : null;
+
+            // A point is considered 'horizontal' if it connects to a horizontal segment.
+            const isHorizontalPoint =
+              (prev && (prev.lon !== point.lon || prev.lat !== point.lat)) ||
+              (next && (next.lon !== point.lon || next.lat !== point.lat));
+
+            // Adjust sphere height: +0.1 for horizontal points, 0 for vertical points.
+            const heightAdjustment = isHorizontalPoint ? -0.00 : 0;
+
+            const entity = viewerRef.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(
+                point.lon,
+                point.lat,
+                point.height + heightAdjustment
+              ),
+              ellipsoid: {
+                radii: new Cesium.Cartesian3(0.2, 0.2, 0.2),
+                material: material,
+              },
+            });
+            lineEntitiesRef.current.push(entity);
+          });
         });
       });
     }
