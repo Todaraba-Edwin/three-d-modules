@@ -1,17 +1,10 @@
 import clsx from 'clsx';
-import dayjs from 'dayjs';
-import {
-  AlertTriangle,
-  Building2,
-  Eye,
-  EyeOff,
-  Package,
-  Shield,
-} from 'lucide-react';
+import { AlertTriangle, Building2, Eye, EyeOff, Package } from 'lucide-react';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../../_common/components/Button';
+import { MANUFACTURE_INFO, QUICKSTART_LOGIN_LIST } from '../../_shared';
 import { Input } from './features/Input';
 import {
   CardContent,
@@ -24,40 +17,6 @@ import {
   CardTitle,
 } from './features/LoginCard';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-
-const LOGIN_INFO = {
-  PROJECT_NAME: 'PRIZM',
-  PROJECT_FULL_NAME: `Projection planes for resource integration\nin zone-based management`,
-  PROJECT_DESC: '3D 모델 기반 건물관리 시스템',
-  PROGRAM_PROVIDER: `(주) PCN © 2020-${dayjs().format('YYYY')}`,
-};
-
-const Accounts = [
-  {
-    username: 'admin',
-    password: '1234',
-    role: '최고 관리자',
-    description: '최고 관리자 권한',
-    icon: Shield,
-    color: 'bg-red-50 border-red-200 text-red-700',
-  },
-  {
-    username: 'test',
-    password: '1234',
-    role: '중간 관리자',
-    description: '중간 관리자 권한',
-    icon: Shield,
-    color: 'bg-blue-50 border-blue-200 text-blue-700',
-  },
-  {
-    username: 'user',
-    password: '1234',
-    role: '사용자',
-    description: '일반 사용자 권한',
-    icon: Shield,
-    color: 'bg-green-50 border-green-200 text-green-700',
-  },
-];
 
 export const LoginPage = (): ReactNode => {
   const [isFocusLogin, setIsFocusLogin] = useState<boolean>(false);
@@ -121,7 +80,7 @@ export const LoginPage = (): ReactNode => {
       );
   };
 
-  const handleQuickLogin = (account: (typeof Accounts)[0]) => {
+  const handleQuickLogin = (account: (typeof QUICKSTART_LOGIN_LIST)[0]) => {
     setUsername(account.username);
     setPassword(account.password);
     processLogin(account.username, account.password);
@@ -142,16 +101,16 @@ export const LoginPage = (): ReactNode => {
             <CardIconBox>
               <Building2 className='w-8 h-8 text-white' />
             </CardIconBox>
-            <CardTitle children={LOGIN_INFO.PROJECT_NAME} />
+            <CardTitle children={MANUFACTURE_INFO.PROJECT_NAME} />
             <CardDesc>
               <CardSpan
                 spanType='text-sm'
                 className='bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'
-                children={LOGIN_INFO.PROJECT_DESC}
+                children={MANUFACTURE_INFO.PROJECT_DESC}
               />
               <CardSpan
                 spanType='text-xs-pre-line'
-                children={LOGIN_INFO.PROJECT_FULL_NAME}
+                children={MANUFACTURE_INFO.PROJECT_FULL_NAME}
               />
             </CardDesc>
           </CardHeader>
@@ -225,7 +184,7 @@ export const LoginPage = (): ReactNode => {
             <div className='space-y-3 pt-4 border-t border-gray-200'>
               <p className='text-sm text-gray-600 text-center'>빠른 접속</p>
               <div className='space-y-2'>
-                {Accounts.map(account => (
+                {QUICKSTART_LOGIN_LIST.map(account => (
                   <Button
                     key={account.username}
                     variant='outline'
@@ -250,7 +209,7 @@ export const LoginPage = (): ReactNode => {
             </div>
             <div className='text-center text-xs text-gray-500 bg-gray-50 p-3 rounded-lg'>
               <Package className='w-4 h-4 inline mr-1' />
-              {LOGIN_INFO.PROGRAM_PROVIDER}
+              {MANUFACTURE_INFO.PROGRAM_PROVIDER}
             </div>
           </CardContent>
         </CardLBody>
