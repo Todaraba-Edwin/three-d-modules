@@ -18,7 +18,7 @@ const OutletHeader = ({
   onToggleIsGnbOpen: () => void;
 }): ReactNode => {
   return (
-    <div className='bg-white  h-12 p-4 flex items-center gap-2'>
+    <div className='OutletHeader'>
       {!isMobileMode && (
         <button onClick={onToggleIsGnbOpen}>
           {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
@@ -44,9 +44,11 @@ export const OutletSection = ({
 }: Props): ReactNode => {
   const noneTopOutletHeader = is3DmsMode;
 
-  if (noneTopOutletHeader) <>{children}</>;
+  if (noneTopOutletHeader) {
+    return <>{children}</>;
+  }
   return (
-    <section className='flex-grow grid grid-rows-[auto_1fr]'>
+    <section className='OutletSection'>
       <OutletHeader
         {...{
           isMobileMode,

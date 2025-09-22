@@ -383,34 +383,6 @@ export const ThreeDMsPage = (): ReactNode => {
     }
   }, [selectedFloor, selectedType, viewerRef]);
 
-  // useEffect(() => {
-  //   if (!viewerRef) return;
-
-  //   const handler = new Cesium.ScreenSpaceEventHandler(viewerRef.scene.canvas);
-  //   handler.setInputAction(
-  //     (movement: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
-  //       const cartesian = viewerRef.scene.pickPosition(movement.position);
-  //       if (cartesian) {
-  //         const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-  //         const longitude = Cesium.Math.toDegrees(cartographic.longitude);
-  //         const latitude = Cesium.Math.toDegrees(cartographic.latitude);
-  //         const height = cartographic.height;
-  //         console.log('더블클릭 3D 좌표 (lon, lat, height):', {
-  //           longitude,
-  //           latitude,
-  //           height,
-  //         });
-  //       }
-  //     },
-  //     Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
-  //   );
-
-  //   // 컴포넌트 언마운트 시 핸들러 정리
-  //   return () => {
-  //     handler.destroy();
-  //   };
-  // }, [viewerRef]);
-
   return (
     <CesiumInitBody
       isFullHeight
