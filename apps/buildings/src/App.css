@@ -57,4 +57,11 @@
       @apply font-bold w-gnb-icon h-gnb-icon;
     }
   }
+
+  .NavFooter {
+    @apply absolute bottom-0 w-gnb-open
+    transition-all duration-300
+    overflow-hidden
+    grid grid-rows-[1fr_auto]
+  }
 }

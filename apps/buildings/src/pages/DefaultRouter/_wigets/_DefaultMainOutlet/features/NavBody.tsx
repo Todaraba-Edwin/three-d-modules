@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type PropsWithChildren, type ReactNode } from 'react';
+import { useState, type PropsWithChildren, type ReactNode } from 'react';
 import { GNBTooltipPortal } from '../../_reactPortals';
 
 export const NavBody = ({
@@ -30,11 +30,9 @@ export const NavBody = ({
 export const NavListItem = ({
   ref,
   list: { path, label },
-  onMouseEnter,
-  onMouseLeave,
   isMobileMode,
   isActive,
-  isHoverItem,
+  // isHoverItem,
   is3DmsMode,
   isGnbOpen,
   listItemOnClick,
@@ -42,16 +40,18 @@ export const NavListItem = ({
 }: {
   list: PermissionsType;
   ref: React.RefObject<HTMLLIElement>;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
+
   isMobileMode: boolean;
   isActive: boolean;
-  isHoverItem: boolean;
   is3DmsMode: boolean;
   isGnbOpen: boolean;
   listItemOnClick: () => void;
   ICON: LucideIconType;
 }): ReactNode => {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const isHoverItem = hoveredItem === path;
+  const onMouseEnter = () => setHoveredItem(path);
+  const onMouseLeave = () => setHoveredItem(null);
   return (
     <li
       {...{ ref, key: path, onMouseEnter, onMouseLeave }}
