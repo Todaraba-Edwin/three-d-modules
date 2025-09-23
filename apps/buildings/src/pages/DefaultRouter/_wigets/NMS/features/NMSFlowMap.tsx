@@ -4,6 +4,7 @@ import {
   ReactFlowProvider,
   useReactFlow,
   useStoreApi,
+  type CoordinateExtent,
   type Edge,
   type Node,
   type Viewport,
@@ -32,7 +33,7 @@ const getLayoutedElements = (
   direction: 'TB' | 'LR' | 'RL' | 'BT' = 'LR'
 ): { nodes: Node[]; edges: Edge[] } => {
   const isHorizontal = direction === 'LR';
-  dagreGraph.setGraph({ rankdir: direction, align: 'UL', ranksep: 120 }); // Align to Upper-Left
+  dagreGraph.setGraph({ rankdir: direction, align: 'UL', ranksep: 300 }); // Align to Upper-Left
 
   nodes.forEach(node => {
     dagreGraph.setNode(node.id, {
@@ -186,6 +187,38 @@ export const NMSFlowMap = (): ReactNode => {
     return getLayoutedElements(initialNodes, initialEdges, 'LR');
   }, []);
 
+  const translateExtent = useMemo((): CoordinateExtent => {
+    if (nodes.length === 0) {
+      return [
+        [0, 0],
+        [0, 0],
+      ];
+    }
+
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+
+    nodes.forEach(node => {
+      const x = node.position.x;
+      const y = node.position.y;
+      const width = nodeWidth;
+      const height = nodeHeight;
+
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x + width);
+      maxY = Math.max(maxY, y + height);
+    });
+
+    const padding = 100;
+    return [
+      [minX - padding, minY - padding],
+      [maxX + padding, maxY + padding],
+    ];
+  }, [nodes]);
+
   const nodeTypes = useMemo(() => ({ iconNode: IconNode }), []);
 
   const mdfNode = useMemo(
@@ -194,18 +227,25 @@ export const NMSFlowMap = (): ReactNode => {
   );
 
   const defaultViewport: Viewport | undefined = useMemo(() => {
-    if (mdfNode) {
-      // Center the view on the MDF node with a zoom level of 1
-      return {
-        x: mdfNode.position.x + 50,
-        y: mdfNode.position.y + 50,
-        zoom: 1.5,
-      };
-    }
-    return undefined;
+    console.log('translateExtent', translateExtent);
+
+    return {
+      x: translateExtent[1][0] / 2,
+      y: Math.abs(translateExtent[0][1]),
+      zoom: 0.8,
+    };
+    // if (mdfNode) {
+    //   // Center the view on the MDF node with a zoom level of 1
+    //   return {
+    //     x: mdfNode.position.x + 50,
+    //     y: mdfNode.position.y + 50,
+    //     zoom: 1.8,
+    //   };
+    // }
+    // return undefined;
   }, [mdfNode]);
 
-  //   // 포커스 버튼 만들기
+  console.log('nodes', nodes);
 
   return (
     <ReactFlowProvider>
@@ -215,6 +255,7 @@ export const NMSFlowMap = (): ReactNode => {
           edges={edges}
           nodeTypes={nodeTypes}
           defaultViewport={defaultViewport}
+          translateExtent={translateExtent}
           nodesDraggable={false}
           nodesConnectable={false}
           elementsSelectable={false}
@@ -254,7 +295,7 @@ const Button = ({ mdfNode }: { mdfNode: Node | undefined }) => {
       onClick={focusNode}
       className=' absolute top-2 left-2 z-40 p-2 rounded-xl bg-black text-white hover:bg-slate-500 active:bg-black'
     >
-      메인 스위치로 돌아가기
+      메인 스위치로 이동하기
     </button>
   );
 };
