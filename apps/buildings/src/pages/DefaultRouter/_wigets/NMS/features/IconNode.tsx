@@ -66,9 +66,7 @@ const IconNode = ({
     type: 'core' | 'access' | 'device';
   };
 }) => {
-  console.log('data', data);
   const Icon = iconMap[data.icon as keyof typeof iconMap] || HardDrive;
-
   return (
     <>
       {targetPosition && <Handle type='target' position={targetPosition} />}
