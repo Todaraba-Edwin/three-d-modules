@@ -234,8 +234,6 @@ export const NMSFlowMap = (): ReactNode => {
     };
   }, [translateExtent]);
 
-  console.log('');
-
   return (
     <ReactFlowProvider>
       <div className='p-4 h-full bg-white rounded-lg relative'>
@@ -273,8 +271,6 @@ const Button = ({ mdfNode }: { mdfNode: Node | undefined }) => {
         const x = nodes.position.x + nodes.measured.width * 2;
         const y = nodes.position.y + nodes.measured.height * 4.5;
         const zoom = 1.8;
-        console.log('x', x);
-        console.log('y', y);
 
         setCenter(x, y, { zoom, duration: 1200 });
       }
