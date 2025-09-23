@@ -3,8 +3,8 @@ import {
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
   utilsGetListBoundary,
+  utilsSetInitCameraPosition,
 } from '@monorepo/shared';
-import { utilsSetInitCameraPosition } from '@monorepo/shared/features/Cesium/04_utils/utilsSetInitCameraPosition';
 import * as Cesium from 'cesium';
 import clsx from 'clsx';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -66,7 +66,6 @@ const allLineLists: Record<string, LineListType[]> = {
     LineList292,
     LineList293,
   ],
-  // '3': [LineList31, LineList32, LineList33, LineList34, LineList35],
 };
 
 function computeCircle(radius: number): Cesium.Cartesian2[] {

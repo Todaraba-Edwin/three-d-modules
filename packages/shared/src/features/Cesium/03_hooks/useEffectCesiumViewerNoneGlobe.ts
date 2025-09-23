@@ -1,9 +1,9 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
+import { utilsSetInitCameraPosition } from '../02_exportEntitles/utilsSetInitCameraPosition';
 import { utilsClearCesiumLog } from '../04_utils/utilsClearCesiumLog';
 import { utilsRemoteZoomDistance } from '../04_utils/utilsRemoteZoomDistance';
 import type * as Ty from '../05_shared/types';
-import { utilsSetInitCameraPosition } from '../04_utils/utilsSetInitCameraPosition';
 
 const EPSILON = Cesium.Math.toRadians(0.1);
 export const useEffectCesiumViewerNoneGlobe = ({

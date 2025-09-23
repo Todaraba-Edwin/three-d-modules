@@ -1,8 +1,8 @@
 import * as Cesium from 'cesium';
 import throttle from 'lodash/throttle';
 import { utilsGetModelID } from '../04_utils/utilsGetModelID';
-import { utilsSetInitCameraPosition } from '../04_utils/utilsSetInitCameraPosition';
 import type { utilsCesiumFlytoProps } from '../05_shared/types';
+import { utilsSetInitCameraPosition } from './utilsSetInitCameraPosition';
 
 // 초기 위치를 설정할 경우
 export const InitPosition = 'initPosition';

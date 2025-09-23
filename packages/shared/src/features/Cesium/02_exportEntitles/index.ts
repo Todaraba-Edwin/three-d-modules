@@ -8,3 +8,4 @@ export * from './utilsAddLines';
 export * from './utilsAddVerticalLine';
 export * from './utilsCesiumFlyto';
 export * from './utilsGetListBoundary';
+export * from './utilsSetInitCameraPosition';

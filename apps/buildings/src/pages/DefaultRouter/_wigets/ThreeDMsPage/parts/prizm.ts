@@ -733,7 +733,7 @@ export const LineList = [
     totalDistance: 0,
     coordinates: [
       {
-        type: 'horizontal',
+        type: 'vertical',
         index: 0,
         lat: startCord.lat,
         lon: startCord.lon,
@@ -749,14 +749,6 @@ export const LineList = [
         length: 5,
         distance: 0,
       },
-      {
-        type: 'horizontal',
-        index: 3,
-        lat: 37.565798792874375,
-        lon: 126.98029629355457,
-        height: 10,
-        distance: 0,
-      },
     ],
   },
 ];
@@ -767,6 +759,14 @@ export const LineList2 = [
     connection_OUT: 'B시설물',
     totalDistance: 0,
     coordinates: [
+      {
+        type: 'horizontal',
+        index: 3,
+        lat: startCord.lat,
+        lon: startCord.lon,
+        height: 10,
+        distance: 0,
+      },
       {
         type: 'horizontal',
         index: 0,
