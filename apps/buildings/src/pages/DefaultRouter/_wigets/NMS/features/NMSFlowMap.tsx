@@ -229,10 +229,12 @@ export const NMSFlowMap = (): ReactNode => {
   const defaultViewport: Viewport = useMemo(() => {
     return {
       x: translateExtent[1][0] / 2,
-      y: Math.abs(translateExtent[0][1]),
+      y: Math.abs(translateExtent[0][1] / 2),
       zoom: 0.8,
     };
   }, [translateExtent]);
+
+  console.log('');
 
   return (
     <ReactFlowProvider>
@@ -268,11 +270,13 @@ const Button = ({ mdfNode }: { mdfNode: Node | undefined }) => {
 
     if (nodes) {
       if (nodes.measured.width && nodes.measured.height) {
-        const x = nodes.position.x + nodes.measured.width / 2;
-        const y = nodes.position.y + nodes.measured.height / 2;
+        const x = nodes.position.x + nodes.measured.width * 2;
+        const y = nodes.position.y + nodes.measured.height * 4.5;
         const zoom = 1.8;
+        console.log('x', x);
+        console.log('y', y);
 
-        setCenter(x, y, { zoom, duration: 1500 });
+        setCenter(x, y, { zoom, duration: 1200 });
       }
     }
   };
