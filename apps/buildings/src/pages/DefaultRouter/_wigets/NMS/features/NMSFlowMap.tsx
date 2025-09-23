@@ -226,26 +226,13 @@ export const NMSFlowMap = (): ReactNode => {
     [nodes]
   );
 
-  const defaultViewport: Viewport | undefined = useMemo(() => {
-    console.log('translateExtent', translateExtent);
-
+  const defaultViewport: Viewport = useMemo(() => {
     return {
       x: translateExtent[1][0] / 2,
       y: Math.abs(translateExtent[0][1]),
       zoom: 0.8,
     };
-    // if (mdfNode) {
-    //   // Center the view on the MDF node with a zoom level of 1
-    //   return {
-    //     x: mdfNode.position.x + 50,
-    //     y: mdfNode.position.y + 50,
-    //     zoom: 1.8,
-    //   };
-    // }
-    // return undefined;
-  }, [mdfNode]);
-
-  console.log('nodes', nodes);
+  }, [translateExtent]);
 
   return (
     <ReactFlowProvider>
