@@ -5,7 +5,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { NMSHeader } from './features/NMSHeader';
 
 const tabs = [
-  { name: '네트워크 포트별 구성도', href: '/nms' },
+  { name: '네트워크 간소화보기', href: '/nms' },
   { name: '네트워크 플로우맵', href: '/nms/flow-map' },
   { name: '네트워크 연결정보', href: '/nms/info' },
   { name: '스위치 상세정보', href: '/nms/info-switch' },
