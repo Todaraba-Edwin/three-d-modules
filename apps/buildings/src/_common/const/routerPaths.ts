@@ -20,6 +20,7 @@ export const DefaultPathEnum = {
   NETWORK_MS: {
     BASE: '/nms',
     SEGMENTS: {
+      FLOW_MAP: 'flow-map',
       INFO: 'info',
       INFO_SWITCH: 'info-switch',
       INFO_DEVICE: 'info-device',

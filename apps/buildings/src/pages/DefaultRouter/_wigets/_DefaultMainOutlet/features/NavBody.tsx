@@ -54,7 +54,7 @@ export const NavListItem = ({
   const onMouseLeave = () => setHoveredItem(null);
   return (
     <li
-      {...{ ref, key: path, onMouseEnter, onMouseLeave }}
+      {...{ ref, onMouseEnter, onMouseLeave }}
       className={clsx('NavListItem', {
         'text-gray-700 hover:text-gray-900': !isActive && !is3DmsMode,
         'text-white hover:text-gray-900': !isActive && is3DmsMode,

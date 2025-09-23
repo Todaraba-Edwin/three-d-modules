@@ -57,6 +57,7 @@ export const DefaultMainOutletLayout = ({
 
             return (
               <Feat.NavListItem
+                key={list.id}
                 {...{
                   ref: menuRefs.current[idx],
                   list,

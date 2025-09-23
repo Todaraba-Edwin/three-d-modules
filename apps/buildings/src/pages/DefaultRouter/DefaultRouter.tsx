@@ -65,6 +65,10 @@ export const DefaultRouter = (): RouteObject[] => {
           children: [
             { index: true, element: <Wigets.NMSTopology /> },
             {
+              path: NETWORK_MS.SEGMENTS.FLOW_MAP,
+              element: <Wigets.NMSFlowMap />,
+            },
+            {
               path: NETWORK_MS.SEGMENTS.INFO,
               element: <Wigets.NMSMain />,
             },
