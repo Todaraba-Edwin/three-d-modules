@@ -1,35 +1,40 @@
 USE prizm;
 
-CREATE TABLE `NMS_TN_BUILDINGS` (
+CREATE TABLE `BMS_TN_BUILDINGS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `building_name` varchar(100) UNIQUE NOT NULL,
-   `building_desc` varchar(255) DEFAULT '',
+  `building_desc` varchar(255) DEFAULT '',
   `address` varchar(255),
   `building_image` varchar(255),
-  `latitude` decimal(10,8),
-  `longitude` decimal(11,8)
+  `latitude` DOUBLE NOT NULL,
+  `longitude` DOUBLE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `NMS_TN_FLOORS` (
+CREATE TABLE `BMS_TN_FLOORS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `building_id` bigint NOT NULL,
   `floor_name` varchar(50) NOT NULL,
   `floor_desc` varchar(255) DEFAULT '',
+  `floor_type` ENUM ('SURFACE', 'FLOOR'),
   `floor_glb` varchar(255) NOT NULL,
-  FOREIGN KEY (`building_id`) REFERENCES `NMS_TN_BUILDINGS` (`id`)
+  `latitude` DOUBLE NOT NULL,
+  `longitude` DOUBLE NOT NULL,
+  `height` int DEFAULT 0,
+  `heading` int DEFAULT 0,
+  FOREIGN KEY (`building_id`) REFERENCES `BMS_TN_BUILDINGS` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `NMS_TN_SPACES` (
+CREATE TABLE `BMS_TN_SPACES` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `space_name` varchar(100) NOT NULL,
   `floor_id` bigint NOT NULL,
   `type`  ENUM ('OFFICE', 'ELECTRICAL', 'SERVER', 'RESTROOM'),
-  `latitude` decimal(10,8),
-  `longitude` decimal(11,8),
-  `height` decimal(11,8) DEFAULT 0,
-  `heading` decimal(11,8) DEFAULT 0,
+  `latitude` DOUBLE NOT NULL,
+  `longitude` DOUBLE NOT NULL,
+  `height` int DEFAULT 0,
+  `heading` int DEFAULT 0,
   `glb_name` varchar(100),
-  FOREIGN KEY (`floor_id`) REFERENCES `NMS_TN_FLOORS` (`id`)
+  FOREIGN KEY (`floor_id`) REFERENCES `BMS_TN_FLOORS` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `NMS_TN_ENCLOSURES` (
@@ -40,7 +45,7 @@ CREATE TABLE `NMS_TN_ENCLOSURES` (
   `parent_enclosure_id` bigint,
   `location` json NOT NULL,
   `description` json,
-  FOREIGN KEY (`space_id`) REFERENCES `NMS_TN_SPACES` (`id`),
+  FOREIGN KEY (`space_id`) REFERENCES `BMS_TN_SPACES` (`id`),
   FOREIGN KEY (`parent_enclosure_id`) REFERENCES `NMS_TN_ENCLOSURES` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

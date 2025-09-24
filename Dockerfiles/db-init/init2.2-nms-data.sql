@@ -3,8 +3,16 @@ USE prizm;
 -- ####################################################################
 -- # Initial Data for Buildings
 -- ####################################################################
-INSERT INTO `NMS_TN_BUILDINGS` (`building_name`, `address`, `building_image`,`latitude`, `longitude`) VALUES 
+INSERT INTO `BMS_TN_BUILDINGS` (`building_name`, `address`, `building_image`,`latitude`, `longitude`) VALUES 
 ('강원정보문화산업진흥원', '강원 춘천시 서면 박사로 882 강원창작개발센터', '/media/images/강원정보문화산업진흥원.png', '37.89504', '127.69271');
+
+SET @init_building_id = (SELECT id from BMS_TN_BUILDINGS where building_name = '강원정보문화산업진흥원');
+INSERT INTO `BMS_TN_FLOORS` (`building_id`, `floor_name`, `floor_type`,`floor_glb`,`latitude`, `longitude`, `height`, `heading`) VALUES 
+(@init_building_id, '바닥층', 'SURFACE', '/media/glbs/G1.glb', 37.5667, 126.9784, 0, 0),
+(@init_building_id, '지상1층', 'FLOOR', '/media/glbs/F_01.glb', 37.56535253323751, 126.98043995723785, 0, 0),
+(@init_building_id, '지상2층', 'FLOOR', '/media/glbs/F_02.glb', 37.56535253323751, 126.98043995723785, 0, 0),
+(@init_building_id, '지상3층', 'FLOOR', '/media/glbs/F_03.glb', 37.56535253323751, 126.98043995723785, 0, 0),
+(@init_building_id, '지상4층', 'FLOOR', '/media/glbs/F_04.glb', 37.56535253323751, 126.98043995723785, 0, 0);
 
 
 -- ####################################################################
