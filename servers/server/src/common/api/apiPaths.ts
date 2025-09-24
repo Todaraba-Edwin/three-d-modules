@@ -41,3 +41,12 @@ export const SYSTEM_ADMIN = {
     PERMISSIONS_ROLES: 'permissions-roles',
   },
 };
+
+export const MEDIA_SERVE_ROOT = '/media';
+export const FILES = {
+  SEGMENTS: {
+    BASE: 'files',
+    GET_GIBS: 'glbs',
+  },
+  PARAMS: {},
+};

@@ -2,7 +2,7 @@ USE prizm;
 
 CREATE TABLE `NMS_TN_BUILDINGS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(100) UNIQUE NOT NULL,
+  `building_name` varchar(100) UNIQUE NOT NULL,
   `address` varchar(255),
   `latitude` decimal(10,8),
   `longitude` decimal(11,8)
@@ -11,15 +11,20 @@ CREATE TABLE `NMS_TN_BUILDINGS` (
 CREATE TABLE `NMS_TN_FLOORS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `building_id` bigint NOT NULL,
-  `name` varchar(50) NOT NULL,
+  `floor_name` varchar(50) NOT NULL,
   FOREIGN KEY (`building_id`) REFERENCES `NMS_TN_BUILDINGS` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `NMS_TN_SPACES` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `space_name` varchar(100) NOT NULL,
   `floor_id` bigint NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `type` varchar(50),
+  `type`  ENUM ('OFFICE', 'ELECTRICAL', 'SERVER', 'RESTROOM'),
+  `latitude` decimal(10,8),
+  `longitude` decimal(11,8),
+  `height` decimal(11,8) DEFAULT 0,
+  `heading` decimal(11,8) DEFAULT 0,
+  `glb_name` varchar(100),
   FOREIGN KEY (`floor_id`) REFERENCES `NMS_TN_FLOORS` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

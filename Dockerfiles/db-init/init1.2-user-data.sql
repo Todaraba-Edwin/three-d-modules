@@ -15,10 +15,11 @@ INSERT INTO USER_TC_MENUS (label, path, icon_name, sort_order) VALUES
 ('대시보드', '/', 'HOME', 1),
 ('관리자', '/system-admin', 'SHIELD', 2),
 ('디지털 트윈(3D) 관제', '/3dms', 'BOX', 3),
-('NMS 관리', '/nms', 'NETWORK', 4),
-('FMS 관리', '/fms', 'CAMERA', 5),
-('정보', '/system-info', 'INFO', 6),
-('설정', '/settings', 'SETTINGS', 7);
+('건물 관리', '/buildings', 'BUILDING2', 4),
+('NMS 관리', '/nms', 'NETWORK', 5),
+('FMS 관리', '/fms', 'CAMERA', 6),
+('정보', '/system-info', 'INFO', 7),
+('설정', '/settings', 'SETTINGS', 8);
 
 -- 3. Role-Menu Permissions
 -- Get Role IDs
@@ -30,6 +31,7 @@ SET @user_role_id = (SELECT id from USER_TC_ROLES where role_code = 'USER');
 SET @menu_dashboard_id = (SELECT id from USER_TC_MENUS where path = '/');
 SET @menu_admin_id = (SELECT id from USER_TC_MENUS where path = '/system-admin');
 SET @menu_3dms_id = (SELECT id from USER_TC_MENUS where path = '/3dms');
+SET @menu_bms_id = (SELECT id from USER_TC_MENUS where path = '/buildings');
 SET @menu_nms_id = (SELECT id from USER_TC_MENUS where path = '/nms');
 SET @menu_fms_id = (SELECT id from USER_TC_MENUS where path = '/fms');
 SET @menu_info_id = (SELECT id from USER_TC_MENUS where path = '/system-info');
@@ -40,6 +42,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@admin_main_role_id, @menu_dashboard_id, TRUE),
 (@admin_main_role_id, @menu_admin_id, TRUE),
 (@admin_main_role_id, @menu_3dms_id, TRUE),
+(@admin_main_role_id, @menu_bms_id, TRUE),
 (@admin_main_role_id, @menu_nms_id, TRUE),
 (@admin_main_role_id, @menu_fms_id, TRUE),
 (@admin_main_role_id, @menu_info_id, TRUE),
@@ -50,6 +53,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@admin_sub_role_id, @menu_dashboard_id, TRUE),
 (@admin_sub_role_id, @menu_admin_id, FALSE),
 (@admin_sub_role_id, @menu_3dms_id, TRUE),
+(@admin_sub_role_id, @menu_bms_id, TRUE),
 (@admin_sub_role_id, @menu_nms_id, TRUE),
 (@admin_sub_role_id, @menu_fms_id, TRUE),
 (@admin_sub_role_id, @menu_info_id, TRUE),
@@ -60,6 +64,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@user_role_id, @menu_dashboard_id, TRUE),
 (@user_role_id, @menu_admin_id, FALSE),
 (@user_role_id, @menu_3dms_id, TRUE),
+(@user_role_id, @menu_bms_id, TRUE),
 (@user_role_id, @menu_nms_id, TRUE),
 (@user_role_id, @menu_fms_id, TRUE),
 (@user_role_id, @menu_info_id, TRUE),

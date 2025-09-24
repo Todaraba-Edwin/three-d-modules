@@ -1,12 +1,15 @@
+import { DefaultPathEnum } from '@/_common/const';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { SystemAdminHeader } from './features/SystemAdminHeader';
 import { SystemAdminSummary } from './features/SystemAdminSummary';
 
+const { BASE, SEGMENTS } = DefaultPathEnum.SYSTEM_ADMIN;
+
 const tabs = [
-  { name: '사용자 관리', href: '/system-admin' },
-  // { name: '장비 관리', href: '/system-admin/device' },
+  { name: '사용자 관리', href: `${BASE}` },
+  { name: '건물 관리', href: `${BASE}/${SEGMENTS.BUILDINGS}` },
 ];
 
 export const SystemAdminOutlet = (): ReactNode => {

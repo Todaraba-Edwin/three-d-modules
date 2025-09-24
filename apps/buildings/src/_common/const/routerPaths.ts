@@ -1,5 +1,6 @@
 import {
   Box,
+  Building2,
   Camera,
   Home,
   Info,
@@ -27,6 +28,7 @@ export const DefaultPathEnum = {
     },
   },
   FACILITY_MS: '/fms',
+  BUILDING_MS: '/buildings',
   SYSTEM_INFO: {
     BASE: '/system-info',
     SEGMENTS: {
@@ -36,6 +38,7 @@ export const DefaultPathEnum = {
   SYSTEM_ADMIN: {
     BASE: '/system-admin',
     SEGMENTS: {
+      BUILDINGS: 'buildings',
       DEVICE: 'device',
     },
   },
@@ -50,6 +53,11 @@ export const menuLists: menuListsType[] = [
     path: DefaultPathEnum.THREE_D_MS,
     icon: Box,
     desc: '디지털 트윈(3D) 건물 관제',
+  },
+  {
+    path: DefaultPathEnum.BUILDING_MS,
+    icon: Building2,
+    desc: '건물 대장',
   },
   {
     path: DefaultPathEnum.NETWORK_MS.BASE,
