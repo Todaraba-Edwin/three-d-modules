@@ -1,3 +1,5 @@
+import { BMS_PATH } from './apiPaths';
+
 export const queryKey = {
   systemAdmin: {
     all: ['system-admin'] as const,
@@ -8,5 +10,9 @@ export const queryKey = {
       roleId
         ? [...queryKey.systemAdmin.all, 'users', roleId]
         : [...queryKey.systemAdmin.all, 'users'],
+    bms_buildings: (search?: string): string[] =>
+      search
+        ? [...queryKey.systemAdmin.all, BMS_PATH.SEGMENTS.GET_BUILDINGS, search]
+        : [...queryKey.systemAdmin.all, BMS_PATH.SEGMENTS.GET_BUILDINGS],
   },
 };

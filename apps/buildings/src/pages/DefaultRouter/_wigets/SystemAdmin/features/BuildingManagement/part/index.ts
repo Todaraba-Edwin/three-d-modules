@@ -1,2 +1,2 @@
-export * from './DetailBuildingInfo';
-export * from './SearchBuildings';
+export * from './SearchBuildingDetail';
+export * from './SearchBuildingsLayout';

@@ -18,7 +18,8 @@ export class BmsService {
    */
   async getBuildings(search?: string): Promise<Building[]> {
     if (!search) {
-      return this.buildingRepository.find();
+      const result = await this.buildingRepository.find();
+      return result;
     }
 
     // search이 있으면 이름(buildingName)과 주소(address)에서 모두 검색 (OR 조건)
@@ -27,6 +28,8 @@ export class BmsService {
       { address: Like(`%${search}%`) },
     ];
 
-    return this.buildingRepository.find({ where });
+    const result = await this.buildingRepository.find({ where });
+
+    return result;
   }
 }

@@ -62,7 +62,7 @@ export const DefaultRouter = (): RouteObject[] => {
                 },
                 {
                   path: ':buildingId',
-                  element: <Wigets.DetailBuildingInfo />,
+                  element: <Wigets.SearchBuildingDetail />,
                 },
               ],
             },

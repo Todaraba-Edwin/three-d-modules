@@ -23,3 +23,12 @@ export const REDIRECT_PATH = {
     LOGIN: `/${AUTH.SEGMENTS.LOGIN}`,
   },
 };
+
+export const BMS_PATH = {
+  SEGMENTS: {
+    ROOT: 'bms',
+    get GET_BUILDINGS(): string {
+      return `${this.ROOT}/buildings`;
+    },
+  },
+};
