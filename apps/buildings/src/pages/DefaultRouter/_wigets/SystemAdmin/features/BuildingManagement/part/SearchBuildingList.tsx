@@ -23,11 +23,15 @@ export const SearchBuildingList = ({
 }: Props): ReactNode => {
   const { segments } = usePathSegments();
   const selectedBuildingId = parseInt(segments[3]) ?? 0;
+  const isSelected = selectedBuildingId === parseInt(id);
   const navigate = useNavigate();
   const onNavigate = (id: string) => () => {
+    if (isSelected) {
+      navigate(`/${[...segments.slice(1, 3)].join('/')}`);
+      return;
+    }
     navigate(id.toString());
   };
-  const isSelected = selectedBuildingId === parseInt(id);
 
   return (
     <li>

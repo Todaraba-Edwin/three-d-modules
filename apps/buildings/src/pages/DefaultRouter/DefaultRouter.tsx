@@ -58,7 +58,7 @@ export const DefaultRouter = (): RouteObject[] => {
               children: [
                 {
                   index: true,
-                  element: <div children='none' />,
+                  element: <Wigets.SearchBuildingNone />,
                 },
                 {
                   path: ':buildingId',

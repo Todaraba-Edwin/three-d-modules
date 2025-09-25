@@ -1,4 +1,5 @@
 import { DefaultPathEnum } from '@/_common/const';
+import { usePathSegments } from '@_shared';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
@@ -13,6 +14,9 @@ const tabs = [
 ];
 
 export const SystemAdminOutlet = (): ReactNode => {
+  const { segments } = usePathSegments();
+  const currentPath = `/${segments.slice(1, 3).join('/')}`;
+
   return (
     <div
       className={clsx(
@@ -30,14 +34,12 @@ export const SystemAdminOutlet = (): ReactNode => {
                 key={tab.name}
                 to={tab.href}
                 end // 하위 경로가 활성화되는 것을 방지
-                className={({ isActive }) =>
-                  clsx(
-                    isActive
-                      ? 'border-indigo-500 text-indigo-600'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                    'whitespace-nowrap border-b-2 py-2 px-1 font-medium'
-                  )
-                }
+                className={clsx(
+                  currentPath == tab.href
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                  'whitespace-nowrap border-b-2 py-2 px-1 font-medium'
+                )}
               >
                 {tab.name}
               </NavLink>
