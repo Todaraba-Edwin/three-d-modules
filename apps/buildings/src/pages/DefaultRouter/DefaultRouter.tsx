@@ -52,10 +52,19 @@ export const DefaultRouter = (): RouteObject[] => {
           ...PermittedRouteOption({ path: SYSTEM_ADMIN.BASE, pathPages }),
           children: [
             { index: true, element: <Wigets.UserManagementPage /> },
-            { index: true, element: <Wigets.UserManagementPage /> },
             {
               path: SYSTEM_ADMIN.SEGMENTS.BUILDINGS,
-              element: <div children='Buildings' />,
+              element: <Wigets.BuildingManagementOutlet />,
+              children: [
+                {
+                  index: true,
+                  element: <div children='none' />,
+                },
+                {
+                  path: ':buildingId',
+                  element: <Wigets.DetailBuildingInfo />,
+                },
+              ],
             },
             // {
             //   path: SYSTEM_ADMIN.SEGMENTS.DEVICE,

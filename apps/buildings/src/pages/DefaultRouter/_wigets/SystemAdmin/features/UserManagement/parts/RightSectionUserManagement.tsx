@@ -9,9 +9,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
+import { UM_CONST } from '../../../shared/const';
 import { AddFormUser } from './AddFormUser';
 import { GridSections } from './GridSections';
-import { UM_CONST } from './const';
 
 export type UserWithRole = {
   id: number;

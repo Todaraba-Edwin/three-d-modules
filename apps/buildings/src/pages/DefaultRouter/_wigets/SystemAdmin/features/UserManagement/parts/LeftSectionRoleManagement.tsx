@@ -4,15 +4,16 @@ import { Button } from '@/_common/components/Button';
 import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
 
+import { SelectedBluePoint } from '@/_common/components';
 import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { CircleCheckBig, CircleX, Settings, Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { useDeleteRole } from '../../../entities/useDeleteRole';
+import { UM_CONST } from '../../../shared/const';
 import { AddFormRole } from './AddFormRole';
 import { GridSections } from './GridSections';
-import { UM_CONST } from './const';
 
 export type PermissionsRolesQueryResult = {
   permissionMenu: {
@@ -229,7 +230,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                               children={role_name}
                             />
                             {selectedRoleId === role_id && (
-                              <div className='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></div>
+                              <SelectedBluePoint />
                             )}
                           </div>
                           <div className='text-xs text-gray-500 mt-1'>

@@ -1,14 +1,11 @@
-import { type LucideIcon, Shield, Users } from 'lucide-react';
+import { Shield, Users } from 'lucide-react';
 
-type TabConst = {
-  title: string;
-  desc: string;
-};
-
-type SectionConst = TabConst & {
-  ICON: LucideIcon;
-  addActionName: string;
-};
+export const BM_CONST = {
+  Tab: {
+    title: '건물 관리',
+    desc: '건물동 및 해당 건물의 층별정보를 관리합니다.',
+  },
+} as const;
 
 export const UM_CONST: {
   Tab: TabConst;

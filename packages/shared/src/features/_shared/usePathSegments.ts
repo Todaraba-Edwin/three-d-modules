@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export const usePathSegments = (): {
+export const usePathSegments = (): Record<
+  'layout' | 'currentSegments',
+  string
+> & {
   isRoot: boolean;
-  layout: string;
-  currentSegments: string;
+  segments: string[];
 } => {
   const { pathname } = useLocation();
 
@@ -14,5 +16,5 @@ export const usePathSegments = (): {
   const currentSegments = segments[2] ?? '';
   const isRoot = !layout && !currentSegments;
 
-  return { isRoot, layout, currentSegments };
+  return { isRoot, layout, currentSegments, segments };
 };

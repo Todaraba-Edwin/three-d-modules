@@ -7,6 +7,7 @@ type Props = PropsWithChildren & {
 };
 
 type SystemAdminTabLayoutProps = Props & {
+  tabBodyGridType?: 'mono' | 'half' | 'custom';
   tabBodyChildren: ReactNode[];
 };
 
@@ -27,14 +28,20 @@ const TabHeader = ({ tabTitle, tabDesc }: Props) => {
   );
 };
 
-const TabBody = ({ tabBodyChildren }: { tabBodyChildren: ReactNode[] }) => {
+const TabBody = ({
+  tabBodyGridType,
+  tabBodyChildren,
+}: {
+  tabBodyGridType: 'mono' | 'half' | 'custom';
+  tabBodyChildren: ReactNode[];
+}) => {
+  const isHalf = tabBodyGridType === 'half';
   return (
     <div
-      className={clsx(
-        'grid min-h-0',
-        'grid-cols-1 grid-rows-[auto_1fr] gap-y-4',
-        'xl:grid-cols-2 xl:grid-rows-1 gap-x-4'
-      )}
+      className={clsx('grid min-h-0', {
+        'grid-cols-1 grid-rows-[auto_1fr] gap-y-4': isHalf,
+        'xl:grid-cols-2 xl:grid-rows-1 gap-x-4': isHalf,
+      })}
     >
       {...tabBodyChildren}
     </div>
@@ -42,14 +49,15 @@ const TabBody = ({ tabBodyChildren }: { tabBodyChildren: ReactNode[] }) => {
 };
 
 export const SystemAdminTabLayout = ({
+  tabBodyGridType = 'half',
   tabTitle,
   tabDesc,
   tabBodyChildren,
 }: SystemAdminTabLayoutProps): ReactNode => {
   return (
     <TabLayout>
-      <TabHeader tabTitle={tabTitle} tabDesc={tabDesc} />
-      <TabBody tabBodyChildren={tabBodyChildren} />
+      <TabHeader {...{ tabTitle, tabDesc }} />
+      <TabBody {...{ tabBodyGridType, tabBodyChildren }} />
     </TabLayout>
   );
 };

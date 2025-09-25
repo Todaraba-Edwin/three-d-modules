@@ -1,6 +1,6 @@
 export * from './useCesiumInit';
 export * from './useCesiumInitNoneGlobe';
-export * from './usePathSegments';
+export * from '../../_shared/usePathSegments';
 export * from './useSetGltfAsync';
 export * from './useVworldMapInfo';
 export * from './utilsAddHorizontalLine';
