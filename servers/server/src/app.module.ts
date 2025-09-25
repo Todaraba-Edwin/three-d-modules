@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@src_apps/index';
-import { AuthModule, FilesModule, UsersModule } from '@src_modules/index';
+import { AuthModule, BmsModule, FilesModule, UsersModule } from '@src_modules/index';
 import { AppService } from 'app.service';
 import * as path from 'path';
 import { SwitchesModule } from './modules/switches/switches.module';
@@ -43,6 +43,7 @@ export const publicPaths = {
     SwitchesModule,
     SystemAdminModule,
     FilesModule,
+    BmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

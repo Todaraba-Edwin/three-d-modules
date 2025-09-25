@@ -7,6 +7,7 @@ export const API_MESSAGES = {
     SUCCEED_LOGOUT: '로그아웃을 성공했습니다.',
     NOT_FOUND_SESSION_BROWSER: '브라우저에서 세선 정보를 찾을 수 없습니다.',
     NOT_FOUND_SESSION_SERVER: '유효하지 않은 세션정보입니다.',
+    NOT_ADMIN_SESSION: '관리자가 아니면 접근이 허용되지 않습니다.',
     VALID_SESSION: '세션정보가 유효합니다.',
   },
 };

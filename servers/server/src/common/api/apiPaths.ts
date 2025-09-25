@@ -50,3 +50,13 @@ export const FILES = {
   },
   PARAMS: {},
 };
+
+export const BMS = {
+  SEGMENTS: {
+    BASE: 'bms',
+    BUILDINGS: 'buildings',
+  },
+  PARAMS: {
+    SEARCH: 'search',
+  },
+};
