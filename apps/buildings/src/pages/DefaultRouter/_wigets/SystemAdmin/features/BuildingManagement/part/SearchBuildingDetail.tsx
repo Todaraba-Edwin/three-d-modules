@@ -72,7 +72,7 @@ export const SearchBuildingDetail = (): ReactNode => {
           </dl>
           <div
             className={clsx(
-              'flex justify-center items-center border-2 rounded-md',
+              'flex justify-center items-center border-2 rounded-md overflow-hidden',
               'max-xl:w-full h-full',
               '2xl:w-[600px]'
             )}
@@ -81,7 +81,7 @@ export const SearchBuildingDetail = (): ReactNode => {
             <ImageOff className='w-14 h-14 text-slate-200' />
             <button className='w-full truncate'>이미지 추가하기</button>
           </figure> */}
-            <figure className='h-full w-full overflow-hidden rounded-lg'>
+            <figure className='h-full w-full '>
               <img
                 src='http://192.168.40.100:8080/media/images/강원정보문화산업진흥원.png'
                 alt='building_images'

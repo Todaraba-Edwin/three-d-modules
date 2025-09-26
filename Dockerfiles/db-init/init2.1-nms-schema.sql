@@ -4,6 +4,8 @@ CREATE TABLE `BMS_TN_BUILDINGS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `building_name` varchar(100) UNIQUE NOT NULL,
   `building_desc` varchar(255) DEFAULT '',
+  `ground_floors` INT NOT NULL DEFAULT 0,
+  `basement_floors` INT NOT NULL DEFAULT 0,
   `address` varchar(255),
   `building_image` varchar(255),
   `latitude` DOUBLE NOT NULL,
@@ -12,16 +14,16 @@ CREATE TABLE `BMS_TN_BUILDINGS` (
 
 CREATE TABLE `BMS_TN_FLOORS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
-  `index` bigint UNIQUE NOT NULL,
+  `floor_type` ENUM ('SURFACE', 'GROUND', 'BASEMENT') NOT NULL COMMENT '지상/지하/지표면 구분',
+  `floor_number` INT NOT NULL COMMENT '층 번호 (지상은 1,2,3..., 지하는 -1,-2)',
   `building_id` bigint NOT NULL,
-  `floor_name` varchar(50) NOT NULL,
+  `floor_name` varchar(50) NOT NULL DEFAULT '',
   `floor_desc` varchar(255) DEFAULT '',
-  `floor_type` ENUM ('SURFACE', 'FLOOR'),
-  `floor_glb` varchar(255) NOT NULL,
+  `floor_glb` varchar(255) NOT NULL DEFAULT '',
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL,
-  `height` int DEFAULT 0,
-  `heading` int DEFAULT 0,
+  `height` int  NOT NULL DEFAULT 0,
+  `heading` int NOT NULL DEFAULT 0,
   FOREIGN KEY (`building_id`) REFERENCES `BMS_TN_BUILDINGS` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
