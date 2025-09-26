@@ -24,8 +24,9 @@ export const HTTP_ONLY_COOKIE_OPTIONS: CookieOptions = {
    * - **프로덕션(production) 환경**: 실제 서비스 환경에서는 모든 통신이 HTTPS로 이루어지므로, 이 값을 `true`로 설정하여 통신 중간에 쿠키가 탈취되는 것을 방지합니다.
    * - **개발(development) 환경**: 개발 환경에서는 보통 HTTPS가 아닌 HTTP를 사용합니다. 만약 이 환경에서 `secure`를 true로 설정하면, 브라우저는 서버에 쿠키를 전송하지 않아 로그인 테스트 등이 불가능해집니다.
    * 따라서 환경 변수를 통해 동적으로 값을 설정하는 것이 일반적입니다.
+   * ⚠️ NOTE: For debugging in Docker over HTTP
    */
-  secure: process.env.NODE_ENV === 'production',
+  secure: false,
 
   /**
    * sameSite: 'lax'
@@ -34,7 +35,7 @@ export const HTTP_ONLY_COOKIE_OPTIONS: CookieOptions = {
    * - 'lax': 일부 예외적인 경우(예: 다른 사이트에서 링크를 통해 접속)에는 쿠키를 전송합니다. 보안과 사용자 편의성 사이의 적절한 균형을 제공합니다.
    * - 'none': 모든 사이트 간 요청에 쿠키를 전송합니다. `secure: true` 설정이 반드시 필요합니다.
    */
-  sameSite: 'lax',
+  sameSite: 'lax', // NOTE: For cross-origin, 'none' with secure:true is ideal in prod
 
   /**
    * maxAge: 1000 * 60 * 60 * 24 // 1 day
