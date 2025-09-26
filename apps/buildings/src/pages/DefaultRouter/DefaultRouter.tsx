@@ -64,6 +64,10 @@ export const DefaultRouter = (): RouteObject[] => {
                   path: ':buildingId',
                   element: <Wigets.SearchBuildingDetail />,
                 },
+                {
+                  path: SYSTEM_ADMIN.SEGMENTS.BUILDINGS_CREATE,
+                  element: <Wigets.SearchBuildingCreate />,
+                },
               ],
             },
             // {

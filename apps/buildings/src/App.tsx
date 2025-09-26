@@ -1,6 +1,7 @@
 import '@monorepo/shared/cesium.css';
 import { type ReactNode } from 'react';
 import * as Temp from './_templates';
+import './font.css';
 import './App.css';
 
 function App(): ReactNode {

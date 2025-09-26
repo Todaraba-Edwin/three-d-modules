@@ -12,6 +12,7 @@ CREATE TABLE `BMS_TN_BUILDINGS` (
 
 CREATE TABLE `BMS_TN_FLOORS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `index` bigint UNIQUE NOT NULL,
   `building_id` bigint NOT NULL,
   `floor_name` varchar(50) NOT NULL,
   `floor_desc` varchar(255) DEFAULT '',

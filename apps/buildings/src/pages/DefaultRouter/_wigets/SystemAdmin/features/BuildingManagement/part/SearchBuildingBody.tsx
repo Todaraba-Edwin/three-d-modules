@@ -13,7 +13,8 @@ export const SearchBuildingBody = (): ReactNode => {
     <div
       className={clsx(
         'border-2 p-4 rounded-lg',
-        'grid grid-rows-[auto_1fr] space-y-2 min-h-0'
+        'grid grid-rows-[auto_1fr] space-y-2 min-h-0',
+        'max-xl:min-h-[200px] max-xl:max-h-[200px] overflow-y-auto'
       )}
     >
       <form className='border-2 rounded-lg flex gap-2 items-center '>

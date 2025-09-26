@@ -39,6 +39,7 @@ export const DefaultPathEnum = {
     BASE: '/system-admin',
     SEGMENTS: {
       BUILDINGS: 'buildings',
+      BUILDINGS_CREATE: 'create',
       DEVICE: 'device',
     },
   },

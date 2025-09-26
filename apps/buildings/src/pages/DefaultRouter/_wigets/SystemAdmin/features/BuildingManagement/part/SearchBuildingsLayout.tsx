@@ -6,7 +6,12 @@ import { SearchBuildingBody } from './SearchBuildingBody';
 const Layout = ({ children }: PropsWithChildren): ReactNode => {
   return (
     <div
-      className={clsx('grid', 'grid-cols-[350px_1fr] space-x-4 h-full min-h-0')}
+      className={clsx(
+        'grid',
+        'xl:grid-cols-[350px_1fr] xl:space-x-4 xl:h-full xl:min-h-0',
+        'grid-cols-1 gap-y-4',
+        'max-xl:grid-rows-[auto_1fr]'
+      )}
       children={children}
     />
   );

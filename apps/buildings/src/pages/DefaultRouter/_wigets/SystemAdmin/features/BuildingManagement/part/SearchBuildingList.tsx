@@ -53,7 +53,7 @@ export const SearchBuildingList = ({
         </figure>
         <span className='flex flex-col items-start overflow-hidden'>
           <span>{buildingName}</span>
-          <span className='text-sm truncate w-full'>{address}</span>
+          <span className='text-sm truncate w-full text-start'>{address}</span>
         </span>
       </button>
     </li>

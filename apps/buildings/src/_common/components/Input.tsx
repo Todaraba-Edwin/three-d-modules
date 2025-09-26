@@ -26,7 +26,7 @@ export const Input = ({
         // File input specifics
         'file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium',
         // Responsive text size
-        'md:text-sm',
+        // 'md:text-sm',
         // Invalid state
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         className
