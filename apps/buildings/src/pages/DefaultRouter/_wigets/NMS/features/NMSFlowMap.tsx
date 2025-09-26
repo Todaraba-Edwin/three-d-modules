@@ -212,7 +212,7 @@ export const NMSFlowMap = (): ReactNode => {
       maxY = Math.max(maxY, y + height);
     });
 
-    const padding = 100;
+    const padding = 500;
     return [
       [minX - padding, minY - padding],
       [maxX + padding, maxY + padding],
@@ -238,6 +238,7 @@ export const NMSFlowMap = (): ReactNode => {
     <ReactFlowProvider>
       <div className='p-4 h-full bg-white rounded-lg relative'>
         <ReactFlow
+          // 우하단의 로고제거는 라이센스 구매 후 가능
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
@@ -268,8 +269,8 @@ const Button = ({ mdfNode }: { mdfNode: Node | undefined }) => {
 
     if (nodes) {
       if (nodes.measured.width && nodes.measured.height) {
-        const x = nodes.position.x + nodes.measured.width * 2;
-        const y = nodes.position.y + nodes.measured.height * 4.5;
+        const x = nodes.position.x + nodes.measured.width / 2;
+        const y = nodes.position.y + nodes.measured.height / 2;
         const zoom = 1.8;
 
         setCenter(x, y, { zoom, duration: 1200 });

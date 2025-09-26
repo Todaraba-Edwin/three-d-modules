@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Building2, Mouse, Plus } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SearchBuildingFloorDetail } from './SearchBuildingFloorDetail';
 
 export const SearchBuildingNone = (): ReactNode => {
   const navigate = useNavigate();
@@ -44,13 +45,15 @@ export const SearchBuildingDetail = (): ReactNode => {
           <dl
             className={clsx(
               'grid grid-cols-[80px_auto] w-full h-fit  gap-y-2 text-base',
-              'max-xl:grid-rows-[1fr_1fr_180px]'
+              'max-xl:grid-rows-[1fr_1fr_1fr_180px]'
             )}
           >
             <dt className='text-slate-500'>건물주소</dt>
             <dd className='font-semibold pr-4'>
               강원 춘천시 서면 박사로 882 강원창작개발센터
             </dd>
+            <dt className='text-slate-500'>건물정보</dt>
+            <dd className='pr-4'>지상 4층</dd>
             <dt className='text-slate-500'>건물위치</dt>
             <dd className='pr-4'>37.56535253323751, 126.98043995723783</dd>
             <dt className='text-slate-500'>건물설명</dt>
@@ -91,7 +94,7 @@ export const SearchBuildingDetail = (): ReactNode => {
           </div>
         </div>
       </div>
-      <div className='border-2 border-red-400'>하단 공간</div>
+      <SearchBuildingFloorDetail />
     </div>
   );
 };

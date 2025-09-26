@@ -16,12 +16,12 @@ CREATE TABLE `BMS_TN_FLOORS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `floor_type` ENUM ('SURFACE', 'GROUND', 'BASEMENT') NOT NULL COMMENT '지상/지하/지표면 구분',
   `floor_number` INT NOT NULL COMMENT '층 번호 (지상은 1,2,3..., 지하는 -1,-2)',
-  `building_id` bigint NOT NULL,
+  `building_id` bigint NOT NULL, -- 초기값으로 건물의 ID 계승
   `floor_name` varchar(50) NOT NULL DEFAULT '',
   `floor_desc` varchar(255) DEFAULT '',
   `floor_glb` varchar(255) NOT NULL DEFAULT '',
-  `latitude` DOUBLE NOT NULL,
-  `longitude` DOUBLE NOT NULL,
+  `latitude` DOUBLE NOT NULL, -- 초기값으로 건물의 lat 계승
+  `longitude` DOUBLE NOT NULL, -- 초기값으로 건물의 lon 계승
   `height` int  NOT NULL DEFAULT 0,
   `heading` int NOT NULL DEFAULT 0,
   FOREIGN KEY (`building_id`) REFERENCES `BMS_TN_BUILDINGS` (`id`)

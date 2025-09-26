@@ -63,6 +63,13 @@ export const DefaultRouter = (): RouteObject[] => {
                 {
                   path: ':buildingId',
                   element: <Wigets.SearchBuildingDetail />,
+                  children: [
+                    { index: true, element: <div children='층을 선택해줭' /> },
+                    {
+                      path: ':floorId',
+                      element: <div children='층을 선택해 버렸네!!' />,
+                    },
+                  ],
                 },
                 {
                   path: SYSTEM_ADMIN.SEGMENTS.BUILDINGS_CREATE,
