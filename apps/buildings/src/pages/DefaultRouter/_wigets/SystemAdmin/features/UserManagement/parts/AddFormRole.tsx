@@ -216,7 +216,8 @@ export const AddFormRole = (): ReactNode => {
             <label className='text-sm'>설명</label>
             <Input
               {...register('role_description')}
-              placeholder='역할에 대한 설명'
+              maxLength={20}
+              placeholder='역할에 대한 설명(최대 20자)'
               className='text-sm'
             />
           </div>

@@ -7,8 +7,8 @@ USE prizm;
 -- 1. Roles
 INSERT INTO USER_TC_ROLES (role_code, role_name, role_description) VALUES
 ('ADMIN_MAIN', '최고 관리자', '모든 시스템에 대한 전체 접근 권한'),
-('ADMIN_SUB', '중간 관리자', 'NMS/FMS 시스템 운영 및 모니터링 권한'),
-('USER', '일반 사용자', '시스템 운영 및 모니터링 권한');
+('ADMIN_SUB', '중간 관리자', '시스템 운영 및 모니터링 권한1'),
+('USER', '일반 사용자', '시스템 운영 및 모니터링 권한2');
 
 -- 2. Menus
 INSERT INTO USER_TC_MENUS (label, path, icon_name, sort_order) VALUES

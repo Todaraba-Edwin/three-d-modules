@@ -183,7 +183,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
           >
             <div
               className={clsx(
-                'p-2 bg-slate-200 grid grid-cols-[220px_1fr_68px]',
+                'p-2 bg-slate-200 grid grid-cols-[180px_1fr_68px]',
                 'text-sm'
               )}
             >
@@ -213,7 +213,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                           });
                         }}
                         className={clsx(
-                          'p-2 grid grid-cols-[220px_1fr_68px]',
+                          'p-2 grid grid-cols-[180px_1fr_68px]',
                           'text-sm',
                           {
                             'hover:bg-slate-100': !isSelected,

@@ -7,6 +7,7 @@ import { useSystemAdminAddUSerStore } from '@/_common/zustandStores/useSystemAdm
 import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import { Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { UM_CONST } from '../../../shared/const';
@@ -114,13 +115,18 @@ export const RightSectionUserManagement = (): ReactNode => {
             className={clsx(
               'border-2 border-slate-300 rounded-xl grid grid-rows-[auto_1fr]',
               'overflow-scroll',
-              'max-xl:h-[150px]'
+              'max-xl:h-full'
             )}
           >
-            <div className='p-2 bg-blue-100 grid grid-cols-[200px_150px_1fr_80px] text-sm font-medium'>
+            <div
+              className={clsx(
+                'p-2 bg-blue-100 grid grid-cols-[180px_80px_1fr_80px] text-sm font-medium',
+                'max-lg:grid-cols-[180px_1fr_80px]'
+              )}
+            >
               <div className='text-center'>사용자</div>
-              <div className='text-center'>권한(역할)</div>
-              <div className='text-center'>마지막 로그인</div>
+              <div className='text-start'>권한(역할)</div>
+              <div className='text-center max-lg:hidden'>마지막 로그인</div>
               <div className='text-center'>작업</div>
             </div>
             <div className='overflow-auto'>
@@ -130,7 +136,10 @@ export const RightSectionUserManagement = (): ReactNode => {
                   return (
                     <div
                       key={user.id}
-                      className='p-2 grid grid-cols-[200px_150px_1fr_80px] text-sm border-b border-slate-200'
+                      className={clsx(
+                        'p-2 grid grid-cols-[180px_80px_1fr_80px] text-sm border-b border-slate-200',
+                        'max-lg:grid-cols-[180px_1fr_80px]'
+                      )}
                     >
                       <div className='flex flex-col justify-center px-2'>
                         <p className='font-semibold'>
@@ -141,9 +150,11 @@ export const RightSectionUserManagement = (): ReactNode => {
                       <div className='flex items-center justify-start'>
                         {user.role_name}
                       </div>
-                      <div className='flex items-center justify-center text-xs'>
+                      <div className='flex items-center justify-center text-xs max-lg:hidden whitespace-pre-line'>
                         {user.last_login_at
-                          ? new Date(user.last_login_at).toLocaleString()
+                          ? dayjs(user.last_login_at).format(
+                              `YY.MM.DD\nHH:mm:ss`
+                            )
                           : 'N/A'}
                       </div>
                       <div className='flex items-center justify-center gap-1'>
