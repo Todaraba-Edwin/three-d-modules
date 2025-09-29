@@ -74,7 +74,7 @@ export const BM_RightBuildingCreate = (): ReactNode => {
     <Component.Layout {...{ onSubmit }}>
       <h2
         className='text-lg font-semibold text-gray-900'
-        children='건물 생성'
+        children='건물 등록'
       />
       <div className='gap-y-2 grid grid-cols-[140px_1fr] min-h-0 h-fit items-start'>
         {formInputs.map(input => (
