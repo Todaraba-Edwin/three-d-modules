@@ -109,7 +109,10 @@ export const ImageDropzone = <T extends FieldValues>({
         </div>
       </div>
       {previewUrl && (
-        <div className='relative w-fit mx-auto flex justify-center items-center p-2'>
+        <div
+          className='relative w-fit mx-auto flex justify-center items-center p-2'
+          onClick={e => e.stopPropagation()}
+        >
           <img
             className='h-fit w-full max-w-[200px] object-contain object-center rounded-lg'
             src={`${VITE_API_URL}${previewUrl}`}
