@@ -386,7 +386,6 @@ export const ThreeDMsPage = (): ReactNode => {
     <CesiumInitBody
       isFullHeight
       containerRef={containerRef}
-      isNonBackground
       children={
         <div className='absolute top-10 right-4 z-40 flex flex-col items-end gap-2 '>
           <div className='flex  gap-x-1 rounded-lg bg-gray-900/50 p-1 backdrop-blur-sm'>

@@ -5,6 +5,7 @@ const { CESIUM } = styleTailwindClass;
 const { INITBODY_OVER_BLUR } = styledClass;
 
 export const CesiumInitBody = ({
+  addTailwindClassName,
   children,
   isFullHeight = false,
   containerRef,
@@ -15,15 +16,17 @@ export const CesiumInitBody = ({
   return (
     <div
       ref={containerRef}
-      className={
+      className={`${
         isNonBackground
-          ? CESIUM.INITBODY_IS_BACKGROUND
+          ? CESIUM.INITBODY_NO_BACKGROUND
           : CESIUM.INITBODY_IS_BACKGROUND
-      }
-      style={{
-        width: '100%',
-        height: isFullHeight ? '100vh' : '100%',
-      }}
+      } ${addTailwindClassName ? addTailwindClassName : ''}`}
+      {...(!addTailwindClassName && {
+        style: {
+          width: '100%',
+          height: isFullHeight ? '100vh' : '100%',
+        },
+      })}
     >
       {isNonBackground && <div className={INITBODY_OVER_BLUR} />}
       {isReady && children}

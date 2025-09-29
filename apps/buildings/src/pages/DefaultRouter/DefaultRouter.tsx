@@ -64,10 +64,10 @@ export const DefaultRouter = (): RouteObject[] => {
                   path: ':buildingId',
                   element: <Wigets.SearchBuildingDetail />,
                   children: [
-                    { index: true, element: <div children='층을 선택해줭' /> },
+                    { index: true, element: <Wigets.SearchFloorNone /> },
                     {
                       path: ':floorId',
-                      element: <div children='층을 선택해 버렸네!!' />,
+                      element: <Wigets.SearchFloorWithCesium />,
                     },
                   ],
                 },

@@ -51,6 +51,7 @@ export type addImageryLayersType = vWorldMapInfoArrType & {
 
 // Components Props Types
 export type CesiumInitBodyProps = PropsWithChildren & {
+  addTailwindClassName?: string;
   containerRef: React.RefObject<HTMLDivElement | null>;
   isFullHeight?: boolean;
   isNonBackground?: boolean;

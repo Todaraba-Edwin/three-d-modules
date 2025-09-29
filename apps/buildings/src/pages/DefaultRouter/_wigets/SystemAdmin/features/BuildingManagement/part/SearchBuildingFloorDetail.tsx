@@ -3,7 +3,7 @@ import { usePathSegments } from '@_shared';
 import clsx from 'clsx';
 import { Minus } from 'lucide-react';
 import { type ReactNode } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 const SURFACE = [
   { id: 1, floor_type: 'SURFACE', floor_name: '바닥', floor_number: 0 },
@@ -29,7 +29,8 @@ const GROUND = [
 export const SearchBuildingFloorDetail = (): ReactNode => {
   const navigate = useNavigate();
   const { segments } = usePathSegments();
-  const currentFloorId = parseInt(segments[4] ?? undefined);
+  const { floorId } = useParams<{ floorId: string }>();
+  const currentFloorId = floorId ? parseInt(floorId) : undefined;
   const onNavigate = (floorId: number) => () => {
     if (currentFloorId === floorId) {
       const unSelectedPath = segments.slice(1, 4).join('/');
@@ -40,13 +41,13 @@ export const SearchBuildingFloorDetail = (): ReactNode => {
   };
 
   return (
-    <div className='grid grid-cols-[auto_1fr] 2xl:grid-cols-[1fr_600px] gap-x-2 min-h-0 '>
-      <ol className='max-2xl:min-w-[260px] max-xl:max-h-[512px] space-y-2 min-h-0 grid grid-rows-[aut0_1fr]'>
+    <div className='grid grid-cols-[auto_1fr] 2xl:grid-cols-[1fr_3fr] gap-x-2 min-h-0 '>
+      <ol className='max-2xl:min-w-[180px] max-xl:max-h-[512px] space-y-2 min-h-0 grid grid-rows-[aut0_1fr]'>
         {[...SURFACE].map(list => (
           <li key={list.id}>
             <button
               className={clsx(
-                'w-full border-2 rounded-lg grid grid-cols-[50px_1fr] text-start text-slate-300 relative',
+                'w-full border-2 rounded-lg grid grid-cols-[50px_1fr] text-start text-slate-300 relative overflow-hidden',
                 {
                   'bg-blue-50 border-blue-300 text-slate-800':
                     currentFloorId === list.id,
@@ -56,13 +57,21 @@ export const SearchBuildingFloorDetail = (): ReactNode => {
               onClick={onNavigate(list.id)}
               children={
                 <>
-                  <span className='w-full flex justify-center items-center'>
+                  <span
+                    className={clsx(
+                      'w-full flex items-center justify-center  text-white font-semibold',
+                      {
+                        'bg-black': currentFloorId === list.id,
+                        'bg-slate-300': currentFloorId != list.id,
+                      }
+                    )}
+                  >
                     <Minus />
                   </span>
                   <span className='p-2'>{list.floor_name}</span>
                   {currentFloorId === list.id && (
                     <div className=' absolute top-1 left-1'>
-                      <SelectedBluePoint />
+                      <SelectedBluePoint color='white' />
                     </div>
                   )}
                 </>
@@ -78,7 +87,7 @@ export const SearchBuildingFloorDetail = (): ReactNode => {
                 <button
                   onClick={onNavigate(list.id)}
                   className={clsx(
-                    'w-full border-2 rounded-lg grid grid-cols-[50px_1fr] text-start text-slate-300 relative',
+                    'w-full border-2 rounded-lg grid grid-cols-[50px_1fr] text-start text-slate-300 relative  overflow-hidden',
                     {
                       'bg-blue-50 border-blue-300 text-slate-800':
                         currentFloorId === list.id,
@@ -112,11 +121,9 @@ export const SearchBuildingFloorDetail = (): ReactNode => {
       </ol>
       <div
         className={clsx(
-          'bg-violet-300',
-
           'flex justify-center items-center border-2 rounded-md overflow-hidden',
-          'w-full h-full'
-          //   '2xl:w-[600px]'
+          'w-full h-full',
+          'max-xl:max-h-[512px]'
         )}
       >
         <Outlet />

@@ -1,10 +1,9 @@
 import { Button } from '@/_common/components';
 import { DefaultPathEnum } from '@/_common/const';
-import { usePathSegments } from '@monorepo/shared';
 import clsx from 'clsx';
 import { Building2, Mouse, Plus } from 'lucide-react';
 import { type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SearchBuildingFloorDetail } from './SearchBuildingFloorDetail';
 
 export const SearchBuildingNone = (): ReactNode => {
@@ -31,8 +30,7 @@ export const SearchBuildingNone = (): ReactNode => {
 };
 
 export const SearchBuildingDetail = (): ReactNode => {
-  const { segments } = usePathSegments();
-  const findBuildingId = parseInt(segments[3]);
+  const { buildingId: findBuildingId } = useParams<{ buildingId: string }>();
 
   return (
     <div className='border-2  p-2 rounded-lg grid grid-rows-[auto_1fr] w-full h-full min-h-0 space-y-4'>
