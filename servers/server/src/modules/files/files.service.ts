@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { isProduction, publicPaths } from '@src_apps/app.module';
 import * as fs from 'fs';
 import * as path from 'path';
+import { MEDIA_SERVE_ROOT } from '@src_apps/common/api';
 // fs # Node.js 내장 모듈 - file  System 파일 읽기, 쓰기, 폴더 생성 모듈
 // path # Node.js 내장 모듈 - 파일 및 디렉토리 경로를 다룰 때 사용
 
@@ -13,6 +14,21 @@ export class FilesService {
     this.publicPath = isProduction
       ? publicPaths['PRODUCTION']
       : publicPaths['DEVELOP'];
+  }
+
+  /**
+   * @summary 임시 파일을 저장하고, 웹에서 접근 가능한 경로를 반환합니다.
+   * @param file - Express.Multer.File
+   * @returns {{ tempUrl: string }}
+   */
+  setTemporaryFile(file: Express.Multer.File): { tempUrl: string } {
+    if (!file) {
+      throw new InternalServerErrorException('파일이 업로드되지 않았습니다.');
+    }
+
+    // 웹 경로는 'temporary' 폴더와 고유한 파일명을 조합하여 만듭니다.
+    const webPath = `temporary/${file.filename}`;
+    return { tempUrl: `${MEDIA_SERVE_ROOT}/${webPath}` };
   }
 
   getFiles({ baseUrl, subfolder }: GetFilesParameterType): GetFilesResult {

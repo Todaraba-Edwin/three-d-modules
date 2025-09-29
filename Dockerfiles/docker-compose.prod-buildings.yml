@@ -21,6 +21,9 @@ services:
       - mariadb
     volumes:
       - ./data:/app/public
+      # Docker 바인드 마운트 : 복사 개념이 아니라 공유하는 개념
+      # 로컬 폴더에 컨테이너의 위치를 연결하여, 컨테이너가 해당 위치를 참조, 양방향 실시간 동기화 형성
+      
   buildings:
     build:
       context: ..

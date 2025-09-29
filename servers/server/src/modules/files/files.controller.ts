@@ -1,4 +1,12 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import * as API from '@src_apps/common/api';
 import type { Request } from 'express';
 import { FilesService } from './files.service';
@@ -14,5 +22,18 @@ export class FilesController {
     const baseUrl = `${protocol}://${host}${API.MEDIA_SERVE_ROOT}`;
     const subfolder = API.FILES.SEGMENTS.GET_GIBS;
     return this.filesService.getFiles({ baseUrl, subfolder });
+  }
+
+  /**
+   * @summary POST /api/files/upload-temporary - 임시 파일 1개 업로드
+   * @param file
+   */
+  @Post(API.FILES.SEGMENTS.UPLOAD_TEMPORARY)
+  @UseInterceptors(FileInterceptor('file'))
+  setTemporaryFile(@UploadedFile() file: Express.Multer.File): {
+    tempUrl: string;
+  } {
+    console.log('동작')
+    return this.filesService.setTemporaryFile(file);
   }
 }

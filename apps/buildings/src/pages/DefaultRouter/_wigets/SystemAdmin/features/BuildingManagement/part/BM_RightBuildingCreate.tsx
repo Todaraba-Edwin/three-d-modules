@@ -1,5 +1,11 @@
+import { uploadFile } from '@/_common/apis';
 import { Input } from '@/_common/components';
-import { Fragment, type PropsWithChildren, type ReactNode } from 'react';
+import {
+  Fragment,
+  useEffect,
+  type PropsWithChildren,
+  type ReactNode,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +18,7 @@ type BM_BuildingCreateForm = {
   baseFloor: number;
   latitude: number;
   longitude: number;
+  presignedUrl: string;
 };
 
 const Component = {
@@ -83,9 +90,10 @@ const formInputs = [
 
 export const BM_RightBuildingCreate = (): ReactNode => {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<BM_BuildingCreateForm>({
-    defaultValues: {},
-  });
+  const { register, handleSubmit, watch, setValue } =
+    useForm<BM_BuildingCreateForm>({
+      defaultValues: {},
+    });
 
   const onSubmit = handleSubmit(
     data => {
@@ -93,6 +101,24 @@ export const BM_RightBuildingCreate = (): ReactNode => {
     },
     errors => console.error('Form validation errors:', errors)
   );
+
+  const watchFiles = watch('buildingImageUrl');
+
+  useEffect(() => {
+    if (!watchFiles || watchFiles.length === 0) return;
+    const files = Array.from(watchFiles);
+    files.forEach(async file => {
+      try {
+        const result = await uploadFile(file);
+        console.log('업로드 성공:', result);
+        setValue('presignedUrl', result.tempUrl);
+        // 👉 이 url을 react-hook-form 값에 다시 setValue 해두면 DB 저장 시 바로 사용 가능
+        // setValue('buildingImageUrl', result.url)
+      } catch (err) {
+        console.error('업로드 실패', err);
+      }
+    });
+  }, [watchFiles]);
 
   return (
     <Component.Layout {...{ onSubmit }}>

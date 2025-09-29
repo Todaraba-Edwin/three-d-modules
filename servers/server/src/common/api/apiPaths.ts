@@ -47,6 +47,7 @@ export const FILES = {
   SEGMENTS: {
     BASE: 'files',
     GET_GIBS: 'glbs',
+    UPLOAD_TEMPORARY: 'upload-temporary',
   },
   PARAMS: {},
 };

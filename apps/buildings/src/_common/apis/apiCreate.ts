@@ -34,6 +34,31 @@ export const apiClient = ky.create({
 });
 
 /**
+ * 전역 ky 파일 업로드 함수
+ */
+export async function uploadFile(
+  file: string,
+  otherFields?: Record<string, string>
+): Promise<{ tempUrl: string }> {
+  const formData = new FormData();
+  formData.append('file', file); // input:file에서 받은 파일
+
+  // 다른 데이터도 같이 보낼 수 있음
+  if (otherFields) {
+    Object.entries(otherFields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+  }
+
+  return apiClient
+    .post('files/upload-temporary', {
+      body: formData,
+      // ⚠️ Content-Type은 자동으로 multipart/form-data로 설정됨
+    })
+    .json<{ tempUrl: string }>(); // 서버에서 반환하는 JSON 구조에 맞게 타입 지정
+}
+
+/**
  * 전역 ky 클라이언트에 대한 catch Error 객체 제어
  */
 

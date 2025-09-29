@@ -65,6 +65,10 @@ RUN pnpm install --filter @monorepo/${APP_NAME} --prod --frozen-lockfile
 # 빌드된 파일만 복사
 COPY --from=builder /app/${APP_PATH}/dist ./${APP_PATH}/dist
 
+# <<< [수정] 임시 업로드 폴더 생성 및 권한 설정
+RUN mkdir -p /app/public/temporary && \
+    chown -R node:node /app/public
+
 COPY Dockerfiles/wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
@@ -75,4 +79,5 @@ EXPOSE 8080
 # CMD node ${APP_PATH}/dist/main.js
 # CMD ["sh", "/wait-for-it.sh", "mariadb:3306", "--", "node", "${APP_PATH}/dist/main.js"]
 # CMD ["/bin/bash", "/wait-for-it.sh", "mariadb:3306", "--", "node", "${APP_PATH}/dist/main.js"]
-CMD ["/bin/bash", "-c", "/wait-for-it.sh mariadb:3306 -- node ${APP_PATH}/dist/main.js"]
+# CMD ["/bin/bash", "-c", "/wait-for-it.sh mariadb:3306 -- node ${APP_PATH}/dist/main.js"] 
+CMD ["/bin/bash", "-c", "chown -R node:node /app/public && /wait-for-it.sh mariadb:3306 -- node ${APP_PATH}/dist/main.js"]
