@@ -33,7 +33,6 @@ export class FilesController {
   setTemporaryFile(@UploadedFile() file: Express.Multer.File): {
     tempUrl: string;
   } {
-    console.log('동작')
     return this.filesService.setTemporaryFile(file);
   }
 }

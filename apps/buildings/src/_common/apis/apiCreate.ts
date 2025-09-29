@@ -37,11 +37,11 @@ export const apiClient = ky.create({
  * 전역 ky 파일 업로드 함수
  */
 export async function uploadFile(
-  file: string,
+  file: File, // string -> File 타입으로 변경
   otherFields?: Record<string, string>
 ): Promise<{ tempUrl: string }> {
   const formData = new FormData();
-  formData.append('file', file); // input:file에서 받은 파일
+  formData.append('file', file); // File 객체를 직접 추가
 
   // 다른 데이터도 같이 보낼 수 있음
   if (otherFields) {
@@ -53,7 +53,7 @@ export async function uploadFile(
   return apiClient
     .post('files/upload-temporary', {
       body: formData,
-      // ⚠️ Content-Type은 자동으로 multipart/form-data로 설정됨
+      // ⚠️ Content-Type은 ky가 자동으로 multipart/form-data로 설정함
     })
     .json<{ tempUrl: string }>(); // 서버에서 반환하는 JSON 구조에 맞게 타입 지정
 }

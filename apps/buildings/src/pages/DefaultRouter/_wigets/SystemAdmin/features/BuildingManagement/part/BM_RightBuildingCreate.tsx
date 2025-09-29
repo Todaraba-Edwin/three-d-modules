@@ -1,5 +1,6 @@
 import { uploadFile } from '@/_common/apis';
 import { Input } from '@/_common/components';
+import { ImageDropzone } from '@/_common/components/ImageDropzone';
 import {
   Fragment,
   useEffect,
@@ -8,12 +9,13 @@ import {
 } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { formInputs } from '../../../shared/buildingCreateConst';
 
-type BM_BuildingCreateForm = {
+export type BM_BuildingCreateForm = {
   buildingName: string;
   buildingDesc: string;
   address: string;
-  buildingImageUrl: string;
+  buildingImageUrl: FileList;
   groundFloor: number;
   baseFloor: number;
   latitude: number;
@@ -36,58 +38,6 @@ const Component = {
   },
 };
 
-const formInputs = [
-  {
-    type: 'text',
-    label: '건물명',
-    name: 'buildingName',
-    placeholder: '건물명을 입력해주세요.',
-  },
-  {
-    type: 'text',
-    label: '건물설명',
-    name: 'buildingDesc',
-    placeholder: '건물에 대한 설명을 입력해주세요.',
-  },
-  {
-    type: 'text',
-    label: '주소',
-    name: 'address',
-    placeholder: '건물 주소를 입력해주세요.',
-  },
-
-  {
-    type: 'number',
-    label: '지상 층수',
-    name: 'groundFloor',
-    placeholder: '건물의 지상 층수를 입력해주세요.',
-  },
-  {
-    type: 'number',
-    label: '지하 층수',
-    name: 'baseFloor',
-    placeholder: '건물의 지하 층수를 입력해주세요.',
-  },
-  {
-    type: 'number',
-    label: '위도',
-    name: 'latitude',
-    placeholder: '건물의 위도를 입력해주세요.',
-  },
-  {
-    type: 'number',
-    label: '경도',
-    name: 'longitude',
-    placeholder: '건물의 경도를 입력해주세요.',
-  },
-  {
-    type: 'file',
-    label: '건물 이미지 URL',
-    name: 'buildingImageUrl',
-    placeholder: '건물 이미지 URL을 입력해주세요.',
-  },
-];
-
 export const BM_RightBuildingCreate = (): ReactNode => {
   const navigate = useNavigate();
   const { register, handleSubmit, watch, setValue } =
@@ -103,6 +53,7 @@ export const BM_RightBuildingCreate = (): ReactNode => {
   );
 
   const watchFiles = watch('buildingImageUrl');
+  const watchPreviewImage = watch('presignedUrl');
 
   useEffect(() => {
     if (!watchFiles || watchFiles.length === 0) return;
@@ -110,7 +61,6 @@ export const BM_RightBuildingCreate = (): ReactNode => {
     files.forEach(async file => {
       try {
         const result = await uploadFile(file);
-        console.log('업로드 성공:', result);
         setValue('presignedUrl', result.tempUrl);
         // 👉 이 url을 react-hook-form 값에 다시 setValue 해두면 DB 저장 시 바로 사용 가능
         // setValue('buildingImageUrl', result.url)
@@ -126,18 +76,31 @@ export const BM_RightBuildingCreate = (): ReactNode => {
         className='text-lg font-semibold text-gray-900'
         children='건물 생성'
       />
-      <div className='gap-y-2 grid grid-cols-[140px_1fr] min-h-0 h-fit items-center'>
+      <div className='gap-y-2 grid grid-cols-[140px_1fr] min-h-0 h-fit items-start'>
         {formInputs.map(input => (
           <Fragment key={input.name}>
-            <label children={input.label} />
-            <Input
-              type={input.type}
-              {...(input.type === 'number' && { min: 0 })}
-              {...register(input.name as keyof BM_BuildingCreateForm)}
-              placeholder={input.placeholder}
-            />
+            <label className='py-1' children={input.label} />
+            {input.type === 'file' ? (
+              <ImageDropzone<BM_BuildingCreateForm>
+                setValue={setValue}
+                name={input.name as keyof BM_BuildingCreateForm}
+              />
+            ) : (
+              <Input
+                type={input.type}
+                {...(input.type === 'number' && { min: 0 })}
+                {...register(input.name as keyof BM_BuildingCreateForm)}
+                placeholder={input.placeholder}
+              />
+            )}
           </Fragment>
         ))}
+        <label children={'건물 이미지 URL'} />
+        <ImageDropzone<BM_BuildingCreateForm>
+          previewUrl={watchPreviewImage}
+          setValue={setValue}
+          name={'buildingImageUrl' as keyof BM_BuildingCreateForm}
+        />
       </div>
       <div className='flex space-x-2 justify-center items-center'>
         <button type='button' onClick={() => navigate('..')}>

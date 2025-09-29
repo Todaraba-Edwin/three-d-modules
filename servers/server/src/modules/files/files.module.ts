@@ -1,30 +1,33 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
+import { isProduction, publicPaths } from '@src_apps/app.module';
+import * as fs from 'fs';
 import { diskStorage } from 'multer';
 import * as path from 'path';
-import * as fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
-import { isProduction, publicPaths } from '@src_apps/app.module';
 
+const MULTER_PATH = {
+  TEMPORARY: 'temporary',
+};
 @Module({
   imports: [
     MulterModule.register({
       storage: diskStorage({
-        destination: (req, file, cb) => {
-          const basePath = isProduction
+        destination: (_req, _file, cb) => {
+          const BASE_PATH = isProduction
             ? publicPaths.PRODUCTION
             : publicPaths.DEVELOP;
-          const uploadPath = path.join(basePath, 'temporary');
+          const uploadPath = path.join(BASE_PATH, MULTER_PATH.TEMPORARY);
 
-          // Ensure the upload path exists
+          // 업로드 경로가 존재하지 않으면, 폴더를 생성
           if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true });
           }
           cb(null, uploadPath);
         },
-        filename: (req, file, cb) => {
+        filename: (_req, file, cb) => {
           const ext = path.extname(file.originalname);
           cb(null, `${uuid()}${ext}`);
         },
