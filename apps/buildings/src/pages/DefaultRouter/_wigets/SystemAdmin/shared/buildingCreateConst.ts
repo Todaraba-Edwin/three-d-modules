@@ -4,18 +4,21 @@ export const formInputs = [
     label: '건물명',
     name: 'buildingName',
     placeholder: '건물명을 입력해주세요.',
+    required: '건물명은 필수 입력 항목입니다.',
   },
   {
     type: 'text',
     label: '건물설명',
     name: 'buildingDesc',
     placeholder: '건물에 대한 설명을 입력해주세요.',
+    required: '건물설명은 필수 입력 항목입니다.',
   },
   {
     type: 'text',
     label: '주소',
     name: 'address',
     placeholder: '건물 주소를 입력해주세요.',
+    required: '주소는 필수 입력 항목입니다.',
   },
 
   {
@@ -23,29 +26,27 @@ export const formInputs = [
     label: '지상 층수',
     name: 'groundFloor',
     placeholder: '건물의 지상 층수를 입력해주세요.',
+    required: '지상 층수는 필수 입력 항목입니다.',
   },
   {
     type: 'number',
     label: '지하 층수',
     name: 'baseFloor',
     placeholder: '건물의 지하 층수를 입력해주세요.',
+    required: '지하 층수는 필수 입력 항목입니다.',
   },
   {
     type: 'number',
     label: '위도',
     name: 'latitude',
     placeholder: '건물의 위도를 입력해주세요.',
+    required: '위도는 필수 입력 항목입니다.',
   },
   {
     type: 'number',
     label: '경도',
     name: 'longitude',
     placeholder: '건물의 경도를 입력해주세요.',
+    required: '경도는 필수 입력 항목입니다.',
   },
-  // {
-  //   type: 'file',
-  //   label: '건물 이미지 URL',
-  //   name: 'buildingImageUrl',
-  //   placeholder: '건물 이미지 URL을 입력해주세요.',
-  // },
 ];

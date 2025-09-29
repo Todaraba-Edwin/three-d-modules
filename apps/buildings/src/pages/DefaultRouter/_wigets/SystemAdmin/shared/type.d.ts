@@ -19,3 +19,17 @@ type GetBuildingsType = Record<
   string
 > &
   Record<'latitude' | 'longitude', number>;
+
+/**
+ * @file BM_RightBuildingCreate.tsx */
+type BM_BuildingCreateForm = {
+  buildingName: string;
+  buildingDesc: string;
+  address: string;
+  buildingImageUrl: FileList;
+  groundFloor: number;
+  baseFloor: number;
+  latitude: number;
+  longitude: number;
+  presignedUrl: string;
+};

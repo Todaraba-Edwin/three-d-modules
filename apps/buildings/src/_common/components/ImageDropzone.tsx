@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { X } from 'lucide-react';
 import { useRef, useState, type DragEvent, type ReactNode } from 'react';
 import {
+  type FieldPathValue,
   type FieldValues,
   type Path,
   type UseFormSetValue,
@@ -12,10 +13,12 @@ interface ImageDropzoneProps<T extends FieldValues> {
   setValue: UseFormSetValue<T>;
   previewUrl?: string;
   name: Path<T>;
+  clearImage: () => void;
 }
 
 export const ImageDropzone = <T extends FieldValues>({
   setValue,
+  clearImage,
   previewUrl = '',
   name,
 }: ImageDropzoneProps<T>): ReactNode => {
@@ -49,7 +52,9 @@ export const ImageDropzone = <T extends FieldValues>({
       if (imageFiles.length > 0) {
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(imageFiles[0]); // 단일 파일만 처리
-        setValue(name, dataTransfer.files as any, { shouldValidate: true });
+        setValue(name, dataTransfer.files as FieldPathValue<T, Path<T>>, {
+          shouldValidate: true,
+        });
       }
       e.dataTransfer.clearData();
     }
@@ -57,15 +62,15 @@ export const ImageDropzone = <T extends FieldValues>({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setValue(name, e.target.files as any, { shouldValidate: true });
+      setValue(name, e.target.files as FieldPathValue<T, Path<T>>, {
+        shouldValidate: true,
+      });
     }
   };
 
   const handleClick = () => {
     inputRef.current?.click();
   };
-
-  console.log('previewUrl', previewUrl);
 
   return (
     <div
@@ -115,9 +120,7 @@ export const ImageDropzone = <T extends FieldValues>({
             className='absolute top-4 right-4 bg-white rounded-full text-red-500 w-6 h-6 border-2 flex items-center justify-center'
             onClick={e => {
               e.stopPropagation();
-              ['presignedUrl', 'buildingImageUrl'].forEach(key =>
-                setValue(key as Path<T>, '' as any)
-              );
+              clearImage();
             }}
           >
             <X className='w-4 h-4 font-bold' />
