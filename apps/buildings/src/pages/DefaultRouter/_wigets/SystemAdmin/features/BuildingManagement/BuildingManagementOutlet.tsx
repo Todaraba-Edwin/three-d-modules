@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { BM_CONST } from '../../shared';
 import { SystemAdminTabLayout } from '../SystemAdminTabLayout';
-import { SearchBuildingsLayout } from './part';
+import { BuildingManagementLayout } from './BuildingManagementLayout';
 
 export const BuildingManagementOutlet = (): ReactNode => {
   return (
@@ -9,7 +9,7 @@ export const BuildingManagementOutlet = (): ReactNode => {
       tabTitle={BM_CONST.Tab.title}
       tabDesc={BM_CONST.Tab.desc}
       tabBodyGridType='custom'
-      tabBodyChildren={[<SearchBuildingsLayout />]}
+      tabBodyChildren={[<BuildingManagementLayout />]}
     />
   );
 };

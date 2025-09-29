@@ -73,7 +73,7 @@ export const DefaultRouter = (): RouteObject[] => {
                 },
                 {
                   path: SYSTEM_ADMIN.SEGMENTS.BUILDINGS_CREATE,
-                  element: <Wigets.SearchBuildingCreate />,
+                  element: <Wigets.BM_RightBuildingCreate />,
                 },
               ],
             },

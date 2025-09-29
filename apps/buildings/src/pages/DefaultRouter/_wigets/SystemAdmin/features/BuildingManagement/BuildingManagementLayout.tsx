@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { type PropsWithChildren, type ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
-import { SearchBuildingBody } from './SearchBuildingBody';
+import { BM_LeftBuildingList } from './part/BM_LeftBuildingList';
 
 const Layout = ({ children }: PropsWithChildren): ReactNode => {
   return (
@@ -17,11 +17,9 @@ const Layout = ({ children }: PropsWithChildren): ReactNode => {
   );
 };
 
-export const SearchBuildingsLayout = (): ReactNode => {
-  return (
-    <Layout>
-      <SearchBuildingBody />
-      <Outlet />
-    </Layout>
-  );
-};
+export const BuildingManagementLayout = (): ReactNode => (
+  <Layout>
+    <BM_LeftBuildingList />
+    <Outlet />
+  </Layout>
+);
