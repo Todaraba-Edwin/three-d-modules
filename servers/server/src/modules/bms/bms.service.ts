@@ -22,17 +22,24 @@ export class BmsService {
     private readonly configService: ConfigService,
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_5_MINUTES) // 5분마다 실행
   async handleTempFileCleanup(): Promise<void> {
-    this.logger.log('Running temporary file cleanup task...');
     const tempDir = this.configService.get<string>('paths.temporary') as string;
     const maxAgeMinutes = 5;
 
     try {
-      const files = await fs.readdir(tempDir);
-      for (const file of files) {
-        if (file.startsWith('.')) continue;
+      const allFiles = await fs.readdir(tempDir);
+      const visibleFiles = allFiles.filter((file) => !file.startsWith('.'));
 
+      if (visibleFiles.length === 0) {
+        return; // 처리할 파일이 없으면 조용히 종료
+      }
+
+      this.logger.log(
+        `Running temporary file cleanup task for ${visibleFiles.length} file(s)...`,
+      );
+
+      for (const file of visibleFiles) {
         const filePath = path.join(tempDir, file);
         try {
           const stats = await fs.stat(filePath);
@@ -50,9 +57,7 @@ export class BmsService {
       }
     } catch (error) {
       if (error.code === 'ENOENT') {
-        this.logger.warn(
-          `Temporary directory not found at ${tempDir}, skipping cleanup.`,
-        );
+        // tempDir 자체가 없는 경우는 무시 (로그 X)
       } else {
         this.logger.error('Error during temporary file cleanup:', error);
       }
@@ -77,8 +82,6 @@ export class BmsService {
     ];
 
     const result = await this.buildingRepository.find({ where });
-    console.log('result', result);
-
     return result;
   }
 

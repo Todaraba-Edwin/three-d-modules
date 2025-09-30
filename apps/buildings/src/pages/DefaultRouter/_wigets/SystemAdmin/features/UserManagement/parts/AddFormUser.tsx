@@ -222,7 +222,7 @@ export const AddFormUser = (): ReactNode => {
           </h5>
           <Button
             type='button'
-            variant='destructive'
+            variant='none'
             size='sm'
             onClick={closeAllStated}
           >
@@ -359,7 +359,6 @@ export const AddFormUser = (): ReactNode => {
           <Button
             variant='destructive'
             type='button'
-            className='bg-white hover:bg-slate-200'
             size='sm'
             onClick={closeAllStated}
             disabled={isPending}
@@ -369,7 +368,6 @@ export const AddFormUser = (): ReactNode => {
           <Button
             size='sm'
             type='submit'
-            className='bg-orange-600 hover:bg-orange-700 text-white'
             disabled={isPending || !!errors.username || !!errors.email}
           >
             {isPending ? (

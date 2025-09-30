@@ -148,7 +148,12 @@ export const AddFormRole = (): ReactNode => {
             {isShowAddRoleNode && '새 역할 추가'}
             {isEditModeRole && '관리자 권한 수정'}
           </h5>
-          <Button type='button' size='sm' onClick={closeAllStated}>
+          <Button
+            type='button'
+            variant='none'
+            size='sm'
+            onClick={closeAllStated}
+          >
             <X className='w-4 h-4' />
           </Button>
         </div>
@@ -263,19 +268,14 @@ export const AddFormRole = (): ReactNode => {
         <div className='flex justify-end gap-2 mt-4'>
           <Button
             type='button'
-            className='bg-white hover:bg-slate-200'
+            variant='destructive'
             size='sm'
             onClick={closeAllStated}
             disabled={isPending}
           >
             취소
           </Button>
-          <Button
-            size='sm'
-            type='submit'
-            className='bg-orange-600 hover:bg-orange-700 text-white '
-            disabled={isPending}
-          >
+          <Button size='sm' type='submit' disabled={isPending}>
             {isPending ? (
               '저장 중...'
             ) : (

@@ -179,7 +179,7 @@ export const LoginPage = (): ReactNode => {
                 {QUICKSTART_LOGIN_LIST.map(account => (
                   <Button
                     key={account.username}
-                    variant='destructive'
+                    variant='outline'
                     onClick={() => handleQuickLogin(account)}
                     className={`w-full h-auto p-3 ${account.color} border hover:shadow-md transition-all duration-200`}
                     disabled={isLoading}

@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
 type ButtonProps = {
-  variant?: 'default' | 'destructive';
+  variant?: 'default' | 'destructive' | 'outline' | 'none';
 
   size?: 'default' | 'sm' | 'lg' | 'icon';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -18,6 +18,8 @@ export const Button = ({
     default: 'bg-primary text-primary-foreground hover:bg-primary/90',
     destructive:
       'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+    outline: 'border',
+    none: '',
   };
 
   // size 별 클래스
