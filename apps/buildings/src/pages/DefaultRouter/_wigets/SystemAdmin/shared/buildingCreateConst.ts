@@ -41,6 +41,9 @@ export const formInputs = [
     name: 'latitude',
     placeholder: '건물의 위도를 입력해주세요.',
     required: '위도는 필수 입력 항목입니다.',
+    min: 33,
+    max: 39,
+    step: 0.000001,
   },
   {
     type: 'number',
@@ -48,5 +51,8 @@ export const formInputs = [
     name: 'longitude',
     placeholder: '건물의 경도를 입력해주세요.',
     required: '경도는 필수 입력 항목입니다.',
+    min: 124,
+    max: 132,
+    step: 0.000001,
   },
 ];

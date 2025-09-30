@@ -14,7 +14,12 @@ export class Building {
   @Column({ type: 'varchar', length: 255, nullable: true })
   address: string;
 
-  @Column({ name: 'building_image', type: 'varchar', length: 255, nullable: true })
+  @Column({
+    name: 'building_image',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
   buildingImage: string;
 
   @Column({ type: 'double' })
@@ -22,4 +27,7 @@ export class Building {
 
   @Column({ type: 'double' })
   longitude: number;
+
+  @Column({ name: 'ground_floors', type: 'int' })
+  groundFloors: number;
 }

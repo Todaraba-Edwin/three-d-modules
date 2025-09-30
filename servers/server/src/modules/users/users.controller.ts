@@ -116,7 +116,7 @@ export class UsersController {
   ): Promise<USER_TN_USERS> {
     const user = await this.usersService.getUserByUsername(userName);
     if (!user) {
-      throw new NotFoundException(`"${userName}"은 이미 사용 중에 있습니다.`);
+      throw new NotFoundException(`"${userName}"을 찾을 수 없습니다.`);
     }
     return user;
   }

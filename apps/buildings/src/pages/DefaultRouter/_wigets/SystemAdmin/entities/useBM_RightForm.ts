@@ -1,4 +1,5 @@
-import { uploadFile } from '@/_common/apis';
+import { apiClient, BMS_PATH, uploadFile } from '@/_common/apis';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 
@@ -22,9 +23,25 @@ export const useBM_RightForm = (): BM_BuildingCreateFormReturn => {
     defaultValues: {},
   });
 
+  const { mutate } = useMutation({
+    mutationFn: (reqData: BuildingCreate_ReqBodyType) =>
+      apiClient
+        .post(`${BMS_PATH.SEGMENTS.SET_BUILDINGS}`, { json: reqData })
+        .json(),
+  });
+
   const onSubmit = handleSubmit(
     data => {
-      console.log('data', data);
+      mutate({
+        buildingName: data.buildingName,
+        address: data.address,
+        groundFloor: Number(data.groundFloor),
+        baseFloor: Number(data.baseFloor),
+        latitude: Number(data.latitude),
+        longitude: Number(data.longitude),
+        buildingDesc: data.buildingDesc,
+        buildingImage: data.presignedUrl,
+      });
     },
     errors => console.error('Form validation errors:', errors)
   );

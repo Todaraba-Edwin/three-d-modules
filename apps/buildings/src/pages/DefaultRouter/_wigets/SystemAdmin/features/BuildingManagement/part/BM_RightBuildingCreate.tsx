@@ -20,27 +20,37 @@ export const BM_RightBuildingCreate = (): ReactNode => {
     <BMR_UI.FormLayout {...{ onSubmit }}>
       <BMR_UI.FormHeader children='건물 등록' />
       <BMR_UI.FormBody>
-        {formInputs.map(input => (
-          <Fragment key={input.name}>
-            <label className='py-1' children={input.label} />
-            <div>
-              <Common.Input
-                type={input.type}
-                {...(input.type === 'number' && { min: 0 })}
-                {...register(input.name as keyof BM_BuildingCreateForm, {
-                  required: input.required,
-                })}
-                placeholder={input.placeholder}
-              />
-              {errors[input.name as keyof BM_BuildingCreateForm] && (
-                <Common.FormErrorMessage>
-                  {errors[input.name as keyof BM_BuildingCreateForm]?.message ??
-                    '필수 입력값십니다.'}
-                </Common.FormErrorMessage>
-              )}
-            </div>
-          </Fragment>
-        ))}
+        {formInputs.map(input => {
+          const isLatitudeOrLongitude =
+            input.name === 'latitude' || input.name === 'longitude';
+          return (
+            <Fragment key={input.name}>
+              <label className='py-1' children={input.label} />
+              <div>
+                <Common.Input
+                  type={input.type}
+                  {...(input.type === 'number' && { min: 0 })}
+                  {...register(input.name as keyof BM_BuildingCreateForm, {
+                    required: input.required,
+                  })}
+                  // 5m 단위
+                  {...(isLatitudeOrLongitude && {
+                    step: input.step,
+                    min: input.min,
+                    max: input.max,
+                  })}
+                  placeholder={input.placeholder}
+                />
+                {errors[input.name as keyof BM_BuildingCreateForm] && (
+                  <Common.FormErrorMessage>
+                    {errors[input.name as keyof BM_BuildingCreateForm]
+                      ?.message ?? '필수 입력값십니다.'}
+                  </Common.FormErrorMessage>
+                )}
+              </div>
+            </Fragment>
+          );
+        })}
         <label children={'건물 이미지 URL'} />
         <Common.ImageDropzone<BM_BuildingCreateForm>
           previewUrl={watchPreviewImage}

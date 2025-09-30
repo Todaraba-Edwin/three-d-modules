@@ -148,12 +148,7 @@ export const AddFormRole = (): ReactNode => {
             {isShowAddRoleNode && '새 역할 추가'}
             {isEditModeRole && '관리자 권한 수정'}
           </h5>
-          <Button
-            type='button'
-            variant='ghost'
-            size='sm'
-            onClick={closeAllStated}
-          >
+          <Button type='button' size='sm' onClick={closeAllStated}>
             <X className='w-4 h-4' />
           </Button>
         </div>
@@ -267,7 +262,6 @@ export const AddFormRole = (): ReactNode => {
 
         <div className='flex justify-end gap-2 mt-4'>
           <Button
-            variant='outline'
             type='button'
             className='bg-white hover:bg-slate-200'
             size='sm'

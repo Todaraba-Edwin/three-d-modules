@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Like, Repository } from 'typeorm';
-import { Building } from './dto';
+import { Building, CreateBuildingDto } from './dto';
 
 @Injectable()
 export class BmsService {
@@ -29,7 +29,46 @@ export class BmsService {
     ];
 
     const result = await this.buildingRepository.find({ where });
+    console.log('result', result);
 
     return result;
+  }
+
+  /**
+   * @summary 건물 생성
+   * @description 새로운 건물을 생성합니다.
+   * @param buildingData 생성할 건물 데이터
+   * @returns {Promise<Building>} 생성된 건물 데이터
+   */
+
+  async checkBuildingNameExists(buildingName: string): Promise<boolean> {
+    const existingBuilding = await this.buildingRepository.findOne({
+      where: { buildingName },
+    });
+    return !!existingBuilding;
+  }
+
+  async createBuilding(buildingData: CreateBuildingDto): Promise<Building> {
+    // const existingBuilding = await this.buildingRepository.findOne({
+    //   where: { buildingName: buildingData.buildingName },
+    // });
+
+    // if (existingBuilding) {
+    //   throw new ConflictException('해당 건물명이 이미 존재합니다.');
+    //   return;
+    // }
+
+    const newBuilding = this.buildingRepository.create(buildingData);
+    return this.buildingRepository.save(newBuilding);
+  }
+
+  /**
+   * @summary 건물 삭제
+   * @description 주어진 ID에 해당하는 건물을 삭제합니다.
+   * @param id 삭제할 건물의 ID
+   * @returns {Promise<void>}
+   */
+  async deleteBuilding(id: number): Promise<void> {
+    await this.buildingRepository.delete(id);
   }
 }
