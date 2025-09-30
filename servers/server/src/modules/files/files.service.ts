@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { isProduction, publicPaths } from '@src_apps/app.module';
+import { ConfigService } from '@nestjs/config';
+import { MEDIA_SERVE_ROOT } from '@src_apps/common/api';
 import * as fs from 'fs';
 import * as path from 'path';
-import { MEDIA_SERVE_ROOT } from '@src_apps/common/api';
 // fs # Node.js 내장 모듈 - file  System 파일 읽기, 쓰기, 폴더 생성 모듈
 // path # Node.js 내장 모듈 - 파일 및 디렉토리 경로를 다룰 때 사용
 
@@ -10,10 +10,8 @@ import { MEDIA_SERVE_ROOT } from '@src_apps/common/api';
 export class FilesService {
   private readonly publicPath: string;
 
-  constructor() {
-    this.publicPath = isProduction
-      ? publicPaths['PRODUCTION']
-      : publicPaths['DEVELOP'];
+  constructor(private readonly configService: ConfigService) {
+    this.publicPath = this.configService.get<string>('paths.public') as string;
   }
 
   /**

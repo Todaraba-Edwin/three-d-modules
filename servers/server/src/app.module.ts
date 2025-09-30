@@ -1,32 +1,33 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@src_apps/index';
 import { AuthModule, BmsModule, FilesModule, UsersModule } from '@src_modules/index';
 import { AppService } from 'app.service';
-import * as path from 'path';
 import { SwitchesModule } from './modules/switches/switches.module';
 import { SystemAdminModule } from './modules/system-admin/system-admin.module';
 import { MEDIA_SERVE_ROOT } from './common/api';
-
-export const isProduction = process.env.NODE_ENV === 'production';
-export const publicPaths = {
-  PRODUCTION: path.join(process.cwd(), 'public'),
-  DEVELOP: path.resolve(process.cwd(), '../../Dockerfiles/data'),
-};
+import pathsConfig from './config/paths.config';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      serveRoot: MEDIA_SERVE_ROOT,
-      rootPath: isProduction
-        ? publicPaths['PRODUCTION']
-        : publicPaths['DEVELOP'],
-    }),
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: [pathsConfig],
+    }),
+    ServeStaticModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => [
+        {
+          serveRoot: MEDIA_SERVE_ROOT,
+          rootPath: configService.get('paths.public'),
+        },
+      ],
     }),
     TypeOrmModule.forRoot({
       type: 'mariadb',

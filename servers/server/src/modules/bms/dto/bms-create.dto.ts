@@ -36,5 +36,5 @@ export class CreateBuildingDto {
 
   @IsString()
   @IsOptional()
-  presignedUrl?: string;
+  buildingImage?: string;
 }
