@@ -6,7 +6,7 @@ export class Building {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @OneToMany(() => Floor, floor => floor.building)
+  @OneToMany(() => Floor, floor => floor.buildingId)
   floors: Floor[];
 
   @Column({ name: 'building_name', type: 'varchar', length: 100, unique: true })

@@ -41,5 +41,5 @@ export class Floor {
 
   @ManyToOne(() => Building, building => building.floors)
   @JoinColumn({ name: 'building_id' })
-  building: Building;
+  buildingId: Building;
 }
