@@ -1,11 +1,9 @@
 import {
   Injectable,
   InternalServerErrorException,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -14,55 +12,11 @@ import { Building, CreateBuildingDto } from './dto';
 
 @Injectable()
 export class BmsService {
-  private readonly logger = new Logger(BmsService.name);
-
   constructor(
     @InjectRepository(Building)
     private readonly buildingRepository: Repository<Building>,
     private readonly configService: ConfigService,
   ) {}
-
-  @Cron(CronExpression.EVERY_5_MINUTES) // 5분마다 실행
-  async handleTempFileCleanup(): Promise<void> {
-    const tempDir = this.configService.get<string>('paths.temporary') as string;
-    const maxAgeMinutes = 5;
-
-    try {
-      const allFiles = await fs.readdir(tempDir);
-      const visibleFiles = allFiles.filter((file) => !file.startsWith('.'));
-
-      if (visibleFiles.length === 0) {
-        return; // 처리할 파일이 없으면 조용히 종료
-      }
-
-      this.logger.log(
-        `Running temporary file cleanup task for ${visibleFiles.length} file(s)...`,
-      );
-
-      for (const file of visibleFiles) {
-        const filePath = path.join(tempDir, file);
-        try {
-          const stats = await fs.stat(filePath);
-          const now = new Date();
-          const fileAgeMinutes =
-            (now.getTime() - stats.mtime.getTime()) / (1000 * 60);
-
-          if (fileAgeMinutes > maxAgeMinutes) {
-            await fs.unlink(filePath);
-            this.logger.log(`Deleted old temporary file: ${file}`);
-          }
-        } catch (statError) {
-          this.logger.error(`Could not stat file ${filePath}:`, statError);
-        }
-      }
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        // tempDir 자체가 없는 경우는 무시 (로그 X)
-      } else {
-        this.logger.error('Error during temporary file cleanup:', error);
-      }
-    }
-  }
 
   /**
    * @summary 건물 목록 조회
@@ -137,7 +91,7 @@ export class BmsService {
    * @summary 건물 삭제
    * @description 주어진 ID에 해당하는 건물을 삭제합니다.
    * @param id 삭제할 건물의 ID
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} 등
    */
   async deleteBuilding(id: number): Promise<void> {
     await this.buildingRepository.delete(id);
