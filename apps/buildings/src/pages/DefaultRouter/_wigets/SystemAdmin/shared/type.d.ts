@@ -8,6 +8,9 @@ type SectionConst = TabConst & {
   addActionName: string;
 };
 
+type ReactPropsWithChildrenAndTags<T extends keyof JSX.IntrinsicElements> =
+  PropsWithChildren<React.ComponentProps<T>>;
+
 /**
  * @file SearchBuildings.tsx */
 type FormSearchBuildingsType = {

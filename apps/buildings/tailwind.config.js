@@ -7,7 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        main: '#414066',
+        main: '#E12403',
+        primary: {
+          DEFAULT: '#628EF0',
+          foreground: '#ffffff',
+        },
+
+        destructive: {
+          DEFAULT: '#F06E62',
+          foreground: '#ffffff',
+        },
       },
       transitionDuration: {
         2000: '2000ms', // 사용자 정의

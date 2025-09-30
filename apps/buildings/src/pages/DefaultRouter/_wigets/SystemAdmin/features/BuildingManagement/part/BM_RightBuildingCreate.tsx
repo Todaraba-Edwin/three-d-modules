@@ -1,9 +1,9 @@
-import { FormErrorMessage, ImageDropzone, Input } from '@/_common/components';
+import * as Common from '@/_common/components';
 import { Fragment, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBM_RightForm } from '../../../entities';
 import { formInputs } from '../../../shared';
-import { BMR_Comp } from '../ui';
+import * as BMR_UI from '../ui/BM_R';
 
 export const BM_RightBuildingCreate = (): ReactNode => {
   const navigate = useNavigate();
@@ -17,14 +17,14 @@ export const BM_RightBuildingCreate = (): ReactNode => {
   } = useBM_RightForm();
 
   return (
-    <BMR_Comp.FormLayout {...{ onSubmit }}>
-      <BMR_Comp.FormHeader children='건물 등록' />
-      <BMR_Comp.FormBody>
+    <BMR_UI.FormLayout {...{ onSubmit }}>
+      <BMR_UI.FormHeader children='건물 등록' />
+      <BMR_UI.FormBody>
         {formInputs.map(input => (
           <Fragment key={input.name}>
             <label className='py-1' children={input.label} />
             <div>
-              <Input
+              <Common.Input
                 type={input.type}
                 {...(input.type === 'number' && { min: 0 })}
                 {...register(input.name as keyof BM_BuildingCreateForm, {
@@ -33,28 +33,35 @@ export const BM_RightBuildingCreate = (): ReactNode => {
                 placeholder={input.placeholder}
               />
               {errors[input.name as keyof BM_BuildingCreateForm] && (
-                <FormErrorMessage>
+                <Common.FormErrorMessage>
                   {errors[input.name as keyof BM_BuildingCreateForm]?.message ??
                     '필수 입력값십니다.'}
-                </FormErrorMessage>
+                </Common.FormErrorMessage>
               )}
             </div>
           </Fragment>
         ))}
         <label children={'건물 이미지 URL'} />
-        <ImageDropzone<BM_BuildingCreateForm>
+        <Common.ImageDropzone<BM_BuildingCreateForm>
           previewUrl={watchPreviewImage}
           setValue={setValue}
           clearImage={handleClearImage}
           name={'buildingImageUrl' as keyof BM_BuildingCreateForm}
         />
-      </BMR_Comp.FormBody>
-      <BMR_Comp.FormFooter>
-        <button type='button' onClick={() => navigate('..')}>
+      </BMR_UI.FormBody>
+      <BMR_UI.FormFooter>
+        <Common.Button
+          type='button'
+          variant='destructive'
+          size='lg'
+          onClick={() => navigate('..')}
+        >
           돌아가기
-        </button>
-        <button type='submit'>등록하기</button>
-      </BMR_Comp.FormFooter>
-    </BMR_Comp.FormLayout>
+        </Common.Button>
+        <Common.Button size='lg' type='submit'>
+          등록하기
+        </Common.Button>
+      </BMR_UI.FormFooter>
+    </BMR_UI.FormLayout>
   );
 };
