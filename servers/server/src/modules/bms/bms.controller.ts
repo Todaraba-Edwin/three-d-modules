@@ -82,8 +82,8 @@ export class BmsController {
   @Delete(API.BMS.SEGMENTS.BUILDINGS)
   async deleteBuildings(
     @Body() body: { buildingId: number },
-  ): Promise<{ message: string }> {
+  ): Promise<{ message: string; deleteBuildingId: number }> {
     await this.bmsService.deleteBuilding(body.buildingId);
-    return { message: '건물 삭제 완료' };
+    return { message: '건물 삭제 완료', deleteBuildingId: body.buildingId };
   }
 }

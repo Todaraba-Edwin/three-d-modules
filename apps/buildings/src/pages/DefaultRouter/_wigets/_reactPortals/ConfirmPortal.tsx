@@ -11,6 +11,7 @@ type ConfirmPortalProps = PropsWithChildren<{
   cancelText?: string;
   confirmVariant?: 'primary' | 'destructive';
   isChildrenCentered?: boolean;
+  noneConfirm?: string | undefined;
 }>;
 
 export const ConfirmPortal = ({
@@ -22,6 +23,7 @@ export const ConfirmPortal = ({
   cancelText = '취소',
   confirmVariant = 'primary',
   isChildrenCentered = false,
+  noneConfirm = undefined,
 }: ConfirmPortalProps): ReactNode => {
   const confirmButtonClass = {
     primary: 'bg-blue-600 hover:bg-blue-700 text-white',
@@ -53,12 +55,14 @@ export const ConfirmPortal = ({
               <Button variant='destructive' onClick={onCancel}>
                 {cancelText}
               </Button>
-              <Button
-                onClick={onConfirmPortal}
-                className={confirmButtonClass[confirmVariant]}
-              >
-                {confirmText}
-              </Button>
+              {!noneConfirm && (
+                <Button
+                  onClick={onConfirmPortal}
+                  className={confirmButtonClass[confirmVariant]}
+                >
+                  {confirmText}
+                </Button>
+              )}
             </div>
           </div>
         </div>

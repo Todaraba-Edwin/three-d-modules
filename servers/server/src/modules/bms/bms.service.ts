@@ -1,10 +1,12 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
+import { API_MESSAGES } from '@src_common/api';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { FindOptionsWhere, Like, Repository } from 'typeorm';
@@ -94,6 +96,13 @@ export class BmsService {
    * @returns {Promise<void>} 등
    */
   async deleteBuilding(id: number): Promise<void> {
-    await this.buildingRepository.delete(id);
+    try {
+      await this.buildingRepository.delete(id);
+    } catch (error) {
+      if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+        throw new ConflictException(API_MESSAGES.BUILDING.CANNOT_DELETE_HAS_FLOORS);
+      }
+      throw error;
+    }
   }
 }

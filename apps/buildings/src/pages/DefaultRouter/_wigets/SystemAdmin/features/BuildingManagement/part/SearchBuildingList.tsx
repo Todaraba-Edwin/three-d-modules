@@ -1,8 +1,12 @@
+import { apiClient, BMS_PATH, queryKey } from '@/_common/apis';
 import { SelectedBluePoint } from '@/_common/components';
+import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals';
 import { usePathSegments } from '@_shared';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { Building2, TextSearch } from 'lucide-react';
-import { useEffect, useRef, type ReactNode } from 'react';
+import type { HTTPError } from 'ky';
+import { Building2, TextSearch, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -29,7 +33,7 @@ export const SearchBuildingList = ({
 
   const onNavigate = (id: string) => () => {
     if (isSelected) {
-      navigate(`/${[...segments.slice(1, 3)].join('/')}`);
+      navigate('.');
       return;
     }
     navigate(id.toString());
@@ -44,14 +48,67 @@ export const SearchBuildingList = ({
     }
   }, [isSelected]);
 
+  const queryClient = useQueryClient();
+
+  const [isNotDeleteBuilding, setIsNotDeleteBuilding] = useState<
+    string | undefined
+  >(undefined);
+
+  const { mutate } = useMutation({
+    mutationFn: (reqData: {
+      buildingId: number;
+    }): Promise<{
+      message: string;
+      deleteBuildingId: number;
+    }> =>
+      apiClient
+        .delete(`${BMS_PATH.SEGMENTS.GET_BUILDINGS}`, { json: reqData })
+        .json(),
+
+    onSuccess: ({ deleteBuildingId }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKey.systemAdmin.bms_buildings(),
+      });
+      if (selectedBuildingId === deleteBuildingId) {
+        navigate('.');
+      }
+    },
+    onError: async (
+      error: HTTPError<{
+        error: string;
+        message: string;
+        status: number;
+      }>
+    ) => {
+      if (error.name === 'HTTPError') {
+        const errData = await error.response.json();
+        console.log('status:', error.response.status); // 409
+        console.log('error:', errData.error); // "Conflict"
+        console.log('message:', errData.message); // "하위 층 정보가 있어 삭제할 수 없습니다."
+        setIsNotDeleteBuilding(errData.message);
+      } else {
+        console.error(error);
+      }
+    },
+  });
+
+  const onDeleteBuildings = (id: number) => async () => {
+    mutate({ buildingId: id });
+  };
+
   return (
-    <li ref={liRef}>
+    <li
+      ref={liRef}
+      className={clsx(
+        'grid grid-cols-[1fr_auto] border-2 rounded-lg',
+        { 'bg-blue-50 border-blue-400': isSelected },
+        { 'hover:bg-slate-100': !isSelected }
+      )}
+    >
       <button
         onClick={onNavigate(id)}
         className={clsx(
-          'border-2 rounded-lg grid grid-cols-[auto_1fr] space-x-4 w-full items-center p-2',
-          { 'bg-blue-50 border-blue-400': isSelected },
-          { 'hover:bg-slate-100': !isSelected }
+          'grid grid-cols-[auto_1fr] space-x-4 w-full items-center p-2'
         )}
       >
         <figure className='relative'>
@@ -63,10 +120,29 @@ export const SearchBuildingList = ({
           )}
         </figure>
         <span className='flex flex-col items-start overflow-hidden'>
-          <span>{buildingName}</span>
+          <span className='text-start'>{buildingName}</span>
           <span className='text-sm truncate w-full text-start'>{address}</span>
         </span>
       </button>
+      <button
+        onClick={onDeleteBuildings(Number(id))}
+        className='flex justify-center items-center px-4'
+      >
+        <Trash2 className='w-4 h-4 text-destructive' />
+      </button>
+      {isNotDeleteBuilding && (
+        <ConfirmPortal
+          title={'건물을 삭제할 수 없습니다.'}
+          children={`${isNotDeleteBuilding}\n${!isSelected ? '해당층 상세보기로 이동하시겠습니까?' : ''}`}
+          noneConfirm={!isSelected ? undefined : isNotDeleteBuilding}
+          onConfirmPortal={() => {
+            if (isSelected) return;
+            setIsNotDeleteBuilding(undefined);
+            navigate(id);
+          }}
+          onCancel={() => setIsNotDeleteBuilding(undefined)}
+        />
+      )}
     </li>
   );
 };
