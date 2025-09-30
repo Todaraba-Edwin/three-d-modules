@@ -1,9 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Floor } from './floor.entity';
 
 @Entity('BMS_TN_BUILDINGS')
 export class Building {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
+
+  @OneToMany(() => Floor, floor => floor.building)
+  floors: Floor[];
 
   @Column({ name: 'building_name', type: 'varchar', length: 100, unique: true })
   buildingName: string;

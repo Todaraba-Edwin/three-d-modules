@@ -45,6 +45,19 @@ export class BmsService {
     return this.buildingRepository.find({ select: selectOptions, where });
   }
 
+  async getBuildingDetail(id: number): Promise<Building> {
+    const building = await this.buildingRepository.findOne({
+      where: { id },
+      relations: { floors: true },
+    });
+
+    if (!building) {
+      throw new NotFoundException(`Building with ID ${id} not found`);
+    }
+
+    return building;
+  }
+
   /**
    * @summary 건물 생성
    * @description 새로운 건물을 생성합니다.

@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Query,
   UseGuards,
@@ -11,24 +12,12 @@ import {
 import * as API from '@src_apps/common/api';
 import { AuthAdminGuard } from '../auth/auth.guard';
 import { BmsService } from './bms.service';
-import { CreateBuildingDto, GetBuildingList } from './dto';
+import { Building, CreateBuildingDto, GetBuildingList } from './dto';
 
 @Controller(`${API.API_PREFIX}/${API.BMS.SEGMENTS.BASE}`)
 @UseGuards(AuthAdminGuard)
 export class BmsController {
   constructor(private readonly bmsService: BmsService) {}
-
-  /**
-   * @summary GET /api/bms/buildings - 건물 목록 조회
-   * @description 건물 목록을 조회합니다. 검색어(search)를 통해 건물 이름 또는 주소로 필터링할 수 있습니다.
-   * @param search 건물 이름 또는 주소로 검색하기 위한 검색어
-   */
-  @Get(API.BMS.SEGMENTS.BUILDINGS)
-  getBuildings(
-    @Query(API.BMS.PARAMS.SEARCH) search?: string,
-  ): Promise<GetBuildingList[]> {
-    return this.bmsService.getBuildings(search);
-  }
 
   /**
    * @summary GEP / api/bms/check-building-name - 등록된 건물명 확인
@@ -50,6 +39,28 @@ export class BmsController {
     return {
       message: API.API_MESSAGES.BUILDING.VALID_BUILDING_NAME,
     };
+  }
+
+  /**
+   * @summary GET /api/bms/buildings - 건물 목록 조회
+   * @description 건물 목록을 조회합니다. 검색어(search)를 통해 건물 이름 또는 주소로 필터링할 수 있습니다.
+   * @param search 건물 이름 또는 주소로 검색하기 위한 검색어
+   */
+  @Get(API.BMS.SEGMENTS.BUILDINGS)
+  getBuildings(
+    @Query(API.BMS.PARAMS.SEARCH) search?: string,
+  ): Promise<GetBuildingList[]> {
+    return this.bmsService.getBuildings(search);
+  }
+
+  /**
+   * @summary GET /api/bms/buildings/:id - 특정 건물 및 하위 층 목록 조회
+   * @description 특정 건물 및 해당 건물에 속한 층 목록을 모두 조회합니다.
+   * @param id 건물의 ID
+   */
+  @Get(`${API.BMS.SEGMENTS.BUILDINGS}/:id`)
+  getBuildingDetail(@Param('id') id: number): Promise<Building> {
+    return this.bmsService.getBuildingDetail(id);
   }
 
   /**
