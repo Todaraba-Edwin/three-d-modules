@@ -31,3 +31,15 @@ export class Building {
   @Column({ name: 'ground_floors', type: 'int' })
   groundFloors: number;
 }
+
+@Entity('BMS_TN_BUILDINGS')
+export class GetBuildingList {
+  @PrimaryGeneratedColumn({ type: 'bigint' })
+  id: number;
+
+  @Column({ name: 'building_name', type: 'varchar', length: 100, unique: true })
+  buildingName: string;
+
+  @Column({ name: 'building_desc', type: 'varchar', length: 255, default: '' })
+  address: string;
+}

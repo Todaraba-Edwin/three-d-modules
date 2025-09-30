@@ -11,7 +11,7 @@ import {
 import * as API from '@src_apps/common/api';
 import { AuthAdminGuard } from '../auth/auth.guard';
 import { BmsService } from './bms.service';
-import { Building, CreateBuildingDto } from './dto';
+import { CreateBuildingDto, GetBuildingList } from './dto';
 
 @Controller(`${API.API_PREFIX}/${API.BMS.SEGMENTS.BASE}`)
 @UseGuards(AuthAdminGuard)
@@ -26,7 +26,7 @@ export class BmsController {
   @Get(API.BMS.SEGMENTS.BUILDINGS)
   getBuildings(
     @Query(API.BMS.PARAMS.SEARCH) search?: string,
-  ): Promise<Building[]> {
+  ): Promise<GetBuildingList[]> {
     return this.bmsService.getBuildings(search);
   }
 

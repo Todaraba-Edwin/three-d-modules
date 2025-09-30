@@ -10,7 +10,7 @@ import { API_MESSAGES } from '@src_common/api';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { FindOptionsWhere, Like, Repository } from 'typeorm';
-import { Building, CreateBuildingDto } from './dto';
+import { Building, CreateBuildingDto, GetBuildingList } from './dto';
 
 @Injectable()
 export class BmsService {
@@ -24,12 +24,17 @@ export class BmsService {
    * @summary 건물 목록 조회
    * @description 검색어로 건물 이름 또는 주소를 검색합니다. 검색어가 없으면 모든 건물 목록을 반환합니다.
    * @param searchTerm 건물 이름 또는 주소 (부분 일치 검색)
-   * @returns {Promise<Building[]>} 건물 목록
+   * @returns {Promise<GetBuildingList[]>} 건물 목록
    */
-  async getBuildings(search?: string): Promise<Building[]> {
+  async getBuildings(search?: string): Promise<GetBuildingList[]> {
+    const selectOptions = {
+      id: true,
+      buildingName: true,
+      address: true,
+    };
+
     if (!search) {
-      const result = await this.buildingRepository.find();
-      return result;
+      return this.buildingRepository.find({ select: selectOptions });
     }
 
     const where: FindOptionsWhere<Building>[] = [
@@ -37,8 +42,7 @@ export class BmsService {
       { address: Like(`%${search}%`) },
     ];
 
-    const result = await this.buildingRepository.find({ where });
-    return result;
+    return this.buildingRepository.find({ select: selectOptions, where });
   }
 
   /**
