@@ -2,6 +2,7 @@ import {
   Body,
   ConflictException,
   Controller,
+  Delete,
   Get,
   Post,
   Query,
@@ -19,7 +20,7 @@ export class BmsController {
 
   /**
    * @summary GET /api/bms/buildings - 건물 목록 조회
-   * @description 건물 목록을 조회합니다. 검색어(q)를 통해 건물 이름 또는 주소로 필터링할 수 있습니다.
+   * @description 건물 목록을 조회합니다. 검색어(search)를 통해 건물 이름 또는 주소로 필터링할 수 있습니다.
    * @param search 건물 이름 또는 주소로 검색하기 위한 검색어
    */
   @Get(API.BMS.SEGMENTS.BUILDINGS)
@@ -30,7 +31,9 @@ export class BmsController {
   }
 
   /**
-
+   * @summary GEP / api/bms/check-building-name - 등록된 건물명 확인
+   * @description 등록된 건물명을 검색합니다.
+   * @param search 건물 이름을 검색하기 위한 검색어
    */
   @Get(API.BMS.SEGMENTS.BUILDING_CHECK)
   async checkBuildingsName(
@@ -74,5 +77,13 @@ export class BmsController {
       message: API.API_MESSAGES.BUILDING.CREATE_BUILDING,
       createdBuildingId: Number(result.id),
     };
+  }
+
+  @Delete(API.BMS.SEGMENTS.BUILDINGS)
+  async deleteBuildings(
+    @Body() body: { buildingId: number },
+  ): Promise<{ message: string }> {
+    await this.bmsService.deleteBuilding(body.buildingId);
+    return { message: '건물 삭제 완료' };
   }
 }
