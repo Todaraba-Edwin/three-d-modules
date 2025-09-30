@@ -49,7 +49,7 @@ export const LoginActivityDetectedPortal = ({
               )}
             </Button>
             <Button
-              variant='outline'
+              variant='destructive'
               onClick={onClosePortal}
               className='flex-1'
             >

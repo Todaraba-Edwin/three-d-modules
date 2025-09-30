@@ -13,5 +13,6 @@ export const API_MESSAGES = {
   BUILDING: {
     EXIST_BUILDING_NAME: '이미 존재하는 건물명입니다.',
     CREATE_BUILDING: '건물이 성공적으로 생성되었습니다.',
+    VALID_BUILDING_NAME: '사용 가능한 건물명입니다.',
   },
 };

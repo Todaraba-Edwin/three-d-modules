@@ -56,6 +56,9 @@ export const BMS = {
   SEGMENTS: {
     BASE: 'bms',
     BUILDINGS: 'buildings',
+    get BUILDING_CHECK(): string {
+      return `${this.BUILDINGS}/check-building-name`;
+    },
   },
   PARAMS: {
     SEARCH: 'search',

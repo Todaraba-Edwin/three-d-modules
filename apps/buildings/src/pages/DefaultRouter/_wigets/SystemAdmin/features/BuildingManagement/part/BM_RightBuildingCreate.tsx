@@ -1,4 +1,5 @@
 import * as Common from '@/_common/components';
+import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals';
 import { Fragment, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBM_RightForm } from '../../../entities';
@@ -9,11 +10,16 @@ export const BM_RightBuildingCreate = (): ReactNode => {
   const navigate = useNavigate();
   const {
     watchPreviewImage,
+    watchBuildingName,
     onSubmit,
     register,
     errors,
     handleClearImage,
     setValue,
+    isError,
+    isGoingToBuildingDetail,
+    onCloseConfirmPortal,
+    onConfirmPortal,
   } = useBM_RightForm();
 
   return (
@@ -23,6 +29,8 @@ export const BM_RightBuildingCreate = (): ReactNode => {
         {formInputs.map(input => {
           const isLatitudeOrLongitude =
             input.name === 'latitude' || input.name === 'longitude';
+          const isBuildingName = input.name === 'buildingName';
+
           return (
             <Fragment key={input.name}>
               <label className='py-1' children={input.label} />
@@ -41,6 +49,13 @@ export const BM_RightBuildingCreate = (): ReactNode => {
                   })}
                   placeholder={input.placeholder}
                 />
+                {isBuildingName &&
+                  watchBuildingName &&
+                  !errors[input.name as keyof BM_BuildingCreateForm] && (
+                    <Common.FormSuccessMessage>
+                      사용 가능한 건물명입니다.
+                    </Common.FormSuccessMessage>
+                  )}
                 {errors[input.name as keyof BM_BuildingCreateForm] && (
                   <Common.FormErrorMessage>
                     {errors[input.name as keyof BM_BuildingCreateForm]
@@ -68,10 +83,19 @@ export const BM_RightBuildingCreate = (): ReactNode => {
         >
           돌아가기
         </Common.Button>
-        <Common.Button size='lg' type='submit'>
+        <Common.Button size='lg' type='submit' disabled={isError}>
           등록하기
         </Common.Button>
       </BMR_UI.FormFooter>
+      {isGoingToBuildingDetail && (
+        <ConfirmPortal
+          title='건물 등록 완료'
+          children={`건물 상세 페이지로 이동하시겠습니까?\n계속등록을 원하시면 취소를 눌러주세요.`}
+          onConfirmPortal={onConfirmPortal}
+          onCancel={onCloseConfirmPortal}
+          isChildrenCentered
+        />
+      )}
     </BMR_UI.FormLayout>
   );
 };

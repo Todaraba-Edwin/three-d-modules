@@ -1,4 +1,5 @@
 import { Button, PortalLayout } from '@/_common/components';
+import clsx from 'clsx';
 import { AlertTriangle } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode } from 'react';
 
@@ -9,6 +10,7 @@ type ConfirmPortalProps = PropsWithChildren<{
   confirmText?: string;
   cancelText?: string;
   confirmVariant?: 'primary' | 'destructive';
+  isChildrenCentered?: boolean;
 }>;
 
 export const ConfirmPortal = ({
@@ -19,6 +21,7 @@ export const ConfirmPortal = ({
   confirmText = '확인',
   cancelText = '취소',
   confirmVariant = 'primary',
+  isChildrenCentered = false,
 }: ConfirmPortalProps): ReactNode => {
   const confirmButtonClass = {
     primary: 'bg-blue-600 hover:bg-blue-700 text-white',
@@ -37,11 +40,17 @@ export const ConfirmPortal = ({
 
           <div className='space-y-3'>
             <div className='bg-gray-50 border border-gray-200 rounded-lg p-3'>
-              <div className='text-sm text-gray-700'>{children}</div>
+              <div
+                className={clsx('text-sm text-gray-700 whitespace-pre-line', {
+                  'text-center': isChildrenCentered,
+                })}
+              >
+                {children}
+              </div>
             </div>
 
             <div className='flex gap-2 justify-end'>
-              <Button variant='outline' onClick={onCancel}>
+              <Button variant='destructive' onClick={onCancel}>
                 {cancelText}
               </Button>
               <Button

@@ -30,6 +30,9 @@ export const BMS_PATH = {
     get GET_BUILDINGS(): string {
       return `${this.ROOT}/buildings`;
     },
+    get CHECK_BUILDINGS(): string {
+      return `${this.ROOT}/buildings/check-building-name`;
+    },
     get SET_BUILDINGS(): string {
       return `${this.ROOT}/buildings`;
     },

@@ -30,6 +30,26 @@ export class BmsController {
   }
 
   /**
+
+   */
+  @Get(API.BMS.SEGMENTS.BUILDING_CHECK)
+  async checkBuildingsName(
+    @Query(API.BMS.PARAMS.SEARCH) search: string,
+  ): Promise<{ message: string }> {
+    const findBuildingName =
+      await this.bmsService.checkBuildingNameExists(search);
+
+    if (findBuildingName) {
+      throw new ConflictException(
+        API.API_MESSAGES.BUILDING.EXIST_BUILDING_NAME,
+      );
+    }
+    return {
+      message: API.API_MESSAGES.BUILDING.VALID_BUILDING_NAME,
+    };
+  }
+
+  /**
    * @summary POST /api/bms/buildings - 건물 생성
    * @description 새로운 건물을 생성합니다.
    * @param body - 건물 생성을 위한 DTO
@@ -39,7 +59,7 @@ export class BmsController {
   @Post(API.BMS.SEGMENTS.BUILDINGS)
   async getCreateBuildings(
     @Body() body: CreateBuildingDto,
-  ): Promise<{ message: string }> {
+  ): Promise<{ message: string; createdBuildingId: number }> {
     const findBuildingName = await this.bmsService.checkBuildingNameExists(
       body.buildingName,
     );
@@ -49,7 +69,10 @@ export class BmsController {
         API.API_MESSAGES.BUILDING.EXIST_BUILDING_NAME,
       );
     }
-    this.bmsService.createBuilding(body);
-    return { message: API.API_MESSAGES.BUILDING.CREATE_BUILDING };
+    const result = await this.bmsService.createBuilding(body);
+    return {
+      message: API.API_MESSAGES.BUILDING.CREATE_BUILDING,
+      createdBuildingId: Number(result.id),
+    };
   }
 }

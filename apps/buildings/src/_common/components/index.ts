@@ -1,5 +1,6 @@
 export * from './Button';
 export * from './FormErrorMessage';
+export * from './FormSuccessMessage';
 export * from './ImageDropzone';
 export * from './Input';
 export * from './LoadingSpin';

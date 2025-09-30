@@ -273,7 +273,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                         <div className='flex flex-col justify-center'>
                           <div className='flex gap-1'>
                             <Button
-                              variant='ghost'
+                              variant='destructive'
                               size='sm'
                               onClick={e => {
                                 if (selectedRoleId === role_id) {
@@ -296,7 +296,7 @@ export const LeftSectionRoleManagement = (): ReactNode => {
                             </Button>
                             {role_code != 'ADMIN_MAIN' && (
                               <Button
-                                variant='ghost'
+                                variant='destructive'
                                 size='sm'
                                 onClick={e => {
                                   if (selectedRoleId === role_id) {

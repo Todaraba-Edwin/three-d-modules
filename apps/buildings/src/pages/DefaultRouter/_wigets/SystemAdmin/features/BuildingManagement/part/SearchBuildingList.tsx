@@ -2,7 +2,7 @@ import { SelectedBluePoint } from '@/_common/components';
 import { usePathSegments } from '@_shared';
 import clsx from 'clsx';
 import { Building2, TextSearch } from 'lucide-react';
-import { type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -25,6 +25,8 @@ export const SearchBuildingList = ({
   const selectedBuildingId = parseInt(segments[3]) ?? 0;
   const isSelected = selectedBuildingId === parseInt(id);
   const navigate = useNavigate();
+  const liRef = useRef<HTMLLIElement>(null);
+
   const onNavigate = (id: string) => () => {
     if (isSelected) {
       navigate(`/${[...segments.slice(1, 3)].join('/')}`);
@@ -33,8 +35,17 @@ export const SearchBuildingList = ({
     navigate(id.toString());
   };
 
+  useEffect(() => {
+    if (isSelected) {
+      liRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [isSelected]);
+
   return (
-    <li>
+    <li ref={liRef}>
       <button
         onClick={onNavigate(id)}
         className={clsx(

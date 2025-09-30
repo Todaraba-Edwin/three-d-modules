@@ -222,7 +222,7 @@ export const AddFormUser = (): ReactNode => {
           </h5>
           <Button
             type='button'
-            variant='ghost'
+            variant='destructive'
             size='sm'
             onClick={closeAllStated}
           >
@@ -357,7 +357,7 @@ export const AddFormUser = (): ReactNode => {
         </div>
         <div className='flex justify-end gap-2 mt-4'>
           <Button
-            variant='outline'
+            variant='destructive'
             type='button'
             className='bg-white hover:bg-slate-200'
             size='sm'

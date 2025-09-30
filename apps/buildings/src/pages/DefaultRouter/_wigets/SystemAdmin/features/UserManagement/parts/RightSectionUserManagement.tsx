@@ -159,7 +159,7 @@ export const RightSectionUserManagement = (): ReactNode => {
                       </div>
                       <div className='flex items-center justify-center gap-1'>
                         {/* <Button
-                          variant='ghost'
+                          variant='destructive'
                           size='sm'
                           className='h-8 w-8 p-0'
                         >
@@ -167,7 +167,7 @@ export const RightSectionUserManagement = (): ReactNode => {
                         </Button> */}
                         {!isAdminMain && (
                           <Button
-                            variant='ghost'
+                            variant='destructive'
                             size='sm'
                             onClick={() =>
                               handleDeleteClick(user.id, user.username)
