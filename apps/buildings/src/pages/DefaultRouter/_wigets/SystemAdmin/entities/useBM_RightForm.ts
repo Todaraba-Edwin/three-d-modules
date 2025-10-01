@@ -121,7 +121,7 @@ export const useBM_RightForm = (): BM_BuildingCreateFormReturn => {
     if (!watchFiles || watchFiles.length === 0) return;
     const onUploadImage = async (file: File) => {
       const result = await uploadFile(file);
-      setValue('presignedUrl', result.tempUrl);
+      setValue('presignedUrl', result.url);
     };
     const files = Array.from(watchFiles);
     files.forEach(async file => {

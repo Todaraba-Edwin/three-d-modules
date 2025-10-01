@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseInterceptors,
@@ -25,14 +26,17 @@ export class FilesController {
   }
 
   /**
-   * @summary POST /api/files/upload-temporary - 임시 파일 1개 업로드
+   * @summary POST /api/files/upload - 파일 1개 업로드
+   * @description 쿼리 파라미터 saveFolder=images 를 추가하면 영구 저장소에 저장
    * @param file
+   * @param saveFolder
    */
-  @Post(API.FILES.SEGMENTS.UPLOAD_TEMPORARY)
+  @Post(API.FILES.SEGMENTS.UPLOAD)
   @UseInterceptors(FileInterceptor('file'))
-  setTemporaryFile(@UploadedFile() file: Express.Multer.File): {
-    tempUrl: string;
-  } {
-    return this.filesService.setTemporaryFile(file);
+  uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Query('saveFolder') saveFolder?: string,
+  ): { url: string } {
+    return this.filesService.uploadFile(file, saveFolder);
   }
 }

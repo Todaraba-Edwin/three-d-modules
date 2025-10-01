@@ -52,10 +52,13 @@ export const SearchBuildingDetail = (): ReactNode => {
 
   const {
     buildingName,
+    address,
     buildingDesc,
     buildingImage,
     groundFloors,
     basementFloors,
+    latitude,
+    longitude,
   } = data;
 
   return (
@@ -72,33 +75,35 @@ export const SearchBuildingDetail = (): ReactNode => {
               'max-xl:grid-rows-[1fr_1fr_1fr_minmax[0_180px]]'
             )}
           >
-            <dt className='text-slate-500'>건물주소</dt>
-            <dd className='font-semibold pr-4'>
-              강원 춘천시 서면 박사로 882 강원창작개발센터
-            </dd>
-            <dt className='text-slate-500'>건물정보</dt>
-            <dd className='pr-4'>
-              {utilsBuildingFloorInfo({ groundFloors, basementFloors })}
-            </dd>
-            <dt className='text-slate-500'>건물위치</dt>
-            <dd className='pr-4'>37.56535253323751, 126.98043995723783</dd>
-            <dt className='text-slate-500'>건물설명</dt>
+            <dt className='text-slate-500' children='건물주소' />
+            <dd className='font-semibold pr-4' children={address} />
+            <dt className='text-slate-500' children='건물정보' />
+            <dd
+              className='pr-4'
+              children={utilsBuildingFloorInfo({
+                groundFloors,
+                basementFloors,
+              })}
+            />
+
+            <dt className='text-slate-500' children='건물위치' />
+            <dd className='pr-4' children={`${latitude}, ${longitude}`} />
+            <dt className='text-slate-500' children='건물설명' />
             <dd
               className={clsx(
                 'h-full min-h-0 max-h-[280px] overflow-y-auto text-justify pr-4',
                 { 'text-slate-300': !buildingDesc }
               )}
-            >
-              {buildingDesc
-                ? buildingDesc.repeat(2)
-                : '설명이 기록되지 않았습니다.'}
-            </dd>
+              children={
+                buildingDesc ? buildingDesc : '설명이 기록되지 않았습니다.'
+              }
+            />
           </dl>
           <div
             className={clsx(
               'flex justify-center items-center border-2 rounded-md overflow-hidden',
               'max-2xl:w-full h-full',
-              '2xl:w-[600px]' 
+              '2xl:w-[600px]'
             )}
           >
             {!buildingImage ? (

@@ -8,9 +8,6 @@ import { v4 as uuid } from 'uuid';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 
-// const MULTER_PATH = {
-//   TEMPORARY: 'temporary',
-// };
 @Module({
   imports: [
     MulterModule.registerAsync({
@@ -18,16 +15,21 @@ import { FilesService } from './files.service';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         storage: diskStorage({
-          destination: (_req, _file, cb) => {
-            const uploadPath = configService.get<string>(
-              'paths.temporary',
+          destination: (req, _file, cb) => {
+            const saveFolder = req.query.saveFolder as string;
+            const destPath = configService.get<string>(
+              saveFolder === 'images' ? 'paths.images' : 'paths.temporary',
             ) as string;
 
-            // 업로드 경로가 존재하지 않으면, 폴더를 생성
-            if (!fs.existsSync(uploadPath)) {
-              fs.mkdirSync(uploadPath, { recursive: true });
+            if (!destPath) {
+              return cb(new Error('Invalid save folder specified'), '');
             }
-            cb(null, uploadPath);
+
+            // 업로드 경로가 존재하지 않으면, 폴더를 생성
+            if (!fs.existsSync(destPath)) {
+              fs.mkdirSync(destPath, { recursive: true });
+            }
+            cb(null, destPath);
           },
           filename: (_req, file, cb) => {
             const ext = path.extname(file.originalname);

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export const HomeNavigation = (): ReactNode => {
   const { permissions } = useAuthStore();
   const navigate = useNavigate();
-  const navigationPaths = permissions.slice(1, 5);
+  const navigationPaths = permissions.slice(2, 6);
   /* 빠른 이동 */
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>

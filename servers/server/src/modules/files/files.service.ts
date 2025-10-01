@@ -15,18 +15,19 @@ export class FilesService {
   }
 
   /**
-   * @summary 임시 파일을 저장하고, 웹에서 접근 가능한 경로를 반환합니다.
+   * @summary 파일을 저장하고, 웹에서 접근 가능한 경로를 반환합니다.
    * @param file - Express.Multer.File
-   * @returns {{ tempUrl: string }}
+   * @param saveFolder - 'images' 또는 'temporary'
+   * @returns {{ url: string }}
    */
-  setTemporaryFile(file: Express.Multer.File): { tempUrl: string } {
+  uploadFile(file: Express.Multer.File, saveFolder?: string): { url: string } {
     if (!file) {
       throw new InternalServerErrorException('파일이 업로드되지 않았습니다.');
     }
 
-    // 웹 경로는 'temporary' 폴더와 고유한 파일명을 조합하여 만듭니다.
-    const webPath = `temporary/${file.filename}`;
-    return { tempUrl: `${MEDIA_SERVE_ROOT}/${webPath}` };
+    const folder = saveFolder === 'images' ? 'images' : 'temporary';
+    const webPath = `${folder}/${file.filename}`;
+    return { url: `${MEDIA_SERVE_ROOT}/${webPath}` };
   }
 
   getFiles({ baseUrl, subfolder }: GetFilesParameterType): GetFilesResult {

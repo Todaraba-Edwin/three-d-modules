@@ -15,7 +15,6 @@ const kyOptions: Options = {
 
 export const authClient = ky.create({
   ...kyOptions,
-  
 });
 
 export const apiClient = ky.create({
@@ -38,25 +37,22 @@ export const apiClient = ky.create({
  * 전역 ky 파일 업로드 함수
  */
 export async function uploadFile(
-  file: File, // string -> File 타입으로 변경
-  otherFields?: Record<string, string>
-): Promise<{ tempUrl: string }> {
+  file: File,
+  saveFolder?: 'temporary' | 'images',
+): Promise<{ url: string }> {
   const formData = new FormData();
-  formData.append('file', file); // File 객체를 직접 추가
+  formData.append('file', file);
 
-  // 다른 데이터도 같이 보낼 수 있음
-  if (otherFields) {
-    Object.entries(otherFields).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-  }
+  const endpoint = saveFolder
+    ? `files/upload?saveFolder=${saveFolder}`
+    : 'files/upload';
 
   return apiClient
-    .post('files/upload-temporary', {
+    .post(endpoint, {
       body: formData,
       // ⚠️ Content-Type은 ky가 자동으로 multipart/form-data로 설정함
     })
-    .json<{ tempUrl: string }>(); // 서버에서 반환하는 JSON 구조에 맞게 타입 지정
+    .json<{ url: string }>(); // 서버에서 반환하는 JSON 구조에 맞게 타입 지정
 }
 
 /**
@@ -64,7 +60,7 @@ export async function uploadFile(
  */
 
 export const utilsKyErrorControl = async (
-  errorType: HTTPError | unknown
+  errorType: HTTPError | unknown,
 ): Promise<null> => {
   const isHTTPError = errorType instanceof HTTPError;
   if (isHTTPError) {
