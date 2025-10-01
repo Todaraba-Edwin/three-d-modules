@@ -17,12 +17,12 @@ export class CreateBuildingDto {
   @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
-  groundFloor: number;
+  groundFloors: number;
 
   @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
-  baseFloor: number;
+  basementFloors: number;
 
   @Type(() => Number)
   @IsNumber()

@@ -28,21 +28,34 @@ type UserFormDateType = {
 type OptionType = { value: string | number; label: string };
 
 const customSelectStyles: StylesConfig<OptionType> = {
+  menu: provided => ({
+    ...provided,
+    borderRadius: '8px',
+    overflow: 'auto',
+  }),
+  menuList: provided => ({
+    ...provided,
+    paddingTop: 0, // 옵션 상단 여백 제거
+    paddingBottom: 0, // 옵션 하단 여백 제거
+  }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#ea580c' : ' white',
+
+    cursor: 'pointer',
+    backgroundColor: state.isSelected ? '#F5B18E' : ' white',
     color: state.isSelected ? 'white' : 'black',
     '&:hover': {
-      backgroundColor: state.isSelected ? '#ea580c' : '#fed7aa',
-      color: state.isSelected ? '#fed7aa' : 'black',
+      backgroundColor: state.isSelected ? '#F5B18E' : '#FADED0',
+      color: state.isSelected ? 'white' : 'black',
     },
   }),
   control: (provided, state) => ({
     ...provided,
-    borderColor: '#fb923c',
-    boxShadow: state.isFocused ? '0 0 0 1px #fb923c' : provided.boxShadow,
+    cursor: 'pointer',
+    borderColor: 'white',
+    boxShadow: state.isFocused ? '0 0 0 1px white' : provided.boxShadow,
     '&:hover': {
-      borderColor: '#fb923c',
+      borderColor: 'white',
     },
   }),
 };

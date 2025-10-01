@@ -24,14 +24,14 @@ export const formInputs = [
   {
     type: 'number',
     label: '지상 층수',
-    name: 'groundFloor',
+    name: 'groundFloors',
     placeholder: '건물의 지상 층수를 입력해주세요.',
     required: '지상 층수는 필수 입력 항목입니다.',
   },
   {
     type: 'number',
     label: '지하 층수',
-    name: 'baseFloor',
+    name: 'basementFloors',
     placeholder: '건물의 지하 층수를 입력해주세요.',
     required: '지하 층수는 필수 입력 항목입니다.',
   },

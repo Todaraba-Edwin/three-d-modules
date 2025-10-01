@@ -44,8 +44,6 @@ export const SearchBuildingDetail = (): ReactNode => {
     },
   });
 
-  console.log('GET_BUILDINGS_Detail :', data);
-
   if (isLoading || !data) {
     return <div>데이터를 찾을 수 없음</div>;
   }

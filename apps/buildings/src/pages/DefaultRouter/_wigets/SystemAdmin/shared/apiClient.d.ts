@@ -1,8 +1,8 @@
 type BuildingCreate_ReqBodyType = {
   buildingName: string;
   address: string;
-  groundFloor: number;
-  baseFloor: number;
+  groundFloors: number;
+  basementFloors: number;
   latitude: number;
   longitude: number;
   buildingDesc?: string;

@@ -17,11 +17,7 @@ type FormSearchBuildingsType = {
   search: string;
 };
 
-type GetBuildingsType = Record<
-  'id' | 'buildingName' | 'buildingDesc' | 'address' | 'buildingImage',
-  string
-> &
-  Record<'latitude' | 'longitude', number>;
+type GetBuildingsType = Record<'id' | 'buildingName' | 'address', string>;
 
 /**
  * @file BM_RightBuildingCreate.tsx */
@@ -30,8 +26,8 @@ type BM_BuildingCreateForm = {
   buildingDesc: string;
   address: string;
   buildingImageUrl: FileList;
-  groundFloor: number;
-  baseFloor: number;
+  groundFloors: number;
+  basementFloors: number;
   latitude: number;
   longitude: number;
   presignedUrl: string;

@@ -82,8 +82,8 @@ export const useBM_RightForm = (): BM_BuildingCreateFormReturn => {
         {
           buildingName: data.buildingName,
           address: data.address,
-          groundFloor: Number(data.groundFloor),
-          baseFloor: Number(data.baseFloor),
+          groundFloors: Number(data.groundFloors),
+          basementFloors: Number(data.basementFloors),
           latitude: Number(data.latitude),
           longitude: Number(data.longitude),
           buildingDesc: data.buildingDesc,
