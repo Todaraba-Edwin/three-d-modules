@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@pages": ["src/01_pages"],
+      "@/*": ["src/*"],
+      "@_shared": ["../shared/src/features/_shared"],
+      "@monorepo/shared": ["../shared/src"],
+      "@monorepo/shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": ["src", "**/*.ts", "**/*.tsx"]
+}

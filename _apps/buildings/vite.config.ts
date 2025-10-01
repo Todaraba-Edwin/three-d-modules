@@ -1,0 +1,38 @@
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
+import { defineConfig } from 'vite';
+import cesium from 'vite-plugin-cesium';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    react(),
+    cesium(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: path.resolve(__dirname, '../shared/public/model/*'),
+          dest: 'model',
+        },
+        {
+          src: path.resolve(__dirname, '../shared/public/imgs/*'),
+          dest: 'imgs',
+        },
+      ],
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@_shared': path.resolve(
+        __dirname,
+        '../shared/src/features/_shared'
+      ),
+      '@monorepo/shared': path.resolve(__dirname, '../shared/src'),
+    },
+  },
+  server: {
+    port: 3002,
+  },
+});

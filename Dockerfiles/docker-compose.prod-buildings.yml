@@ -4,7 +4,7 @@ services:
       context: ..
       dockerfile: Dockerfiles/Dockerfile.server
       args:
-        APP_PATH: servers/server
+        APP_PATH: _servers/server
         APP_NAME: server
         DB_HOST: mariadb
         APP_PORT: 8080
@@ -29,7 +29,7 @@ services:
       context: ..
       dockerfile: Dockerfiles/Dockerfile
       args:
-        APP_PATH: apps/buildings
+        APP_PATH: _apps/buildings
         VITE_API_URL: http://192.168.40.100:8080
     image: buildings-app-compose
     container_name: buildings-app

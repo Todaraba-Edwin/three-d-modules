@@ -1,4 +1,4 @@
 packages:
-  - packages/*
-  - servers/*
-  - apps/*
+  # - packages/*
+  - _servers/*
+  - _apps/*

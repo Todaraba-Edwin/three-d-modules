@@ -12,15 +12,11 @@ fi
 # ========= 앱별 설정 =========
 case "$APP_NAME" in
   "shared")
-    PARENT_DIR="packages"
+    PARENT_DIR="_apps"
     PORT=8080
     ;;
-  "project-a")
-    PARENT_DIR="apps"
-    PORT=8081
-    ;;
   "buildings")
-    PARENT_DIR="apps"
+    PARENT_DIR="_apps"
     PORT=8082
     ;;
   *)

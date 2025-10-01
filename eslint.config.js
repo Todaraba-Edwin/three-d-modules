@@ -101,20 +101,20 @@ export default tseslint.config(
 
   // App 전용 코드
   utilsAddConfig({
-    projectPath: './packages/shared/tsconfig.app.json',
-    matchPath: 'packages/shared/**/*.{ts,tsx}',
+    projectPath: './_apps/shared/tsconfig.app.json',
+    matchPath: '_apps/shared/**/*.{ts,tsx}',
   }),
   utilsAddConfig({
-    projectPath: './apps/project-a/tsconfig.app.json',
-    matchPath: 'apps/project-a/**/*.{ts,tsx}',
+    projectPath: './_apps/project-a/tsconfig.app.json',
+    matchPath: '_apps/project-a/**/*.{ts,tsx}',
   }),
   utilsAddConfig({
-    projectPath: './apps/buildings/tsconfig.app.json',
-    matchPath: 'apps/buildings/**/*.{ts,tsx}',
+    projectPath: './_apps/buildings/tsconfig.app.json',
+    matchPath: '_apps/buildings/**/*.{ts,tsx}',
   }),
   utilsServerConfig({
-    projectPath: './servers/server/tsconfig.json',
-    matchPath: 'servers/server/**/*.ts',
+    projectPath: './_servers/server/tsconfig.json',
+    matchPath: '_servers/server/**/*.ts',
   }),
   utilsNodeConfig({})
 );
