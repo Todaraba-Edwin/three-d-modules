@@ -98,14 +98,14 @@ export const SearchBuildingDetail = (): ReactNode => {
             className={clsx(
               'flex justify-center items-center border-2 rounded-md overflow-hidden',
               'max-2xl:w-full h-full',
-              '2xl:w-[600px]'
+              '2xl:w-[600px]' 
             )}
           >
             {!buildingImage ? (
-              <button className='flex flex-col justify-center items-center gap-2 w-full min-h-[180px]'>
-                <ImageOff className='w-14 h-14 text-slate-200' />
-                <p className='w-full truncate'>이미지 추가하기</p>
-              </button>
+              <figure className='flex flex-col justify-center items-center gap-2 w-full max-2xl:min-h-[180px] '>
+                <ImageOff className='w-14 h-14 text-slate-100' />
+                <p className='text-sm text-slate-400'>이미지 없음</p>
+              </figure>
             ) : (
               <figure className='h-full w-full '>
                 <img

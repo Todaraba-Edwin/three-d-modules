@@ -11,7 +11,7 @@ const Component = {
       className={clsx(
         'border-2 p-4 rounded-lg',
         'grid grid-rows-[auto_1fr] space-y-2 min-h-0',
-        'max-xl:min-h-[200px] max-xl:max-h-[200px] overflow-y-auto'
+        'max-xl:min-h-[220px] max-xl:max-h-[200px] overflow-y-auto'
       )}
       {...{ children }}
     />
