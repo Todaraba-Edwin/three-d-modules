@@ -1,5 +1,19 @@
 export const API_PREFIX = 'api';
 
+export const CookiesPath = '/';
+export const AUTH = {
+  SEGMENTS: {
+    BASE: `${API_PREFIX}/auth`,
+    LOGIN: 'login',
+    lOGOUT: 'logout',
+    VALIDATE_SESSION: 'validate-session',
+  },
+  PARAMS: {},
+  COOKIES: {
+    SESSION_ID: 'sessionId',
+  },
+};
+
 export const USERS = {
   SEGMENTS: {
     BASE: 'users',
@@ -8,20 +22,6 @@ export const USERS = {
   PARAMS: {
     USERNAME: 'userName',
     USERTYPE: 'userType',
-  },
-};
-
-export const AUTH = {
-  SEGMENTS: {
-    BASE: 'auth',
-    LOGIN: 'login',
-    lOGOUT: 'logout',
-    VALIDATE_SESSION: 'validate-session',
-  },
-  PARAMS: {},
-  COOKIES: {
-    SESSION_ID: 'sessionId',
-    USER_NAME: 'username',
   },
 };
 

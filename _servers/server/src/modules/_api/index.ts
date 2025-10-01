@@ -1,3 +1,3 @@
-export * from './kyOptions';
+export * from './kyCookieOptions';
 export * from './apiMessages';
 export * from './apiPaths';

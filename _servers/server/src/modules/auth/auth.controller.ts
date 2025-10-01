@@ -13,8 +13,11 @@ import type { Request, Response } from 'express';
 import { UAParser } from 'ua-parser-js';
 import { AuthService } from './auth.service';
 
+const { SEGMENTS, COOKIES } = API.AUTH;
+
 /**
  * @description Request 헤더의 User-Agent를 파싱하여 "브라우저이름 버전 on OS이름"
+ * TODO : 추후 로그인 관련 log를 사용하기 위한 도입
  * 형태의 클라이언트 식별 시그니처를 생성합니다.
  * @param userAgent - Request 헤더의 User-Agent 문자열
  * @returns 파싱된 클라이언트 시그니처 문자열
@@ -34,7 +37,7 @@ const createClientSignature = (
   });
 };
 
-@Controller(`${API.API_PREFIX}/${API.AUTH.SEGMENTS.BASE}`)
+@Controller(SEGMENTS.BASE)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -46,22 +49,20 @@ export class AuthController {
    * @param res - 응답 객체 (쿠키 설정을 위해 사용)
    * @returns 로그인 결과 메시지
    */
-  @Post(API.AUTH.SEGMENTS.LOGIN)
+  @Post(SEGMENTS.LOGIN)
   async login(
     @Req() req: Request,
-    @Body() body: { username: string; password: string; force?: boolean },
+    @Body() body: LoginReqBodyType,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<{ message: string }> {
+  ): Promise<ResResultType> {
     const clientSignature = createClientSignature(
       req.headers['user-agent'],
       req.headers['origin'],
     );
-    const { message, sessionId } = await this.authService.login(
-      body.username,
-      body.password,
-      body.force,
+    const { message, sessionId } = await this.authService.login({
+      ...body,
       clientSignature,
-    );
+    });
 
     res.cookie(
       API.AUTH.COOKIES.SESSION_ID,
@@ -79,14 +80,11 @@ export class AuthController {
    * @returns 세션이 유효할 경우, 성공 메시지와 사용자 정보 객체
    * @throws {UnauthorizedException} 쿠키가 없거나 서버의 세션 정보와 일치하지 않을 경우 (HTTP 401)
    */
-  @Get(API.AUTH.SEGMENTS.VALIDATE_SESSION)
-  async getValidateSession(@Req() req: Request): Promise<{
-    message: string | undefined;
-    roleCode: string | undefined;
-    nickname: string | undefined;
-    permissions: PermissionsType[] | undefined;
-  }> {
-    const sessionId = req.cookies[API.AUTH.COOKIES.SESSION_ID];
+  @Get(SEGMENTS.VALIDATE_SESSION)
+  async getValidateSession(
+    @Req() req: Request,
+  ): Promise<ValidateSessionResultType> {
+    const sessionId = req.cookies[COOKIES.SESSION_ID];
 
     if (!sessionId) {
       throw new UnauthorizedException(
@@ -102,7 +100,7 @@ export class AuthController {
     }
 
     return {
-      message: validationResult.message,
+      message: validationResult.message ?? '',
       roleCode: validationResult.roleCode,
       nickname: validationResult.nickname,
       permissions: validationResult.permissions,
@@ -120,15 +118,12 @@ export class AuthController {
   async logout(
     @Res({ passthrough: true }) res: Response,
     @Req() req: Request,
-  ): Promise<{ message: string }> {
-    const sessionId = req.cookies[API.AUTH.COOKIES.SESSION_ID];
+  ): Promise<ResResultType> {
+    const sessionId = req.cookies[COOKIES.SESSION_ID];
+    if (sessionId) this.authService.logout(sessionId);
 
-    if (sessionId) {
-      this.authService.logout(sessionId);
-    }
-
-    res.clearCookie(API.AUTH.COOKIES.SESSION_ID, { path: '/' });
-
-    return { message: API.API_MESSAGES.AUTH.SUCCEED_LOGOUT };
+    res.clearCookie(COOKIES.SESSION_ID, { path: API.CookiesPath });
+    const result = { message: API.API_MESSAGES.AUTH.SUCCEED_LOGOUT };
+    return result;
   }
 }

@@ -33,12 +33,16 @@ export class AuthService {
    * @throws {UnauthorizedException} 사용자 정보 불일치 시 (HTTP 401)
    * @throws {ConflictException} 이미 로그인 상태(force=false)일 시 (HTTP 409)
    */
-  async login(
-    username: string,
-    password: string,
-    force: boolean = false,
-    clientSignature: string,
-  ): Promise<{ message: string; sessionId: string }> {
+
+  async login({
+    username,
+    password,
+    force = false,
+    clientSignature,
+  }: LoginServiceParameterType): Promise<{
+    message: string;
+    sessionId: string;
+  }> {
     const user = await this.usersService.getUserByUsername(username);
 
     if (!user) {
@@ -87,9 +91,9 @@ export class AuthService {
    * @param sessionId - 로그아웃할 세션 ID
    * @returns 로그아웃 성공 메시지 객체 반환
    */
-  logout(sessionId: string): { message: string } {
+  logout(sessionId: string): void {
     this.activeSessions.delete(sessionId);
-    return { message: API_MESSAGES.AUTH.SUCCEED_LOGOUT };
+    // return { message: API_MESSAGES.AUTH.SUCCEED_LOGOUT };
   }
 
   /**
@@ -98,14 +102,9 @@ export class AuthService {
    * @param sessionId - 검증할 세션 ID
    * @returns 세션 유효성 결과 객체.
    */
-  async getValidateSession(sessionId: string): Promise<{
-    isValid: boolean;
-    roleCode?: string;
-    username?: string;
-    nickname?: string;
-    message?: string;
-    permissions?: PermissionsType[];
-  }> {
+  async getValidateSession(
+    sessionId: string,
+  ): Promise<ValidateSessionResultType> {
     const sessionData = this.activeSessions.get(sessionId);
 
     if (!sessionData) {
