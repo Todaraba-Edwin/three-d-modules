@@ -1,7 +1,10 @@
+import { apiClient, BMS_PATH, queryKey } from '@/_common/apis';
 import { Button } from '@/_common/components';
 import { DefaultPathEnum } from '@/_common/const';
+import { utilsBuildingFloorInfo, utilsGetImageSrc } from '@/_common/utils';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { Building2, Mouse, Plus } from 'lucide-react';
+import { Building2, ImageOff, Mouse, Plus } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SearchBuildingFloorDetail } from './SearchBuildingFloorDetail';
@@ -32,18 +35,41 @@ export const SearchBuildingNone = (): ReactNode => {
 export const SearchBuildingDetail = (): ReactNode => {
   const { buildingId: findBuildingId } = useParams<{ buildingId: string }>();
 
+  const { data, isLoading } = useQuery<SearchBuildingDetailType>({
+    queryKey: queryKey.buildings.bms_buildings_Detail(findBuildingId),
+    queryFn: () => {
+      return apiClient
+        .get(`${BMS_PATH.SEGMENTS.GET_BUILDINGS}/${findBuildingId}`)
+        .json();
+    },
+  });
+
+  console.log('GET_BUILDINGS_Detail :', data);
+
+  if (isLoading || !data) {
+    return <div>데이터를 찾을 수 없음</div>;
+  }
+
+  const {
+    buildingName,
+    buildingDesc,
+    buildingImage,
+    groundFloors,
+    basementFloors,
+  } = data;
+
   return (
     <div className='border-2  p-2 rounded-lg grid grid-rows-[auto_1fr] w-full h-full min-h-0 space-y-4'>
       <div className='space-y-4'>
         <h2 className='text-2xl font-semibold flex space-x-2 items-center'>
           <Building2 className='text-slate-400' />
-          <p>{`${findBuildingId} 강원정보문화산업진흥원`}</p>
+          <p children={buildingName} />
         </h2>
-        <div className='grid grid-cols-1 xl:grid-cols-[1fr_auto] max-xl:space-y-2 gap-x-2'>
+        <div className='grid grid-cols-1 2xl:grid-cols-[1fr_auto] max-2xl:space-y-2 gap-x-2'>
           <dl
             className={clsx(
               'grid grid-cols-[80px_auto] w-full h-fit  gap-y-2 text-base',
-              'max-xl:grid-rows-[1fr_1fr_1fr_180px]'
+              'max-xl:grid-rows-[1fr_1fr_1fr_minmax[0_180px]]'
             )}
           >
             <dt className='text-slate-500'>건물주소</dt>
@@ -51,44 +77,44 @@ export const SearchBuildingDetail = (): ReactNode => {
               강원 춘천시 서면 박사로 882 강원창작개발센터
             </dd>
             <dt className='text-slate-500'>건물정보</dt>
-            <dd className='pr-4'>지상 4층</dd>
+            <dd className='pr-4'>
+              {utilsBuildingFloorInfo({ groundFloors, basementFloors })}
+            </dd>
             <dt className='text-slate-500'>건물위치</dt>
             <dd className='pr-4'>37.56535253323751, 126.98043995723783</dd>
             <dt className='text-slate-500'>건물설명</dt>
-            <dd className='h-full min-h-0 max-h-[280px] overflow-y-auto text-justify pr-4'>
-              건물 설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다. 건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다. 건물 설명이 이렇게 들어갑니다.건물
-              설명이 이렇게 들어갑니다.
+            <dd
+              className={clsx(
+                'h-full min-h-0 max-h-[280px] overflow-y-auto text-justify pr-4',
+                { 'text-slate-300': !buildingDesc }
+              )}
+            >
+              {buildingDesc
+                ? buildingDesc.repeat(2)
+                : '설명이 기록되지 않았습니다.'}
             </dd>
           </dl>
           <div
             className={clsx(
               'flex justify-center items-center border-2 rounded-md overflow-hidden',
-              'max-xl:w-full h-full',
+              'max-2xl:w-full h-full',
               '2xl:w-[600px]'
             )}
           >
-            {/* <figure className='flex flex-col justify-center items-center gap-2 w-full '>
-            <ImageOff className='w-14 h-14 text-slate-200' />
-            <button className='w-full truncate'>이미지 추가하기</button>
-          </figure> */}
-            <figure className='h-full w-full '>
-              <img
-                src='http://192.168.40.100:8080/media/images/강원정보문화산업진흥원.png'
-                alt='building_images'
-                className='h-full w-full object-cover object-center'
-              />
-            </figure>
+            {!buildingImage ? (
+              <button className='flex flex-col justify-center items-center gap-2 w-full min-h-[180px]'>
+                <ImageOff className='w-14 h-14 text-slate-200' />
+                <p className='w-full truncate'>이미지 추가하기</p>
+              </button>
+            ) : (
+              <figure className='h-full w-full '>
+                <img
+                  src={utilsGetImageSrc({ url: buildingImage })}
+                  alt='building_images'
+                  className='h-full w-full object-cover object-center'
+                />
+              </figure>
+            )}
           </div>
         </div>
       </div>

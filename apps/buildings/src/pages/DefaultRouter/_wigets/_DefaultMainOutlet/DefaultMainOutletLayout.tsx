@@ -46,7 +46,7 @@ export const DefaultMainOutletLayout = ({
     <Feat.DefaultMainLayout>
       {/* 1. 왼쪽 네비게이션 영역 */}
       <Feat.NavSection {...{ is3DmsMode, isGnbOpen }}>
-        <Feat.NavHeader {...{ is3DmsMode }} />
+        <Feat.NavHeader {...{ is3DmsMode, onClick: onToggleIsGnbOpen }} />
         <Feat.NavBody {...{ isGnbOpen }}>
           {permissionPaths.map((list: PermissionsType, idx: number) => {
             const isActive = list.path.replace(/\//g, '') === layout;

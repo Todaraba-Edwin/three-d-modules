@@ -1,1 +1,1 @@
-export * from './BM_RightUis';
+export * from './BM_R';

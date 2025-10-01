@@ -36,3 +36,40 @@ type BM_BuildingCreateForm = {
   longitude: number;
   presignedUrl: string;
 };
+
+/**
+ * @file SearchBuildingDetail.tsx */
+const FloorType = {
+  SURFACE: 'SURFACE',
+  GROUND: 'GROUND',
+  BASEMENT: 'BASEMENT',
+} as const;
+
+type FloorType = (typeof FloorType)[keyof typeof FloorType];
+
+type FloorEntityType = {
+  id: number;
+  floorType: FloorType;
+  floorNumber: number;
+  floorName: string;
+  floorDesc: string | null;
+  floorGlb: string;
+  latitude: number;
+  longitude: number;
+  height: number;
+  heading: number;
+  buildingId: number;
+};
+
+type SearchBuildingDetailType = {
+  id: number;
+  buildingName: string;
+  buildingDesc: string;
+  address: string | null;
+  buildingImage: string | null;
+  latitude: number;
+  longitude: number;
+  groundFloors: number;
+  basementFloors: number;
+  floors: FloorType[];
+};

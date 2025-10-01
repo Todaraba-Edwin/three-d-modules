@@ -4,7 +4,7 @@ export const AUTH = {
   SEGMENTS: {
     BASE: 'auth',
     LOGIN: 'login',
-    lOGOUT: 'logout',
+    // lOGOUT: 'logout',
     get VALIDATE_SESSION(): string {
       return `${this.BASE}/validate-session`;
     },

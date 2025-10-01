@@ -34,6 +34,9 @@ export class Building {
 
   @Column({ name: 'ground_floors', type: 'int' })
   groundFloors: number;
+
+  @Column({ name: 'basement_floors', type: 'int' })
+  basementFloors: number;
 }
 
 @Entity('BMS_TN_BUILDINGS')

@@ -15,6 +15,7 @@ const kyOptions: Options = {
 
 export const authClient = ky.create({
   ...kyOptions,
+  
 });
 
 export const apiClient = ky.create({

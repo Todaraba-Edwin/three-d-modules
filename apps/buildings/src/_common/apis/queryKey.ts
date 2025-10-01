@@ -23,5 +23,11 @@ export const queryKey = {
         'create',
         ...(search ? [search] : []),
       ] as const,
+    bms_buildings_Detail: (buildingId?: string): string[] => [
+      ...queryKey.systemAdmin.all,
+      BMS_PATH.SEGMENTS.SET_BUILDINGS,
+      'detail',
+      ...(buildingId ? [buildingId] : []),
+    ],
   },
 };

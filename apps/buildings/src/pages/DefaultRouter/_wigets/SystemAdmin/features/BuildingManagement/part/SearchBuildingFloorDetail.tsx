@@ -29,7 +29,9 @@ const GROUND = [
 export const SearchBuildingFloorDetail = (): ReactNode => {
   const navigate = useNavigate();
   const { segments } = usePathSegments();
-  const { floorId } = useParams<{ floorId: string }>();
+  const { floorId } = useParams<{
+    floorId: string;
+  }>();
   const currentFloorId = floorId ? parseInt(floorId) : undefined;
   const onNavigate = (floorId: number) => () => {
     if (currentFloorId === floorId) {
@@ -42,7 +44,7 @@ export const SearchBuildingFloorDetail = (): ReactNode => {
 
   return (
     <div className='grid grid-cols-[auto_1fr] 2xl:grid-cols-[1fr_3fr] gap-x-2 min-h-0 '>
-      <ol className='max-2xl:min-w-[180px] max-xl:max-h-[512px] space-y-2 min-h-0 grid grid-rows-[aut0_1fr]'>
+      <ol className='max-2xl:min-w-[180px] max-xl:max-h-[512px] space-y-2 min-h-0 grid grid-rows-[auto_1fr]'>
         {[...SURFACE].map(list => (
           <li key={list.id}>
             <button
