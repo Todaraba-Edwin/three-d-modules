@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { API_MESSAGES } from '../_api';
 import { USER_TC_ROLES, USER_TN_USERS } from '../users/dto';
-import { PermissionsByRoleResDto, SummaryResDto } from './dto';
+import * as Dto from './dto';
 import {
   NMS_TC_MANUFACTURERS,
   NMS_TC_SWITCH_MODELS,
@@ -32,7 +33,7 @@ export class SystemAdminService {
    * @description 사용자, 스위치 모델, 스위치, 장비의 총 개수를 반환
    * @returns 요약 정보 객체
    */
-  async getSummary(): Promise<SummaryResDto> {
+  async getSummary(): Promise<Dto.SummaryResult> {
     const [
       usersCount,
       switchModelsCount,
@@ -48,11 +49,14 @@ export class SystemAdminService {
     ]);
 
     return {
-      usersCount: usersCount,
-      switchModelsCount: switchModelsCount,
-      switchesCount: switchesCount,
-      devicesCount: devicesCount,
-      manufacturersCount: manufacturersCount,
+      message: API_MESSAGES.ADMIN.SUMMARY,
+      data: {
+        usersCount,
+        switchModelsCount,
+        switchesCount,
+        devicesCount,
+        manufacturersCount,
+      },
     };
   }
 
@@ -61,7 +65,7 @@ export class SystemAdminService {
    * @description 역할별 메뉴 접근 권한 목록을 반환
    * @returns 역할별 메뉴 권한 목록
    */
-  async getPermissionsByRole(): Promise<PermissionsByRoleResDto[]> {
+  async getPermissionsByRole(): Promise<Dto.PermissionsByRoleResDto[]> {
     const permissionsByRole = await this.rolesRepository
       .createQueryBuilder('role')
       .select([

@@ -26,24 +26,30 @@ const CardContent = ({ className, ...props }: React.ComponentProps<'div'>) => {
 };
 
 type SummaryData = {
-  usersCount: number;
-  manufacturersCount: number;
-  switchModelsCount: number;
-  switchesCount: number;
-  devicesCount: number;
+  message: string;
+  data: {
+    usersCount: number;
+    manufacturersCount: number;
+    switchModelsCount: number;
+    switchesCount: number;
+    devicesCount: number;
+  };
 };
 
 export const SystemAdminSummary = (): ReactNode => {
-  const { data: summaryData, isLoading } = useQuery<SummaryData>({
+  const { data, isLoading } = useQuery<SummaryData>({
     queryKey: queryKey.systemAdmin.summary(),
     queryFn: () => apiClient.get('system-admin/summary').json(),
     staleTime: 30 * 1000, // 30초
     refetchInterval: 40 * 1000, // 40초
   });
   const utilsReturnCount = (number: number | undefined): number | string => {
-    if (isLoading) return '...';
+    if (isLoading || !data) return '...';
     return number ?? 0;
   };
+
+  if (isLoading || !data) return <div>...</div>;
+  const { data: summaryData } = data;
 
   return (
     <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6'>

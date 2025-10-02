@@ -10,6 +10,9 @@ export const API_MESSAGES = {
     NOT_ADMIN_SESSION: '관리자가 아니면 접근이 허용되지 않습니다.',
     VALID_SESSION: '세션정보가 유효합니다.',
   },
+  ADMIN: {
+    SUMMARY: '관리자 페이지 관련 수치들을 조회합니다.',
+  },
   BUILDING: {
     EXIST_BUILDING_NAME: '이미 존재하는 건물명입니다.',
     CREATE_BUILDING: '건물이 성공적으로 생성되었습니다.',

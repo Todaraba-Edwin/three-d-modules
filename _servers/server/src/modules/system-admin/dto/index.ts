@@ -1,2 +1,1 @@
-export * from './permissions.dto';
-export * from './summary.dto';
+export * from './system-admin.dto';

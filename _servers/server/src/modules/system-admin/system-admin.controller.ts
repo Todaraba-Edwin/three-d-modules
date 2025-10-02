@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, UseGuards } from '@nestjs/common';
 import * as API from '@src_apps/modules/_api';
 import { AuthGuard } from '../auth/auth.guard';
-import { PermissionsByRoleResDto, SummaryResDto } from './dto';
+import * as Dto from './dto';
 import { SystemAdminService } from './system-admin.service';
 
 @Controller(`${API.API_PREFIX}/${API.SYSTEM_ADMIN.SEGMENTS.BASE}`)
@@ -14,7 +14,7 @@ export class SystemAdminController {
    * @returns 사용자 수, 스위치 모델 수, 스위치 수, 장비 수
    */
   @Get(API.SYSTEM_ADMIN.SEGMENTS.SUMMARY)
-  getSummary(): Promise<SummaryResDto> {
+  getSummary(): Promise<Dto.SummaryResult> {
     return this.systemAdminService.getSummary();
   }
 
@@ -23,7 +23,7 @@ export class SystemAdminController {
    * @returns 역할별 메뉴접근 진위값
    */
   @Get(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
-  getPermissionsByRoles(): Promise<PermissionsByRoleResDto[]> {
+  getPermissionsByRoles(): Promise<Dto.PermissionsByRoleResDto[]> {
     return this.systemAdminService.getPermissionsByRole();
   }
 
@@ -33,9 +33,7 @@ export class SystemAdminController {
    * @param body force - 강제 삭제 여부
    */
   @Delete(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
-  deleteRoles(
-    @Body() body: { roleIds: number[]; force?: boolean },
-  ): Promise<void> {
+  deleteRoles(@Body() body: Dto.DeleteRolesReqDto): Promise<void> {
     return this.systemAdminService.deleteRoles(body.roleIds, body.force);
   }
 }
