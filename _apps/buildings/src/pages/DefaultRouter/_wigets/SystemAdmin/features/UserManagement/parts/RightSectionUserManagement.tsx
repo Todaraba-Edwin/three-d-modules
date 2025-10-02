@@ -106,9 +106,7 @@ export const RightSectionUserManagement = (): ReactNode => {
             if (isShowAddUserNode) return closeAllStated();
             return openIsShowAddUserNode();
           },
-          addActionNode: (isShowAddUserNode || isEditModeRole) && (
-            <AddFormUser />
-          ),
+          addActionNode: isShowAddUserNode && <AddFormUser />,
         }}
         children={
           <div
