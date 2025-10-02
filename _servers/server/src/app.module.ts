@@ -8,7 +8,7 @@ import { AppService } from 'app.service';
     ...M.ExportModules,
     M.UsersModule,
     M.AuthModule,
-    M.SwitchesModule,
+    M.SwitchesModule, // TODO 스위치 장비에 대한 LLDP, OTDR 접근
     M.SystemAdminModule,
     M.FilesModule,
     M.BmsModule,
