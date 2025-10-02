@@ -1,3 +1,0 @@
-type ResResultType = {
-  message: string;
-};

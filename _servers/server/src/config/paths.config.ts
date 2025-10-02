@@ -19,3 +19,8 @@ export const Paths = {
   PUBLIC_TEMP: 'paths.temporary',
   PUBLIC_IMG: 'paths.images',
 } as const;
+
+export const ImageDir = {
+  TEMPORARY: '/media/temporary',
+  IMAGE: '/media/images',
+};

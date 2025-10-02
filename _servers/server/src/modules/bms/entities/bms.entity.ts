@@ -6,7 +6,7 @@ export class Building {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @OneToMany(() => Floor, floor => floor.buildingId)
+  @OneToMany(() => Floor, (floor) => floor.buildingId)
   floors: Floor[];
 
   @Column({ name: 'building_name', type: 'varchar', length: 100, unique: true })
@@ -37,16 +37,4 @@ export class Building {
 
   @Column({ name: 'basement_floors', type: 'int' })
   basementFloors: number;
-}
-
-@Entity('BMS_TN_BUILDINGS')
-export class GetBuildingList {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
-
-  @Column({ name: 'building_name', type: 'varchar', length: 100, unique: true })
-  buildingName: string;
-
-  @Column({ name: 'building_desc', type: 'varchar', length: 255, default: '' })
-  address: string;
 }

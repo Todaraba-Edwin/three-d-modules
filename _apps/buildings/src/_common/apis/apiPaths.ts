@@ -31,7 +31,7 @@ export const BMS_PATH = {
       return `${this.ROOT}/buildings`;
     },
     get CHECK_BUILDINGS(): string {
-      return `${this.ROOT}/buildings/check-building-name`;
+      return `${this.ROOT}/buildings/exists`;
     },
     get SET_BUILDINGS(): string {
       return `${this.ROOT}/buildings`;

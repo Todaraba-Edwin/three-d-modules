@@ -54,10 +54,10 @@ export const FILES = {
 
 export const BMS = {
   SEGMENTS: {
-    BASE: 'bms',
+    BASE: `${API_PREFIX}/bms`,
     BUILDINGS: 'buildings',
     get BUILDING_CHECK(): string {
-      return `${this.BUILDINGS}/check-building-name`;
+      return `${this.BUILDINGS}/exists`;
     },
   },
   PARAMS: {

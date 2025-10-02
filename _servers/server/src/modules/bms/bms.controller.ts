@@ -1,6 +1,5 @@
 import {
   Body,
-  ConflictException,
   Controller,
   Delete,
   Get,
@@ -12,46 +11,40 @@ import {
 import * as API from '@src_apps/modules/_api';
 import { AuthAdminGuard } from '../auth/auth.guard';
 import { BmsService } from './bms.service';
-import { CreateBuildingDto } from './dto';
-import { Building, GetBuildingList } from './entities';
+import * as Dto from './dto';
+import * as Entities from './entities';
 
-@Controller(`${API.API_PREFIX}/${API.BMS.SEGMENTS.BASE}`)
+const { SEGMENTS, PARAMS } = API.BMS;
+
+@Controller(SEGMENTS.BASE)
 @UseGuards(AuthAdminGuard)
 export class BmsController {
   constructor(private readonly bmsService: BmsService) {}
-
-  /**
-   * @summary GEP / api/bms/check-building-name - 등록된 건물명 확인
-   * @description 등록된 건물명을 검색합니다.
-   * @param search 건물 이름을 검색하기 위한 검색어
-   */
-  @Get(API.BMS.SEGMENTS.BUILDING_CHECK)
-  async checkBuildingsName(
-    @Query(API.BMS.PARAMS.SEARCH) search: string,
-  ): Promise<{ message: string }> {
-    const findBuildingName =
-      await this.bmsService.checkBuildingNameExists(search);
-
-    if (findBuildingName) {
-      throw new ConflictException(
-        API.API_MESSAGES.BUILDING.EXIST_BUILDING_NAME,
-      );
-    }
-    return {
-      message: API.API_MESSAGES.BUILDING.VALID_BUILDING_NAME,
-    };
-  }
 
   /**
    * @summary GET /api/bms/buildings - 건물 목록 조회
    * @description 건물 목록을 조회합니다. 검색어(search)를 통해 건물 이름 또는 주소로 필터링할 수 있습니다.
    * @param search 건물 이름 또는 주소로 검색하기 위한 검색어
    */
-  @Get(API.BMS.SEGMENTS.BUILDINGS)
+  @Get(SEGMENTS.BUILDINGS)
   getBuildings(
-    @Query(API.BMS.PARAMS.SEARCH) search?: string,
-  ): Promise<GetBuildingList[]> {
-    return this.bmsService.getBuildings(search);
+    @Query() query: API.SearchQueryOptionDto,
+  ): Promise<Dto.GetBuildingList[]> {
+    const result = this.bmsService.getBuildingsBrief(query[PARAMS.SEARCH]);
+    return result;
+  }
+
+  /**
+   * @summary GEP / api/bms/exists - 등록된 건물명 확인
+   * @description 등록된 건물명을 검색합니다.
+   * @param search 건물 이름을 검색하기 위한 검색어
+   */
+  @Get(SEGMENTS.BUILDING_CHECK)
+  async checkBuildingExists(
+    @Query() query: API.SearchQueryStaticDto,
+  ): Promise<API.ResultDto> {
+    const result = await this.bmsService.existsByName(query[PARAMS.SEARCH]);
+    return result;
   }
 
   /**
@@ -60,8 +53,9 @@ export class BmsController {
    * @param id 건물의 ID
    */
   @Get(`${API.BMS.SEGMENTS.BUILDINGS}/:id`)
-  getBuildingDetail(@Param('id') id: number): Promise<Building> {
-    return this.bmsService.getBuildingDetail(id);
+  getBuildingDetail(@Param('id') id: number): Promise<Entities.Building> {
+    const result = this.bmsService.getBuildingDetail(id);
+    return result;
   }
 
   /**
@@ -70,32 +64,24 @@ export class BmsController {
    * @param body - 건물 생성을 위한 DTO
    * @returns 생성 성공 메시지
    */
-
   @Post(API.BMS.SEGMENTS.BUILDINGS)
-  async getCreateBuildings(
-    @Body() body: CreateBuildingDto,
-  ): Promise<{ message: string; createdBuildingId: number }> {
-    const findBuildingName = await this.bmsService.checkBuildingNameExists(
-      body.buildingName,
-    );
-
-    if (findBuildingName) {
-      throw new ConflictException(
-        API.API_MESSAGES.BUILDING.EXIST_BUILDING_NAME,
-      );
-    }
+  async CreateBuilding(
+    @Body() body: Dto.CreateBuildingReqBody,
+  ): Promise<Dto.CreateBuildingResult> {
     const result = await this.bmsService.createBuilding(body);
-    return {
-      message: API.API_MESSAGES.BUILDING.CREATE_BUILDING,
-      createdBuildingId: Number(result.id),
-    };
+    return result;
   }
 
+  /**
+   * @summary DELETE /api/bms/buildings/:id - 특정 건물 삭제
+   * @description 특정 건물에 대한 정보를 삭제합니다.
+   * @param body - 건물 삭제를 위한 DTO
+   */
   @Delete(API.BMS.SEGMENTS.BUILDINGS)
   async deleteBuildings(
-    @Body() body: { buildingId: number },
-  ): Promise<{ message: string; deleteBuildingId: number }> {
-    await this.bmsService.deleteBuilding(body.buildingId);
-    return { message: '건물 삭제 완료', deleteBuildingId: body.buildingId };
+    @Body() body: Dto.DeleteBuildingReqBody,
+  ): Promise<Dto.DeleteBuildingResult> {
+    const result = await this.bmsService.deleteBuilding(body.buildingId);
+    return result;
   }
 }

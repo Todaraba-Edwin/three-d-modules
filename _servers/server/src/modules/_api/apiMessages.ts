@@ -14,6 +14,8 @@ export const API_MESSAGES = {
     EXIST_BUILDING_NAME: '이미 존재하는 건물명입니다.',
     CREATE_BUILDING: '건물이 성공적으로 생성되었습니다.',
     VALID_BUILDING_NAME: '사용 가능한 건물명입니다.',
-    CANNOT_DELETE_HAS_FLOORS: '하위 층 정보가 있어 삭제할 수 없습니다.',
+    DELETED_BUILDING: '건물 삭제가 왼료되었습니다.',
+    NOT_FOUND_BUILDING: ({ id }: { id: number }): string =>
+      `Building with ID ${id} not found`,
   },
 };

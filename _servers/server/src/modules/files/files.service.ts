@@ -1,9 +1,15 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Paths } from '@src_apps/config';
+import { ImageDir, Paths } from '@src_apps/config';
 import { MEDIA_SERVE_ROOT } from '@src_apps/modules/_api';
 import * as fs from 'fs';
+// import * as  from 'fs/promises';
 import * as path from 'path';
+import { ERROR_CODE } from '../_common';
 // fs # Node.js 내장 모듈 - file  System 파일 읽기, 쓰기, 폴더 생성 모듈
 // path # Node.js 내장 모듈 - 파일 및 디렉토리 경로를 다룰 때 사용
 
@@ -50,6 +56,40 @@ export class FilesService {
       // eslint-disable-next-line
     } catch (error) {
       throw new Error(`Failed to read directory: ${subfolder}`);
+    }
+  }
+
+  async moveFiles({
+    fileUrl,
+    target,
+  }: {
+    fileUrl: string;
+    target: 'Building image';
+  }): Promise<string> {
+    const fileName = path.basename(fileUrl);
+    const sourcePath = path.join(
+      this.configService.get<string>(Paths.PUBLIC_TEMP) as string,
+      fileName,
+    );
+    const destDir = this.configService.get<string>(Paths.PUBLIC_IMG) as string;
+    const destPath = path.join(destDir, fileName);
+
+    try {
+      await fs.promises.mkdir(destDir, { recursive: true });
+      await fs.promises.rename(sourcePath, destPath);
+      return `${ImageDir.IMAGE}/${fileName}`;
+    } catch (error) {
+      if (error.code === ERROR_CODE.FS_ERROR.NO_ENTRY.CODE) {
+        throw new NotFoundException(
+          ERROR_CODE.FS_ERROR.NO_ENTRY.MESSAGE({ sourcePath }),
+        );
+      } else {
+        throw new InternalServerErrorException(
+          ERROR_CODE.FS_ERROR.OTHER_CASE_MESSAGE({
+            target,
+          }),
+        );
+      }
     }
   }
 }

@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import type { Request, Response } from 'express';
 import { UAParser } from 'ua-parser-js';
 import { AuthService } from './auth.service';
+import * as Dto from './dto';
 
 const { SEGMENTS, COOKIES } = API.AUTH;
 
@@ -52,9 +53,9 @@ export class AuthController {
   @Post(SEGMENTS.LOGIN)
   async login(
     @Req() req: Request,
-    @Body() body: LoginReqBodyType,
+    @Body() body: Dto.LoginReqDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<ResResultType> {
+  ): Promise<API.ResultDto> {
     const clientSignature = createClientSignature(
       req.headers['user-agent'],
       req.headers['origin'],
@@ -84,7 +85,7 @@ export class AuthController {
   async logout(
     @Res({ passthrough: true }) res: Response,
     @Req() req: Request,
-  ): Promise<ResResultType> {
+  ): Promise<API.ResultDto> {
     const sessionId = req.cookies[COOKIES.SESSION_ID];
     if (sessionId) this.authService.logout(sessionId);
 
@@ -103,7 +104,7 @@ export class AuthController {
   @Get(SEGMENTS.VALIDATE_SESSION)
   async getValidateSession(
     @Req() req: Request,
-  ): Promise<ValidateSessionResultType> {
+  ): Promise<Dto.ValidateSessionResultDto> {
     const sessionId = req.cookies[COOKIES.SESSION_ID];
 
     if (!sessionId) {

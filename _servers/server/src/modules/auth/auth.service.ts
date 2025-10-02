@@ -7,6 +7,7 @@ import { API_MESSAGES } from '@src_apps/modules/_api';
 import { compare } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { UsersService } from '../users/users.service';
+import * as Dto from './dto';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +40,7 @@ export class AuthService {
     password,
     force = false,
     clientSignature,
-  }: LoginServiceParameterType): Promise<{
+  }: Dto.LoginServiceParams): Promise<{
     message: string;
     sessionId: string;
   }> {
@@ -103,7 +104,7 @@ export class AuthService {
    */
   async getValidateSession(
     sessionId: string,
-  ): Promise<ValidateSessionResultType> {
+  ): Promise<Dto.SessionValidationInternalResult> {
     const sessionData = this.activeSessions.get(sessionId);
     const { NOT_FOUND_SESSION_SERVER, INVALID_USERS, VALID_SESSION } =
       API_MESSAGES.AUTH;
@@ -138,8 +139,9 @@ export class AuthService {
       return { isValid: false, message: INVALID_USERS };
     }
 
-    const permissions =
-      await this.usersService.getMenuPermissionByRoleId(role_id);
+    const permissions = (
+      await this.usersService.getMenuPermissionByRoleId(role_id)
+    ).map((p) => ({ ...p, parent_id: p.parent_id || null }));
 
     return {
       isValid: true,
