@@ -1,14 +1,12 @@
-import type { PermissionsRolesQueryResult } from '@/pages/DefaultRouter/_wigets/SystemAdmin/features/UserManagement/parts/LeftSectionRoleManagement';
+import type { PermissionsRoles } from '@/pages/DefaultRouter/_wigets/SystemAdmin/features/UserManagement/parts/LeftSectionRoleManagement';
 import { create } from 'zustand';
 
 type useSystemAdminAddRoleStoreType = {
   isShowAddRoleNode: boolean;
   isEditModeRole: boolean;
-  targetEditRole: PermissionsRolesQueryResult | undefined;
+  targetEditRole: PermissionsRoles | undefined;
   openIsShowAddRoleNode: () => void;
-  openIsEditModeRole: (_state: {
-    targetEditRole: PermissionsRolesQueryResult;
-  }) => void;
+  openIsEditModeRole: (_state: { targetEditRole: PermissionsRoles }) => void;
   closeAllStated: () => void;
   reset: () => void;
 };

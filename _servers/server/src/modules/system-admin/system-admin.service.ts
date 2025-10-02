@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { API_MESSAGES } from '../_api';
-import { USER_TC_ROLES, USER_TN_USERS } from '../users/dto';
+import { USER_TC_ROLES, USER_TN_USERS } from '../users/entities';
 import * as Dto from './dto';
 import {
   NMS_TC_MANUFACTURERS,
@@ -65,7 +65,7 @@ export class SystemAdminService {
    * @description 역할별 메뉴 접근 권한 목록을 반환
    * @returns 역할별 메뉴 권한 목록
    */
-  async getPermissionsByRole(): Promise<Dto.PermissionsByRoleResDto[]> {
+  async getPermissionsByRole(): Promise<Dto.PermissionsByRoleResult> {
     const permissionsByRole = await this.rolesRepository
       .createQueryBuilder('role')
       .select([
@@ -112,7 +112,10 @@ export class SystemAdminService {
       }
     }
 
-    return Array.from(rolesMap.values());
+    return {
+      message: API_MESSAGES.ADMIN.PERMISSIONS_BY_ROLE,
+      data: Array.from(rolesMap.values()),
+    };
   }
 
   /**
@@ -122,9 +125,15 @@ export class SystemAdminService {
    * @param roleIds 삭제할 역할 ID 배열
    * @param force 강제 삭제 여부
    */
-  async deleteRoles(roleIds: number[], force = false): Promise<void> {
+  async deleteRoles(
+    roleIds: number[],
+    force = false,
+  ): Promise<Dto.DeleteRoleIdsResult> {
     if (!roleIds || roleIds.length === 0) {
-      return;
+      return {
+        message: API_MESSAGES.ADMIN.NOT_DELETE_ROLE_IDS,
+        roleIds,
+      };
     }
 
     const roles = await this.rolesRepository.find({
@@ -137,7 +146,10 @@ export class SystemAdminService {
 
     const idsToDelete = roles.map((role) => role.id);
     if (idsToDelete.length === 0) {
-      return;
+      return {
+        message: API_MESSAGES.ADMIN.NOT_DELETE_ROLE_IDS,
+        roleIds,
+      };
     }
 
     const usersInRoles = await this.usersRepository.find({
@@ -180,5 +192,10 @@ export class SystemAdminService {
 
     // With ON DELETE CASCADE, users will be deleted automatically.
     await this.rolesRepository.delete(idsToDelete);
+
+    return {
+      message: API_MESSAGES.ADMIN.DELETE_ROLE_IDS,
+      roleIds,
+    };
   }
 }

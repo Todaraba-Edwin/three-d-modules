@@ -15,7 +15,7 @@ import { UM_CONST } from '../../../shared/const';
 import { AddFormRole } from './AddFormRole';
 import { GridSections } from './GridSections';
 
-export type PermissionsRolesQueryResult = {
+export type PermissionsRoles = {
   permissionMenu: {
     menu_id: number;
     menu_label: string;
@@ -25,6 +25,11 @@ export type PermissionsRolesQueryResult = {
   role_id: number;
   role_name: string;
   role_description: string;
+};
+
+export type PermissionsRolesQueryResult = {
+  message: string;
+  data: PermissionsRoles[];
 };
 
 // 유틸리티 함수
@@ -64,9 +69,7 @@ type ConfirmPortalState = {
 export const LeftSectionRoleManagement = (): ReactNode => {
   const queryClient = useQueryClient();
   const { selectedRoleId, setAction } = useSyStemAdminSelectedRole();
-  const { data: permissionsMenuByRoleData, isLoading } = useQuery<
-    PermissionsRolesQueryResult[]
-  >({
+  const { data, isLoading } = useQuery<PermissionsRolesQueryResult>({
     queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
     queryFn: () => apiClient.get('system-admin/permissions-roles').json(),
   });
@@ -157,6 +160,8 @@ export const LeftSectionRoleManagement = (): ReactNode => {
     closeAllStated,
   } = useSystemAdminAddRoleStore();
 
+  if (!data) return <div>...</div>;
+  const { data: permissionsMenuByRoleData } = data;
   return (
     <>
       <GridSections

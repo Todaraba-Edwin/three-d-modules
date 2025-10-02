@@ -70,15 +70,13 @@ export const AddFormUser = (): ReactNode => {
     closeAllStated,
   } = useSystemAdminAddUSerStore();
 
-  const { data: permissionsMenuByRoleData } = useQuery<
-    PermissionsRolesQueryResult[]
-  >({
+  const { data: permissionsResult } = useQuery<PermissionsRolesQueryResult>({
     queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
     queryFn: () => apiClient.get('system-admin/permissions-roles').json(),
   });
 
   const roleOptions =
-    permissionsMenuByRoleData
+    permissionsResult?.data
       ?.filter(({ role_code }) => role_code != 'ADMIN_MAIN')
       ?.map(({ role_id, role_name }) => ({
         value: role_id,
@@ -350,7 +348,7 @@ export const AddFormUser = (): ReactNode => {
                     required: !isEditModeUser,
                   })}
                   placeholder='비밀번호를 입력해주세요.(10자 이내)'
-                  className='text-sm'
+                  className='text-sm pr-9'
                 />
                 <button
                   type='button'

@@ -4,7 +4,9 @@ import { AuthGuard } from '../auth/auth.guard';
 import * as Dto from './dto';
 import { SystemAdminService } from './system-admin.service';
 
-@Controller(`${API.API_PREFIX}/${API.SYSTEM_ADMIN.SEGMENTS.BASE}`)
+const { SEGMENTS } = API.SYSTEM_ADMIN;
+
+@Controller(SEGMENTS.BASE)
 @UseGuards(AuthGuard)
 export class SystemAdminController {
   constructor(private readonly systemAdminService: SystemAdminService) {}
@@ -13,7 +15,7 @@ export class SystemAdminController {
    * @summary GET /api/system-admin/summary - 시스템 요약 정보 조회
    * @returns 사용자 수, 스위치 모델 수, 스위치 수, 장비 수
    */
-  @Get(API.SYSTEM_ADMIN.SEGMENTS.SUMMARY)
+  @Get(SEGMENTS.SUMMARY)
   getSummary(): Promise<Dto.SummaryResult> {
     return this.systemAdminService.getSummary();
   }
@@ -22,8 +24,8 @@ export class SystemAdminController {
    * @summary GET /api/system-admin/permissions-roles - 사용자 역할별 정보 조회
    * @returns 역할별 메뉴접근 진위값
    */
-  @Get(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
-  getPermissionsByRoles(): Promise<Dto.PermissionsByRoleResDto[]> {
+  @Get(SEGMENTS.PERMISSIONS_ROLES)
+  getPermissionsByRoles(): Promise<Dto.PermissionsByRoleResult> {
     return this.systemAdminService.getPermissionsByRole();
   }
 
@@ -32,8 +34,10 @@ export class SystemAdminController {
    * @param body roleIds - 삭제할 역할 ID 배열
    * @param body force - 강제 삭제 여부
    */
-  @Delete(API.SYSTEM_ADMIN.SEGMENTS.PERMISSIONS_ROLES)
-  deleteRoles(@Body() body: Dto.DeleteRolesReqDto): Promise<void> {
+  @Delete(SEGMENTS.PERMISSIONS_ROLES)
+  deleteRoles(
+    @Body() body: Dto.DeleteRolesReqDto,
+  ): Promise<Dto.DeleteRoleIdsResult> {
     return this.systemAdminService.deleteRoles(body.roleIds, body.force);
   }
 }

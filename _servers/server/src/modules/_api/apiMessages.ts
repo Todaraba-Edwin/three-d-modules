@@ -12,6 +12,9 @@ export const API_MESSAGES = {
   },
   ADMIN: {
     SUMMARY: '관리자 페이지 관련 수치들을 조회합니다.',
+    PERMISSIONS_BY_ROLE: '역할에 따른 메뉴 접근 권한을 조회합니다.',
+    DELETE_ROLE_IDS: '해당 역할들을 삭제했습니다.',
+    NOT_DELETE_ROLE_IDS: '해당 역할들을 삭제할 수 없습니다.',
   },
   BUILDING: {
     EXIST_BUILDING_NAME: '이미 존재하는 건물명입니다.',
@@ -25,5 +28,13 @@ export const API_MESSAGES = {
     NOT_SAVE_FILE: '파일이 업로드되지 않았습니다.',
     SAVE_FILE: '파일을 업로드 했습니다. ',
     MOVE_FILE: '파일 이동을 완료 했습니다.',
+  },
+  USERS: {
+    GET_ALL_USERS: '모든 사용자 정보를 조회합니다.',
+    DELETE_USERS: '선택된 사용자를 삭제했습니다.',
+    VALID_USERNAME: '사용 가능한 사용자명입니다.',
+    VALID_EMAIL: '사용 가능한 이메일입니다.',
+    CREATE_USER: '새로운 사용자를 생성했습니다.',
+    UPSERT_ROLE: '역할 정보를 생성/업데이트했습니다.',
   },
 };

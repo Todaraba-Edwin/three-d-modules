@@ -79,3 +79,11 @@ export class PermissionsByRoleResDto {
   @Type(() => MenuPermissionDto)
   permissionMenu: MenuPermissionDto[];
 }
+
+export class PermissionsByRoleResult extends ResultDto {
+  data: PermissionsByRoleResDto[];
+}
+
+export class DeleteRoleIdsResult extends ResultDto {
+  roleIds: number[];
+}

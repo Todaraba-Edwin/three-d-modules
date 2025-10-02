@@ -36,7 +36,7 @@ export const SWITCHES = {
 
 export const SYSTEM_ADMIN = {
   SEGMENTS: {
-    BASE: 'system-admin',
+    BASE: `${API_PREFIX}/system-admin`,
     SUMMARY: 'summary',
     PERMISSIONS_ROLES: 'permissions-roles',
   },

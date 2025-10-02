@@ -53,14 +53,16 @@ export const RightSectionUserManagement = (): ReactNode => {
 
   const { data: users, isLoading } = useQuery<UserWithRole[]>({
     queryKey: queryKey.systemAdmin.users(selectedRoleId),
-    queryFn: () =>
-      apiClient
+    queryFn: async () => {
+      const response = await apiClient
         .get('users', {
           searchParams: {
             role_id: selectedRoleId,
           },
         })
-        .json(),
+        .json<{ message: string; data: UserWithRole[] }>();
+      return response.data;
+    },
   });
 
   const { mutate: deleteUserMutation } = useMutation({

@@ -7,35 +7,26 @@ import {
 import { hash } from 'bcrypt';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
-import {
-  CreateUserDto,
-  USER_TC_MENUS,
-  USER_TC_ROLES,
-  USER_TN_ROLE_MENU_PERMISSIONS,
-  USER_TN_USERS,
-  USER_TN_USER_ROLES,
-} from './dto';
+import { Repository } from 'typeorm';
+import { API_MESSAGES, ResultDto } from '../_api';
+import * as Dto from './dto';
+import * as Entities from './entities';
 
 @Injectable()
 export class UsersService implements OnApplicationBootstrap {
   constructor(
-    @InjectRepository(USER_TN_USERS)
-    private usersRepository: Repository<USER_TN_USERS>,
-    @InjectRepository(USER_TC_ROLES)
-    private rolesRepository: Repository<USER_TC_ROLES>,
-    @InjectRepository(USER_TN_USER_ROLES)
-    private userRolesRepository: Repository<USER_TN_USER_ROLES>,
-    @InjectRepository(USER_TN_ROLE_MENU_PERMISSIONS)
-    private userMenuPermissionsRepository: Repository<USER_TN_ROLE_MENU_PERMISSIONS>,
-    @InjectRepository(USER_TC_MENUS)
-    private menusRepository: Repository<USER_TC_MENUS>,
+    @InjectRepository(Entities.USER_TN_USERS)
+    private usersRepository: Repository<Entities.USER_TN_USERS>,
+    @InjectRepository(Entities.USER_TC_ROLES)
+    private rolesRepository: Repository<Entities.USER_TC_ROLES>,
+    @InjectRepository(Entities.USER_TN_USER_ROLES)
+    private userRolesRepository: Repository<Entities.USER_TN_USER_ROLES>,
+    @InjectRepository(Entities.USER_TN_ROLE_MENU_PERMISSIONS)
+    private userMenuPermissionsRepository: Repository<Entities.USER_TN_ROLE_MENU_PERMISSIONS>,
+    @InjectRepository(Entities.USER_TC_MENUS)
+    private menusRepository: Repository<Entities.USER_TC_MENUS>,
   ) {}
 
-  /**
-   * @summary 애플리케이션 시작 시 관리자 계정 확인 및 생성
-   * @description 서버가 시작될 때 'admin' 계정이 없으면 기본값으로 생성.
-   */
   async onApplicationBootstrap(): Promise<void> {
     console.info('✅ MariaDB connection successful. Initializing users...');
     const adminUser = await this.getUserByUsername('admin');
@@ -86,22 +77,9 @@ export class UsersService implements OnApplicationBootstrap {
     }
   }
 
-  /**
-   * @summary 모든 사용자 정보와 역할 정보를 함께 조회
-   * @description 모든 사용자의 목록을 해당 사용자의 역할 이름과 함께 반환합니다.
-   * @returns 사용자 목록 (역할 정보 포함)
-   */
-  async getAllUsersWithRoles(roleId?: number): Promise<
-    {
-      id: number;
-      username: string;
-      nickname: string;
-      email: string;
-      last_login_at: Date;
-      role_code: string;
-      role_name: string;
-    }[]
-  > {
+  async getAllUsersWithRoles(
+    roleId?: number,
+  ): Promise<Dto.FindAllUsersResultDto> {
     const query = this.usersRepository
       .createQueryBuilder('user')
       .select([
@@ -120,27 +98,15 @@ export class UsersService implements OnApplicationBootstrap {
     }
 
     const users = await query.getRawMany();
-    return users;
+    return { message: API_MESSAGES.USERS.GET_ALL_USERS, data: users };
   }
 
-  /**
-   * @summary 사용자 삭제
-   * @description 주어진 ID 배열에 해당하는 사용자들을 삭제합니다.
-   * @param userIds - 삭제할 사용자 ID들의 배열
-   * @returns 삭제 결과
-   */
-  async deleteUsers(userIds: number[]): Promise<DeleteResult> {
+  async deleteUsers(userIds: number[]): Promise<Dto.DeleteUsersResultDto> {
     const result = await this.usersRepository.delete(userIds);
-    return result;
+    return { message: API_MESSAGES.USERS.DELETE_USERS, data: result };
   }
 
-  /**
-   * @summary ID로 사용자 조회
-   * @param id - 조회할 사용자의 ID
-   * @returns ID에 해당하는 사용자 객체
-   * @throws {NotFoundException} 해당 ID의 사용자가 없을 경우
-   */
-  async getUserById(id: number): Promise<USER_TN_USERS> {
+  async getUserById(id: number): Promise<Entities.USER_TN_USERS> {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID "${id}" not found.`);
@@ -148,24 +114,13 @@ export class UsersService implements OnApplicationBootstrap {
     return user;
   }
 
-  /**
-   * @summary 사용자 이름으로 사용자 조회
-   * @param username - 조회할 사용자 이름
-   * @returns 사용자 이름에 해당하는 사용자 객체 또는 null
-   */
-  async getUserByUsername(username: string): Promise<USER_TN_USERS | null> {
+  async getUserByUsername(
+    username: string,
+  ): Promise<Entities.USER_TN_USERS | null> {
     return this.usersRepository.findOne({ where: { username } });
   }
 
-  /**
-   * @summary 신규 사용자 생성
-   * @description 사용자명과 이메일의 중복을 확인한 후, 비밀번호를 해시하여 새로운 사용자를 생성합니다.
-   * @param userDto - 사용자 생성을 위한 데이터
-   * @returns 생성된 사용자 객체 (비밀번호 제외)
-   * @throws {ConflictException} 사용자명 또는 이메일이 이미 존재할 경우
-   */
-
-  async checkUsername(username: string): Promise<void> {
+  async checkUsername(username: string): Promise<ResultDto> {
     const existingUser = await this.usersRepository.findOne({
       where: { username },
     });
@@ -175,9 +130,10 @@ export class UsersService implements OnApplicationBootstrap {
         `"${username}"은/는 이미 사용 중에 있습니다.`,
       );
     }
+    return { message: API_MESSAGES.USERS.VALID_USERNAME };
   }
 
-  async checkEmail(email: string): Promise<void> {
+  async checkEmail(email: string): Promise<ResultDto> {
     const existingUser = await this.usersRepository.findOne({
       where: { email },
     });
@@ -185,26 +141,16 @@ export class UsersService implements OnApplicationBootstrap {
     if (existingUser) {
       throw new ConflictException(`"${email}"은/는 이미 사용 중에 있습니다.`);
     }
+    return { message: API_MESSAGES.USERS.VALID_EMAIL };
   }
 
   async createUser(
-    userDto: CreateUserDto,
-  ): Promise<Omit<USER_TN_USERS, 'password'>> {
+    userDto: Dto.CreateUserReqDto,
+  ): Promise<Dto.CreateUserResultDto> {
     const { username, email, nickname, password, role_id } = userDto;
 
-    // Check for existing user by username or email
-    const existingUser = await this.usersRepository.findOne({
-      where: [{ username }, { email }],
-    });
-
-    if (existingUser) {
-      if (existingUser.username === username) {
-        throw new ConflictException(`Username "${username}" already exists.`);
-      }
-      if (existingUser.email === email) {
-        throw new ConflictException(`Email "${email}" already exists.`);
-      }
-    }
+    await this.checkUsername(username);
+    await this.checkEmail(email);
 
     const hashedPassword = await hash(password, 10);
 
@@ -220,29 +166,18 @@ export class UsersService implements OnApplicationBootstrap {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...result } = savedUser;
-    return result;
+    return { message: API_MESSAGES.USERS.CREATE_USER, data: result };
   }
 
-  /**
-   * @summary 신규 사용자 생성 및 역할 매핑
-   * @description 비밀번호를 해시하여 새로운 사용자를 저장하고, 주어진 roleId로 역할 매핑.
-   * @param username - 신규 사용자 이름
-   * @param nickname - 신규 사용자 닉네임
-   * @param password - 신규 사용자 비밀번호 (해시 처리됨)
-   * @param email - 신규 사용자 이메일
-   * @param role_id - 매핑할 역할의 ID
-   * @returns 생성된 사용자 객체
-   */
   async setUser(
     username: string,
     nickname: string,
     password: string,
     email: string,
     role_id: number,
-  ): Promise<USER_TN_USERS> {
+  ): Promise<Entities.USER_TN_USERS> {
     const hashedPassword = await hash(password, 10);
 
-    // 1. Create and save user
     const newUser = this.usersRepository.create({
       username,
       nickname,
@@ -252,7 +187,6 @@ export class UsersService implements OnApplicationBootstrap {
     });
     const savedUser = await this.usersRepository.save(newUser);
 
-    // 2. Create and save user-role mapping
     const userRoleMapping = this.userRolesRepository.create({
       user_id: savedUser.id,
       role_id,
@@ -262,24 +196,12 @@ export class UsersService implements OnApplicationBootstrap {
     return savedUser;
   }
 
-  /**
-   * @summary DB에 정의된 Role_id에 대한 역할정보 조회
-   * @description 주어진 roleId로 역할정보 반환.
-   * @param role_id - 매핑할 역할의 ID
-   * @returns 조회된 역할정보 객체
-   */
-
-  async getRoleCodeByRoleId(role_id: number): Promise<USER_TC_ROLES | null> {
+  async getRoleCodeByRoleId(
+    role_id: number,
+  ): Promise<Entities.USER_TC_ROLES | null> {
     if (role_id === null || role_id === undefined) return null;
     return this.rolesRepository.findOne({ where: { id: role_id } });
   }
-
-  /**
-   * @summary DB에 정의된 Role_id에 대한 역할별 메뉴접근정보 조회
-   * @description 주어진 roleId로 역할별 메뉴접근정보 반환.
-   * @param role_id - 매핑할 역할의 ID
-   * @returns 조회된 역할별 메뉴접근정보 객체
-   */
 
   async getMenuPermissionByRoleId(role_id: number): Promise<
     {
@@ -330,40 +252,23 @@ export class UsersService implements OnApplicationBootstrap {
     );
   }
 
-  /**
-   * @summary 역할 및 메뉴 권한 생성 또는 업데이트
-   * @description role_code를 기준으로 역할을 찾아, 있으면 업데이트하고 없으면 생성합니다.
-   *              연관된 메뉴 권한도 모두 새로 설정합니다.
-   * @param payload - 역할 정보 및 메뉴 권한 데이터
-   * @returns 생성 또는 업데이트된 역할 객체
-   */
-  async upsertRoleWithPermissions(payload: {
-    role_id: number | undefined;
-    role_code: string;
-    role_name: string;
-    role_description: string;
-    menu_permissions: {
-      menu_id: number;
-      menu_can_access: boolean;
-    }[];
-  }): Promise<USER_TC_ROLES> {
-    return this.rolesRepository.manager.transaction(
+  async upsertRoleWithPermissions(
+    payload: Dto.UpsertRoleReqDto,
+  ): Promise<Dto.UpsertRoleResultDto> {
+    const result = await this.rolesRepository.manager.transaction(
       async (transactionalEntityManager) => {
-        // 1. Find existing role or create a new one
         let role =
           typeof payload.role_id === 'number' &&
-          (await transactionalEntityManager.findOne(USER_TC_ROLES, {
+          (await transactionalEntityManager.findOne(Entities.USER_TC_ROLES, {
             where: { id: payload.role_id },
           }));
 
         if (role) {
-          // Update existing role
           role.role_code = payload.role_code;
           role.role_name = payload.role_name;
           role.role_description = payload.role_description;
         } else {
-          // Create new role
-          role = transactionalEntityManager.create(USER_TC_ROLES, {
+          role = transactionalEntityManager.create(Entities.USER_TC_ROLES, {
             role_code: payload.role_code,
             role_name: payload.role_name,
             role_description: payload.role_description,
@@ -372,12 +277,13 @@ export class UsersService implements OnApplicationBootstrap {
         const savedRole = await transactionalEntityManager.save(role);
         const role_id = savedRole.id;
 
-        // 2. Delete old permissions for this role
-        await transactionalEntityManager.delete(USER_TN_ROLE_MENU_PERMISSIONS, {
-          role_id,
-        });
+        await transactionalEntityManager.delete(
+          Entities.USER_TN_ROLE_MENU_PERMISSIONS,
+          {
+            role_id,
+          },
+        );
 
-        // 3. Insert new permissions
         if (payload.menu_permissions && payload.menu_permissions.length > 0) {
           const permissionsToInsert = payload.menu_permissions.map(
             (permission) => ({
@@ -387,9 +293,8 @@ export class UsersService implements OnApplicationBootstrap {
             }),
           );
 
-          // Using create and save for multiple entities
           const newPermissions = transactionalEntityManager.create(
-            USER_TN_ROLE_MENU_PERMISSIONS,
+            Entities.USER_TN_ROLE_MENU_PERMISSIONS,
             permissionsToInsert,
           );
           await transactionalEntityManager.save(newPermissions);
@@ -398,12 +303,10 @@ export class UsersService implements OnApplicationBootstrap {
         return savedRole;
       },
     );
+
+    return { message: API_MESSAGES.USERS.UPSERT_ROLE, data: result };
   }
 
-  /**
-   * @summary 사용자의 마지막 로그인 시간을 업데이트
-   * @param userId - 업데이트할 사용자의 ID
-   */
   async updateLastLogin(userId: number): Promise<void> {
     await this.usersRepository.update(userId, {
       last_login_at: new Date(),
