@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { API_MESSAGES } from '@src_apps/modules/_api';
+import { API_MESSAGES, ResultDto } from '@src_apps/modules/_api';
 import { compare } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { UsersService } from '../users/users.service';
@@ -40,20 +40,18 @@ export class AuthService {
     password,
     force = false,
     clientSignature,
-  }: Dto.LoginServiceParams): Promise<{
-    message: string;
-    sessionId: string;
-  }> {
+  }: Dto.LoginServiceParams): Promise<Dto.LoginResDto> {
     const user = await this.usersService.getUserByUsername(username);
+    const { INVALID_USERS, INVALID_PASSWORD } = API_MESSAGES.AUTH;
 
     if (!user) {
-      throw new UnauthorizedException(API_MESSAGES.AUTH.INVALID_USERS);
+      throw new UnauthorizedException(INVALID_USERS);
     }
 
     const isPasswordMatching = await compare(password, user.password);
 
     if (!isPasswordMatching) {
-      throw new UnauthorizedException(API_MESSAGES.AUTH.INVALID_PASSWORD);
+      throw new UnauthorizedException(INVALID_PASSWORD);
     }
 
     // username으로 기존 세션 검색
@@ -81,7 +79,7 @@ export class AuthService {
     await this.usersService.updateLastLogin(user.id);
 
     return {
-      message: API_MESSAGES.AUTH.SUCCEED_LOGIN,
+      result: { message: API_MESSAGES.AUTH.SUCCEED_LOGIN },
       sessionId,
     };
   }
@@ -92,8 +90,12 @@ export class AuthService {
    * @param sessionId - 로그아웃할 세션 ID
    * @returns 로그아웃 성공 메시지 객체 반환
    */
-  logout(sessionId: string): void {
-    this.activeSessions.delete(sessionId);
+  logout(sessionId: string | undefined): ResultDto {
+    if (sessionId) {
+      this.activeSessions.delete(sessionId);
+    }
+
+    return { message: API_MESSAGES.AUTH.SUCCEED_LOGOUT };
   }
 
   /**

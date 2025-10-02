@@ -60,7 +60,7 @@ export class AuthController {
       req.headers['user-agent'],
       req.headers['origin'],
     );
-    const { message, sessionId } = await this.authService.login({
+    const { result, sessionId } = await this.authService.login({
       ...body,
       clientSignature,
     });
@@ -71,7 +71,7 @@ export class AuthController {
       API.HTTP_ONLY_COOKIE_OPTIONS,
     );
 
-    return { message };
+    return result;
   }
 
   /**
@@ -86,11 +86,9 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
     @Req() req: Request,
   ): Promise<API.ResultDto> {
-    const sessionId = req.cookies[COOKIES.SESSION_ID];
-    if (sessionId) this.authService.logout(sessionId);
-
+    const sessionId: string | undefined = req.cookies[COOKIES.SESSION_ID];
     res.clearCookie(COOKIES.SESSION_ID, { path: API.CookiesPath });
-    const result = { message: API.API_MESSAGES.AUTH.SUCCEED_LOGOUT };
+    const result = this.authService.logout(sessionId);
     return result;
   }
 
@@ -113,20 +111,11 @@ export class AuthController {
       );
     }
 
-    const validationResult =
-      await this.authService.getValidateSession(sessionId);
+    const result = await this.authService.getValidateSession(sessionId);
 
-    if (!validationResult.isValid) {
-      throw new UnauthorizedException(validationResult.message);
+    if (!result.isValid) {
+      throw new UnauthorizedException(result.message);
     }
-
-    const { message, roleCode, nickname, permissions } = validationResult;
-
-    return {
-      message,
-      roleCode,
-      nickname,
-      permissions,
-    };
+    return result;
   }
 }

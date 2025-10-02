@@ -32,6 +32,11 @@ export class LoginReqDto {
 // ➡️ Result DTOs
 // =================================
 
+export class LoginResDto {
+  result: ResultDto;
+  sessionId: string;
+}
+
 export class PermissionsDto {
   @IsNumber()
   id: number;
