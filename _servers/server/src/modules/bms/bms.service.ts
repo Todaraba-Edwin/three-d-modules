@@ -104,10 +104,11 @@ export class BmsService {
       buildingData.buildingImageUrl &&
       buildingData.buildingImageUrl.includes(Config.ImageDir.TEMPORARY)
     ) {
-      buildingData.buildingImageUrl = await this.filesService.moveFiles({
+      const result = await this.filesService.moveFiles({
         fileUrl: buildingData.buildingImageUrl,
         target: 'Building image',
       });
+      buildingData.buildingImageUrl = result.url;
     }
 
     const newBuilding = this.buildingRepository.create(buildingData);

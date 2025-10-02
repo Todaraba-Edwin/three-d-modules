@@ -4,12 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ImageDir, Paths } from '@src_apps/config';
-import { MEDIA_SERVE_ROOT } from '@src_apps/modules/_api';
+import { ImageDir, Paths, publicChildren } from '@src_apps/config';
+import { API_MESSAGES, MEDIA_SERVE_ROOT } from '@src_apps/modules/_api';
 import * as fs from 'fs';
-// import * as  from 'fs/promises';
 import * as path from 'path';
 import { ERROR_CODE } from '../_common';
+import { UploadFileResult, uploadFileServiceParameter } from './dto/files.dto';
 // fs # Node.js 내장 모듈 - file  System 파일 읽기, 쓰기, 폴더 생성 모듈
 // path # Node.js 내장 모듈 - 파일 및 디렉토리 경로를 다룰 때 사용
 
@@ -24,19 +24,76 @@ export class FilesService {
   /**
    * @summary 파일을 저장하고, 웹에서 접근 가능한 경로를 반환합니다.
    * @param file - Express.Multer.File
-   * @param saveFolder - 'images' 또는 'temporary'
-   * @returns {{ url: string }}
+   * @param saveFolder - PublicChildrenEnums
+   * @returns {UploadFileResult}
    */
-  uploadFile(file: Express.Multer.File, saveFolder?: string): { url: string } {
+  uploadFile({
+    file,
+    saveFolder,
+  }: uploadFileServiceParameter): UploadFileResult {
     if (!file) {
-      throw new InternalServerErrorException('파일이 업로드되지 않았습니다.');
+      throw new InternalServerErrorException(API_MESSAGES.FILES.NOT_SAVE_FILE);
     }
 
-    const folder = saveFolder === 'images' ? 'images' : 'temporary';
+    const folder =
+      saveFolder === publicChildren.IMAGES
+        ? publicChildren.IMAGES
+        : publicChildren.TEMPORARY;
     const webPath = `${folder}/${file.filename}`;
-    return { url: `${MEDIA_SERVE_ROOT}/${webPath}` };
+    return {
+      message: API_MESSAGES.FILES.SAVE_FILE,
+      url: `${MEDIA_SERVE_ROOT}/${webPath}`,
+    };
   }
 
+  /**
+   * @summary 임시 파일에서 -> target fileUrl 폴더로 이주시킵니다.
+   * @param file - Express.Multer.File
+   * @param saveFolder - PublicChildrenEnums
+   * @returns {UploadFileResult}
+   */
+
+  async moveFiles({
+    fileUrl,
+    target,
+  }: {
+    fileUrl: string;
+    target: 'Building image';
+  }): Promise<UploadFileResult> {
+    const fileName = path.basename(fileUrl);
+    const sourcePath = path.join(
+      this.configService.get<string>(Paths.PUBLIC_TEMP) as string,
+      fileName,
+    );
+    const destDir = this.configService.get<string>(Paths.PUBLIC_IMG) as string;
+    const destPath = path.join(destDir, fileName);
+
+    try {
+      await fs.promises.mkdir(destDir, { recursive: true });
+      await fs.promises.rename(sourcePath, destPath);
+      return {
+        message: API_MESSAGES.FILES.MOVE_FILE,
+        url: `${ImageDir.IMAGE}/${fileName}`,
+      };
+    } catch (error) {
+      if (error.code === ERROR_CODE.FS_ERROR.NO_ENTRY.CODE) {
+        throw new NotFoundException(
+          ERROR_CODE.FS_ERROR.NO_ENTRY.MESSAGE({ sourcePath }),
+        );
+      } else {
+        throw new InternalServerErrorException(
+          ERROR_CODE.FS_ERROR.OTHER_CASE_MESSAGE({
+            target,
+          }),
+        );
+      }
+    }
+  }
+}
+
+/*
+  * @summary TODO - GIB 객체에 대해서 
+type GetFilesParameterType = Record<'subfolder' | 'baseUrl', string>;
   getFiles({ baseUrl, subfolder }: GetFilesParameterType): GetFilesResult {
     const directoryPath = path.join(this.publicPath, subfolder);
     const isExists = fs.existsSync(directoryPath);
@@ -58,38 +115,4 @@ export class FilesService {
       throw new Error(`Failed to read directory: ${subfolder}`);
     }
   }
-
-  async moveFiles({
-    fileUrl,
-    target,
-  }: {
-    fileUrl: string;
-    target: 'Building image';
-  }): Promise<string> {
-    const fileName = path.basename(fileUrl);
-    const sourcePath = path.join(
-      this.configService.get<string>(Paths.PUBLIC_TEMP) as string,
-      fileName,
-    );
-    const destDir = this.configService.get<string>(Paths.PUBLIC_IMG) as string;
-    const destPath = path.join(destDir, fileName);
-
-    try {
-      await fs.promises.mkdir(destDir, { recursive: true });
-      await fs.promises.rename(sourcePath, destPath);
-      return `${ImageDir.IMAGE}/${fileName}`;
-    } catch (error) {
-      if (error.code === ERROR_CODE.FS_ERROR.NO_ENTRY.CODE) {
-        throw new NotFoundException(
-          ERROR_CODE.FS_ERROR.NO_ENTRY.MESSAGE({ sourcePath }),
-        );
-      } else {
-        throw new InternalServerErrorException(
-          ERROR_CODE.FS_ERROR.OTHER_CASE_MESSAGE({
-            target,
-          }),
-        );
-      }
-    }
-  }
-}
+*/

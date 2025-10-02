@@ -1,3 +1,4 @@
+import { type PublicChildrenEnums } from '@src_apps/config';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class ResultDto {
@@ -16,4 +17,10 @@ export class SearchQueryOptionDto {
   @IsString()
   @IsOptional()
   search?: string;
+}
+
+export class SaveFolderOptionDto {
+  @IsString()
+  @IsOptional()
+  saveFolder?: PublicChildrenEnums;
 }

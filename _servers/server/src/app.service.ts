@@ -18,11 +18,11 @@ export class AppService {
    * @description 스케줄러 간격 : 6시간 
    * maxAgeMinutes(5분) 간격으로 public.temporary 내의 파일 제거 */ 
   
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_6_HOURS)
   async handleTempFileCleanup(): Promise<void> {
     const tempDir: string =
       this.configService.get<string>(Paths.PUBLIC_TEMP) ?? '';
-    const maxAgeMinutes = 1;
+    const maxAgeMinutes = 5;
 
     try {
       const allFiles = await fs.readdir(tempDir);

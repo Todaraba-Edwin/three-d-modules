@@ -18,4 +18,9 @@ export const API_MESSAGES = {
     NOT_FOUND_BUILDING: ({ id }: { id: number }): string =>
       `Building with ID ${id} not found`,
   },
+  FILES: {
+    NOT_SAVE_FILE: '파일이 업로드되지 않았습니다.',
+    SAVE_FILE: '파일을 업로드 했습니다. ',
+    MOVE_FILE: '파일 이동을 완료 했습니다.',
+  },
 };
