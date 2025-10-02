@@ -12,7 +12,8 @@ import {
 import * as API from '@src_apps/modules/_api';
 import { AuthAdminGuard } from '../auth/auth.guard';
 import { BmsService } from './bms.service';
-import { Building, CreateBuildingDto, GetBuildingList } from './dto';
+import { CreateBuildingDto } from './dto';
+import { Building, GetBuildingList } from './entities';
 
 @Controller(`${API.API_PREFIX}/${API.BMS.SEGMENTS.BASE}`)
 @UseGuards(AuthAdminGuard)

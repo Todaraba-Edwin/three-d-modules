@@ -25,12 +25,12 @@ type BM_BuildingCreateForm = {
   buildingName: string;
   buildingDesc: string;
   address: string;
-  buildingImageUrl: FileList;
+  buildingImageFile: FileList;
   groundFloors: number;
   basementFloors: number;
   latitude: number;
   longitude: number;
-  presignedUrl: string;
+  buildingImageUrl: string;
 };
 
 /**
@@ -62,7 +62,7 @@ type SearchBuildingDetailType = {
   buildingName: string;
   buildingDesc: string;
   address: string | null;
-  buildingImage: string | null;
+  buildingImageUrl: string | null;
   latitude: number;
   longitude: number;
   groundFloors: number;

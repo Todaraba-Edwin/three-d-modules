@@ -6,5 +6,5 @@ type BuildingCreate_ReqBodyType = {
   latitude: number;
   longitude: number;
   buildingDesc?: string;
-  buildingImage?: string;
+  buildingImageUrl?: string;
 };

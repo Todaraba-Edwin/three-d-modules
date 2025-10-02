@@ -71,7 +71,7 @@ export const BM_RightBuildingCreate = (): ReactNode => {
           previewUrl={watchPreviewImage}
           setValue={setValue}
           clearImage={handleClearImage}
-          name={'buildingImageUrl' as keyof BM_BuildingCreateForm}
+          name={'buildingImageFile' as keyof BM_BuildingCreateForm}
         />
       </BMR_UI.FormBody>
       <BMR_UI.FormFooter>

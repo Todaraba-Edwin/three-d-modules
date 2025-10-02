@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth';
 import { BmsController } from './bms.controller';
 import { BmsService } from './bms.service';
-import { Building } from './dto';
+import { Building } from './entities';
 
 @Module({
   imports: [AuthModule, TypeOrmModule.forFeature([Building])],

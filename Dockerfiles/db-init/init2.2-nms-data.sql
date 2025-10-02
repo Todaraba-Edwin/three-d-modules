@@ -3,7 +3,7 @@ USE prizm;
 -- ####################################################################
 -- # Initial Data for Buildings
 -- ####################################################################
-INSERT INTO `BMS_TN_BUILDINGS` (`building_name`, `address`, `ground_floors`, `basement_floors`,`building_image`,`latitude`, `longitude`) VALUES 
+INSERT INTO `BMS_TN_BUILDINGS` (`building_name`, `address`, `ground_floors`, `basement_floors`,`building_image_url`,`latitude`, `longitude`) VALUES 
 ('강원정보문화산업진흥원', '강원 춘천시 서면 박사로 882 강원창작개발센터', 4, 0,'/media/images/강원정보문화산업진흥원.png', '37.56535253323751', '126.98043995723785');
 
 SET @init_building_id = (SELECT id from BMS_TN_BUILDINGS where building_name = '강원정보문화산업진흥원');

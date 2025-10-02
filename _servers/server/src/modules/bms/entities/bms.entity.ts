@@ -19,12 +19,12 @@ export class Building {
   address: string;
 
   @Column({
-    name: 'building_image',
+    name: 'building_image_url',
     type: 'varchar',
     length: 255,
     nullable: true,
   })
-  buildingImage: string;
+  buildingImageUrl: string;
 
   @Column({ type: 'double' })
   latitude: number;

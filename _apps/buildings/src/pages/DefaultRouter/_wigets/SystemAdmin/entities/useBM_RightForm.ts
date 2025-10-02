@@ -87,7 +87,7 @@ export const useBM_RightForm = (): BM_BuildingCreateFormReturn => {
           latitude: Number(data.latitude),
           longitude: Number(data.longitude),
           buildingDesc: data.buildingDesc,
-          buildingImage: data.presignedUrl,
+          buildingImageUrl: data.buildingImageUrl,
         },
         {
           onSuccess: data => {
@@ -107,12 +107,12 @@ export const useBM_RightForm = (): BM_BuildingCreateFormReturn => {
     errors => console.error('Form validation errors:', errors)
   );
 
-  const watchFiles = watch('buildingImageUrl');
-  const watchPreviewImage = watch('presignedUrl');
+  const watchFiles = watch('buildingImageFile');
+  const watchPreviewImage = watch('buildingImageUrl');
   const watchBuildingName = watch('buildingName');
 
   const handleClearImage = () => {
-    ['presignedUrl', 'buildingImageUrl'].forEach(key =>
+    ['buildingImageUrl', 'buildingImageFile'].forEach(key =>
       setValue(key as keyof BM_BuildingCreateForm, '')
     );
   };
@@ -121,7 +121,7 @@ export const useBM_RightForm = (): BM_BuildingCreateFormReturn => {
     if (!watchFiles || watchFiles.length === 0) return;
     const onUploadImage = async (file: File) => {
       const result = await uploadFile(file);
-      setValue('presignedUrl', result.url);
+      setValue('buildingImageUrl', result.url);
     };
     const files = Array.from(watchFiles);
     files.forEach(async file => {

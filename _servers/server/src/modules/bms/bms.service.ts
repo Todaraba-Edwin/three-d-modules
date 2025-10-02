@@ -11,7 +11,8 @@ import { API_MESSAGES } from '@src_apps/modules/_api';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { FindOptionsWhere, Like, Repository } from 'typeorm';
-import { Building, CreateBuildingDto, GetBuildingList } from './dto';
+import { CreateBuildingDto } from './dto';
+import { Building, GetBuildingList } from './entities';
 
 @Injectable()
 export class BmsService {
@@ -75,10 +76,10 @@ export class BmsService {
 
   async createBuilding(buildingData: CreateBuildingDto): Promise<Building> {
     if (
-      buildingData.buildingImage &&
-      buildingData.buildingImage.includes('/media/temporary/')
+      buildingData.buildingImageUrl &&
+      buildingData.buildingImageUrl.includes('/media/temporary/')
     ) {
-      const fileName = path.basename(buildingData.buildingImage);
+      const fileName = path.basename(buildingData.buildingImageUrl);
       const sourcePath = path.join(
         this.configService.get<string>(Paths.PUBLIC_TEMP) as string,
         fileName,
@@ -91,7 +92,7 @@ export class BmsService {
       try {
         await fs.mkdir(destDir, { recursive: true });
         await fs.rename(sourcePath, destPath);
-        buildingData.buildingImage = `/media/images/${fileName}`;
+        buildingData.buildingImageUrl = `/media/images/${fileName}`;
       } catch (error) {
         if (error.code === 'ENOENT') {
           throw new NotFoundException(

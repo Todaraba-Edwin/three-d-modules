@@ -52,7 +52,7 @@ export const SearchBuildingDetail = (): ReactNode => {
     buildingName,
     address,
     buildingDesc,
-    buildingImage,
+    buildingImageUrl,
     groundFloors,
     basementFloors,
     latitude,
@@ -104,7 +104,7 @@ export const SearchBuildingDetail = (): ReactNode => {
               '2xl:w-[600px]'
             )}
           >
-            {!buildingImage ? (
+            {!buildingImageUrl ? (
               <figure className='flex flex-col justify-center items-center gap-2 w-full max-2xl:min-h-[180px] '>
                 <ImageOff className='w-14 h-14 text-slate-100' />
                 <p className='text-sm text-slate-400'>이미지 없음</p>
@@ -112,7 +112,7 @@ export const SearchBuildingDetail = (): ReactNode => {
             ) : (
               <figure className='h-full w-full '>
                 <img
-                  src={utilsGetImageSrc({ url: buildingImage })}
+                  src={utilsGetImageSrc({ url: buildingImageUrl })}
                   alt='building_images'
                   className='h-full w-full object-cover object-center'
                 />

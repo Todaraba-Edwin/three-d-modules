@@ -7,7 +7,7 @@ CREATE TABLE `BMS_TN_BUILDINGS` (
   `ground_floors` INT NOT NULL DEFAULT 0,
   `basement_floors` INT NOT NULL DEFAULT 0,
   `address` varchar(255),
-  `building_image` varchar(255),
+  `building_image_url` varchar(255),
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

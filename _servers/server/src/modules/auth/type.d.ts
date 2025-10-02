@@ -14,7 +14,7 @@ type SessionValidationResult = {
   username?: string;
   nickname?: string;
   message?: string;
-  permissions?: PermissionsType[]; // 실제 PermissionsType으로 교체하는 것이 좋습니다.
+  permissions?: PermissionsType[];
 };
 
 type ValidateSessionResultType = ResResultType &
