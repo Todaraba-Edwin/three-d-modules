@@ -2,14 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { USER_TC_ROLES, USER_TN_USERS } from '../users/dto';
+import { PermissionsByRoleResDto, SummaryResDto } from './dto';
 import {
   NMS_TC_MANUFACTURERS,
   NMS_TC_SWITCH_MODELS,
   NMS_TN_DEVICES,
   NMS_TN_SWITCHES,
-  PermissionsByRoleResDto,
-  SummaryResDto,
-} from './dto';
+} from './entities';
 
 @Injectable()
 export class SystemAdminService {

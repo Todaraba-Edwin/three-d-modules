@@ -7,7 +7,7 @@ import {
   NMS_TC_SWITCH_MODELS,
   NMS_TN_DEVICES,
   NMS_TN_SWITCHES,
-} from './dto';
+} from './entities';
 import { SystemAdminController } from './system-admin.controller';
 import { SystemAdminService } from './system-admin.service';
 
