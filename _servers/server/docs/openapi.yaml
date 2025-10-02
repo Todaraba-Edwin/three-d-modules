@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: 3D-MODULES 통합 API
   description: 3D-MODULES 프로젝트의 서버 API 명세서입니다.
