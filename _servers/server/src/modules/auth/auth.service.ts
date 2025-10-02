@@ -93,7 +93,6 @@ export class AuthService {
    */
   logout(sessionId: string): void {
     this.activeSessions.delete(sessionId);
-    // return { message: API_MESSAGES.AUTH.SUCCEED_LOGOUT };
   }
 
   /**
@@ -106,11 +105,13 @@ export class AuthService {
     sessionId: string,
   ): Promise<ValidateSessionResultType> {
     const sessionData = this.activeSessions.get(sessionId);
+    const { NOT_FOUND_SESSION_SERVER, INVALID_USERS, VALID_SESSION } =
+      API_MESSAGES.AUTH;
 
     if (!sessionData) {
       return {
         isValid: false,
-        message: API_MESSAGES.AUTH.NOT_FOUND_SESSION_SERVER,
+        message: NOT_FOUND_SESSION_SERVER,
       };
     }
 
@@ -119,29 +120,34 @@ export class AuthService {
     );
 
     if (!user) {
-      // 세션이 있지만 사용자를 찾을 수 없는 경우 (예: DB에서 삭제됨)
+      // 세션이 있지만 사용자를 찾을 수 없는 경우
       this.activeSessions.delete(sessionId); // 무효한 세션 제거
-      return { isValid: false, message: API_MESSAGES.AUTH.INVALID_USERS };
+      return { isValid: false, message: INVALID_USERS };
     }
 
-    const roleCode = await this.usersService.getRoleCodeByRoleId(user.role_id);
+    const { role_id, nickname } = user;
+
+    const { role_code: roleCode } =
+      (await this.usersService.getRoleCodeByRoleId(role_id)) ?? {
+        role_code: null,
+      };
 
     if (!roleCode) {
-      // 세션이 있지만 권한코드를 찾을 수 없는 경우 (예: DB에서 삭제됨)
+      // 세션이 있지만 권한코드를 찾을 수 없는 경우
       this.activeSessions.delete(sessionId); // 무효한 세션 제거
-      return { isValid: false, message: API_MESSAGES.AUTH.INVALID_USERS };
+      return { isValid: false, message: INVALID_USERS };
     }
 
-    const menuPermissions = await this.usersService.getMenuPermissionByRoleId(
-      user.role_id,
-    );
+    const permissions =
+      await this.usersService.getMenuPermissionByRoleId(role_id);
 
     return {
       isValid: true,
-      roleCode: roleCode.role_code,
-      nickname: user.nickname,
-      message: API_MESSAGES.AUTH.VALID_SESSION,
-      permissions: menuPermissions,
+      message: VALID_SESSION,
+      // 추가 객체
+      roleCode,
+      nickname,
+      permissions,
     };
   }
 }

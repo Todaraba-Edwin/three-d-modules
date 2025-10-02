@@ -74,6 +74,26 @@ export class AuthController {
   }
 
   /**
+   * @summary POST /api/auth/logout - 사용자 로그아웃
+   * @description 사용자 로그아웃을 처리하고, 브라우저의 세션 쿠키를 삭제.
+   * @param req - 요청 객체 (쿠키 정보 획득을 위해 사용)
+   * @param res - 응답 객체 (쿠키 삭제를 위해 사용)
+   * @returns 로그아웃 성공 메시지 객체
+   */
+  @Post(API.AUTH.SEGMENTS.lOGOUT)
+  async logout(
+    @Res({ passthrough: true }) res: Response,
+    @Req() req: Request,
+  ): Promise<ResResultType> {
+    const sessionId = req.cookies[COOKIES.SESSION_ID];
+    if (sessionId) this.authService.logout(sessionId);
+
+    res.clearCookie(COOKIES.SESSION_ID, { path: API.CookiesPath });
+    const result = { message: API.API_MESSAGES.AUTH.SUCCEED_LOGOUT };
+    return result;
+  }
+
+  /**
    * @summary GET /api/auth/validate-session - 세션 유효성 검증
    * @description 브라우저에 저장된 쿠키를 이용해 현재 세션의 유효성을 검증.
    * @param req - 요청 객체 (쿠키 정보 획득을 위해 사용)
@@ -99,31 +119,13 @@ export class AuthController {
       throw new UnauthorizedException(validationResult.message);
     }
 
+    const { message, roleCode, nickname, permissions } = validationResult;
+
     return {
-      message: validationResult.message ?? '',
-      roleCode: validationResult.roleCode,
-      nickname: validationResult.nickname,
-      permissions: validationResult.permissions,
+      message,
+      roleCode,
+      nickname,
+      permissions,
     };
-  }
-
-  /**
-   * @summary POST /api/auth/logout - 사용자 로그아웃
-   * @description 사용자 로그아웃을 처리하고, 브라우저의 세션 쿠키를 삭제.
-   * @param req - 요청 객체 (쿠키 정보 획득을 위해 사용)
-   * @param res - 응답 객체 (쿠키 삭제를 위해 사용)
-   * @returns 로그아웃 성공 메시지 객체
-   */
-  @Post(API.AUTH.SEGMENTS.lOGOUT)
-  async logout(
-    @Res({ passthrough: true }) res: Response,
-    @Req() req: Request,
-  ): Promise<ResResultType> {
-    const sessionId = req.cookies[COOKIES.SESSION_ID];
-    if (sessionId) this.authService.logout(sessionId);
-
-    res.clearCookie(COOKIES.SESSION_ID, { path: API.CookiesPath });
-    const result = { message: API.API_MESSAGES.AUTH.SUCCEED_LOGOUT };
-    return result;
   }
 }
