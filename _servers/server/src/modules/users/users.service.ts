@@ -309,7 +309,7 @@ export class UsersService implements OnApplicationBootstrap {
 
   async updateLastLogin(userId: number): Promise<void> {
     await this.usersRepository.update(userId, {
-      last_login_at: new Date(),
+      last_login_at: new Date().toISOString(),
     });
   }
 }

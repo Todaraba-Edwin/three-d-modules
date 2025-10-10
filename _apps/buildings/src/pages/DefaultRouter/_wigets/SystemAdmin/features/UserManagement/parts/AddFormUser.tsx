@@ -2,10 +2,10 @@ import { apiClient } from '@/_common/apis/apiCreate';
 import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
 import { Input } from '@/_common/components/Input';
-import { useSystemAdminAddUSerStore } from '@/_common/zustandStores/useSystemAdminAddUSerStore';
+import { useSystemAdminAddUserStore } from '@/_common/zustandStores/useSystemAdminAddUserStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeOff, Save, X } from 'lucide-react';
-import { type ReactNode, useCallback, useRef } from 'react';
+import { type ReactNode, useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select, { type StylesConfig } from 'react-select';
 import { utilsThrottle } from '../../../../../../../../../shared/src/features/_shared';
@@ -66,9 +66,10 @@ export const AddFormUser = (): ReactNode => {
     isShowPassword,
     isShowAddUserNode,
     isEditModeUser,
+    targetEditUser,
     toggleIsShowPassword,
     closeAllStated,
-  } = useSystemAdminAddUSerStore();
+  } = useSystemAdminAddUserStore();
 
   const { data: permissionsResult } = useQuery<PermissionsRolesQueryResult>({
     queryKey: queryKey.systemAdmin.nm_permissionsMenuByRole(),
@@ -77,7 +78,7 @@ export const AddFormUser = (): ReactNode => {
 
   const roleOptions =
     permissionsResult?.data
-      ?.filter(({ role_code }) => role_code != 'ADMIN_MAIN')
+      // ?.filter(({ role_code }) => role_code != 'ADMIN_MAIN')
       ?.map(({ role_id, role_name }) => ({
         value: role_id,
         label: role_name,
@@ -91,6 +92,7 @@ export const AddFormUser = (): ReactNode => {
     setError, // 1. setError 추가
     clearErrors, // 2. clearErrors 추가
     formState: { errors },
+    // setValue,
   } = useForm<UserFormDateType>({
     defaultValues: {
       user_id: undefined,
@@ -223,6 +225,22 @@ export const AddFormUser = (): ReactNode => {
     mutate(data);
   });
 
+  useEffect(() => {
+    if (!isEditModeUser || !permissionsResult) return;
+    const findRoleId = permissionsResult.data.find(
+      ({ role_code }) => role_code === targetEditUser?.role_code
+    );
+    if (!findRoleId?.role_id) return;
+
+    reset({
+      ...targetEditUser,
+      role_id: {
+        value: findRoleId.role_id,
+        label: findRoleId.role_name,
+      },
+    });
+  }, [isEditModeUser, targetEditUser, reset, permissionsResult]);
+
   return (
     <form onSubmit={onSubmit} className='bg-orange-50 border-orange-200'>
       <div className='p-4'>
@@ -301,7 +319,7 @@ export const AddFormUser = (): ReactNode => {
                 {...register('nickname', {
                   required: '닉네임은 필수 항목입니다.',
                   pattern: {
-                    value: /^[A-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/i,
+                    value: /^[A-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣\s]+$/i,
                     message: '닉네임은 특수문자를 포함할 수 없습니다.',
                   },
                 })}
@@ -330,7 +348,7 @@ export const AddFormUser = (): ReactNode => {
                 })}
                 placeholder='예: user@example.com'
                 className='text-sm'
-                disabled={isEditModeUser}
+                // disabled={isEditModeUser}
               />
               {errors.email && (
                 <span className='text-red-500 text-sm'>

@@ -2,6 +2,7 @@ import {
   Box,
   Building2,
   Camera,
+  CircleUserRound,
   Home,
   Info,
   Network,
@@ -44,6 +45,7 @@ export const DefaultPathEnum = {
     },
   },
   SYSTEM_SETTINGS: '/settings',
+  USERS: '/users',
   NOT_FOUND: '*',
 } as const;
 
@@ -84,6 +86,11 @@ export const menuLists: menuListsType[] = [
     path: DefaultPathEnum.SYSTEM_SETTINGS,
     icon: Settings,
     desc: '시스템을 설정합니다.',
+  },
+  {
+    path: DefaultPathEnum.USERS,
+    icon: CircleUserRound,
+    desc: '사용자 계정을 설정합니다.',
   },
 ];
 

@@ -1,5 +1,5 @@
 export * from './useAuthStore';
 export * from './useSystemAdminAddRoleStore';
-export * from './useSystemAdminAddUSerStore';
+export * from './useSystemAdminAddUserStore';
 export * from './useSyStemAdminSelectedRoleStore';
 export * from './utilsStoreResets';

@@ -1,13 +1,14 @@
+import type { UserWithRole } from '@/pages/DefaultRouter/_wigets/SystemAdmin/features/UserManagement/parts/RightSectionUserManagement';
 import { create } from 'zustand';
 
-type useSystemAdminAddUSerStoreType = {
+type useSystemAdminAddUserStoreType = {
   isShowPassword: boolean;
   isShowAddUserNode: boolean;
   isEditModeUser: boolean;
-  // targetEditUser: any | undefined;
+  targetEditUser: UserWithRole | undefined;
   toggleIsShowPassword: () => void;
   openIsShowAddUserNode: () => void;
-  // openIsEditModeUser: (_state: { targetEditUser: any }) => void;
+  openIsEditModeUser: (_state: { targetEditUser: UserWithRole }) => void;
   closeAllStated: () => void;
   reset: () => void;
 };
@@ -19,8 +20,8 @@ const initialState = {
   targetEditUser: undefined,
 };
 
-export const useSystemAdminAddUSerStore =
-  create<useSystemAdminAddUSerStoreType>((set, get) => ({
+export const useSystemAdminAddUserStore =
+  create<useSystemAdminAddUserStoreType>((set, get) => ({
     ...initialState,
     toggleIsShowPassword: () => {
       set({ isShowPassword: !get().isShowPassword });
@@ -29,16 +30,16 @@ export const useSystemAdminAddUSerStore =
       set({
         isShowAddUserNode: true,
         isEditModeUser: false,
-        // targetEditUser: undefined,
+        targetEditUser: undefined,
       });
     },
-    // openIsEditModeUser: _state => {
-    //   set({
-    //     isShowAddUserNode: false,
-    //     isEditModeUser: true,
-    //     targetEditUser: _state.targetEditUser,
-    //   });
-    // },
+    openIsEditModeUser: _state => {
+      set({
+        isShowAddUserNode: false,
+        isEditModeUser: true,
+        targetEditUser: _state.targetEditUser,
+      });
+    },
     closeAllStated: () => {
       set({
         isShowAddUserNode: false,

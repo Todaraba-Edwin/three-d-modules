@@ -3,12 +3,12 @@ import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
 import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
 import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
-import { useSystemAdminAddUSerStore } from '@/_common/zustandStores/useSystemAdminAddUSerStore';
+import { useSystemAdminAddUserStore } from '@/_common/zustandStores/useSystemAdminAddUserStore';
 import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { Trash2 } from 'lucide-react';
+import { Settings, Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { UM_CONST } from '../../../shared/const';
 import { AddFormUser } from './AddFormUser';
@@ -41,13 +41,13 @@ export const RightSectionUserManagement = (): ReactNode => {
   const {
     // isShowPassword,
     isShowAddUserNode,
-    // isEditModeUser,
+    isEditModeUser,
     openIsShowAddUserNode,
     // targetEditUser,
     // toggleIsShowPassword,
     closeAllStated,
-    // openIsEditModeUser,
-  } = useSystemAdminAddUSerStore();
+    openIsEditModeUser,
+  } = useSystemAdminAddUserStore();
 
   const roleIdToFilter = isEditModeRole ? targetEditRole?.role_id : undefined;
 
@@ -108,7 +108,9 @@ export const RightSectionUserManagement = (): ReactNode => {
             if (isShowAddUserNode) return closeAllStated();
             return openIsShowAddUserNode();
           },
-          addActionNode: isShowAddUserNode && <AddFormUser />,
+          addActionNode: (isShowAddUserNode || isEditModeUser) && (
+            <AddFormUser />
+          ),
         }}
         children={
           <div
@@ -158,15 +160,20 @@ export const RightSectionUserManagement = (): ReactNode => {
                           : 'N/A'}
                       </div>
                       <div className='flex items-center justify-center gap-1'>
-                        {/* <Button
+                        <Button
+                          type='button'
                           variant='none'
                           size='sm'
                           className='h-8 w-8 p-0'
+                          onClick={() => {
+                            openIsEditModeUser({ targetEditUser: user });
+                          }}
                         >
                           <Settings className='w-3 h-3' />
-                        </Button> */}
+                        </Button>
                         {!isAdminMain && (
                           <Button
+                            type='button'
                             variant='none'
                             size='sm'
                             onClick={() =>

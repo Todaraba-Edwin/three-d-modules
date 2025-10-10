@@ -1,9 +1,9 @@
 import { useSystemAdminAddRoleStore } from './useSystemAdminAddRoleStore';
-import { useSystemAdminAddUSerStore } from './useSystemAdminAddUSerStore';
+import { useSystemAdminAddUserStore } from './useSystemAdminAddUserStore';
 import { useSyStemAdminSelectedRole } from './useSyStemAdminSelectedRoleStore';
 
 export const utilsStoreResets = (): void => {
   useSystemAdminAddRoleStore.getState().reset();
-  useSystemAdminAddUSerStore.getState().reset();
+  useSystemAdminAddUserStore.getState().reset();
   useSyStemAdminSelectedRole.getState().reset();
 };

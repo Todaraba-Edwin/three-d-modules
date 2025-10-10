@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { Save, X } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import type { PermissionsRolesQueryResult } from './LeftSectionRoleManagement';
+import type { PermissionsRoles } from './LeftSectionRoleManagement';
 
 type RoleFormDateType = {
   role_id?: number | undefined;
@@ -116,7 +116,7 @@ export const AddFormRole = (): ReactNode => {
           });
 
         openIsEditModeRole({
-          targetEditRole: variables as PermissionsRolesQueryResult,
+          targetEditRole: variables as PermissionsRoles,
         });
         reset(variables);
       } else {

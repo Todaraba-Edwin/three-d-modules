@@ -9,3 +9,4 @@ export * from './utilsAddVerticalLine';
 export * from './utilsCesiumFlyto';
 export * from './utilsGetListBoundary';
 export * from './utilsSetInitCameraPosition';
+export * from './utilsGetDegreeFromMeter';

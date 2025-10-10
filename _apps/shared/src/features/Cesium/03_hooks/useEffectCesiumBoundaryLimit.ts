@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 import { useEffect } from 'react';
-import { utilsGetDegreeFromMeter } from '../04_utils/utilsGetDegreeFromMeter';
+import { utilsGetDegreeFromMeter } from '../02_exportEntitles/utilsGetDegreeFromMeter';
 import type * as Ty from '../05_shared/types';
 
 export const useEffectCesiumBoundaryLimit = ({

@@ -2,21 +2,22 @@ import * as Cesium from 'cesium';
 import clsx from 'clsx';
 import { Mouse } from 'lucide-react';
 import {
-  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
   useState,
+  type ReactNode,
 } from 'react';
+
 import {
   CesiumInitBody,
   useCesiumInitNoneGlobe,
   useSetGltfAsync,
+  utilsGetDegreeFromMeter,
   utilsGetListBoundary,
   utilsSetInitCameraPosition,
-} from '../../../../../../../../../shared/src';
-import { utilsGetDegreeFromMeter } from '../../../../../../../../../shared/src/features/Cesium/04_utils/utilsGetDegreeFromMeter';
-import type { cameraPositionType } from '../../../../../../../../../shared/src/features/Cesium/05_shared/types';
+  type cameraPositionType,
+} from '@monorepo/shared';
 
 const FIXED_POSITION = {
   lat: 37.5667,
@@ -132,12 +133,12 @@ export const SearchFloorWithCesium = (): ReactNode => {
   }, [cameraPosition, onFloorCameraFlyTo]);
 
   return (
-    <div className='grid grid-rows-[auto_1fr] w-full h-full'>
+    <div className='grid grid-cols-[400px_1fr] w-full h-full'>
       <div>
         <dl
           className={clsx(
             'p-4 bg-slate-50 border-b-2',
-            'grid grid-cols-[100px_auto] w-full h-fit  gap-y-2 text-base',
+            'grid grid-cols-[100px_auto] w-full gap-y-2 text-base',
             'max-xl:grid-rows-3'
           )}
         >
@@ -152,7 +153,7 @@ export const SearchFloorWithCesium = (): ReactNode => {
           <dd className='font-semibold pr-4'>/media/glbs/F_01.glb</dd>
         </dl>
 
-        <div className='p-4 bg-slate-50 border-b-2'>
+        <div className='p-4 bg-slate-50 border-b-2 h-full'>
           <h3 className='text-slate-500'>카메라 초기위치설정</h3>
           <label htmlFor='latOffset'>위도조절(m)</label>
           <input

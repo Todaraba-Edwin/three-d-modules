@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
+import { utilsGetDegreeFromMeter } from '../02_exportEntitles/utilsGetDegreeFromMeter';
 import type { utilsGetListBoundaryReturn } from '../05_shared/types';
-import { utilsGetDegreeFromMeter } from './utilsGetDegreeFromMeter';
 
 export const utilsSetFloor = ({
   viewer,
