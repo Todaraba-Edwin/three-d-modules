@@ -5,7 +5,7 @@ import { Input } from '@/_common/components/Input';
 import { useSystemAdminAddUserStore } from '@/_common/zustandStores/useSystemAdminAddUserStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeOff, Save, X } from 'lucide-react';
-import { type ReactNode, useCallback, useEffect, useRef } from 'react';
+import { type ReactNode, useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select, { type StylesConfig } from 'react-select';
 import { utilsThrottle } from '../../../../../../../../../shared/src/features/_shared';
@@ -23,6 +23,20 @@ type UserFormDateType = {
         label: string;
       }
     | undefined;
+};
+
+type UpdateUserResponse = {
+  message: string;
+  data: {
+    id: number;
+    username: string;
+    nickname: string;
+    email: string;
+    role_id: number;
+    created_at: string;
+    updated_at: string;
+    last_login_at: string | null;
+  };
 };
 
 type OptionType = { value: string | number; label: string };
@@ -92,6 +106,7 @@ export const AddFormUser = (): ReactNode => {
     setError, // 1. setError 추가
     clearErrors, // 2. clearErrors 추가
     formState: { errors },
+    watch,
     // setValue,
   } = useForm<UserFormDateType>({
     defaultValues: {
@@ -104,16 +119,13 @@ export const AddFormUser = (): ReactNode => {
     },
   });
 
-  const latestUsername = useRef('');
-  const latestEmail = useRef('');
-
   const { mutate, isPending } = useMutation({
     mutationFn: (newUser: UserFormDateType) => {
       const payload = {
         ...newUser,
         role_id: newUser.role_id?.value,
       };
-      return apiClient.post('users', { json: payload }).json();
+      return apiClient.post('업데이트  users', { json: payload }).json();
     },
     onSuccess: () => {
       [queryKey.systemAdmin.users(), queryKey.systemAdmin.summary()].forEach(
@@ -123,7 +135,57 @@ export const AddFormUser = (): ReactNode => {
           });
         }
       );
+
       reset();
+    },
+
+    onError: async () => {
+      // 전체 폼 제출 에러 처리 (예: toast message)
+    },
+  });
+
+  const { mutate: updateMutate } = useMutation<
+    UpdateUserResponse,
+    Error,
+    UserFormDateType
+  >({
+    mutationFn: newUser => {
+      const payload = {
+        ...newUser,
+        role_id: newUser.role_id?.value,
+      };
+      return apiClient.post('users/update', { json: payload }).json();
+    },
+    onSuccess: data => {
+      console.log('data', data.data);
+
+      [queryKey.systemAdmin.users(), queryKey.systemAdmin.summary()].forEach(
+        queryKey => {
+          queryClient.invalidateQueries({
+            queryKey,
+          });
+        }
+      );
+
+      if (!permissionsResult) return;
+
+      const { email, nickname, username, id: user_id } = data.data;
+      const findRoleId = permissionsResult.data.find(
+        ({ role_code }) => role_code === targetEditUser?.role_code
+      );
+      if (!findRoleId) return;
+
+      reset({
+        user_id,
+        username,
+        nickname,
+        email,
+        password: '',
+        role_id: {
+          value: findRoleId.role_id,
+          label: findRoleId.role_name,
+        },
+      });
     },
 
     onError: async () => {
@@ -196,10 +258,8 @@ export const AddFormUser = (): ReactNode => {
   });
 
   const handleCheckUsername = useCallback(() => {
-    if (latestUsername.current) {
-      checkUsername(latestUsername.current);
-    }
-  }, [checkUsername]);
+    checkUsername(watch('username'));
+  }, [checkUsername, watch]);
 
   const throttledCheck = utilsThrottle(
     'checkUsername',
@@ -209,10 +269,9 @@ export const AddFormUser = (): ReactNode => {
   );
 
   const handleCheckEmail = useCallback(() => {
-    if (latestEmail.current) {
-      checkEmail(latestEmail.current);
-    }
-  }, [checkEmail]);
+    if (isEditModeUser && targetEditUser?.email === watch('email')) return;
+    checkEmail(watch('email'));
+  }, [checkEmail, watch, isEditModeUser, targetEditUser]);
 
   const throttledCheckEmail = utilsThrottle(
     'checkEmail',
@@ -222,7 +281,17 @@ export const AddFormUser = (): ReactNode => {
   );
 
   const onSubmit = handleSubmit(data => {
-    mutate(data);
+    if (isEditModeUser) {
+      updateMutate({
+        ...data,
+        nickname: data.nickname.trim(),
+      });
+    } else {
+      mutate({
+        ...data,
+        nickname: data.nickname.trim(),
+      });
+    }
   });
 
   useEffect(() => {
@@ -296,10 +365,7 @@ export const AddFormUser = (): ReactNode => {
                     message:
                       '사용자명은 띄어쓰기 없는 영문과 숫자만 가능합니다.',
                   },
-                  onChange: e => {
-                    latestUsername.current = e.target.value;
-                    throttledCheck();
-                  },
+                  onChange: throttledCheck,
                 })}
                 placeholder='예: user, manager(15자 이내)'
                 className='text-sm'
@@ -308,6 +374,11 @@ export const AddFormUser = (): ReactNode => {
               {errors.username && (
                 <span className='text-red-500 text-sm'>
                   {errors.username.message}
+                </span>
+              )}
+              {!errors.username && watch('username') && (
+                <span className='text-green-500 text-sm'>
+                  사용 가능한 ID 입니다.
                 </span>
               )}
             </div>
@@ -341,18 +412,19 @@ export const AddFormUser = (): ReactNode => {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message: '유효한 이메일 주소를 입력해주세요.',
                   },
-                  onChange: e => {
-                    latestEmail.current = e.target.value;
-                    throttledCheckEmail();
-                  },
+                  onChange: throttledCheckEmail,
                 })}
                 placeholder='예: user@example.com'
                 className='text-sm'
-                // disabled={isEditModeUser}
               />
               {errors.email && (
                 <span className='text-red-500 text-sm'>
                   {errors.email.message}
+                </span>
+              )}
+              {!errors.email && watch('email') && (
+                <span className='text-green-500 text-sm'>
+                  사용 가능한 email 입니다.
                 </span>
               )}
             </div>

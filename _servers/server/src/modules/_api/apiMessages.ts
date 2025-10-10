@@ -36,5 +36,6 @@ export const API_MESSAGES = {
     VALID_EMAIL: '사용 가능한 이메일입니다.',
     CREATE_USER: '새로운 사용자를 생성했습니다.',
     UPSERT_ROLE: '역할 정보를 생성/업데이트했습니다.',
+    UPDATE_USER: '사용자 정보를 업데이트 했습니다.',
   },
 };

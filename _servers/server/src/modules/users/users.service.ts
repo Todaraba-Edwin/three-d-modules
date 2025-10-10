@@ -169,6 +169,36 @@ export class UsersService implements OnApplicationBootstrap {
     return { message: API_MESSAGES.USERS.CREATE_USER, data: result };
   }
 
+  async updateUser(
+    userDto: Dto.UpdateUserReqDto,
+  ): Promise<Dto.UpdateUserResultDto> {
+    const { id, email, nickname, password, role_id } = userDto;
+
+    const user = await this.getUserById(id);
+
+    if (email && email !== user.email) {
+      user.email = email;
+    }
+
+    if (nickname) {
+      user.nickname = nickname;
+    }
+
+    if (password) {
+      user.password = await hash(password, 10);
+    }
+
+    if (role_id) {
+      user.role_id = role_id;
+    }
+
+    const savedUser = await this.usersRepository.save(user);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...result } = savedUser;
+    return { message: API_MESSAGES.USERS.UPDATE_USER, data: result };
+  }
+
   async setUser(
     username: string,
     nickname: string,

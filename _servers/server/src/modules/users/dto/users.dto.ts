@@ -41,6 +41,33 @@ export class CreateUserReqDto {
   role_id: number;
 }
 
+export class UpdateUserReqDto {
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
+
+  @IsString()
+  @IsOptional()
+  username?: string;
+
+  @IsString()
+  @IsOptional()
+  nickname?: string;
+
+  @IsString()
+  @IsOptional()
+  @MinLength(4)
+  password?: string;
+
+  @IsEmail()
+  @IsOptional()
+  email?: string;
+
+  @IsNumber()
+  @IsOptional()
+  role_id?: number;
+}
+
 class MenuPermissionDto {
   @IsNumber()
   @IsNotEmpty()
@@ -140,6 +167,11 @@ export class FindAllUsersResultDto extends ResultDto {
 }
 
 export class CreateUserResultDto extends ResultDto {
+  @Type(() => UserDto)
+  data: UserDto;
+}
+
+export class UpdateUserResultDto extends ResultDto {
   @Type(() => UserDto)
   data: UserDto;
 }

@@ -20,6 +20,7 @@ export const USERS = {
     TYPE: 'type',
   },
   PARAMS: {
+    ID: 'id',
     USERNAME: 'userName',
     USERTYPE: 'userType',
   },

@@ -43,6 +43,13 @@ export class UsersController {
     return this.usersService.createUser(body);
   }
 
+  @Post('update')
+  async updataUser(
+    @Body() body: Dto.UpdateUserReqDto,
+  ): Promise<Dto.UpdateUserResultDto> {
+    return this.usersService.updateUser(body);
+  }
+
   @Post('check-username')
   @HttpCode(HttpStatus.OK)
   async checkUsername(
