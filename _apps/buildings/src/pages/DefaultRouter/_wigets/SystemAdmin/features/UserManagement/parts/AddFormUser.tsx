@@ -376,7 +376,7 @@ export const AddFormUser = (): ReactNode => {
                   {errors.username.message}
                 </span>
               )}
-              {!errors.username && watch('username') && (
+              {!isEditModeUser && !errors.username && watch('username') && (
                 <span className='text-green-500 text-sm'>
                   사용 가능한 ID 입니다.
                 </span>

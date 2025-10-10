@@ -1,4 +1,9 @@
 import { DefaultPathEnum, menuLists, noneIcon } from '@/_common/const';
+import {
+  useSystemAdminAddRoleStore,
+  useSystemAdminAddUserStore,
+  useSyStemAdminSelectedRole,
+} from '@/_common/zustandStores';
 import { utilsCheckAuth } from '@/_templates';
 import { createRef, useRef, useState, type ReactNode } from 'react';
 import { isMobile, isMobileSafari } from 'react-device-detect';
@@ -18,6 +23,20 @@ export const DefaultMainOutletLayout = ({
     DefaultPathEnum.THREE_D_MS.replace('/', '')
   );
 
+  const {
+    isShowAddRoleNode,
+    isEditModeRole,
+    reset: resetRole,
+  } = useSystemAdminAddRoleStore();
+  const {
+    isShowAddUserNode,
+    isEditModeUser,
+    reset: resetUser,
+  } = useSystemAdminAddUserStore();
+
+  const { selectedRoleId, reset: resetSelectedRole } =
+    useSyStemAdminSelectedRole();
+
   const [isGnbOpen, setIsGnbOpen] = useState(() => {
     return isMobileMode ? false : true;
   });
@@ -27,6 +46,18 @@ export const DefaultMainOutletLayout = ({
   };
   const navigate = RD.useNavigate();
   const utilsNavigate = (url: string) => () => {
+    if (isShowAddRoleNode || isEditModeRole) {
+      resetRole();
+    }
+
+    if (isShowAddUserNode || isEditModeUser) {
+      resetUser();
+    }
+
+    if (selectedRoleId) {
+      resetSelectedRole();
+    }
+
     const protectedRouteNavigate = async () => {
       const isProtected = Boolean(await utilsCheckAuth());
       if (isProtected) {
