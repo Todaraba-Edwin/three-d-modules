@@ -2,9 +2,8 @@ import { DefaultPathEnum } from '@/_common/const';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { usePathSegments } from '../../../../../../shared/src/features/_shared';
+import { usePathSegments } from '@_shared';
 import { SystemAdminHeader } from './features/SystemAdminHeader';
-import { SystemAdminSummary } from './features/SystemAdminSummary';
 
 const { BASE, SEGMENTS } = DefaultPathEnum.SYSTEM_ADMIN;
 
@@ -19,13 +18,10 @@ export const SystemAdminOutlet = (): ReactNode => {
 
   return (
     <div
-      className={clsx(
-        'w-full h-full',
-        'grid grid-rows-[auto_auto_1fr] space-y-4'
-      )}
+      className={clsx('w-full h-full', 'grid grid-rows-[auto_1fr] space-y-4')}
     >
       <SystemAdminHeader />
-      <SystemAdminSummary />
+      {/* <SystemAdminSummary /> */}
       <div className='grid grid-rows-[auto_1fr] min-h-0'>
         <div className='border-b border-gray-200'>
           <nav className='-mb-px flex space-x-4' aria-label='Tabs'>

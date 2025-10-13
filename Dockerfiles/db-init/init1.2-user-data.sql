@@ -16,11 +16,11 @@ INSERT INTO USER_TC_MENUS (label, path, icon_name, sort_order) VALUES
 ('관리자', '/system-admin', 'SHIELD', 2),
 ('디지털 트윈(3D) 관제', '/3dms', 'BOX', 3),
 ('건물 관리', '/buildings', 'BUILDING2', 4),
-('NMS 관리', '/nms', 'NETWORK', 5),
-('FMS 관리', '/fms', 'CAMERA', 6),
-('정보', '/system-info', 'INFO', 7),
-('설정', '/settings', 'SETTINGS', 8),
-('계정관리', '/users', 'SETTINGS', 9);
+('네트워트 관리', '/nms', 'NETWORK', 5),
+('시설물 관리', '/fms', 'CAMERA', 6),
+('계정관리', '/users', 'SETTINGS', 7),
+('정보', '/system-info', 'INFO', 8);
+-- ('설정', '/settings', 'SETTINGS', 8),
 
 -- 3. Role-Menu Permissions
 -- Get Role IDs
@@ -36,7 +36,7 @@ SET @menu_bms_id = (SELECT id from USER_TC_MENUS where path = '/buildings');
 SET @menu_nms_id = (SELECT id from USER_TC_MENUS where path = '/nms');
 SET @menu_fms_id = (SELECT id from USER_TC_MENUS where path = '/fms');
 SET @menu_info_id = (SELECT id from USER_TC_MENUS where path = '/system-info');
-SET @menu_settings_id = (SELECT id from USER_TC_MENUS where path = '/settings');
+-- SET @menu_settings_id = (SELECT id from USER_TC_MENUS where path = '/settings');
 SET @menu_users_id = (SELECT id from USER_TC_MENUS where path = '/users');
 
 -- ADMIN_MAIN: can access all
@@ -48,7 +48,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@admin_main_role_id, @menu_nms_id, TRUE),
 (@admin_main_role_id, @menu_fms_id, TRUE),
 (@admin_main_role_id, @menu_info_id, TRUE),
-(@admin_main_role_id, @menu_settings_id, TRUE),
+-- (@admin_main_role_id, @menu_settings_id, TRUE),
 (@admin_main_role_id, @menu_users_id, TRUE);
 
 -- ADMIN_SUB: can access all except '/system-admin'
@@ -60,7 +60,7 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@admin_sub_role_id, @menu_nms_id, TRUE),
 (@admin_sub_role_id, @menu_fms_id, TRUE),
 (@admin_sub_role_id, @menu_info_id, TRUE),
-(@admin_sub_role_id, @menu_settings_id, FALSE),
+-- (@admin_sub_role_id, @menu_settings_id, FALSE),
 (@admin_sub_role_id, @menu_users_id, TRUE);
 
 -- USER: can access all except '/system-admin' and '/settings'
@@ -72,5 +72,5 @@ INSERT INTO USER_TN_ROLE_MENU_PERMISSIONS (role_id, menu_id, can_access) VALUES
 (@user_role_id, @menu_nms_id, TRUE),
 (@user_role_id, @menu_fms_id, TRUE),
 (@user_role_id, @menu_info_id, TRUE),
-(@user_role_id, @menu_settings_id, FALSE),
+-- (@user_role_id, @menu_settings_id, FALSE),
 (@user_role_id, @menu_users_id, TRUE);

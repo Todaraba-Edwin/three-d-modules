@@ -1,11 +1,11 @@
 import {
   Box,
   Building2,
-  Camera,
   CircleUserRound,
   Home,
   Info,
   Network,
+  Power,
   Settings,
   Shield,
   X,
@@ -69,7 +69,7 @@ export const menuLists: menuListsType[] = [
   },
   {
     path: DefaultPathEnum.FACILITY_MS,
-    icon: Camera,
+    icon: Power,
     desc: '시설물 관리 시스템',
   },
   {

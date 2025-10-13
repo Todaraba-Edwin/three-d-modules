@@ -1,5 +1,6 @@
 USE prizm;
 
+-- BUILDING MANAGEMENT SYSTEM -----------------------------------------------------------
 CREATE TABLE `BMS_TN_BUILDINGS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `building_name` varchar(100) UNIQUE NOT NULL,
@@ -40,11 +41,26 @@ CREATE TABLE `BMS_TN_SPACES` (
   FOREIGN KEY (`floor_id`) REFERENCES `BMS_TN_FLOORS` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- INFRASTRUCTURE MANAGEMENT SYSTEM -----------------------------------------------------
+CREATE TABLE `IMS_TN_LINE_TYPES` (
+  `type` ENUM('FIBER','ELECTRONIC') PRIMARY KEY,
+  `color_code` VARCHAR(20) NOT NULL COMMENT '시각화용 색상',
+  `description` VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `IMS_TN_LINES` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `type` ENUM('FIBER','ELECTRONIC') NOT NULL,
+  FOREIGN KEY (`type`) REFERENCES `IMS_TN_LINE_TYPES`(`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- NETWORK MANAGEMENT SYSTEM -----------------------------------------------------------
 CREATE TABLE `NMS_TN_ENCLOSURES` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `space_id` bigint COMMENT 'FK to spaces.id',
   `name` varchar(100) NOT NULL,
-  `type` ENUM ('MDF', 'ODF', 'OFD', 'FDF', 'IDF'),
+  `type` ENUM ('MDF', 'ODF', 'OFD', 'FDF', 'IDF', 'MDB', 'FDB', "PDB"),
+  `sub_type` ENUM ('FRAME', 'BOARD'),  -- **F는 FRAME으로 통신함체를, **B는 BOARD로 전기함체를 
   `parent_enclosure_id` bigint,
   `location` json NOT NULL,
   `description` json,
@@ -52,21 +68,12 @@ CREATE TABLE `NMS_TN_ENCLOSURES` (
   FOREIGN KEY (`parent_enclosure_id`) REFERENCES `NMS_TN_ENCLOSURES` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `NMS_TN_LINES` (
-  `id` bigint PRIMARY KEY AUTO_INCREMENT,
-  `type` ENUM ('FIBER', 'ELECTRONIC') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE `NMS_TN_FIBERS` (
   `line_id` bigint PRIMARY KEY,
   `from_enclosure_id` bigint NOT NULL,
   `to_enclosure_id` bigint NOT NULL,
-  `fiber_type` ENUM ('SINGLE', 'MULTI', 'MIXED'),
-  `core_count` int NOT NULL,
-  `length_m` bigint,
-  `description` json,
-  `path` json,
-  FOREIGN KEY (`line_id`) REFERENCES `NMS_TN_LINES` (`id`),
+  `path` JSON COMMENT '배선 경로 좌표 [{lat, long, height}]',
+  FOREIGN KEY (`line_id`) REFERENCES `IMS_TN_LINES` (`id`),
   FOREIGN KEY (`from_enclosure_id`) REFERENCES `NMS_TN_ENCLOSURES` (`id`),
   FOREIGN KEY (`to_enclosure_id`) REFERENCES `NMS_TN_ENCLOSURES` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -123,46 +130,23 @@ CREATE TABLE `NMS_TN_PORTS` (
   FOREIGN KEY (`connected_device_id`) REFERENCES `NMS_TN_DEVICES` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `NMS_TN_RINGS` (
-  `id` bigint PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) UNIQUE NOT NULL,
-  `description` json
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE `NMS_TN_CIRCUITS` (
-  `id` bigint PRIMARY KEY AUTO_INCREMENT,
-  `ring_id` bigint,
-  `name` varchar(255) UNIQUE NOT NULL,
-  `start_port_id` bigint NOT NULL,
-  `end_port_id` bigint NOT NULL,
-  `total_otdr_distance` bigint,
-  `description` json,
-  FOREIGN KEY (`ring_id`) REFERENCES `NMS_TN_RINGS` (`id`),
-  FOREIGN KEY (`start_port_id`) REFERENCES `NMS_TN_PORTS` (`id`),
-  FOREIGN KEY (`end_port_id`) REFERENCES `NMS_TN_PORTS` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE `NMS_TN_CORES` (
-  `id` bigint PRIMARY KEY AUTO_INCREMENT,
-  `fiber_id` bigint NOT NULL,
-  `core_number` int NOT NULL,
-  `from_port_id` bigint,
-  `to_port_id` bigint,
-  `otdr_loss` decimal(10,5),
-  `otdr_distance` bigint,
-  `state` ENUM ('ACTIVE', 'INACTIVE', 'BROKEN') NOT NULL,
-  `circuit_id` bigint,
-  `circuit_sequence` int,
-  FOREIGN KEY (`fiber_id`) REFERENCES `NMS_TN_FIBERS` (`line_id`),
-  FOREIGN KEY (`from_port_id`) REFERENCES `NMS_TN_PORTS` (`id`),
-  FOREIGN KEY (`to_port_id`) REFERENCES `NMS_TN_PORTS` (`id`),
-  FOREIGN KEY (`circuit_id`) REFERENCES `NMS_TN_CIRCUITS` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE `NMS_TN_SWITCH_MODEL_PORTS` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `switch_model_id` bigint NOT NULL,
   `port_number` int NOT NULL,
   `port_type` ENUM ('RJ45', 'SFP') NOT NULL,
   FOREIGN KEY (`switch_model_id`) REFERENCES `NMS_TC_SWITCH_MODELS` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- FACILITY MANAGEMENT SYSTEM ----------------------------------------------------------
+CREATE TABLE `FMS_TN_ELECTRONIC` (
+  `line_id` bigint PRIMARY KEY,
+  `from_enclosure_id` bigint NOT NULL,
+  `to_enclosure_id` bigint NOT NULL,
+  `core_count` INT COMMENT '케이블 심선 수 (예: 1, 2, 3, 4)',
+  `cable_type` ENUM('CV','VCT') COMMENT '케이블 종류',
+  `path` JSON COMMENT '배선 경로 좌표 [{lat, long, height}]',
+  FOREIGN KEY (`line_id`) REFERENCES `IMS_TN_LINES` (`id`),
+  FOREIGN KEY (`from_enclosure_id`) REFERENCES `NMS_TN_ENCLOSURES` (`id`),
+  FOREIGN KEY (`to_enclosure_id`) REFERENCES `NMS_TN_ENCLOSURES` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

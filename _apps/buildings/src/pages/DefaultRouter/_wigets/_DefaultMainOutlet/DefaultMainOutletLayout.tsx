@@ -5,10 +5,10 @@ import {
   useSyStemAdminSelectedRole,
 } from '@/_common/zustandStores';
 import { utilsCheckAuth } from '@/_templates';
+import { usePathSegments } from '@_shared';
 import { createRef, useRef, useState, type ReactNode } from 'react';
 import { isMobile, isMobileSafari } from 'react-device-detect';
 import * as RD from 'react-router-dom';
-import { usePathSegments } from '../../../../../../shared/src';
 import * as Feat from './features';
 const isMobileMode = isMobile || isMobileSafari;
 
