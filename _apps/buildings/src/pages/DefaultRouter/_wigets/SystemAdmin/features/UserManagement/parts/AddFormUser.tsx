@@ -2,7 +2,7 @@ import { apiClient } from '@/_common/apis/apiCreate';
 import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
 import { Input } from '@/_common/components/Input';
-import { useSystemAdminAddUserStore } from '@/_common/zustandStores/useSystemAdminAddUserStore';
+import { useSystemAdminAddUserStore } from '@/_common/zustandStores/useSystemAdminAddUser';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeOff, Save, X } from 'lucide-react';
 import { type ReactNode, useCallback, useEffect } from 'react';

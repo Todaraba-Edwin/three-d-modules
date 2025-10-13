@@ -1,5 +1,5 @@
 import { useSystemAdminAddRoleStore } from './useSystemAdminAddRoleStore';
-import { useSystemAdminAddUserStore } from './useSystemAdminAddUserStore';
+import { useSystemAdminAddUserStore } from './useSystemAdminAddUser';
 import { useSyStemAdminSelectedRole } from './useSyStemAdminSelectedRoleStore';
 
 export const utilsStoreResets = (): void => {

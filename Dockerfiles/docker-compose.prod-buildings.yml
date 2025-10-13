@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfiles/Dockerfile
       args:
         APP_PATH: _apps/buildings
-        VITE_API_URL: http://192.168.40.100:8080
+        VITE_API_URL: http://192.168.40.99:8080
     image: buildings-app-compose
     container_name: buildings-app
     restart: unless-stopped
