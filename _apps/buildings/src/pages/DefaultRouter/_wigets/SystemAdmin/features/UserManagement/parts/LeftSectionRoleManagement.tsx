@@ -1,8 +1,8 @@
 import { apiClient } from '@/_common/apis/apiCreate';
 import { queryKey } from '@/_common/apis/queryKey';
 import { Button } from '@/_common/components/Button';
-import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
-import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/useSystemAdminAddRoleStore';
+import { useSystemAdminAddRoleStore } from '@/_common/zustandStores/storeAdminAddRole';
+import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/storeAdminSelectedRole';
 
 import { SelectedBluePoint } from '@/_common/components';
 import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';

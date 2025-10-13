@@ -1,6 +1,6 @@
 import { Button } from '@/_common/components/Button';
 import { menuLists, noneIcon } from '@/_common/const/routerPaths';
-import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
+import { useAuthStore } from '@/_common/zustandStores/storeAuth';
 import { type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 

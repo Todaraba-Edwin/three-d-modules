@@ -1,5 +1,5 @@
 import { menuLists, noneIcon } from '@/_common/const/routerPaths';
-import { useAuthStore } from '@/_common/zustandStores/useAuthStore';
+import { useAuthStore } from '@/_common/zustandStores/storeAuth';
 import { type ReactNode } from 'react';
 
 export const SystemAdminHeader = (): ReactNode => {

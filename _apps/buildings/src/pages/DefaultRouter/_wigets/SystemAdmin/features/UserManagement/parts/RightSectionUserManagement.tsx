@@ -5,7 +5,7 @@ import {
   useSystemAdminAddRoleStore,
   useSystemAdminAddUserStore,
 } from '@/_common/zustandStores';
-import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/useSyStemAdminSelectedRoleStore';
+import { useSyStemAdminSelectedRole } from '@/_common/zustandStores/storeAdminSelectedRole';
 
 import { ConfirmPortal } from '@/pages/DefaultRouter/_wigets/_reactPortals/ConfirmPortal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
