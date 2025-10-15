@@ -4,6 +4,10 @@
 
 /* TailWind의 기본 box-sizig은 content-box */
 /* custom global settings */
+body {
+  font-family: 'Noto Sans KR';
+}
+
 *,
 *::before,
 *::after {

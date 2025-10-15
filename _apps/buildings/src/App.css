@@ -16,10 +16,6 @@
 }
 
 @layer components {
-  .NavHeader {
-    @apply py-4 max-w-gnb-open;
-  }
-
   .NavBody {
     @apply overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
   }
@@ -28,35 +24,27 @@
   }
 
   .NavListItem {
-    @apply h-[60px] box-border 
-    flex items-center 
-    w-gnb-open p-4 
-    transition-all duration-300 
-    relative 
-    hover:font-semibold;
+    @apply relative box-border flex h-[60px] w-gnb-open items-center p-4 transition-all duration-300 hover:font-semibold;
 
     .NavLitsItemsButton {
-      @apply w-full flex gap-gnb items-center;
+      @apply flex w-full items-center gap-gnb;
     }
 
     .NavLitsItemsButtonIcon {
-      @apply font-bold w-gnb-icon h-gnb-icon;
+      @apply h-gnb-icon w-gnb-icon font-bold;
     }
   }
 
   .NavFooter {
-    @apply absolute bottom-0 w-gnb-open
-    transition-all duration-300
-    overflow-hidden
-    grid grid-rows-[1fr_auto];
+    @apply absolute bottom-0 grid w-gnb-open grid-rows-[1fr_auto] overflow-hidden transition-all duration-300;
   }
 
   .OutletSection {
-    @apply flex-grow grid grid-rows-[auto_1fr];
+    @apply grid flex-grow grid-rows-[auto_1fr];
   }
 
   .OutletHeader {
-    @apply bg-white  h-12 p-4 flex items-center gap-2;
+    @apply flex h-[50px] items-center gap-2 bg-white p-4;
   }
 
   .OutletBody {

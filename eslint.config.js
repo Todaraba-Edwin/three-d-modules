@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from "eslint-plugin-storybook";
+
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import eslintPluginReact from 'eslint-plugin-react';
@@ -88,33 +91,25 @@ const utilsServerConfig = ({ projectPath, matchPath }) => ({
   },
 });
 
-export default tseslint.config(
-  {
-    ignores: [
-      '**/.DS_Store',
-      '**/dist/**',
-      '**/node_modules/**',
-      '.pnpm-store/**',
-      '**/build/**',
-    ],
-  },
-
-  // App 전용 코드
-  utilsAddConfig({
-    projectPath: './_apps/shared/tsconfig.app.json',
-    matchPath: '_apps/shared/**/*.{ts,tsx}',
-  }),
-  utilsAddConfig({
-    projectPath: './_apps/project-a/tsconfig.app.json',
-    matchPath: '_apps/project-a/**/*.{ts,tsx}',
-  }),
-  utilsAddConfig({
-    projectPath: './_apps/buildings/tsconfig.app.json',
-    matchPath: '_apps/buildings/**/*.{ts,tsx}',
-  }),
-  utilsServerConfig({
-    projectPath: './_servers/server/tsconfig.json',
-    matchPath: '_servers/server/**/*.ts',
-  }),
-  utilsNodeConfig({})
-);
+export default tseslint.config(// App 전용 코드
+{
+  ignores: [
+    '**/.DS_Store',
+    '**/dist/**',
+    '**/node_modules/**',
+    '.pnpm-store/**',
+    '**/build/**',
+  ],
+}, utilsAddConfig({
+  projectPath: './_apps/shared/tsconfig.app.json',
+  matchPath: '_apps/shared/**/*.{ts,tsx}',
+}), utilsAddConfig({
+  projectPath: './_apps/project-a/tsconfig.app.json',
+  matchPath: '_apps/project-a/**/*.{ts,tsx}',
+}), utilsAddConfig({
+  projectPath: './_apps/buildings/tsconfig.app.json',
+  matchPath: '_apps/buildings/**/*.{ts,tsx}',
+}), utilsServerConfig({
+  projectPath: './_servers/server/tsconfig.json',
+  matchPath: '_servers/server/**/*.ts',
+}), utilsNodeConfig({}), storybook.configs["flat/recommended"], storybook.configs["flat/recommended"]);

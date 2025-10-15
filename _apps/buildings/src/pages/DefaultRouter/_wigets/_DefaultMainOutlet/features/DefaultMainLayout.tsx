@@ -4,9 +4,6 @@ export const DefaultMainLayout = ({
   children,
 }: PropsWithChildren): ReactNode => {
   return (
-    <div
-      className='flex h-dvh min-w-viewport bg-gray-100'
-      children={children}
-    />
+    <div className='bg-root-bg flex h-dvh min-w-viewport' {...{ children }} />
   );
 };

@@ -9,6 +9,17 @@ export default {
       // spacing → margin, padding, width, height
       // borderRadius → rounded-xl 같은 클래스 생성
       colors: {
+        'root-bg': 'white',
+        'gnb-mode': {
+          white: {
+            bg: 'white',
+            text: 'black',
+          },
+          dark: {
+            bg: 'black',
+            text: 'white',
+          },
+        },
         main: '#E12403',
         primary: {
           DEFAULT: '#628EF0',
@@ -33,14 +44,19 @@ export default {
         'gnb-open': '250px',
       },
       minWidth: {
-        // IPadMini 768 - 250(gnb-open)
-        viewport: '768px',
+        viewport: '768px', // IPadMini 768 - 250(gnb-open)
         'min-limit': '768px',
       },
       height: {
         'gnb-footer': '100px',
         'gnb-footer-close': '60px',
         'gnb-icon': '24px',
+      },
+      maxHeight: {
+        'gnb-logo': '200px',
+      },
+      minHeight: {
+        'gnb-logo': '50px',
       },
       padding: {
         gnb: '16px',

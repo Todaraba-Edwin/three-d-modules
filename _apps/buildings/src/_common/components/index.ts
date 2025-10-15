@@ -1,3 +1,4 @@
+export * from './AutoFitImage';
 export * from './Button';
 export * from './FormErrorMessage';
 export * from './FormSuccessMessage';

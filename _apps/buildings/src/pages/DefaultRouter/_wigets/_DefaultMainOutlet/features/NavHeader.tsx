@@ -1,3 +1,4 @@
+import { AutoFitImage } from '@/_common/components';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 
@@ -9,17 +10,14 @@ export const NavHeader = ({
 }): ReactNode => {
   return (
     <h2
+      className={clsx('max-h-gnb-logo min-h-gnb-logo max-w-gnb-open', {
+        'cursor-pointer': !is3DmsMode,
+      })}
       {...{
-        className: clsx('NavHeader', { 'cursor-pointer': !is3DmsMode }),
         onClick,
       }}
     >
-      <img
-        {...{
-          src: '/imgs/seoul-university.png',
-          alt: 'Logo',
-        }}
-      />
+      <AutoFitImage src='/imgs/seoul-university.png' alt='Logo' />
     </h2>
   );
 };

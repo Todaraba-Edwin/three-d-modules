@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode } from 'react';
 
@@ -18,14 +19,14 @@ const OutletHeader = ({
   onToggleIsGnbOpen: () => void;
 }): ReactNode => {
   return (
-    <div className='OutletHeader'>
+    <div className={clsx('OutletHeader', 'shadow-md')}>
       {!isMobileMode && (
         <button onClick={onToggleIsGnbOpen}>
           {isGnbOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
         </button>
       )}
-      <p className='font-bold text-lg'>
-        PRIZM <span className='font-thin text-'>건물관리 시스템</span>
+      <p className='text-lg font-bold'>
+        PRIZM <span className='text- font-thin'>건물관리 시스템</span>
       </p>
     </div>
   );
