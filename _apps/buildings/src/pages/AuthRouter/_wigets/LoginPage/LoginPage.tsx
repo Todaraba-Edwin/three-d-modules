@@ -11,7 +11,8 @@ import * as LO from './features/LoginCard';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const LoginPage = (): ReactNode => {
-  const [isFocusLogin, setIsFocusLogin] = useState<boolean>(false);
+  const [isExpirationSession, setIsExpirationSession] =
+    useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errMessage, setErrMessage] = useState<string>('');
@@ -51,7 +52,7 @@ export const LoginPage = (): ReactNode => {
       })
       .then(data => {
         setIsLoading(false);
-        setIsFocusLogin(false);
+        setIsExpirationSession(false);
         setErrMessage('');
         navigate('/', { state: { username: data.username } });
       })
@@ -60,7 +61,7 @@ export const LoginPage = (): ReactNode => {
           const { statusCode } = errData;
           switch (statusCode) {
             case 409:
-              setIsFocusLogin(true);
+              setIsExpirationSession(true);
               break;
             default:
               setErrMessage(errData.message);
@@ -202,11 +203,11 @@ export const LoginPage = (): ReactNode => {
             <LO.CardFooter children={MANUFACTURE_INFO.PROGRAM_PROVIDER} />
           </LO.CardContent>
         </LO.CardLBody>
-        {isFocusLogin && (
+        {isExpirationSession && (
           <LoginActivityDetectedPortal
             isLoading={isLoading}
             onForceSubmit={onForceSubmit}
-            onClosePortal={() => setIsFocusLogin(false)}
+            onClosePortal={() => setIsExpirationSession(false)}
           />
         )}
       </LO.CardLayout>

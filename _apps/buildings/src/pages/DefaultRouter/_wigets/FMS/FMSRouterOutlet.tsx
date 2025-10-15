@@ -5,7 +5,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { FMSHeader } from './features/FMSHeader';
 
 const tabs = [
-  { name: '장비 상세보기', href: DefaultPathEnum.FACILITY_MS },
+  { name: '장비 상세보기', href: DefaultPathEnum.FACILITY_MS.BASE },
   // { name: '장비정보 간추려보기', href: '/fms' },
   // { name: '사업관리', href: '/fms/project' },
 ];

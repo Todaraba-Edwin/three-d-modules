@@ -16,18 +16,34 @@ export const DefaultMainOutletLayout = ({
   children,
   nickname,
   permissionPaths,
-  setIsFocusLogin,
+  setIsExpirationSession,
 }: DefaultMainOutletLayoutProps): ReactNode => {
+  // #_001 GNB를 열고 닫는 상태 및 제어함수 와 개별 li태그의 ref함수 선언
+  const [isGnbOpen, setIsGnbOpen] = useState(() => {
+    return isMobileMode ? false : true;
+  });
+  const onToggleIsGnbOpen = () => {
+    if (isMobileMode) return;
+    setIsGnbOpen(prev => !prev);
+  };
+
+  const menuRefs = useRef(
+    permissionPaths.map(() => createRef<HTMLLIElement>())
+  );
+
+  // #_002 is3DmsMode 를 판별하기 위한 진위값 산출
   const { layout } = usePathSegments();
   const is3DmsMode = layout.includes(
     DefaultPathEnum.THREE_D_MS.replace('/', '')
   );
 
+  // #_003 관리자 페이지 진입시, store 가드 치원에서 초기화
   const {
     isShowAddRoleNode,
     isEditModeRole,
     reset: resetRole,
   } = useSystemAdminAddRoleStore();
+
   const {
     isShowAddUserNode,
     isEditModeUser,
@@ -37,13 +53,7 @@ export const DefaultMainOutletLayout = ({
   const { selectedRoleId, reset: resetSelectedRole } =
     useSyStemAdminSelectedRole();
 
-  const [isGnbOpen, setIsGnbOpen] = useState(() => {
-    return isMobileMode ? false : true;
-  });
-  const onToggleIsGnbOpen = () => {
-    if (isMobileMode) return;
-    setIsGnbOpen(prev => !prev);
-  };
+  // #_004 라우터 경로에서 클릭 이벤트 발생시, 경로 이동 함수
   const navigate = RD.useNavigate();
   const utilsNavigate = (url: string) => () => {
     if (isShowAddRoleNode || isEditModeRole) {
@@ -63,15 +73,11 @@ export const DefaultMainOutletLayout = ({
       if (isProtected) {
         navigate(url);
       } else {
-        setIsFocusLogin(true);
+        setIsExpirationSession(true);
       }
     };
     protectedRouteNavigate();
   };
-
-  const menuRefs = useRef(
-    permissionPaths.map(() => createRef<HTMLLIElement>())
-  );
 
   return (
     <Feat.DefaultMainLayout>

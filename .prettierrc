@@ -9,5 +9,5 @@
   "bracketSpacing": true,
   "jsxSingleQuote": true,
   "insertPragma": false,
-  "plugins": ["prettier-plugin-organize-imports"]
+  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"]
 }

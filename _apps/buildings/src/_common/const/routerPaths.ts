@@ -19,6 +19,25 @@ export const AuthPathEnum = {
 export const DefaultPathEnum = {
   ROOT: '/',
   THREE_D_MS: '/3dms',
+
+  BUILDING_MS: '/buildings',
+  SYSTEM_SETTINGS: '/settings',
+  USERS: '/users',
+  NOT_FOUND: '*',
+
+  // 중첩라우팅 PATH
+  SYSTEM_ADMIN: {
+    BASE: '/system-admin',
+    SEGMENTS: {
+      BUILDINGS: 'buildings',
+      BUILDINGS_CREATE: 'create',
+      DEVICE: 'device',
+      // 동적 라우팅
+      BUILDING_ID: ':buildingId',
+      FLOOR_ID: ':floorId',
+    },
+  },
+
   NETWORK_MS: {
     BASE: '/nms',
     SEGMENTS: {
@@ -28,25 +47,17 @@ export const DefaultPathEnum = {
       INFO_DEVICE: 'info-device',
     },
   },
-  FACILITY_MS: '/fms',
-  BUILDING_MS: '/buildings',
+
+  FACILITY_MS: {
+    BASE: '/fms',
+  },
+
   SYSTEM_INFO: {
     BASE: '/system-info',
     SEGMENTS: {
       DEVICE: 'device',
     },
   },
-  SYSTEM_ADMIN: {
-    BASE: '/system-admin',
-    SEGMENTS: {
-      BUILDINGS: 'buildings',
-      BUILDINGS_CREATE: 'create',
-      DEVICE: 'device',
-    },
-  },
-  SYSTEM_SETTINGS: '/settings',
-  USERS: '/users',
-  NOT_FOUND: '*',
 } as const;
 
 export const noneIcon = X;
@@ -68,7 +79,7 @@ export const menuLists: menuListsType[] = [
     desc: '스위치 기반 네트워크관리 시스템',
   },
   {
-    path: DefaultPathEnum.FACILITY_MS,
+    path: DefaultPathEnum.FACILITY_MS.BASE,
     icon: Power,
     desc: '시설물 관리 시스템',
   },

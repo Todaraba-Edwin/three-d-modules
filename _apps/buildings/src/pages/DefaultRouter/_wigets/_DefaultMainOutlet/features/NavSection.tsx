@@ -14,7 +14,7 @@ export const NavSection = ({
       className={clsx(
         `Layout_GNB`,
         'relative',
-        'z-50',
+        'z-gnb',
         `grid grid-rows-[auto_1fr]`,
         `flex-shrink-0 border-r-3 shadow-sm transition-all duration-300`,
         'overflow-hidden',

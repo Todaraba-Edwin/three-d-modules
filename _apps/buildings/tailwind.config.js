@@ -6,6 +6,8 @@ export default {
   ],
   theme: {
     extend: {
+      // spacing → margin, padding, width, height
+      // borderRadius → rounded-xl 같은 클래스 생성
       colors: {
         main: '#E12403',
         primary: {
@@ -31,7 +33,9 @@ export default {
         'gnb-open': '250px',
       },
       minWidth: {
-        'min-limit': '768px', // IPadMini 768 - 250(gnb-open)
+        // IPadMini 768 - 250(gnb-open)
+        viewport: '768px',
+        'min-limit': '768px',
       },
       height: {
         'gnb-footer': '100px',
@@ -45,6 +49,16 @@ export default {
       },
       gap: {
         gnb: '16px',
+      },
+      zIndex: {
+        gnb: 50,
+        /*
+          z-max : 절대적인 최고 레벨
+          z-top : 시각적 “맨 위” 의미
+          z-overlay : 모달, 팝업 등 최상단 UI용
+          z-highest : 다른 z-index 대비 최고
+          z-ultimate : 완전히 최상위
+        */
       },
     },
   },

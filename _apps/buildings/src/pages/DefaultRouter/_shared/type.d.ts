@@ -6,5 +6,5 @@ type RouterOptionType = {
 type DefaultMainOutletLayoutProps = PropsWithChildren & {
   nickname?: string;
   permissionPaths: PermissionsType[];
-  setIsFocusLogin: Dispatch<React.SetStateAction<boolean>>;
+  setIsExpirationSession: Dispatch<React.SetStateAction<boolean>>;
 };

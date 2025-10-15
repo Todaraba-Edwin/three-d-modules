@@ -22,14 +22,14 @@ const pathPages: Record<string, ReactNode> = {
   // ⚠️ 중첩라우팅 Layout With Outlet
   [SYSTEM_ADMIN.BASE]: <Wigets.SystemAdminOutlet />,
   [NETWORK_MS.BASE]: <Wigets.NMSRouterOutlet />,
-  [FACILITY_MS]: <Wigets.FMSRouterOutlet />,
+  [FACILITY_MS.BASE]: <Wigets.FMSRouterOutlet />,
 };
 
 export const DefaultRouter = (): RouteObject[] => {
   const restRoutes = Const.pathWithoutNestedRouter({
     nestedPaths: [
       SYSTEM_ADMIN.BASE as string,
-      FACILITY_MS as string,
+      FACILITY_MS.BASE as string,
       NETWORK_MS.BASE as string,
     ],
   });
@@ -61,12 +61,12 @@ export const DefaultRouter = (): RouteObject[] => {
                   element: <Wigets.SearchBuildingNone />,
                 },
                 {
-                  path: ':buildingId',
+                  path: SYSTEM_ADMIN.SEGMENTS.BUILDING_ID,
                   element: <Wigets.SearchBuildingDetail />,
                   children: [
                     { index: true, element: <Wigets.SearchFloorNone /> },
                     {
-                      path: ':floorId',
+                      path: SYSTEM_ADMIN.SEGMENTS.FLOOR_ID,
                       element: <Wigets.SearchFloorWithCesium />,
                     },
                   ],
@@ -77,10 +77,6 @@ export const DefaultRouter = (): RouteObject[] => {
                 },
               ],
             },
-            // {
-            //   path: SYSTEM_ADMIN.SEGMENTS.DEVICE,
-            //   element: <Wigets.DeviceManagementPage />,
-            // },
           ],
         },
 
@@ -110,7 +106,7 @@ export const DefaultRouter = (): RouteObject[] => {
 
         {
           // ⚠️ 중첩라우팅 : FACILITY_MS
-          ...PermittedRouteOption({ path: FACILITY_MS, pathPages }),
+          ...PermittedRouteOption({ path: FACILITY_MS.BASE, pathPages }),
           children: [{ index: true, element: <Wigets.FMSDeviceInfo /> }],
         },
       ],
