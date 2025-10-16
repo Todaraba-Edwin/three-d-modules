@@ -3,7 +3,10 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Paths, pathsConfig } from '@src_apps/config';
-import { MEDIA_SERVE_ROOT } from '@src_apps/modules/_api';
+import {
+  MEDIA_SERVE_ROOT,
+  TILE_MAP_SERVE_ROOT,
+} from '@src_apps/modules/_api';
 
 export const ExportModules = [
   ScheduleModule.forRoot(),
@@ -19,6 +22,10 @@ export const ExportModules = [
       {
         serveRoot: MEDIA_SERVE_ROOT,
         rootPath: configService.get(Paths.PUBLIC),
+      },
+      {
+        serveRoot: TILE_MAP_SERVE_ROOT,
+        rootPath: configService.get(Paths.TILE_MAPS),
       },
     ],
   }),

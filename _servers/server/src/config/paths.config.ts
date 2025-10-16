@@ -19,6 +19,7 @@ export const pathsConfig = registerAs('paths', () => {
     public: publicRoot,
     temporary: path.join(publicRoot, publicChildren.TEMPORARY),
     images: path.join(publicRoot, publicChildren.IMAGES),
+    tileMaps: path.join(process.cwd(), 'tileMaps'),
   };
 });
 
@@ -26,6 +27,7 @@ export const Paths = {
   PUBLIC: `paths.${publicChildren.ROOT}`,
   PUBLIC_TEMP: `paths.${publicChildren.TEMPORARY}`,
   PUBLIC_IMG: `paths.${publicChildren.IMAGES}`,
+  TILE_MAPS: 'paths.tileMaps',
 } as const;
 
 export const ImageDir = {

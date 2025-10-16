@@ -15,7 +15,7 @@ type Props = {
 
 export const EmptyBuilding = (): ReactNode => {
   return (
-    <div className=' flex gap-2 justify-center mt-2 text-slate-500'>
+    <div className='mt-2 flex justify-center gap-2 text-slate-500'>
       <TextSearch />
       <span>건물 정보를 찾을 수 없습니다</span>
     </div>
@@ -100,35 +100,35 @@ export const SearchBuildingList = ({
     <li
       ref={liRef}
       className={clsx(
-        'grid grid-cols-[1fr_auto] border-2 rounded-lg',
-        { 'bg-blue-50 border-blue-400': isSelected },
+        'grid grid-cols-[1fr_auto] rounded-lg border-2',
+        { 'border-blue-400 bg-blue-50': isSelected },
         { 'hover:bg-slate-100': !isSelected }
       )}
     >
       <button
         onClick={onNavigate(id)}
         className={clsx(
-          'grid grid-cols-[auto_1fr] space-x-4 w-full items-center p-2'
+          'grid w-full grid-cols-[auto_1fr] items-center space-x-4 p-2'
         )}
       >
         <figure className='relative'>
-          <Building2 className='text-slate-400 ml-2' />
+          <Building2 className='ml-2 text-slate-400' />
           {isSelected && (
-            <div className=' absolute -top-1 left-0'>
+            <div className='absolute -top-1 left-0'>
               <SelectedBluePoint />
             </div>
           )}
         </figure>
         <span className='flex flex-col items-start overflow-hidden'>
           <span className='text-start'>{buildingName}</span>
-          <span className='text-sm truncate w-full text-start'>{address}</span>
+          <span className='w-full truncate text-start text-sm'>{address}</span>
         </span>
       </button>
       <button
         onClick={onDeleteBuildings(Number(id))}
-        className='flex justify-center items-center px-4'
+        className='flex items-center justify-center px-4'
       >
-        <Trash2 className='w-4 h-4 text-destructive' />
+        <Trash2 className='h-4 w-4 text-destructive' />
       </button>
       {isNotDeleteBuilding && (
         <ConfirmPortal

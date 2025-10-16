@@ -1,8 +1,6 @@
-import '@fontsource/noto-sans-kr/400.css';
-import '@fontsource/noto-sans-kr/700.css';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/internal/test';
 import { Button } from '../components/button/Button';
-import '../tailwind.css';
 
 const meta = {
   title: 'COMMON/Button',
@@ -33,9 +31,10 @@ const meta = {
   },
 
   args: {
-    onClick: () => {
-      console.log('버튼 동작');
-    },
+    // onClick: () => {
+    //   console.log('버튼 동작');
+    // },
+    onClick: fn(),
   },
 } satisfies Meta<typeof Button>;
 

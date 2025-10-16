@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Button } from '../button/Button';
 import './header.css';
 
@@ -17,7 +18,7 @@ export const Header = ({
   onLogin,
   onLogout,
   onCreateAccount,
-}: HeaderProps) => (
+}: HeaderProps): ReactNode => (
   <header>
     <div className='storybook-header'>
       <div>

@@ -66,6 +66,7 @@ RUN pnpm install --filter @monorepo/${APP_NAME} --prod --frozen-lockfile
 COPY --from=builder /app/${APP_PATH}/dist ./${APP_PATH}/dist
 
 # <<< [수정] 임시 업로드 폴더 생성 및 권한 설정
+# && mkdir -p /app/public/tileMaps
 RUN mkdir -p /app/public/temporary && \
     chown -R node:node /app/public
 

@@ -44,6 +44,7 @@ export const SYSTEM_ADMIN = {
 };
 
 export const MEDIA_SERVE_ROOT = '/media';
+export const TILE_MAP_SERVE_ROOT = '/tile-maps';
 export const FILES = {
   SEGMENTS: {
     BASE: 'files',

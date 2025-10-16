@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import './button.css';
 
 export interface ButtonProps {
@@ -14,7 +15,7 @@ export const Button = ({
   backgroundColor,
   label,
   ...props
-}: ButtonProps) => {
+}: ButtonProps): ReactNode => {
   const mode = primary
     ? 'storybook-button--primary'
     : 'storybook-button--secondary';
