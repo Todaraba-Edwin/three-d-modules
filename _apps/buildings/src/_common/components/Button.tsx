@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 
 type ButtonProps = {
   variant?: 'default' | 'destructive' | 'outline' | 'none';
-
   size?: 'default' | 'sm' | 'lg' | 'icon';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 

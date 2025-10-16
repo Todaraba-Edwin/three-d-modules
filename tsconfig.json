@@ -1,4 +1,4 @@
 {
   "files": [],
-  "references": [{ "path": "_apps/project-a" }, { "path": "_app/shared" }]
+  "references": [{ "path": "_apps/buildings" }, { "path": "_app/shared" }]
 }

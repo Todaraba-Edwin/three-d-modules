@@ -213,6 +213,9 @@ importers:
       cesium:
         specifier: ^1.131.0
         version: 1.131.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -7752,10 +7755,10 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.42.0(@typescript-eslint/parser@8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.9.2))(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)':
+  '@typescript-eslint/eslint-plugin@8.42.0(@typescript-eslint/parser@8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3))(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)
       '@typescript-eslint/scope-manager': 8.42.0
       '@typescript-eslint/type-utils': 8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)
       '@typescript-eslint/utils': 8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)
@@ -11919,7 +11922,7 @@ snapshots:
 
   typescript-eslint@8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.42.0(@typescript-eslint/parser@8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.9.2))(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)
+      '@typescript-eslint/eslint-plugin': 8.42.0(@typescript-eslint/parser@8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3))(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)
       '@typescript-eslint/parser': 8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)
       '@typescript-eslint/typescript-estree': 8.42.0(typescript@5.8.3)
       '@typescript-eslint/utils': 8.42.0(eslint@9.34.0(jiti@1.21.7))(typescript@5.8.3)

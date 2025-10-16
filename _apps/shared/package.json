@@ -25,6 +25,7 @@
   "dependencies": {
     "@fontsource/noto-sans-kr": "^5.2.8",
     "cesium": "^1.131.0",
+    "clsx": "^2.1.1",
     "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
