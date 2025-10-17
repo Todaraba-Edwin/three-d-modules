@@ -6,55 +6,45 @@ import { type ReactNode } from 'react';
 type VariantUnion = 'default' | 'none' | keyof typeof colors;
 
 type Props = React.ComponentProps<'button'> & {
-  variant?: VariantUnion;
-  size?: 'default' | 'sm' | 'lg' | 'xl';
-  fontSize?: keyof typeof fontSize;
+  variant?: Exclude<VariantUnion, 'active' | 'un_active'>;
+  size?: 'default' | 'fit' | 'sm' | 'lg' | 'xl';
+  fontSize?: Exclude<keyof typeof fontSize, 'xs-weight'>;
   isTruncate?: boolean;
 };
 
-// variantClasses
-const getColorStyles = (color: VariantUnion) => {
-  switch (color) {
-    case 'default':
-      const defaultColor = 'slate-300';
-      return clsx(
-        `border-${defaultColor}-bg hover:border-${defaultColor}-bg/80`,
-        `bg-transparent hover:bg-${defaultColor}-bg/80`
-      );
-    case 'none':
-      return 'border-white bg-transparent';
-    default:
-      return clsx(
-        `border-${color}-bg hover:border-${color}-bg/80`,
-        `bg-${color}-bg hover:bg-${color}-bg/80`,
-        `text-${color}-font`
-      );
-  }
-};
-
-const variantClasses: Record<NonNullable<Props['variant']>, string> = {
-  default: getColorStyles('default'),
-  none: getColorStyles('none'),
-  primary: getColorStyles('primary'),
-  secondary: getColorStyles('secondary'),
-  tertiary: getColorStyles('tertiary'),
-  error: getColorStyles('error'),
+const variantClasses: Record<
+  Exclude<NonNullable<Props['variant']>, 'active' | 'un_active'>,
+  string
+> = {
+  default:
+    'border-slate-300-bg bg-transparent hover:border-slate-300-bg/80 hover:bg-slate-300-bg/80',
+  none: 'border-white bg-transparent',
+  primary:
+    'border-primary-bg bg-primary-bg text-primary-font hover:border-primary-bg/80 hover:bg-primary-bg/80',
+  secondary:
+    'border-secondary-bg bg-secondary-bg text-secondary-font hover:border-secondary-bg/80 hover:bg-secondary-bg/80',
+  tertiary:
+    'border-tertiary-bg bg-tertiary-bg text-tertiary-font hover:border-tertiary-bg/80 hover:bg-tertiary-bg/80',
 };
 
 // size 별 클래스
 const sizeClasses: Record<NonNullable<Props['size']>, string> = {
-  default: 'w-full1 p-2',
-  sm: 'max-w-btn-sm w-btn-sm p-1',
-  lg: 'max-w-btn-lg w-btn-lg p-2',
-  xl: 'max-w-btn-xl w-btn-xl p-3',
+  default: 'w-full',
+  fit: '',
+  sm: 'max-w-btn-sm w-btn-sm',
+  lg: 'max-w-btn-lg w-btn-lg',
+  xl: 'max-w-btn-xl w-btn-xl',
 };
 
-const fontSizeClasses: Record<NonNullable<Props['fontSize']>, string> = {
-  xs: 'text-xs',
-  sm: 'text-sm',
-  base: 'text-base',
-  xl: 'text-xl',
-  '2xl': 'text-2xl',
+const fontSizeClasses: Record<
+  Exclude<NonNullable<Props['fontSize']>, 'xs-weight'>,
+  string
+> = {
+  xs: 'text-xs py-1 px-2',
+  sm: 'text-sm py-1 px-3',
+  base: 'text-base py-2 px-4',
+  xl: 'text-xl py-2 px-4',
+  '2xl': 'text-2xl py-2 px-4',
 };
 
 export const ButtonPrimary = ({

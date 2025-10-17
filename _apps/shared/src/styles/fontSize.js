@@ -4,7 +4,15 @@ export const fontSize = {
     {
       lineHeight: '18px',
       letterSpacing: '0',
-      fontWeight: '400',
+      fontWeight: '200',
+    },
+  ],
+  'xs-weight': [
+    '12px',
+    {
+      lineHeight: '18px',
+      letterSpacing: '0',
+      fontWeight: '500',
     },
   ],
   sm: [

@@ -2,43 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TailWind의 기본 box-sizig은 content-box */
 /* custom global settings */
 body {
   font-family: 'Noto Sans KR';
-}
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-@keyframes pulse-blur {
-  0%,
-  100% {
-    transform: scale(1) translate(-50%, -50%);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.3);
-    opacity: 1;
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 }
 
-.oval-blur {
-  width: 70%;
-  height: 35%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 150, 255, 0.4),
-    transparent
-  );
-  filter: blur(30px);
-  border-radius: 50% / 50%;
+@layer components {
+  svg {
+    /* flex에서 크키가 줄어들지 않도록 설정 */
+    @apply flex-shrink-0;
+  }
 
-  animation: pulse-blur 3s infinite ease-in-out;
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  .badge_admin_main {
+    @apply bg-red-100 text-red-800;
+  }
+  .badge_admin_sub {
+    @apply bg-blue-100 text-blue-800;
+  }
+  .badge_admin_users {
+    @apply bg-green-100 text-green-800;
+  }
+  .badge_un_active {
+    @apply bg-gray-100 text-gray-400;
+  }
+  .badge_active {
+    @apply bg-gray-100 text-gray-950;
+  }
 }

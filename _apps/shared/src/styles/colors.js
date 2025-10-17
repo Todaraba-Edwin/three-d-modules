@@ -1,7 +1,7 @@
 export const colors = {
   // 주요도에 따라
   primary: {
-    bg: '#1d2745',
+    bg: '#628EF0',
     font: '#ffffff',
   },
   secondary: {
@@ -12,9 +12,7 @@ export const colors = {
     bg: '#f52c50',
     font: '#ffffff',
   },
-  // 상황에 따라
-  error: {
-    bg: '#d01e1e',
-    font: '#ffffff',
-  },
+  //
+  active: '#00FF15',
+  un_active: '#9ca3af',
 };

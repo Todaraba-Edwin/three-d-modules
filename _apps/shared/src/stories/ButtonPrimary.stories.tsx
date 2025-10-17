@@ -1,4 +1,4 @@
-import { ButtonPrimary } from '@/components/button/ButtonPrimary';
+import { ButtonPrimary } from '@/components';
 import { colors } from '@/styles/colors';
 import { fontSize } from '@/styles/fontSize';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -14,22 +14,29 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     size: {
-      control: 'radio',
+      control: 'select',
       description: '버튼의 크기',
     },
     fontSize: {
-      control: 'radio',
+      control: 'select',
       description: '글자의 크기',
 
-      options: [...Object.keys(fontSize)],
+      options: [...Object.keys(fontSize)].filter(list => list != 'xs-weight'),
     },
-    children: { control: 'text', description: '버튼의 이름' },
+
     isTruncate: { control: 'boolean', description: '버튼명 말줄임표' },
     variant: {
-      control: 'radio',
+      control: 'select',
       description: '버튼의 배경색상',
-      options: ['default', ...Object.keys(colors)],
+      options: [
+        'default',
+        'none',
+        ...Object.keys(colors).filter(
+          list => !['active', 'un_active'].includes(list)
+        ),
+      ],
     },
+    children: { control: 'text', description: '버튼의 이름' },
     onClick: { description: '버튼의 동작함수' },
   },
 
@@ -57,7 +64,7 @@ export const DEFAULT: Story = {
   },
 };
 
-export const variant: Story = {
+export const VARIANT: Story = {
   args: {
     size: 'default',
     fontSize: 'base',

@@ -1,6 +1,6 @@
 import { colors } from './src/styles/colors.js';
 import { fontSize } from './src/styles/fontSize.js';
-import { width } from './src/styles/width.js';
+import { badgeWidth, btnWidth, iconSize } from './src/styles/width.js';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,8 +11,9 @@ export default {
         2000: '2000ms', // 사용자 정의
       },
       colors,
-      width,
-      maxWidth: width,
+      height: { ...iconSize },
+      width: { ...btnWidth, ...iconSize },
+      maxWidth: { ...badgeWidth, ...btnWidth },
       fontSize,
     },
 
