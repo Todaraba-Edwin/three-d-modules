@@ -62,6 +62,47 @@ const stories = {
       },
     },
   },
+  PASSWORD: {
+    args: {
+      label: '비밀번호',
+      type: 'password',
+      value: '1234',
+      placeholder: '비밀번호를 입력해주세요.',
+      messages: {
+        success: '사용이 가능한 비밀번호 입니다.',
+        error: '사용이 불가한 비밀번호 입니다.',
+      },
+    },
+  },
+  SUCCESS: {
+    args: {
+      label: '아이디',
+      type: 'text',
+      placeholder: '아이디를 해주세요.',
+      value: 'testID',
+      isSuccess: true,
+      messages: {
+        success: '사용 가능한 ID 입니다.',
+        error: '실패시 문구를 입력해주세요.',
+      },
+    },
+  },
+  ERROR: {
+    args: {
+      label: '아이디',
+      type: 'text',
+      placeholder: '아이디를 해주세요.',
+      value: 'testID',
+      isError: true,
+      messages: {
+        success: '사용 가능한 ID 입니다.',
+        error: '중복된 ID 입니다.',
+      },
+    },
+  },
 } satisfies Record<string, Story>;
 
 export const DEFAULT = stories.DEFAULT;
+export const PASSWORD = stories.PASSWORD;
+export const SUCCESS = stories.SUCCESS;
+export const ERROR = stories.ERROR;

@@ -29,6 +29,7 @@ const ErrorMessage = ({ message }: MessageType) => {
 export const FormInputField = ({
   label,
   isSuccess,
+  autoComplete = 'off',
   isError,
   isFullSpan,
   messages = {
@@ -66,6 +67,7 @@ export const FormInputField = ({
             }
           )}
           {...{
+            autoComplete,
             type: isPassword ? (isShowPassword ? 'text' : 'password') : type,
             ...rest,
           }}
