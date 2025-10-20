@@ -53,123 +53,127 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const DEFAULT: Story = {
-  args: {
-    size: 'default',
-    fontSize: 'base',
-    variant: 'default',
-    children: '버튼명',
-    isTruncate: false,
-    onClick: fn(),
+const stories = {
+  DEFAULT: {
+    args: {
+      size: 'default',
+      fontSize: 'base',
+      variant: 'default',
+      children: '버튼명',
+      isTruncate: false,
+      onClick: fn(),
+    },
   },
-};
+  VARIANT: {
+    args: {
+      size: 'default',
+      fontSize: 'base',
+      variant: 'primary',
+      children: '버튼명',
+      isTruncate: false,
+      onClick: fn(),
+    },
+  },
+  B_SIZE_SM_ACTIVE_TRUNCATE: {
+    args: {
+      size: 'sm',
+      fontSize: 'base',
+      variant: 'secondary',
+      children: '버튼의 말줄임표가 활성화',
+      isTruncate: true,
+      onClick: fn(),
+    },
+  },
+  B_SIZE_SM: {
+    args: {
+      size: 'sm',
+      fontSize: 'base',
+      variant: 'secondary',
+      children: '버튼',
+      isTruncate: false,
+      onClick: fn(),
+    },
+  },
+  B_SIZE_LG: {
+    args: {
+      size: 'lg',
+      fontSize: 'base',
+      variant: 'secondary',
+      children: '버튼',
+      isTruncate: false,
+      onClick: fn(),
+    },
+  },
+  B_SIZE_XL: {
+    args: {
+      size: 'xl',
+      fontSize: 'base',
+      variant: 'secondary',
+      children: '버튼',
+      isTruncate: false,
+      onClick: fn(),
+    },
+  },
+  B_FONTSIZE_XS: {
+    args: {
+      size: 'default',
+      fontSize: 'xs',
+      variant: 'default',
+      children: '버튼의 글자크기가 12px',
+      isTruncate: true,
+      onClick: fn(),
+    },
+  },
+  B_FONTSIZE_SM: {
+    args: {
+      size: 'default',
+      fontSize: 'sm',
+      variant: 'default',
+      children: '버튼의 글자크기가 14px',
+      isTruncate: true,
+      onClick: fn(),
+    },
+  },
+  B_FONTSIZE_DEFAULT: {
+    args: {
+      size: 'default',
+      fontSize: 'base',
+      variant: 'default',
+      children: '버튼의 글자크기가 16px',
+      isTruncate: true,
+      onClick: fn(),
+    },
+  },
+  B_FONTSIZE_XL: {
+    args: {
+      size: 'default',
+      fontSize: 'xl',
+      variant: 'default',
+      children: '버튼의 글자크기가 20px',
+      isTruncate: true,
+      onClick: fn(),
+    },
+  },
+  B_FONTSIZE_2XL: {
+    args: {
+      size: 'default',
+      fontSize: '2xl',
+      variant: 'default',
+      children: '버튼의 글자크기가 24px',
+      isTruncate: true,
+      onClick: fn(),
+    },
+  },
+} satisfies Record<string, Story>;
 
-export const VARIANT: Story = {
-  args: {
-    size: 'default',
-    fontSize: 'base',
-    variant: 'primary',
-    children: '버튼명',
-    isTruncate: false,
-    onClick: fn(),
-  },
-};
-
-export const B_SIZE_SM_ACTIVE_TRUNCATE: Story = {
-  args: {
-    size: 'sm',
-    fontSize: 'base',
-    variant: 'secondary',
-    children: '버튼의 말줄임표가 활성화',
-    isTruncate: true,
-    onClick: fn(),
-  },
-};
-
-export const B_SIZE_SM: Story = {
-  args: {
-    size: 'sm',
-    fontSize: 'base',
-    variant: 'secondary',
-    children: '버튼',
-    isTruncate: false,
-    onClick: fn(),
-  },
-};
-
-export const B_SIZE_LG: Story = {
-  args: {
-    size: 'lg',
-    fontSize: 'base',
-    variant: 'secondary',
-    children: '버튼',
-    isTruncate: false,
-    onClick: fn(),
-  },
-};
-
-export const B_SIZE_XL: Story = {
-  args: {
-    size: 'xl',
-    fontSize: 'base',
-    variant: 'secondary',
-    children: '버튼',
-    isTruncate: false,
-    onClick: fn(),
-  },
-};
-
-export const B_FONTSIZE_XS: Story = {
-  args: {
-    size: 'default',
-    fontSize: 'xs',
-    variant: 'default',
-    children: '버튼의 글자크기가 12px',
-    isTruncate: true,
-    onClick: fn(),
-  },
-};
-
-export const B_FONTSIZE_SM: Story = {
-  args: {
-    size: 'default',
-    fontSize: 'sm',
-    variant: 'default',
-    children: '버튼의 글자크기가 14px',
-    isTruncate: true,
-    onClick: fn(),
-  },
-};
-
-export const B_FONTSIZE_DEFAULT: Story = {
-  args: {
-    size: 'default',
-    fontSize: 'base',
-    variant: 'default',
-    children: '버튼의 글자크기가 16px',
-    isTruncate: true,
-    onClick: fn(),
-  },
-};
-
-export const B_FONTSIZE_XL: Story = {
-  args: {
-    size: 'default',
-    fontSize: 'xl',
-    variant: 'default',
-    children: '버튼의 글자크기가 20px',
-    isTruncate: true,
-    onClick: fn(),
-  },
-};
-
-export const B_FONTSIZE_2XL: Story = {
-  args: {
-    size: 'default',
-    fontSize: '2xl',
-    variant: 'default',
-    children: '버튼의 글자크기가 24px',
-    isTruncate: true,
-    onClick: fn(),
-  },
-};
+export const DEFAULT = stories.DEFAULT;
+export const VARIANT = stories.VARIANT;
+export const B_SIZE_SM_ACTIVE_TRUNCATE = stories.B_SIZE_SM_ACTIVE_TRUNCATE;
+export const B_SIZE_SM = stories.B_SIZE_SM;
+export const B_SIZE_LG = stories.B_SIZE_LG;
+export const B_SIZE_XL = stories.B_SIZE_XL;
+export const B_FONTSIZE_XS = stories.B_FONTSIZE_XS;
+export const B_FONTSIZE_SM = stories.B_FONTSIZE_SM;
+export const B_FONTSIZE_DEFAULT = stories.B_FONTSIZE_DEFAULT;
+export const B_FONTSIZE_XL = stories.B_FONTSIZE_XL;
+export const B_FONTSIZE_2XL = stories.B_FONTSIZE_2XL;

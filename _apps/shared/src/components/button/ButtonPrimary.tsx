@@ -3,19 +3,21 @@ import type { fontSize } from '@/styles/fontSize.js';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 
-type VariantUnion = 'default' | 'none' | keyof typeof colors;
+type VariantUnion =
+  | 'default'
+  | 'none'
+  | Exclude<keyof typeof colors, 'active' | 'un_active'>;
+
+type FontSizeUnion = Exclude<keyof typeof fontSize, 'xs-weight'>;
 
 type Props = React.ComponentProps<'button'> & {
-  variant?: Exclude<VariantUnion, 'active' | 'un_active'>;
+  variant?: VariantUnion;
   size?: 'default' | 'fit' | 'sm' | 'lg' | 'xl';
-  fontSize?: Exclude<keyof typeof fontSize, 'xs-weight'>;
+  fontSize?: FontSizeUnion;
   isTruncate?: boolean;
 };
 
-const variantClasses: Record<
-  Exclude<NonNullable<Props['variant']>, 'active' | 'un_active'>,
-  string
-> = {
+const variantClasses: Record<NonNullable<Props['variant']>, string> = {
   default:
     'border-slate-300-bg bg-transparent hover:border-slate-300-bg/80 hover:bg-slate-300-bg/80',
   none: 'border-white bg-transparent',
@@ -36,10 +38,7 @@ const sizeClasses: Record<NonNullable<Props['size']>, string> = {
   xl: 'max-w-btn-xl w-btn-xl',
 };
 
-const fontSizeClasses: Record<
-  Exclude<NonNullable<Props['fontSize']>, 'xs-weight'>,
-  string
-> = {
+const fontSizeClasses: Record<NonNullable<Props['fontSize']>, string> = {
   xs: 'text-xs py-1 px-2',
   sm: 'text-sm py-1 px-3',
   base: 'text-base py-2 px-4',

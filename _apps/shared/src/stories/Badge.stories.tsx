@@ -4,8 +4,8 @@ import { CircleCheckBig, Star } from 'lucide-react';
 
 const icons = {
   None: null,
-  CircleCheckBig: <CircleCheckBig className='w-badge-icon h-badge-icon' />,
-  Star: <Star className='w-badge-icon h-badge-icon' />,
+  CircleCheckBig: <CircleCheckBig className='h-badge-icon w-badge-icon' />,
+  Star: <Star className='h-badge-icon w-badge-icon' />,
 };
 
 const meta = {
@@ -70,7 +70,7 @@ const stories = {
       isMaxLength: true,
       badgeCode: BADGE_ENUM.ACTIVE,
       addIcon: (
-        <CircleCheckBig className='w-badge-icon h-badge-icon text-active font-bold' />
+        <CircleCheckBig className='h-badge-icon w-badge-icon font-bold text-active' />
       ),
       children: '뱃지의 길이만큼 늘어납니다',
     },
@@ -80,7 +80,7 @@ const stories = {
       isMaxLength: false,
       badgeCode: BADGE_ENUM.ACTIVE,
       addIcon: (
-        <CircleCheckBig className='w-badge-icon h-badge-icon text-active font-bold' />
+        <CircleCheckBig className='h-badge-icon w-badge-icon font-bold text-active' />
       ),
       children: '뱃지의 길이만큼 늘어납니다',
     },
@@ -88,9 +88,10 @@ const stories = {
   WITH_TAIL_ICON: {
     args: {
       isMaxLength: false,
+      isTailIcon: true,
       badgeCode: BADGE_ENUM.ACTIVE,
       addIcon: (
-        <CircleCheckBig className='w-badge-icon h-badge-icon text-active font-bold' />
+        <CircleCheckBig className='h-badge-icon w-badge-icon font-bold text-active' />
       ),
       children: '뱃지의 길이만큼 늘어납니다',
     },
