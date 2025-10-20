@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRef, useState, type DragEvent, type ReactNode } from 'react';
 
+const VITE_IMG_SERVER = import.meta.env.VITE_IMG_SERVER;
+
 type MessageType = { message: string };
 type FileAcceptType =
   | 'image/*'
@@ -13,8 +15,8 @@ type FileAcceptType =
   | 'application/msword'
   | 'application/x-hwp';
 type Props = React.ComponentProps<'input'> & {
-  onSetFiles?: (_e: React.ChangeEvent<HTMLInputElement>) => void;
   variant?: 'default' | 'none';
+  watchPreSignedUrls?: string[];
   label: string;
   fileAccept?: FileAcceptType[];
   isFullSpan?: number;
@@ -108,14 +110,15 @@ const PasswordInput = ({
 };
 
 const FileDropZone = ({
-  onSetFiles,
+  watchPreSignedUrls,
   className,
   ...props
 }: React.ComponentProps<'input'> & {
-  onSetFiles?: Props['onSetFiles'];
+  watchPreSignedUrls: Props['watchPreSignedUrls'];
 }) => {
   const isImage = props.accept?.includes('image/*');
   const inputRef = useRef<HTMLInputElement>(null);
+  const { ref: rhfRef, ...restProps } = props;
 
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -134,17 +137,13 @@ const FileDropZone = ({
     handleDrag(e);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const imageFiles = Array.from(e.dataTransfer.files).filter(file =>
-        file.type.startsWith('image/')
-      );
-      if (imageFiles.length > 0) {
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      if (droppedFiles.length > 0 && inputRef.current) {
         const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(imageFiles[0]); // 단일 파일만 처리
-        if (inputRef.current) {
-          inputRef.current.files = dataTransfer.files;
-          const changeEvent = new Event('change', { bubbles: true });
-          inputRef.current.dispatchEvent(changeEvent);
-        }
+        droppedFiles.forEach(file => dataTransfer.items.add(file));
+        inputRef.current.files = dataTransfer.files;
+        const changeEvent = new Event('change', { bubbles: true });
+        inputRef.current.dispatchEvent(changeEvent);
       }
       e.dataTransfer.clearData();
     }
@@ -158,7 +157,7 @@ const FileDropZone = ({
   return (
     <figure
       className={clsx(
-        'min-h-20 cursor-pointer',
+        'min-h-20 cursor-pointer p-4',
         'flex flex-col items-center justify-center text-center',
         'rounded-md border border-dotted border-slate-400'
       )}
@@ -170,16 +169,33 @@ const FileDropZone = ({
     >
       <div>
         <p
-          children={`드래그 앤 드랍 또는 클릭하여 ${isImage ? '이미지' : '파일'}를 업로드하세요.`}
+          children={`드래그 앤 드랍 또는 클릭하여 ${
+            isImage ? '이미지' : '파일'
+          }를 업로드하세요.`}
         />
         {isImage && <p className='text-xs text-gray-500'>이미지 파일만 가능</p>}
       </div>
       <input
-        ref={inputRef}
+        ref={instance => {
+          // Assign to local ref
+          (inputRef as React.RefObject<HTMLInputElement | null>).current =
+            instance;
+          // Call RHF's ref
+          if (typeof rhfRef === 'function') {
+            rhfRef(instance);
+          } else if (rhfRef) {
+            (rhfRef as React.RefObject<HTMLInputElement | null>).current =
+              instance;
+          }
+        }}
         className={clsx(className, 'hidden')}
-        onChange={onSetFiles}
-        {...props}
+        {...restProps}
       />
+      <div className='grid grid-cols-3 gap-x-4 gap-y-4'>
+        {watchPreSignedUrls?.length
+          ? watchPreSignedUrls.map(list => <img src={`${VITE_IMG_SERVER}${list}`}/>)
+          : null}
+      </div>
     </figure>
   );
 };
@@ -187,12 +203,12 @@ const FileDropZone = ({
 export const FormInputField = ({
   label,
   variant = 'default',
+  watchPreSignedUrls,
   fileAccept = ['.hwp', '.pdf', '.doc', '.xlsx'],
   isSuccess,
   autoComplete = 'off',
   isError,
   isFullSpan,
-  onSetFiles,
   messages = {
     success: '유효성 통과시의 메시지를 넣어주세요.',
     error: '유효성 실패시의 메시지를 넣어주세요.',
@@ -211,9 +227,8 @@ export const FormInputField = ({
       <Label message={label} />
       {isFile ? (
         <FileDropZone
-          {...{ type }}
-          {...(onSetFiles && { onSetFiles })}
-          {...(isFile && fileAccept && { accept: fileAccept.join(', '), rest })}
+          {...{ type, ...rest, watchPreSignedUrls }}
+          {...(isFile && fileAccept && { accept: fileAccept.join(', ') })}
         />
       ) : isPassword ? (
         <PasswordInput {...{ type, autoComplete, variant, ...rest }} />

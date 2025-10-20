@@ -1,9 +1,9 @@
 import '@fontsource/noto-sans-kr/400.css';
 import '@fontsource/noto-sans-kr/700.css';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback, type ReactNode } from 'react';
+import { useCallback, useEffect, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
-import { apiClient } from './api/apiClient';
+import { apiClient, uploadFile } from './api/apiClient';
 import './cesium.css';
 import { FormInputField } from './components/inputs/FormInputField';
 import './tailwind.css';
@@ -24,12 +24,14 @@ function App(): ReactNode {
     email: string;
     password: string;
     fileList: FileList;
+    preSignedUrls: string[];
   }>({
     defaultValues: {
       name: '',
       email: '',
       password: '',
       fileList: undefined,
+      preSignedUrls: [],
     },
   });
 
@@ -67,14 +69,6 @@ function App(): ReactNode {
     },
   });
 
-  const onSetFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setValue('fileList', e.target.files, {
-        shouldValidate: true,
-      });
-    }
-  };
-
   const handleCheckUsername = useCallback(() => {
     checkUsername(watch('name'));
   }, [checkUsername, watch]);
@@ -82,6 +76,38 @@ function App(): ReactNode {
   const onSubmit = handleSubmit(data => {
     console.log('data', data);
   });
+
+  const fileList = watch('fileList');
+  const watchPreSignedUrls = watch('preSignedUrls');
+  useEffect(() => {
+    if (!fileList || !fileList.length) {
+      return;
+    }
+
+    const uploadAndSetUrls = async () => {
+      // 1. Reset the URL array before uploading new files.
+      setValue('preSignedUrls', []);
+
+      const files = Array.from(fileList);
+
+      // 2. Upload all files in parallel and collect the new URLs.
+      const uploadPromises = files.map(file => uploadFile(file));
+      try {
+        const results = await Promise.all(uploadPromises);
+        const newUrls = results.map(result => result.url);
+
+        // 3. Set the new URLs all at once.
+        setValue('preSignedUrls', newUrls);
+      } catch (error) {
+        console.error('Error uploading files:', error);
+        // Optionally, handle upload errors
+      }
+    };
+
+    uploadAndSetUrls();
+  }, [fileList, setValue]);
+
+  console.log('preSignedUrls', watch('preSignedUrls'));
 
   return (
     <div>
@@ -142,7 +168,9 @@ function App(): ReactNode {
           isFullSpan={2}
           label='이미지 등록'
           type='file'
-          // fileAccept={['image/*']}
+          multiple
+          watchPreSignedUrls={watchPreSignedUrls}
+          fileAccept={['image/*']}
           {...register('fileList', {
             required: '이미지를 등록해주세요.',
           })}
@@ -151,7 +179,6 @@ function App(): ReactNode {
             success: '',
             error: errors.fileList?.message ?? '',
           }}
-          onSetFiles={onSetFiles}
         />
         <button
           className='col-span-2 mt-2 w-full rounded-xl bg-slate-500 p-1 text-white'

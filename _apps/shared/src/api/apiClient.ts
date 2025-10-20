@@ -19,3 +19,25 @@ export const authClient = ky.create({
 export const apiClient = ky.create({
   ...kyOptions,
 });
+
+/**
+ * 전역 ky 파일 업로드 함수
+ */
+export async function uploadFile(
+  file: File,
+  saveFolder?: 'temporary' | 'images'
+): Promise<{ url: string }> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const endpoint = saveFolder
+    ? `files/upload?saveFolder=${saveFolder}`
+    : 'files/upload';
+
+  return apiClient
+    .post(endpoint, {
+      body: formData,
+      // ⚠️ Content-Type은 ky가 자동으로 multipart/form-data로 설정함
+    })
+    .json<{ url: string }>(); // 서버에서 반환하는 JSON 구조에 맞게 타입 지정
+}
