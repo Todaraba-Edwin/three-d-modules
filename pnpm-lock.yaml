@@ -210,12 +210,18 @@ importers:
       '@fontsource/noto-sans-kr':
         specifier: ^5.2.8
         version: 5.2.8
+      '@tanstack/react-query':
+        specifier: ^5.90.2
+        version: 5.90.2(react@19.1.0)
       cesium:
         specifier: ^1.131.0
         version: 1.131.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      ky:
+        specifier: ^1.10.0
+        version: 1.10.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -228,6 +234,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      react-hook-form:
+        specifier: ^7.62.0
+        version: 7.62.0(react@19.1.0)
       react-router-dom:
         specifier: ^7.7.1
         version: 7.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

@@ -9,6 +9,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:3002', // 로컬 개발 환경
       'http://192.168.40.99:3002',
+      'http://localhost:3000', // 로컬 개발 환경
+      'http://192.168.40.99:3000',
       'http://localhost:8082', // 로컬 개발 환경
       'http://192.168.40.99:8082',
     ],

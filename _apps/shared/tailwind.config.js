@@ -1,4 +1,4 @@
-import { colors } from './src/styles/colors.js';
+import { colors, textColors } from './src/styles/colors.js';
 import { fontSize } from './src/styles/fontSize.js';
 import { badgeWidth, btnWidth, iconSize } from './src/styles/width.js';
 
@@ -10,7 +10,7 @@ export default {
       transitionDuration: {
         2000: '2000ms', // 사용자 정의
       },
-      colors,
+      colors: { ...colors, ...textColors },
       height: { ...iconSize },
       width: { ...btnWidth, ...iconSize },
       maxWidth: { ...badgeWidth, ...btnWidth },

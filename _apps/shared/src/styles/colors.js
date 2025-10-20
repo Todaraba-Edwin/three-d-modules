@@ -16,3 +16,8 @@ export const colors = {
   active: '#00FF15',
   un_active: '#9ca3af',
 };
+
+export const textColors = {
+  input: '#444444',
+  placeholder: '#949494',
+};
