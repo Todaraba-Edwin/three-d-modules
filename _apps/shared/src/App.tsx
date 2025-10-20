@@ -109,6 +109,7 @@ function App(): ReactNode {
         <FormInputField
           isFullSpan={2}
           label='비밀번호'
+          variant='none'
           type='password'
           {...register('password', {
             required: '비밀번호를 입력해주세요.',

@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 
 type MessageType = { message: string };
 type Props = React.ComponentProps<'input'> & {
+  variant?: 'default' | 'none';
   label: string;
   isFullSpan?: number;
   isSuccess?: boolean;
@@ -28,6 +29,7 @@ const ErrorMessage = ({ message }: MessageType) => {
 
 export const FormInputField = ({
   label,
+  variant = 'default',
   isSuccess,
   autoComplete = 'off',
   isError,
@@ -61,9 +63,10 @@ export const FormInputField = ({
 
             // Default Styles
             'text-input inline-flex items-center px-2 py-1',
-            'w-full rounded-md border',
+            'w-full rounded-md',
             {
               'pr-7': isPassword,
+              border: variant === 'default',
             }
           )}
           {...{
