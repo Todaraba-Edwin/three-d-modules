@@ -18,11 +18,18 @@ function App(): ReactNode {
     formState: { errors },
     clearErrors,
     setError,
-  } = useForm({
+    setValue,
+  } = useForm<{
+    name: string;
+    email: string;
+    password: string;
+    fileList: FileList;
+  }>({
     defaultValues: {
       name: '',
       email: '',
       password: '',
+      fileList: undefined,
     },
   });
 
@@ -59,6 +66,14 @@ function App(): ReactNode {
       }
     },
   });
+
+  const onSetFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setValue('fileList', e.target.files, {
+        shouldValidate: true,
+      });
+    }
+  };
 
   const handleCheckUsername = useCallback(() => {
     checkUsername(watch('name'));
@@ -121,6 +136,22 @@ function App(): ReactNode {
             error: errors.password?.message ?? '',
           }}
           placeholder='비밀번호을 입력합니다.'
+        />
+
+        <FormInputField
+          isFullSpan={2}
+          label='이미지 등록'
+          type='file'
+          // fileAccept={['image/*']}
+          {...register('fileList', {
+            required: '이미지를 등록해주세요.',
+          })}
+          isError={Boolean(errors.fileList)}
+          messages={{
+            success: '',
+            error: errors.fileList?.message ?? '',
+          }}
+          onSetFiles={onSetFiles}
         />
         <button
           className='col-span-2 mt-2 w-full rounded-xl bg-slate-500 p-1 text-white'
