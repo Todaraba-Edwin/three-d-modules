@@ -311,9 +311,9 @@ export const AddFormUser = (): ReactNode => {
   }, [isEditModeUser, targetEditUser, reset, permissionsResult]);
 
   return (
-    <form onSubmit={onSubmit} className='bg-orange-50 border-orange-200'>
+    <form onSubmit={onSubmit} className='border-orange-200 bg-orange-50'>
       <div className='p-4'>
-        <div className='flex items-center justify-between mb-3'>
+        <div className='mb-3 flex items-center justify-between'>
           <h5 className='font-medium text-orange-900'>
             {isShowAddUserNode && '새 사용자 추가'}
             {isEditModeUser && '사용자 수정'}
@@ -324,7 +324,7 @@ export const AddFormUser = (): ReactNode => {
             size='sm'
             onClick={closeAllStated}
           >
-            <X className='w-4 h-4' />
+            <X className='h-4 w-4' />
           </Button>
         </div>
 
@@ -344,7 +344,7 @@ export const AddFormUser = (): ReactNode => {
                   noOptionsMessage={() => '검색 결과가 없습니다.'}
                 />
                 {fieldState.error && (
-                  <span className='text-red-500 text-sm'>
+                  <span className='text-sm text-red-500'>
                     {fieldState.error.message}
                   </span>
                 )}
@@ -352,7 +352,7 @@ export const AddFormUser = (): ReactNode => {
             )}
           />
         </div>
-        <div className='space-y-3 mt-3'>
+        <div className='mt-3 space-y-3'>
           <div className='grid grid-cols-2 gap-3'>
             <div className='space-y-1'>
               <label className='text-sm'>ID</label>
@@ -372,12 +372,12 @@ export const AddFormUser = (): ReactNode => {
                 disabled={isEditModeUser}
               />
               {errors.username && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-sm text-red-500'>
                   {errors.username.message}
                 </span>
               )}
               {!isEditModeUser && !errors.username && watch('username') && (
-                <span className='text-green-500 text-sm'>
+                <span className='text-sm text-green-500'>
                   사용 가능한 ID 입니다.
                 </span>
               )}
@@ -398,7 +398,7 @@ export const AddFormUser = (): ReactNode => {
                 className='text-sm'
               />
               {errors.nickname && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-sm text-red-500'>
                   {errors.nickname.message}
                 </span>
               )}
@@ -406,6 +406,7 @@ export const AddFormUser = (): ReactNode => {
             <div className='space-y-1'>
               <label className='text-sm'>이메일</label>
               <Input
+                autoComplete='off'
                 {...register('email', {
                   required: '이메일은 필수 항목입니다.',
                   pattern: {
@@ -418,12 +419,12 @@ export const AddFormUser = (): ReactNode => {
                 className='text-sm'
               />
               {errors.email && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-sm text-red-500'>
                   {errors.email.message}
                 </span>
               )}
               {!errors.email && watch('email') && (
-                <span className='text-green-500 text-sm'>
+                <span className='text-sm text-green-500'>
                   사용 가능한 email 입니다.
                 </span>
               )}
@@ -433,30 +434,31 @@ export const AddFormUser = (): ReactNode => {
               <div className='relative'>
                 <Input
                   maxLength={10}
+                  autoComplete='new-password'
                   type={isShowPassword ? 'text' : 'password'}
                   {...register('password', {
                     required: !isEditModeUser,
                   })}
                   placeholder='비밀번호를 입력해주세요.(10자 이내)'
-                  className='text-sm pr-9'
+                  className='pr-9 text-sm'
                 />
                 <button
                   type='button'
-                  className='absolute top-1/2 right-3 -translate-y-1/2'
+                  className='absolute right-3 top-1/2 -translate-y-1/2'
                   onClick={toggleIsShowPassword}
                 >
                   {isShowPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
               {errors.password && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-sm text-red-500'>
                   비밀번호는 필수 항목입니다.
                 </span>
               )}
             </div>
           </div>
         </div>
-        <div className='flex justify-end gap-2 mt-4'>
+        <div className='mt-4 flex justify-end gap-2'>
           <Button
             variant='destructive'
             type='button'
@@ -475,7 +477,7 @@ export const AddFormUser = (): ReactNode => {
               '저장 중...'
             ) : (
               <>
-                <Save className='w-3 h-3 mr-1' />
+                <Save className='mr-1 h-3 w-3' />
                 {isShowAddUserNode ? '추가하기' : '수정하기'}
               </>
             )}
