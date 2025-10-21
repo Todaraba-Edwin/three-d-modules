@@ -78,7 +78,7 @@ function App(): ReactNode {
   });
 
   const fileList = watch('fileList');
-  const watchPreSignedUrls = watch('preSignedUrls');
+  const preSignedUrls = watch('preSignedUrls');
   useEffect(() => {
     if (!fileList || !fileList.length) {
       return;
@@ -107,7 +107,18 @@ function App(): ReactNode {
     uploadAndSetUrls();
   }, [fileList, setValue]);
 
-  console.log('preSignedUrls', watch('preSignedUrls'));
+  const onRemoveFile = ({ targetUrl }: { targetUrl: string }): undefined => {
+    setValue(
+      'preSignedUrls',
+      watch('preSignedUrls').filter(list => list != targetUrl)
+    );
+
+    if (!watch('preSignedUrls').length) {
+      const dataTransfer = new DataTransfer();
+      setValue('fileList', dataTransfer.files);
+    }
+    return;
+  };
 
   return (
     <div>
@@ -169,7 +180,8 @@ function App(): ReactNode {
           label='이미지 등록'
           type='file'
           multiple
-          watchPreSignedUrls={watchPreSignedUrls}
+          preSignedUrls={preSignedUrls}
+          onRemoveFile={onRemoveFile}
           fileAccept={['image/*']}
           {...register('fileList', {
             required: '이미지를 등록해주세요.',

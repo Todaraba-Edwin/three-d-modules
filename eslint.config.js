@@ -1,5 +1,5 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
+import storybook from 'eslint-plugin-storybook';
 
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
@@ -59,19 +59,21 @@ const utilsAddConfig = ({ projectPath, matchPath }) => ({
   ],
 });
 
-const utilsNodeConfig = () => {
-  return {
-    files: ['scripts/**/*.{ts,js}', '*.config.{ts,js}'],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json'],
-      },
+const utilsNodeConfig = () => ({
+  files: [
+    'scripts/**/*.{ts,js}',
+    '*.config.{ts,js}',
+    '**/.storybook/*.{ts,js}',
+  ],
+  languageOptions: {
+    parserOptions: {
+      project: ['./tsconfig.node.json'],
     },
-    rules: {
-      'no-console': 'off',
-    },
-  };
-};
+  },
+  rules: {
+    'no-console': 'off',
+  },
+});
 
 const utilsServerConfig = ({ projectPath, matchPath }) => ({
   files: [matchPath],
@@ -91,25 +93,30 @@ const utilsServerConfig = ({ projectPath, matchPath }) => ({
   },
 });
 
-export default tseslint.config(// App 전용 코드
-{
-  ignores: [
-    '**/.DS_Store',
-    '**/dist/**',
-    '**/node_modules/**',
-    '.pnpm-store/**',
-    '**/build/**',
-  ],
-}, utilsAddConfig({
-  projectPath: './_apps/shared/tsconfig.app.json',
-  matchPath: '_apps/shared/**/*.{ts,tsx}',
-}), utilsAddConfig({
-  projectPath: './_apps/project-a/tsconfig.app.json',
-  matchPath: '_apps/project-a/**/*.{ts,tsx}',
-}), utilsAddConfig({
-  projectPath: './_apps/buildings/tsconfig.app.json',
-  matchPath: '_apps/buildings/**/*.{ts,tsx}',
-}), utilsServerConfig({
-  projectPath: './_servers/server/tsconfig.json',
-  matchPath: '_servers/server/**/*.ts',
-}), utilsNodeConfig({}), storybook.configs["flat/recommended"], storybook.configs["flat/recommended"]);
+export default tseslint.config(
+  // App 전용 코드
+  {
+    ignores: [
+      '**/.DS_Store',
+      '**/dist/**',
+      '**/node_modules/**',
+      '.pnpm-store/**',
+      '**/build/**',
+    ],
+  },
+  utilsAddConfig({
+    projectPath: './_apps/shared/tsconfig.app.json',
+    matchPath: '_apps/shared/**/*.{ts,tsx}',
+  }),
+  utilsAddConfig({
+    projectPath: './_apps/buildings/tsconfig.app.json',
+    matchPath: '_apps/buildings/**/*.{ts,tsx}',
+  }),
+  utilsServerConfig({
+    projectPath: './_servers/server/tsconfig.json',
+    matchPath: '_servers/server/**/*.ts',
+  }),
+  utilsNodeConfig({}),
+  storybook.configs['flat/recommended'],
+  storybook.configs['flat/recommended']
+);
