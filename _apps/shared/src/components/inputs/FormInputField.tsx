@@ -6,7 +6,7 @@ const VITE_IMG_SERVER = import.meta.env.VITE_IMG_SERVER ?? '';
 const StorybookPreImage = 'http://localhost:3000';
 
 type MessageType = { message: string };
-type FileAcceptType =
+export type FileAcceptType =
   | 'image/*'
   | '.xlsx'
   | '.hwp'
@@ -171,11 +171,13 @@ const FileDropZone = ({
       onRemoveFile({ targetUrl });
     };
 
+  //   console.log('preSignedUrls', preSignedUrls);
+
   return (
     <figure
       className={clsx(
         'min-h-20 cursor-pointer p-4',
-        'flex flex-col items-center justify-center gap-3',
+        'flex flex-col items-center justify-center',
         'rounded-md border border-dotted border-slate-400',
         'text-center'
       )}
@@ -213,6 +215,7 @@ const FileDropZone = ({
         className={clsx('cursor-default', {
           'grid-cols-3': isMultiple,
           'grid-cols-1': !isMultiple,
+          'mt-3': preSignedUrls?.length,
           'grid gap-x-4 gap-y-4': preSignedUrls?.length,
           [`max-w-[${maxFileWidth}]`]: maxFileWidth,
         })}

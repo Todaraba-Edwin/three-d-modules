@@ -18,6 +18,19 @@ const meta: Meta<typeof FormInputField> = {
     isError: { control: 'boolean' },
     isSuccess: { control: 'boolean' },
     isFullSpan: { control: 'number' },
+    fileAccept: {
+      control: 'select',
+      options: [
+        ['image/*'],
+        ['.xlsx'],
+        ['.hwp'],
+        ['.pdf'],
+        ['.doc'],
+        ['application/pdf'],
+        ['application/msword'],
+        ['application/x-hwp'],
+      ],
+    },
   },
   args: {
     label: 'ID',
