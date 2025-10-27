@@ -16,6 +16,8 @@ export const AuthPathEnum = {
   LOGIN: '/login',
 };
 
+export const ROOT_NAME = '대시보드';
+
 export const DefaultPathEnum = {
   ROOT: '/',
   THREE_D_MS: '/3dms',

@@ -1,15 +1,18 @@
+import { RouteError } from '@/_common/components';
 import * as Pages from '@/pages';
 import * as RD from 'react-router-dom';
 import * as Loaders from './loaders';
 
 const authRoutesWithLoader = {
   loader: Loaders.authRouterLoader,
+  errorElement: <RouteError />,
   children: [...Pages.AuthRouter],
 };
 
 const protectedWithLoader = {
   element: <RD.Outlet />,
   loader: Loaders.protectedRouteLoader,
+  errorElement: <RouteError />,
   children: [...Pages.DefaultRouter()],
 };
 

@@ -7,4 +7,5 @@ export * from './Input';
 export * from './LoadingSpin';
 export * from './PortalLayout';
 export * from './Progress';
+export * from './RouteError';
 export * from './SelectedBluePoint';
