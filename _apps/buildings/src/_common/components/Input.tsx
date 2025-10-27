@@ -20,7 +20,7 @@ export const Input = ({
         'placeholder:text-[#a1a1aa]',
         'selection:bg-primary selection:text-primary-foreground',
         // Background and layout
-        'dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border border-transparent outline-none px-3 py-1 text-base',
+        'flex h-9 w-full min-w-0 rounded-md border border-transparent outline-none px-3 py-1 text-base',
         // Transition and disabled state
         'transition-[color,box-shadow,border] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
         // File input specifics

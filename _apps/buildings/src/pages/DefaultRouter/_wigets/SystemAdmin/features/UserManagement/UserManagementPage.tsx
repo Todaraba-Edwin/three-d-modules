@@ -5,7 +5,6 @@ import { LeftSectionRoleManagement } from './parts/LeftSectionRoleManagement';
 import { RightSectionUserManagement } from './parts/RightSectionUserManagement';
 
 export const UserManagementPage = (): ReactNode => {
-  throw new Error();
   return (
     <SystemAdminTabLayout
       tabTitle={UM_CONST.Tab.title}

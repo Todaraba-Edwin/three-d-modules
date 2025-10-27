@@ -17,7 +17,7 @@ const Component = {
     />
   ),
   FormLayout: ({ children }: PropsWithChildren): ReactNode => (
-    <div className='border-2 rounded-lg flex items-center ' {...{ children }} />
+    <div className='border-2 rounded-lg flex items-center overflow-hidden' {...{ children }} />
   ),
   SearchIcon: (): ReactNode => (
     <Search className='w-5 h-5 text-gray-400 ml-4' />

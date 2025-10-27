@@ -69,7 +69,7 @@ const DefaultInput = ({
 }: Omit<Props, 'label' | 'isSuccess' | 'isError' | 'messages'>) => {
   return (
     <input
-      className={clsx(initInputStyles(variant))}
+      className={clsx(initInputStyles(variant), 'outline-none')}
       {...{
         autoComplete,
         type,
@@ -277,11 +277,15 @@ export const FormInputField = ({
 
   return (
     <fieldset
-      className={clsx('flex flex-col gap-y-1 text-sm', {
-        [`col-span-${isFullSpan}`]: isFullSpan,
-      })}
+      className={clsx(
+        'flex w-full flex-col gap-y-1 text-sm',
+        'overflow-hidden',
+        {
+          [`col-span-${isFullSpan}`]: isFullSpan,
+        }
+      )}
     >
-      <Label message={label} />
+      {label && <Label message={label} />}
       {isFile ? (
         <FileDropZone
           {...{

@@ -3,7 +3,6 @@ import { AlertTriangle } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { useNavigate, useRouteError } from 'react-router-dom';
 import { DefaultPathEnum, ROOT_NAME } from '../const';
-// import { Button } from './Button';
 
 function isErrorResponse(
   error: unknown
@@ -20,6 +19,7 @@ function isErrorResponse(
 // 전체에서 발생하는 예기치 않은 렌더링 에러
 export const RouteError = (): ReactNode => {
   const error = useRouteError();
+
   const navigate = useNavigate();
   console.error(error);
 
@@ -51,7 +51,6 @@ export const RouteError = (): ReactNode => {
         <ButtonPrimary
           variant='tertiary'
           onClick={() => navigate(DefaultPathEnum.ROOT, { replace: true })}
-          // className='bg-blue-600 text-white hover:bg-blue-700'
           children={`${ROOT_NAME}로 돌아가기`}
         />
       </div>
