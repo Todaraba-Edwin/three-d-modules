@@ -28,7 +28,7 @@ const fallbackRender = ({
       )}
     >
       <h4 className='text-lg font-bold' children={DEFAULT_ERROR.HEADER} />
-      <p className='my-2 text-sm'>{errorMessage}</p>
+      <p className='my-2 text-sm' children={errorMessage} />
       <ButtonPrimary
         onClick={resetErrorBoundary}
         fontSize='sm'
