@@ -1,5 +1,8 @@
 import { apiClient, BMS_PATH, queryKey } from '@/_common/apis';
-import { useQuery, type UseQueryResult } from '@tanstack/react-query';
+import {
+  useSuspenseQuery,
+  type UseSuspenseQueryResult,
+} from '@tanstack/react-query';
 import { throttle } from 'lodash';
 import { useMemo, useState } from 'react';
 import type { UseFormWatch } from 'react-hook-form';
@@ -8,7 +11,7 @@ export const useGetBuildings = ({
   watch,
 }: {
   watch: UseFormWatch<FormSearchBuildingsType>;
-}): UseQueryResult<GetBuildingsType[]> => {
+}): UseSuspenseQueryResult<GetBuildingsType[]> => {
   const [throttledSearch, setThrottledSearch] = useState<string | undefined>(
     undefined
   );
@@ -21,11 +24,11 @@ export const useGetBuildings = ({
     []
   );
 
-  const query = useQuery<GetBuildingsType[]>({
+  const query = useSuspenseQuery<GetBuildingsType[]>({
     queryKey: queryKey.systemAdmin.bms_buildings(throttledSearch),
     queryFn: () =>
       apiClient
-        .get(BMS_PATH.SEGMENTS.GET_BUILDINGS, {
+        .get(`${BMS_PATH.SEGMENTS.GET_BUILDINGS}asdfadsf`, {
           searchParams: { search: throttledSearch },
         })
         .json(),

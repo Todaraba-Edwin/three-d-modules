@@ -9,27 +9,31 @@ const Component = {
   Layout: ({ children }: PropsWithChildren): ReactNode => (
     <div
       className={clsx(
-        'border-2 p-4 rounded-lg',
-        'grid grid-rows-[auto_1fr] space-y-2 min-h-0',
-        'max-xl:min-h-[220px] max-xl:max-h-[200px] overflow-y-auto'
+        'rounded-lg border-2 p-4',
+        'grid min-h-0 grid-rows-[auto_1fr] space-y-2',
+        'overflow-y-auto max-xl:max-h-[200px] max-xl:min-h-[220px]'
       )}
       {...{ children }}
     />
   ),
   FormLayout: ({ children }: PropsWithChildren): ReactNode => (
-    <div className='border-2 rounded-lg flex items-center overflow-hidden' {...{ children }} />
+    <div
+      className='flex items-center overflow-hidden rounded-lg border-2'
+      {...{ children }}
+    />
   ),
   SearchIcon: (): ReactNode => (
-    <Search className='w-5 h-5 text-gray-400 ml-4' />
+    <Search className='ml-4 h-5 w-5 text-gray-400' />
   ),
   OrderList: ({ children }: PropsWithChildren): ReactNode => (
-    <ol className='overflow-y-auto space-y-2' {...{ children }} />
+    <ol className='space-y-2 overflow-y-auto' {...{ children }} />
   ),
 };
 
 export const BM_LeftBuildingList = (): ReactNode => {
   const { register, watch } = Entity.useFormSearchBuilding();
   const { data } = Entity.useGetBuildings({ watch });
+
   return (
     <Component.Layout>
       <Component.FormLayout>
