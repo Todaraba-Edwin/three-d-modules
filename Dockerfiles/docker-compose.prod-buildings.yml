@@ -12,7 +12,7 @@ services:
     container_name: server-app
     restart: unless-stopped
     ports:
-      - '8080:8080'
+      - "8080:8080"
     environment:
       - NODE_ENV=production
     networks:
@@ -24,19 +24,19 @@ services:
       - ../../tileMaps:/app/tileMaps
       # Docker 바인드 마운트 : 복사 개념이 아니라 공유하는 개념
       # 로컬 폴더에 컨테이너의 위치를 연결하여, 컨테이너가 해당 위치를 참조, 양방향 실시간 동기화 형성
-      
+
   buildings:
     build:
       context: ..
       dockerfile: Dockerfiles/Dockerfile
       args:
         APP_PATH: _apps/buildings
-        VITE_API_URL: http://192.168.40.99:8080
+        VITE_API_URL: http://192.168.40.82:8080
     image: buildings-app-compose
     container_name: buildings-app
     restart: unless-stopped
     ports:
-      - '8082:80'
+      - "8082:80"
     depends_on:
       - server
     networks:
@@ -47,7 +47,7 @@ services:
     container_name: prizm-mariadb
     restart: unless-stopped
     ports:
-      - '3306:3306'
+      - "3306:3306"
     environment:
       MARIADB_ROOT_PASSWORD: prizm
     volumes:

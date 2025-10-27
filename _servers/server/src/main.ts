@@ -11,9 +11,9 @@ async function bootstrap() {
       'http://localhost:3000', // 로컬 개발 환경
       'http://localhost:3002', // 로컬 개발 환경
       'http://localhost:8082', // 로컬 개발 환경
-      'http://192.168.40.99:3000',
-      'http://192.168.40.99:3002',
-      'http://192.168.40.99:8082',
+      'http://192.168.40.82:3000',
+      'http://192.168.40.82:3002',
+      'http://192.168.40.82:8082',
     ],
     credentials: true,
   }); // CORS 활성화

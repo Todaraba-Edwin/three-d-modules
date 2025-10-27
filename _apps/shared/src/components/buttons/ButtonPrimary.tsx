@@ -1,5 +1,6 @@
-import { colors } from '@/styles/colors.js';
-import type { fontSize } from '@/styles/fontSize.js';
+
+import type { colors } from '../../styles/colors';
+import type { fontSize } from '../../styles/fontSize';
 import clsx from 'clsx';
 import { type ReactNode } from 'react';
 
