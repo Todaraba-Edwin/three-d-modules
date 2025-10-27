@@ -1,8 +1,8 @@
+import { ButtonPrimary } from '@monorepo/shared';
 import { AlertTriangle } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { useNavigate, useRouteError } from 'react-router-dom';
 import { DefaultPathEnum, ROOT_NAME } from '../const';
-import { Button } from './Button';
 // import { Button } from './Button';
 
 function isErrorResponse(
@@ -48,9 +48,10 @@ export const RouteError = (): ReactNode => {
         </div>
         <h1 className='mb-2 text-2xl font-bold text-gray-800'>{errorTitle}</h1>
         <p className='mb-6 text-gray-600'>{errorMessage}</p>
-        <Button
+        <ButtonPrimary
+          variant='tertiary'
           onClick={() => navigate(DefaultPathEnum.ROOT, { replace: true })}
-          className='bg-blue-600 text-white hover:bg-blue-700'
+          // className='bg-blue-600 text-white hover:bg-blue-700'
           children={`${ROOT_NAME}로 돌아가기`}
         />
       </div>

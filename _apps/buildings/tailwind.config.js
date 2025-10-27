@@ -1,5 +1,9 @@
+import sharedConfig from '../shared/tailwind.config.js';
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  // 로컬설정이 우선 순위가 되기에 유의할 것
+  presets: [sharedConfig],
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
     '../shared/**/*.{js,ts,jsx,tsx}', // 공용폴더의 tailwind 도 가져와야 동작이 됨
