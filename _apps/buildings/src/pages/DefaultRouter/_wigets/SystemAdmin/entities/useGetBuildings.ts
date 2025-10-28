@@ -28,7 +28,7 @@ export const useGetBuildings = ({
     queryKey: queryKey.systemAdmin.bms_buildings(throttledSearch),
     queryFn: () =>
       apiClient
-        .get(`${BMS_PATH.SEGMENTS.GET_BUILDINGS}asdfadsf`, {
+        .get(BMS_PATH.SEGMENTS.GET_BUILDINGS, {
           searchParams: { search: throttledSearch },
         })
         .json(),
