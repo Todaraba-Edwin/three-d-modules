@@ -1,4 +1,8 @@
 {
   "files": [],
-  "references": [{ "path": "_apps/buildings" }, { "path": "_apps/shared" }]
+  "references": [
+    { "path": "_apps/buildings" },
+    { "path": "_apps/shared" },
+    { "path": "_apps/prizm" }
+  ]
 }

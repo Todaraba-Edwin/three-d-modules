@@ -4,7 +4,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-      // "@_shared": ["src/features/_shared"]
     }
   },
   "include": [
