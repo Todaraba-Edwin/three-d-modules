@@ -109,10 +109,6 @@ export default tseslint.config(
     matchPath: '_apps/shared/**/*.{ts,tsx}',
   }),
   utilsAddConfig({
-    projectPath: './_apps/prizm/tsconfig.app.json',
-    matchPath: '_apps/prizm/**/*.{ts,tsx}',
-  }),
-  utilsAddConfig({
     projectPath: './_apps/buildings/tsconfig.app.json',
     matchPath: '_apps/buildings/**/*.{ts,tsx}',
   }),

@@ -1,7 +1,7 @@
 # Three-D-Modules 프로젝트 개요
 ### 🧱 pnpm 기반 Monorepo + Vite + React + TypeScript + Docker 구성
 
-이 레포는 `pnpm` 기반의 모노레포(monorepo) 환경에서 Vite + React + TypeScript + SWC를 사용하며, 공통 패키지(`packages/shared`)와 실제 앱(`apps/project-a`)을 구분하여 관리합니다.  
+이 레포는 `pnpm` 기반의 모노레포(monorepo) 환경에서 Vite + React + TypeScript + SWC를 사용하며, 공통 패키지(`_app/shared`)와 실제 앱(`_app/project-a`)을 구분하여 관리합니다.  
 또한 범용 `Dockerfile`과 `build.sh` 스크립트를 통해 효율적인 로컬 및 배포 환경을 제공합니다.
 <br/>
 
@@ -20,11 +20,11 @@
 ## 첫째, 폴더 구조
 ```bash
 /
-├── apps/                # 실제 실행되는 앱
+├── __app/               # 실제 실행되는 앱
 │   └── project-a/
-│
-├── packages/            # 공통 모듈 (예: shared 컴포넌트, 유틸 등)
 │   └── shared/
+│
+├── _server/             # 서버
 │
 ├── Dockerfiles/         # 범용 도커 빌드/런타임 설정
 │   ├── Dockerfile
@@ -76,7 +76,7 @@ pnpm install
 ### 3. 개발 서버 실행
 ⚠️ 루트경로에서 실행할 것
 ```bash
-pnpm --filter apps/project-a dev
+pnpm --filter _app/project-a dev
 ```
 <br />
 
@@ -138,8 +138,8 @@ pnpm add dayjs
 ## 여덟번째, 신규 프로젝트 추가시 유의사항
 
 ```bash
-mkdir -m apps/new-project # ⚠️ 폴더명 : 소문자 + 하이픈
-cd apps/new-project
+mkdir -m _app/new-project # ⚠️ 폴더명 : 소문자 + 하이픈
+cd _app/new-project
 pnpm create vite .
 ```
 
@@ -155,8 +155,8 @@ export default tseslint.config(
   // App 전용에 해당 프로젝트 추가
   // ================================================
   utilsAddConfig({
-    projectPath: './apps/new-project/tsconfig.app.json',
-    matchPath: 'apps/new-project/**/*.{ts,tsx}',
+    projectPath: './_app/new-project/tsconfig.app.json',
+    matchPath: '_app/new-project/**/*.{ts,tsx}',
   }),
   // ================================================ 
 
@@ -167,5 +167,5 @@ export default tseslint.config(
 - 루트에서 shared 연결하기 
 
 ```bash
-pnpm add @monorepo/shared --workspace --filter ./apps/new-project
+pnpm add @monorepo/shared --workspace --filter ./_app/new-project
 ```
